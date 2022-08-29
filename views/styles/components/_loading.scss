@@ -1,0 +1,13 @@
+#loadingScreen {
+    position: fixed;
+    inset: 0;
+    background-color: #000000AA;
+    color: white;
+    font-size: clamp(1rem, 6vw, 2rem);
+
+    display: grid;
+    place-items: center;
+
+    visibility: hidden;
+    display: none;
+}

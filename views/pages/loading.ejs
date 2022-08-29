@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<%- include('../partials/head'); %>
+</head>
+<body>
+    <h1>Loading...</h1>
+</body>
+<script>
+	// We can get the token from the "access_token" query
+	// param, available in the browsers "location" global
+	const query = window.location.href.substring(1);
+	const idToken = query.split('access_token=')[1].split('&')[0];
+	// const sessionState = query.split('session_state=')[1].split('&')[0];
+	// const expTime = window.location.href.substring(1).split('&')[2].split('=')[1];
+	const expTime = 3600;
+
+	setCookie('id_token', idToken, expTime);
+	setCookie('session_state', idToken, expTime);
+	window.location = '/'
+
+	function setCookie(cname, cvalue, expTime) {
+		const d = new Date();
+		d.setTime(d.getTime() + (expTime));
+		let expires = "expires="+ d.toUTCString();
+		document.cookie = cname + "=" + cvalue + ";" + expires + ";path=/";
+	}
+</script>
+</html>

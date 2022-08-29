@@ -325,4 +325,80 @@ html {
   flex-direction: column;
   justify-content: center;
   align-items: center;
+}
+
+#calender-container {
+  width: -webkit-max-content;
+  width: -moz-max-content;
+  width: max-content;
+  margin-inline: auto;
+}
+
+#calender {
+  display: flex;
+  justify-content: flex-start;
+  flex-wrap: wrap;
+  gap: 2px;
+  max-width: 1000px;
+}
+#calender .calender-day {
+  width: 14%;
+  min-width: 125px;
+  aspect-ratio: 1/1;
+  text-align: center;
+  border-bottom: 5px solid transparent;
+  box-sizing: border-box;
+  background-color: lightgray;
+}
+#calender .calender-day.event {
+  border-color: #c0392b;
+}
+#calender .calender-day.spacer {
+  background-color: transparent;
+}
+
+#calender-labels {
+  display: flex;
+  gap: 2px;
+}
+#calender-labels p {
+  width: 14%;
+  text-align: center;
+  text-transform: uppercase;
+}
+
+#calender-controls {
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+  padding: 0.5rem;
+}
+#calender-controls button {
+  height: -webkit-max-content;
+  height: -moz-max-content;
+  height: max-content;
+  aspect-ratio: 1/1;
+  padding: 0;
+  background-color: gray;
+  color: white;
+  outline: none;
+  border: none;
+  border-radius: 50%;
+  display: grid;
+  place-items: center;
+}
+#calender-controls p {
+  padding: 0 1rem;
+}
+
+#loadingScreen {
+  position: fixed;
+  inset: 0;
+  background-color: rgba(0, 0, 0, 0.6666666667);
+  color: white;
+  font-size: clamp(1rem, 6vw, 2rem);
+  display: grid;
+  place-items: center;
+  visibility: hidden;
+  display: none;
 }/*# sourceMappingURL=main.css.map */

@@ -1,31 +1,58 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
-
+    <%- include('../partials/head'); %>
 </head>
 <body>
-    <div id="calender"></div>
-
-    
+    <div id="loggedIn" style="visibility: hidden; display: none;">
+        <p id="userWelcomeMsg"></p>
+        <button onclick="logout()">Logout</button>
+    </div>
+    <div id="loggedOut">
+        <a href="/login" id="loginBtn">Login</a>
+    </div>
+    <h1>Hello World</h1>
 </body>
-<script src="/scripts/calender.js"></script>
 <script>
-    const calenderDOM = document.getElementById('calender')
+    const loggedIn = document.getElementById('loggedIn')
+    const loggedOut = document.getElementById('loggedOut')
 
-    let calenderHTML = '';
-    for (var i=0; i < dates.length; i++) {
-        const date = dates[i];
-        const weekday = date.toLocaleDateString('en-US', {weekday: 'long'})
-        const dateHTML = `
-            <h1>${weekday}</h1>
-        `
-        calenderHTML += dateHTML;
+    const userWelcomeMsg = document.getElementById('userWelcomeMsg')
+
+    if (user_id && access_token) {
+        axios({
+            method: 'get',
+            url: `https://my.pureheart.org/ministryplatformapi/users/${user_id}`,
+            headers: {
+                'Accept': 'application/json',
+                'Authorization': `Bearer ${access_token}`
+            }
+        })
+            .then(response => response.data)
+            .then(data => {
+                console.log(data)
+                const name = data.DisplayName.split(', ').reverse().join(' ')
+
+                loggedOut.style.visibility = 'hidden';
+                loggedOut.style.display = 'none';
+
+                userWelcomeMsg.innerHTML = `Welcome, ${name}`;
+                loggedIn.style.visibility = 'visible';
+                loggedIn.style.display = 'block';
+            })
+            .catch(err => {
+                console.error(err)
+            })
     }
 
-    calenderDOM.innerHTML = calenderHTML;
+    function logout() {
+        //remove all cookies
+        document.cookie = "user_id= ; expires = Thu, 01 Jan 1970 00:00:00 GMT";
+        document.cookie = "access_token= ; expires = Thu, 01 Jan 1970 00:00:00 GMT";
+
+        window.location = '/'
+    }
+
+    
 </script>
 </html>

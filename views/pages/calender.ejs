@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <%- include('../partials/head'); %>
+    </head>
+<body>
+    <%- include('../partials/loading'); %>
+
+    <div id="calender-container">
+        <div id="calender-controls">
+            <button onClick="prevMonth()"><i class="material-icons">keyboard_arrow_left</i></button>
+            <p id="date-label"></p>
+            <button onClick="nextMonth()"><i class="material-icons">keyboard_arrow_right</i></button>
+        </div>
+
+        <div id="calender-labels">
+            <p>sunday</p>
+            <p>monday</p>
+            <p>tuesday</p>
+            <p>wednesday</p>
+            <p>thursday</p>
+            <p>friday</p>
+            <p>saturday</p>
+        </div>
+        
+        <div id="calender"></div>
+    </div>
+</body>
+<script src="/scripts/calender.js"></script>
+<script>
+    function getEvents() {
+        loading();
+
+        axios({
+            method: 'get',
+            url: `https://my.pureheart.org/ministryplatformapi/tables/events?%24orderby=Event_Start_Date%20DESC%20`,
+            headers: {
+                'Accept': 'application/json',
+                'Authorization': `Bearer ${access_token}`
+            }
+        })
+            .then(response => response.data)
+            .then(data => {
+                //loop through all data
+                //check if data date is in dates array
+                //log data
+                for (let i = 0; i < data.length; i ++) {
+                    const {Event_Start_Date} = data[i];
+                    const eventDate = new Date(Event_Start_Date).toDateString();
+                    // console.log(eventDate)
+                    
+                    const datesWithEvents = dates.filter(date => date.day == eventDate);
+                    datesWithEvents.forEach(date => {
+                        date.numberOfEvents ++;
+                    })
+                }
+                drawCalender();
+            })
+            .then(() => {
+                doneLoading();
+            })
+            .catch(err => {
+                console.error(err)
+            })
+    }
+    getEvents()
+
+    function updateDates() {
+        dates = getMonth(currentYear, currentMonth);
+        getEvents()
+    }
+    function nextMonth() {
+        const nextCurrMonth = currentMonth + 1;
+        if (nextCurrMonth > 11) {
+            currentYear ++;
+            currentMonth = 0;
+        } else {
+            currentMonth ++;
+        }
+        updateDates();
+    }
+    function prevMonth() {
+        const prevCurrMonth = currentMonth - 1;
+        if (prevCurrMonth < 0) {
+            currentYear --;
+            currentMonth = 11;
+        } else {
+            currentMonth --;
+        }
+        updateDates();
+    }
+</script>
+</html>
