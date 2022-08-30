@@ -28,12 +28,15 @@
 </body>
 <script src="/scripts/calender.js"></script>
 <script>
+    let iteration = 0
+    let right = false;
+    let left = true;
     function getEvents() {
         loading();
 
         axios({
             method: 'get',
-            url: `https://my.pureheart.org/ministryplatformapi/tables/events?%24orderby=Event_Start_Date%20DESC%20`,
+            url: `https://my.pureheart.org/ministryplatformapi/tables/events?%24orderby=Event_Start_Date%20DESC&%24skip=${1000 * iteration}`,
             headers: {
                 'Accept': 'application/json',
                 'Authorization': `Bearer ${access_token}`
@@ -44,6 +47,8 @@
                 //loop through all data
                 //check if data date is in dates array
                 //log data
+                let monthHasEvents = false;
+
                 for (let i = 0; i < data.length; i ++) {
                     const {Event_Start_Date} = data[i];
                     const eventDate = new Date(Event_Start_Date).toDateString();
@@ -52,12 +57,20 @@
                     const datesWithEvents = dates.filter(date => date.day == eventDate);
                     datesWithEvents.forEach(date => {
                         date.numberOfEvents ++;
+                        monthHasEvents = true;
                     })
                 }
-                drawCalender();
-            })
-            .then(() => {
-                doneLoading();
+
+                if (!monthHasEvents && right && iteration > 0) {
+                    iteration --;
+                    getEvents();
+                } else if (!monthHasEvents && left) {
+                    iteration ++;
+                    getEvents();
+                } else {
+                    drawCalender();
+                    doneLoading();
+                }
             })
             .catch(err => {
                 console.error(err)
@@ -70,6 +83,8 @@
         getEvents()
     }
     function nextMonth() {
+        right = true;
+        left = false;
         const nextCurrMonth = currentMonth + 1;
         if (nextCurrMonth > 11) {
             currentYear ++;
@@ -80,6 +95,8 @@
         updateDates();
     }
     function prevMonth() {
+        right = false;
+        left = true;
         const prevCurrMonth = currentMonth - 1;
         if (prevCurrMonth < 0) {
             currentYear --;
