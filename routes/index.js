@@ -6,8 +6,8 @@ const navigation = express.Router();
 navigation.get('/', (req, res) => {
   res.render('pages/index')
 })
-navigation.get('/calender', (req, res) => {
-  res.render('pages/calender')
+navigation.get('/calendar', (req, res) => {
+  res.render('pages/calendar')
 })
 navigation.get('/login', (req, res) => {
   res.render('pages/login', {error: null})

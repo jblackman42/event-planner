@@ -26,17 +26,18 @@
         <div id="calender"></div>
     </div>
 </body>
-<script src="/scripts/calender.js"></script>
+<script src="/scripts/calendar.js"></script>
 <script>
     let iteration = 0
-    let right = false;
-    let left = true;
     function getEvents() {
         loading();
 
+        let latestDate = new Date('Dec 31 1960');
+        let earliestDate = new Date('Jan 1 3000')
+
         axios({
             method: 'get',
-            url: `https://my.pureheart.org/ministryplatformapi/tables/events?%24orderby=Event_Start_Date%20DESC&%24skip=${1000 * iteration}`,
+            url: `https://my.pureheart.org/ministryplatformapi/tables/events?%24orderby=Event_Start_Date%20DESC`,
             headers: {
                 'Accept': 'application/json',
                 'Authorization': `Bearer ${access_token}`
@@ -44,6 +45,7 @@
         })
             .then(response => response.data)
             .then(data => {
+                // console.log(data)
                 //loop through all data
                 //check if data date is in dates array
                 //log data
@@ -51,26 +53,49 @@
 
                 for (let i = 0; i < data.length; i ++) {
                     const {Event_Start_Date} = data[i];
-                    const eventDate = new Date(Event_Start_Date).toDateString();
+
+                    const eventDate = new Date(Event_Start_Date);
                     // console.log(eventDate)
+                    if (eventDate > latestDate) {
+                        latestDate = eventDate;
+                    } else if (eventDate < earliestDate) {
+                        earliestDate = eventDate;
+                    }
                     
-                    const datesWithEvents = dates.filter(date => date.day == eventDate);
+                    const datesWithEvents = dates.filter(date => date.day == eventDate.toDateString());
                     datesWithEvents.forEach(date => {
                         date.numberOfEvents ++;
                         monthHasEvents = true;
                     })
                 }
 
-                if (!monthHasEvents && right && iteration > 0) {
-                    iteration --;
-                    getEvents();
-                } else if (!monthHasEvents && left) {
+                console.log(earliestDate)
+                console.log(latestDate)
+                const firstDayVisible = new Date(dates[0].day);
+                const lastDayVisible = new Date(dates[dates.length - 1].day)
+
+                //if the events stored dont cover the whole month it will get new months
+                if (earliestDate > firstDayVisible) {
+                    console.log('get new events ++')
                     iteration ++;
                     getEvents();
-                } else {
-                    drawCalender();
-                    doneLoading();
-                }
+                } else if (latestDate > lastDayVisible && iteration > 0) {
+                    console.log('get new events --')
+                    iteration --;
+                    getEvents();
+                } 
+                // if (!monthHasEvents && right && iteration > 0) {
+                //     iteration --;
+                //     getEvents();
+                // } else if (!monthHasEvents && left) {
+                //     iteration ++;
+                //     getEvents();
+                // } else {
+                //     drawCalender();
+                //     doneLoading();
+                // }
+                drawCalender();
+                doneLoading();
             })
             .catch(err => {
                 console.error(err)
