@@ -45,18 +45,18 @@ router.post('/login', async (req, res) => {
                         const {Id} = response.data[0];
                         res.cookie('user_id', Id, {expire : new Date() + 3600})
                         res.cookie('access_token', access_token, {expire : new Date() + 3600})
-                        res.redirect('/')
+                        res.send({success: true})
                     })
                     .catch(err => {
-                        res.render('pages/login', {error: 'internal server error: please try again later.'})
+                        res.send({success: false, error: 'internal server error: please try again later.'})
                     })
             } else {
                 console.log('no access token')
-                res.render('pages/login', {error: 'invalid credentials'})
+                res.send({success: false, error: 'invalid credentials'})
             }
         })
         .catch(err => {
-            res.render('pages/login', {error: 'invalid credentials'})
+            res.send({success: false, error: 'invalid credentials'})
         })
 })
 

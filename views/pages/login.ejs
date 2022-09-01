@@ -5,7 +5,7 @@
 </head>
 <body>
     <h1>Hello World</h1>
-    <form id="loginForm" action="/api/oauth/login" method="post">
+    <form id="loginForm">
         <label for="username">Username:</label>
         <input type="text" name="username" id="username"><br />
         <label for="username">Password:</label>
@@ -16,4 +16,38 @@
         <h2><%= error %></h2>
     <% } %>
 </body>
+<script>
+    const urlParams = new URLSearchParams(window.location.search);
+    const redirect = urlParams.get('redirect');
+    const loginForm = document.getElementById('loginForm');
+
+    const redirectURL = `/${redirect ? redirect : ''}`
+
+    loginForm.addEventListener('submit', (e) => {
+        e.preventDefault();
+
+        const usernameValue = document.getElementById('username').value;
+        const passwordValue = document.getElementById('password').value;
+
+        axios({
+            method: 'post',
+            url: 'http://localhost:3000/api/oauth/login',
+            data: {
+                username: usernameValue,
+                password: passwordValue
+            },
+            headers: {
+                'Content-Type': 'application/json',
+            }
+        })
+            .then(response => response.data)
+            .then(data => {
+                if (data.success) {
+                    window.location = redirectURL;
+                } else {
+                    console.log(data.error)
+                }
+            })
+    })
+</script>
 </html>

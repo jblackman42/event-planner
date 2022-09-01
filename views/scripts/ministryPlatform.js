@@ -1,4 +1,4 @@
-const getEvents = () => {
+const getEvents = (redirect) => { //redirect is the url after the first / defining what page will load if request fails
     const response = axios({
         method: 'get',
         url: `https://my.pureheart.org/ministryplatformapi/tables/events?%24orderby=Event_Start_Date%20DESC${iteration > 0 ? `&%24skip=${600 * iteration}` : ''}`,
@@ -10,6 +10,11 @@ const getEvents = () => {
     .then(response => response.data)
     .catch(err => {
         console.error(err)
+        if (!redirect) {
+            window.location = '/login'
+        } else {
+            window.location = `/login?redirect=${redirect}`
+        }
     })
     return response;
 }
