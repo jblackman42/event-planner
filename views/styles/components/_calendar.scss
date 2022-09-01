@@ -15,14 +15,34 @@
         min-width: 125px;
         aspect-ratio: 1 / 1;
         text-align: center;
-        border-bottom: 5px solid transparent;
         box-sizing: border-box;
-        background-color: lightgray;
-        &.event {
-            border-color: #c0392b;
+        background: lightgray;
+        
+        position: relative;
+
+        cursor: pointer;
+        &.event:hover {
+            filter: brightness(.8);
         }
-        &.spacer {
-            background-color: transparent;
+
+        .progressBar {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            height: 5px;
+            width: 0;
+            max-width: 100%;
+
+            transition: width 150ms ease-in-out;
+            background-color: #e74c3c;
+        }
+        .eventsNumber {
+            position: absolute;
+            bottom: 5px;
+            text-align: left;
+            color: gray;
+            margin: .25rem;
+            font-size: 85%;
         }
     }
 }

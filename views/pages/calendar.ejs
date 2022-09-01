@@ -5,6 +5,7 @@
     </head>
 <body>
     <%- include('../partials/loading'); %>
+    <%- include('../partials/popup'); %>
 
     <div id="calender-container">
         <div id="calender-controls">
@@ -28,84 +29,66 @@
 </body>
 <script src="/scripts/calendar.js"></script>
 <script>
-    let iteration = 0
-    function getEvents() {
+    let iteration = 0;
+    let events;
+    
+    async function handleEvents(reloadEvents) {
         loading();
 
+        if (reloadEvents) {
+            events = await getEvents();
+        }
+
         let latestDate = new Date('Dec 31 1960');
-        let earliestDate = new Date('Jan 1 3000')
+        let earliestDate = new Date('Jan 1 3000');
+        
+        //loop through all data
+        //check if data date is in dates array
+        //log data
+        let monthHasEvents = false;
 
-        axios({
-            method: 'get',
-            url: `https://my.pureheart.org/ministryplatformapi/tables/events?%24orderby=Event_Start_Date%20DESC`,
-            headers: {
-                'Accept': 'application/json',
-                'Authorization': `Bearer ${access_token}`
+        for (let i = 0; i < events.length; i ++) {
+            const {Event_Start_Date, Cancelled} = events[i];
+
+            const eventDate = new Date(Event_Start_Date);
+            // console.log(eventDate)
+            if (eventDate > latestDate) {
+                latestDate = eventDate;
+            } else if (eventDate < earliestDate) {
+                earliestDate = eventDate;
             }
-        })
-            .then(response => response.data)
-            .then(data => {
-                // console.log(data)
-                //loop through all data
-                //check if data date is in dates array
-                //log data
-                let monthHasEvents = false;
-
-                for (let i = 0; i < data.length; i ++) {
-                    const {Event_Start_Date} = data[i];
-
-                    const eventDate = new Date(Event_Start_Date);
-                    // console.log(eventDate)
-                    if (eventDate > latestDate) {
-                        latestDate = eventDate;
-                    } else if (eventDate < earliestDate) {
-                        earliestDate = eventDate;
-                    }
-                    
-                    const datesWithEvents = dates.filter(date => date.day == eventDate.toDateString());
-                    datesWithEvents.forEach(date => {
-                        date.numberOfEvents ++;
-                        monthHasEvents = true;
-                    })
-                }
-
-                console.log(earliestDate)
-                console.log(latestDate)
-                const firstDayVisible = new Date(dates[0].day);
-                const lastDayVisible = new Date(dates[dates.length - 1].day)
-
-                //if the events stored dont cover the whole month it will get new months
-                if (earliestDate > firstDayVisible) {
-                    console.log('get new events ++')
-                    iteration ++;
-                    getEvents();
-                } else if (latestDate > lastDayVisible && iteration > 0) {
-                    console.log('get new events --')
-                    iteration --;
-                    getEvents();
-                } 
-                // if (!monthHasEvents && right && iteration > 0) {
-                //     iteration --;
-                //     getEvents();
-                // } else if (!monthHasEvents && left) {
-                //     iteration ++;
-                //     getEvents();
-                // } else {
-                //     drawCalender();
-                //     doneLoading();
-                // }
-                drawCalender();
-                doneLoading();
+            
+            const datesWithEvents = dates.filter(date => date.day == eventDate.toDateString() && !Cancelled);
+            datesWithEvents.forEach(date => {
+                date.numberOfEvents ++;
+                monthHasEvents = true;
             })
-            .catch(err => {
-                console.error(err)
-            })
+        }
+
+        // console.log(earliestDate.toDateString(),', ', latestDate.toDateString())
+        const firstDayVisible = new Date(dates[0].day);
+        const lastDayVisible = new Date(dates[dates.length - 1].day)
+        // console.log(firstDayVisible.toDateString(),', ', lastDayVisible.toDateString())
+        //if the events stored dont cover the whole month it will get new months
+        if (earliestDate >= firstDayVisible) {
+            // console.log('earliest date after last visible date')
+            iteration ++;
+            handleEvents(true);
+        } else if (latestDate <= lastDayVisible && iteration > 0) {
+            // console.log('latest date before first date visible')
+            iteration --;
+            handleEvents(true);
+        } else {
+            drawCalender();
+            doneLoading();
+        }
+        
     }
-    getEvents()
+    handleEvents(true);
 
     function updateDates() {
         dates = getMonth(currentYear, currentMonth);
-        getEvents()
+        handleEvents()
     }
     function nextMonth() {
         right = true;
@@ -131,5 +114,33 @@
         }
         updateDates();
     }
+
+    const getEventsList = async (day) => { //day is in short form (Fri Aug 05 2022)
+        const daysEvents = getEventsFromDay(day);
+
+        const eventsList = async () => {
+            return Promise.all(daysEvents.map(async (event) => {
+            const {Event_Title, Event_Start_Date, Event_End_Date, Meeting_Instructions, Event_ID} = event;
+
+            const eventRooms = await getEventRooms(Event_ID);
+
+            const rooms = async () => {
+                return Promise.all(eventRooms.map((eventRoom) => getRoom(eventRoom.Room_ID)))
+            }
+
+            return {
+                Event_Title: Event_Title,
+                Event_Start_Date: Event_Start_Date,
+                Event_End_Date: Event_End_Date,
+                Meeting_Instructions: Meeting_Instructions,
+                Rooms: await rooms(),
+                Event_ID: Event_ID
+            }
+            }))
+        }
+        return await eventsList()
+    }
+    
+    
 </script>
 </html>

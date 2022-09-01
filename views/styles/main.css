@@ -346,15 +346,31 @@ html {
   min-width: 125px;
   aspect-ratio: 1/1;
   text-align: center;
-  border-bottom: 5px solid transparent;
   box-sizing: border-box;
-  background-color: lightgray;
+  background: lightgray;
+  position: relative;
+  cursor: pointer;
 }
-#calender .calender-day.event {
-  border-color: #c0392b;
+#calender .calender-day.event:hover {
+  filter: brightness(0.8);
 }
-#calender .calender-day.spacer {
-  background-color: transparent;
+#calender .calender-day .progressBar {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  height: 5px;
+  width: 0;
+  max-width: 100%;
+  transition: width 150ms ease-in-out;
+  background-color: #e74c3c;
+}
+#calender .calender-day .eventsNumber {
+  position: absolute;
+  bottom: 5px;
+  text-align: left;
+  color: gray;
+  margin: 0.25rem;
+  font-size: 85%;
 }
 
 #calender-labels {
@@ -401,4 +417,54 @@ html {
   place-items: center;
   visibility: hidden;
   display: none;
+  z-index: 999;
+}
+
+#popup-container {
+  position: fixed;
+  inset: 0;
+  background-color: rgba(0, 0, 0, 0.6666666667);
+  display: grid;
+  place-items: center;
+  visibility: hidden;
+  display: none;
+  z-index: 999;
+}
+#popup-container #popup {
+  background-color: hsl(192deg, 15%, 94%);
+  padding: rem;
+  width: clamp(50vw, 500px, 90vw);
+}
+#popup-container #popup .title {
+  padding-inline: 1rem;
+  border-bottom: 5px solid rgba(0, 0, 0, 0.6666666667);
+}
+#popup-container #popup #events-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  max-height: 60vh;
+  overflow-y: auto;
+}
+#popup-container #popup #events-list .event {
+  display: flex;
+  flex-direction: column;
+  padding: 1rem;
+  border-bottom: 2px solid rgba(0, 0, 0, 0.4);
+}
+#popup-container #popup #events-list .event:last-of-type {
+  border: none;
+}
+#popup-container #popup #events-list .event div {
+  display: flex;
+  justify-content: space-between;
+}
+#popup-container #popup #events-list .event div p {
+  margin: 0.5rem;
+}
+#popup-container #popup #events-list .event div #label {
+  margin-right: 1rem;
+}
+#popup-container #popup #events-list .event div #event-name {
+  margin: 0.25rem auto;
 }/*# sourceMappingURL=main.css.map */
