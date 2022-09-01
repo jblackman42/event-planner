@@ -20,9 +20,11 @@
         
         position: relative;
 
-        cursor: pointer;
-        &.event:hover {
-            filter: brightness(.8);
+        &.event {
+            cursor: pointer;
+            &:hover {
+                filter: brightness(.8);
+            }
         }
 
         .progressBar {
@@ -77,5 +79,13 @@
     }
     p {
         padding: 0 1rem;
+        min-width: 118px;
+        text-align: center;
+    }
+    div {
+        display: flex;
+        justify-content: flex-start;
+        align-items: center;
+        padding: .5rem;
     }
 }

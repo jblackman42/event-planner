@@ -18,6 +18,24 @@
         .title {
             padding-inline: 1rem;
             border-bottom: 5px solid #000000AA;
+            position: relative;
+            h1 {
+              margin: 0;
+              padding: .5em 0;  
+            }
+            #close-button {
+                position: absolute;
+                top: 0;
+                right: 0;
+                display: grid;
+                place-items: center;
+                border: none;
+                padding: .5rem;
+                cursor: pointer;
+                i {
+                    font-size: 2rem;
+                }
+            }
         }
 
         #events-list {
@@ -46,6 +64,9 @@
                     }
                     #event-name {
                         margin: .25rem auto;
+                    }
+                    #rooms-list {
+                        text-align: right;
                     }
                 }
             }

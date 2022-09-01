@@ -349,6 +349,8 @@ html {
   box-sizing: border-box;
   background: lightgray;
   position: relative;
+}
+#calender .calender-day.event {
   cursor: pointer;
 }
 #calender .calender-day.event:hover {
@@ -405,6 +407,14 @@ html {
 }
 #calender-controls p {
   padding: 0 1rem;
+  min-width: 118px;
+  text-align: center;
+}
+#calender-controls div {
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+  padding: 0.5rem;
 }
 
 #loadingScreen {
@@ -438,6 +448,24 @@ html {
 #popup-container #popup .title {
   padding-inline: 1rem;
   border-bottom: 5px solid rgba(0, 0, 0, 0.6666666667);
+  position: relative;
+}
+#popup-container #popup .title h1 {
+  margin: 0;
+  padding: 0.5em 0;
+}
+#popup-container #popup .title #close-button {
+  position: absolute;
+  top: 0;
+  right: 0;
+  display: grid;
+  place-items: center;
+  border: none;
+  padding: 0.5rem;
+  cursor: pointer;
+}
+#popup-container #popup .title #close-button i {
+  font-size: 2rem;
 }
 #popup-container #popup #events-list {
   list-style: none;
@@ -467,4 +495,7 @@ html {
 }
 #popup-container #popup #events-list .event div #event-name {
   margin: 0.25rem auto;
+}
+#popup-container #popup #events-list .event div #rooms-list {
+  text-align: right;
 }/*# sourceMappingURL=main.css.map */

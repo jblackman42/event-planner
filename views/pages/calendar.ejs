@@ -9,9 +9,16 @@
 
     <div id="calender-container">
         <div id="calender-controls">
-            <button onClick="prevMonth()"><i class="material-icons">keyboard_arrow_left</i></button>
-            <p id="date-label"></p>
-            <button onClick="nextMonth()"><i class="material-icons">keyboard_arrow_right</i></button>
+            <div>
+                <button onClick="prevMonth()"><i class="material-icons">keyboard_arrow_left</i></button>
+                <p id="date-label"></p>
+                <button onClick="nextMonth()"><i class="material-icons">keyboard_arrow_right</i></button>
+            </div>
+            <div>
+                <select name="filter" id="filter" onchange="handleFilterChange(event)">
+                    <option value="test">test</option>
+                </select>
+            </div>
         </div>
 
         <div id="calender-labels">
@@ -31,11 +38,12 @@
 <script>
     let iteration = 0;
     let events;
-    
+
     async function handleEvents(reloadEvents) {
         loading();
 
         if (reloadEvents) {
+            dates.map(date => date.numberOfEvents = 0)
             events = await getEvents('calendar');
         }
 
@@ -45,10 +53,9 @@
         //loop through all data
         //check if data date is in dates array
         //log data
-        let monthHasEvents = false;
 
         for (let i = 0; i < events.length; i ++) {
-            const {Event_Start_Date, Cancelled} = events[i];
+            const {Event_Start_Date, Cancelled, Location_ID} = events[i];
 
             const eventDate = new Date(Event_Start_Date);
             // console.log(eventDate)
@@ -58,10 +65,16 @@
                 earliestDate = eventDate;
             }
             
-            const datesWithEvents = dates.filter(date => date.day == eventDate.toDateString() && !Cancelled);
-            datesWithEvents.forEach(date => {
-                date.numberOfEvents ++;
-                monthHasEvents = true;
+            // const datesWithEvents = dates.filter(date => date.day == eventDate.toDateString() && !Cancelled);
+            // datesWithEvents.forEach(date => {
+            //     date.numberOfEvents ++;
+            // })
+            dates.map(date => {
+                const {day} = date;
+                if (day == eventDate.toDateString() && !Cancelled) {
+                    date.numberOfEvents ++;
+                }
+                return date;
             })
         }
 
@@ -90,9 +103,8 @@
         dates = getMonth(currentYear, currentMonth);
         handleEvents()
     }
+
     function nextMonth() {
-        right = true;
-        left = false;
         const nextCurrMonth = currentMonth + 1;
         if (nextCurrMonth > 11) {
             currentYear ++;
@@ -103,8 +115,6 @@
         updateDates();
     }
     function prevMonth() {
-        right = false;
-        left = true;
         const prevCurrMonth = currentMonth - 1;
         if (prevCurrMonth < 0) {
             currentYear --;

@@ -3,6 +3,7 @@
         <div class="title">
             <h1 id="event-date">August 31 2020</h1>
             <p id="number-of-events">1 Event</p>
+            <button id="close-button" onclick="hide()"><i class="material-icons">close</i></button>
         </div>
         
         <ul id="events-list">
@@ -11,55 +12,124 @@
 </div>
 
 <script>
+    const show = () => {
+        const popupContainerDOM = document.getElementById('popup-container');
+        const eventsListDOM = document.getElementById('events-list');
+        popupContainerDOM.style.visibility = 'visible';
+        popupContainerDOM.style.display = 'grid';
+        eventsListDOM.scrollTop = 0;
+    }
+    const hide = () => {
+        const popupContainerDOM = document.getElementById('popup-container');
+        const eventsListDOM = document.getElementById('events-list');
+        popupContainerDOM.style.visibility = 'hidden';
+        popupContainerDOM.style.display = 'none';
+        eventsListDOM.innerHTML = '';
+    }
+
+    document.addEventListener('keydown', (e) => {
+        if (e.key == "Escape") {
+            hide();
+        }
+    })
+
     const popup = async (day, numberOfEvents) => { //day is in short form (Fri Aug 05 2022)
         const popupContainerDOM = document.getElementById('popup-container');
+        const popupDOM = document.getElementById('popup')
         const eventDateDOM = document.getElementById('event-date');
         const numberOfEventsDOM = document.getElementById('number-of-events');
         const eventsListDOM = document.getElementById('events-list');
 
-        const show = () => {
-            popupContainerDOM.style.visibility = 'visible';
-            popupContainerDOM.style.display = 'grid';
+        document.onclick = function(e){
+        if(e.target.id == 'popup-container'){
+            hide();
         }
-        const hide = () => {
-            popupContainerDOM.style.visibility = 'hidden';
-            popupContainerDOM.style.display = 'none';
+        if(e.target.id == 'popupDOM'){
+            show();
         }
+    };
 
-        console.log('loading');
         loading();
         await getEventsList(day)
             .then((eventsList) => {
-                console.log(eventsList)
+                // console.log(eventsList)
                 eventDateDOM.innerText = day;
                 numberOfEventsDOM.innerText = `${numberOfEvents} ${numberOfEvents > 1 ? 'Events' : 'Event'}`;
 
+                
+
                 const eventsListHTML = eventsList.map(event => {
                     const {Event_Title, Event_Start_Date, Event_End_Date, Meeting_Instructions, Rooms} = event;
+
+                    const startTime = new Date(Event_Start_Date);
+                    const endTime = new Date(Event_End_Date);
+                    let eventTimes;
+                    let startAMPM = 'AM';
+                    let endAMPM = 'AM';
+                    if (Event_Start_Date.split('T')[0] == Event_End_Date.split('T')[0]) { //Event lasts less than 1 day
+                        let startHour = `${startTime.getHours()}`;
+                        if (startHour > 12) {
+                            startHour -= 12;
+                            startAMPM = 'PM';
+                        };
+                        let startMinutes = `${startTime.getMinutes()}`.padStart(2, '0');
+
+                        let endHour = `${endTime.getHours()}`;
+                        if (endHour > 12) {
+                            endHour -= 12;
+                            endAMPM = 'PM';
+                        };
+                        let endMinutes = `${endTime.getMinutes()}`.padStart(2, '0');
+
+                        eventTimes = `${startHour}:${startMinutes} ${startAMPM} - ${endHour}:${endMinutes} ${endAMPM}`;
+                    } else { //Event lasts more than 1 day
+
+
+                        let startDate = startTime.toDateString();
+                        let endDate = endTime.toDateString();
+
+                        let startHour = `${startTime.getHours()}`;
+                        if (startHour > 12) {
+                            startHour -= 12;
+                            startAMPM = 'PM';
+                        };
+                        let startMinutes = `${startTime.getMinutes()}`.padStart(2, '0');
+
+                        let endHour = `${endTime.getHours()}`;
+                        if (endHour > 12) {
+                            endHour -= 12;
+                            endAMPM = 'PM';
+                        };
+                        let endMinutes = `${endTime.getMinutes()}`.padStart(2, '0');
+
+                        eventTimes = `${startDate} @ ${startHour}:${startMinutes} - ${endDate} @ ${endHour}:${endMinutes}`;
+                        
+                    }
+
+                    const roomsList = Rooms.map(room => room.Room_Name).join(', ');
+
                     return `
                         <li class="event">
                             <div>
                                 <h4 id="event-name">${Event_Title}</h4>
                             </div>
                             <div>
-                                <p id="label">Dates:</p>
-                                <p>${Event_Start_Date} - ${Event_End_Date}</p>
+                                <p id="label">Times:</p>
+                                <p>${eventTimes}</p>
                             </div>
                             <div>
                                 <p id="label">Rooms:</p>
-                                <p>${Rooms.map(room => room.Room_Name).join(', ')}</p>
+                                <p id="rooms-list">${roomsList.length ? roomsList : 'No Rooms Booked'}</p>
                             </div>
                         </li>
                     `
                 }).join('')
-                console.log(eventsListHTML)
 
                 eventsListDOM.innerHTML += eventsListHTML;
             })
             .then(() => {
                 show();
 
-                console.log('done loading');
                 doneLoading();
             })
 

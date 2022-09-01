@@ -1,12 +1,14 @@
 const calenderDOM = document.getElementById('calender');
 const dateLabel = document.getElementById('date-label');
 
-const maxEvents = 50;
+const calendarFilterDOM = document.getElementById('filter')
+
+const maxEvents = 21;
 
 const getMonth = (year, month) => {
     const date = new Date(year, month, 1);
 
-    const dates = [];
+    const datesArray = [];
 
     while (date.getMonth() === month) {
         const dateItem = {
@@ -15,11 +17,11 @@ const getMonth = (year, month) => {
             monthday: date.getDate(),
             numberOfEvents: 0
         }
-        dates.push(dateItem);
+        datesArray.push(dateItem);
         date.setDate(date.getDate() + 1);
     }
 
-    const firstDate = dates[0];
+    const firstDate = datesArray[0];
     let prevDay = new Date(new Date(firstDate.day));
 
     for (let i = 0; i < firstDate.weekday; i ++) {
@@ -31,16 +33,37 @@ const getMonth = (year, month) => {
             monthday: prevDay.getDate(),
             numberOfEvents: 0
         }
-        dates.unshift(dateItem)
+        datesArray.unshift(dateItem)
     }
-
-    return dates;
+    console.log(datesArray)
+    return datesArray;
 }
 let today = new Date();
 let currentYear = today.getFullYear();
 let currentMonth = today.getMonth();
 
 let dates = getMonth(currentYear, currentMonth)
+
+const getFilters = async () => {
+    calendarFilterDOM.innerHTML = '';
+    await getLocations()
+        .then((locations) => {
+            const locationsFilterHTML = locations.map(location => {
+                const {Location_ID, Location_Name, Move_In_Date} = location;
+                return `
+                    <option value="${Location_ID}">
+                        ${Location_Name}
+                    </option>
+                `
+            })
+            locationsFilterHTML.unshift(`
+                <option value="0">
+                    All
+                </option>
+            `)
+            calendarFilterDOM.innerHTML = locationsFilterHTML.join('');
+        })
+}
 
 function drawCalender() {
     dateLabel.innerHTML = `${toMonthName(currentMonth)} ${currentYear}`;
@@ -62,6 +85,8 @@ function drawCalender() {
         calenderHTML += dateHTML;
     }
     calenderDOM.innerHTML = calenderHTML;
+
+    getFilters();
 }
 drawCalender();
 
