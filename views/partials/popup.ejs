@@ -50,16 +50,16 @@
     };
 
         loading();
-        await getEventsList(day)
-            .then((eventsList) => {
-                // console.log(eventsList)
-                eventDateDOM.innerText = day;
-                numberOfEventsDOM.innerText = `${numberOfEvents} ${numberOfEvents > 1 ? 'Events' : 'Event'}`;
+        const eventsList = await getEventsList(day)
 
-                
+        eventDateDOM.innerText = day;
+        numberOfEventsDOM.innerText = `${numberOfEvents} ${numberOfEvents > 1 ? 'Events' : 'Event'}`;
 
-                const eventsListHTML = eventsList.map(event => {
-                    const {Event_Title, Event_Start_Date, Event_End_Date, Meeting_Instructions, Rooms} = event;
+        const getEventsListHTML = async () => {
+            return Promise.all(eventsList.map(async (event) => {
+                    const {Event_Title, Event_Start_Date, Event_End_Date, Meeting_Instructions, Rooms, Location_ID} = event;
+
+                    const location = await getLocation(Location_ID)
 
                     const startTime = new Date(Event_Start_Date);
                     const endTime = new Date(Event_End_Date);
@@ -118,21 +118,25 @@
                                 <p>${eventTimes}</p>
                             </div>
                             <div>
+                                <p>Location:</p>
+                                <p>${location.Location_Name}</p>
+                            </div>
+                            <div>
                                 <p id="label">Rooms:</p>
                                 <p id="rooms-list">${roomsList.length ? roomsList : 'No Rooms Booked'}</p>
                             </div>
                         </li>
                     `
-                }).join('')
+            }))
+        }
 
-                eventsListDOM.innerHTML += eventsListHTML;
-            })
-            .then(() => {
-                show();
+        const eventsListHTML = await getEventsListHTML();
+        
+        eventsListDOM.innerHTML += await eventsListHTML.join('');
+        // console.log(await eventsListHTML())
+        show();
 
-                doneLoading();
-            })
-
+        doneLoading();
         
     }
 </script>

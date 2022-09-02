@@ -15,6 +15,7 @@
                 <button onClick="nextMonth()"><i class="material-icons">keyboard_arrow_right</i></button>
             </div>
             <div>
+                <label for="filter">Location: </label>
                 <select name="filter" id="filter" onchange="handleFilterChange(event)">
                     <option value="test">test</option>
                 </select>
@@ -36,15 +37,27 @@
 </body>
 <script src="/scripts/calendar.js"></script>
 <script>
+    const filterDOM = document.getElementById('filter');
+
     let iteration = 0;
     let events;
+    let allEvents;
 
-    async function handleEvents(reloadEvents) {
+    async function handleEvents(reloadEvents, locationFilter) {
         loading();
 
+        const firstDayVisible = new Date(dates[0].day);
+        const lastDayVisible = new Date(dates[dates.length - 1].day)
+
+        //reset number of events
+        dates.map(date => date.numberOfEvents = 0)
         if (reloadEvents) {
-            dates.map(date => date.numberOfEvents = 0)
-            events = await getEvents('calendar');
+            allEvents = await getEvents('calendar')
+        }
+        if (locationFilter > 0) {
+            events = allEvents.filter(event => event.Location_ID == locationFilter && new Date(event.Event_Start_Date) >= firstDayVisible && new Date(event.Event_End_Date) <= lastDayVisible);
+        } else {
+            events = allEvents;
         }
 
         let latestDate = new Date('Dec 31 1960');
@@ -54,8 +67,8 @@
         //check if data date is in dates array
         //log data
 
-        for (let i = 0; i < events.length; i ++) {
-            const {Event_Start_Date, Cancelled, Location_ID} = events[i];
+        for (let i = 0; i < allEvents.length; i ++) {
+            const {Event_Start_Date, Cancelled, Location_ID} = allEvents[i];
 
             const eventDate = new Date(Event_Start_Date);
             // console.log(eventDate)
@@ -65,10 +78,11 @@
                 earliestDate = eventDate;
             }
             
-            // const datesWithEvents = dates.filter(date => date.day == eventDate.toDateString() && !Cancelled);
-            // datesWithEvents.forEach(date => {
-            //     date.numberOfEvents ++;
-            // })
+        }
+
+        for (let i = 0; i < events.length; i ++) {
+            const {Event_Start_Date, Cancelled, Location_ID} = events[i];
+            const eventDate = new Date(Event_Start_Date);
             dates.map(date => {
                 const {day} = date;
                 if (day == eventDate.toDateString() && !Cancelled) {
@@ -78,30 +92,31 @@
             })
         }
 
-        // console.log(earliestDate.toDateString(),', ', latestDate.toDateString())
-        const firstDayVisible = new Date(dates[0].day);
-        const lastDayVisible = new Date(dates[dates.length - 1].day)
-        // console.log(firstDayVisible.toDateString(),', ', lastDayVisible.toDateString())
         //if the events stored dont cover the whole month it will get new months
         if (earliestDate >= firstDayVisible) {
             // console.log('earliest date after last visible date')
             iteration ++;
-            handleEvents(true);
+            handleEvents(true, filterDOM.value);
         } else if (latestDate <= lastDayVisible && iteration > 0) {
             // console.log('latest date before first date visible')
             iteration --;
-            handleEvents(true);
+            handleEvents(true, filterDOM.value);
         } else {
             drawCalender();
             doneLoading();
         }
         
     }
-    handleEvents(true);
+    handleEvents(true, filterDOM.value);
+
+    const handleFilterChange = (e) => {
+        filterDOM.value = e.target.value;
+        handleEvents(false, e.target.value);
+    }
 
     function updateDates() {
         dates = getMonth(currentYear, currentMonth);
-        handleEvents()
+        handleEvents(false, filterDOM.value)
     }
 
     function nextMonth() {
@@ -130,7 +145,7 @@
 
         const eventsList = async () => {
             return Promise.all(daysEvents.map(async (event) => {
-            const {Event_Title, Event_Start_Date, Event_End_Date, Meeting_Instructions, Event_ID} = event;
+            const {Event_Title, Event_Start_Date, Event_End_Date, Meeting_Instructions, Event_ID, Location_ID} = event;
 
             const eventRooms = await getEventRooms(Event_ID);
 
@@ -144,7 +159,8 @@
                 Event_End_Date: Event_End_Date,
                 Meeting_Instructions: Meeting_Instructions,
                 Rooms: await rooms(),
-                Event_ID: Event_ID
+                Event_ID: Event_ID,
+                Location_ID: Location_ID
             }
             }))
         }

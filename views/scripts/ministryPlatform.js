@@ -1,7 +1,7 @@
-const getEvents = (redirect, locationFilter) => { //redirect is the url after the first / defining what page will load if request fails
+const getEvents = (redirect) => { //redirect is the url after the first / defining what page will load if request fails
     const response = axios({
         method: 'get',
-        url: `https://my.pureheart.org/ministryplatformapi/tables/events?%24orderby=Event_Start_Date%20DESC${locationFilter ? `&%24filter=Location_ID%3D${locationFilter}` : ''}${iteration > 0 ? `&%24skip=${600 * iteration}` : ''}`,
+        url: `https://my.pureheart.org/ministryplatformapi/tables/events?%24orderby=Event_Start_Date%20DESC&top=500${iteration > 0 ? `&%24skip=${300 * iteration}` : ''}`,
         headers: {
             'Accept': 'application/json',
             'Authorization': `Bearer ${access_token}`

@@ -35,7 +35,7 @@ const getMonth = (year, month) => {
         }
         datesArray.unshift(dateItem)
     }
-    console.log(datesArray)
+    // console.log(datesArray)
     return datesArray;
 }
 let today = new Date();
@@ -64,6 +64,7 @@ const getFilters = async () => {
             calendarFilterDOM.innerHTML = locationsFilterHTML.join('');
         })
 }
+getFilters();
 
 function drawCalender() {
     dateLabel.innerHTML = `${toMonthName(currentMonth)} ${currentYear}`;
@@ -86,7 +87,6 @@ function drawCalender() {
     }
     calenderDOM.innerHTML = calenderHTML;
 
-    getFilters();
 }
 drawCalender();
 
