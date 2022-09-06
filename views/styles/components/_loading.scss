@@ -12,3 +12,25 @@
     display: none;
     z-index: 999;
 }
+
+.loader {
+    /* Light grey */
+    border: 16px solid #00000022;
+    /* Blue */
+    border-top: 16px solid #2980b9;
+    border-bottom: 16px solid #2980b9;
+    border-radius: 50%;
+    width: 100px;
+    height: 100px;
+    animation: spin 1.5s linear infinite;
+}
+
+@keyframes spin {
+    0% {
+        transform: rotate(0deg);
+    }
+
+    100% {
+        transform: rotate(360deg);
+    }
+}

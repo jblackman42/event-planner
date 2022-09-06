@@ -3,8 +3,9 @@ const app = express();
 const cookieParser = require("cookie-parser");
 
 //middleware
-app.use(express.json())
-require('dotenv').config()
+app.use(express.json());
+app.use(cookieParser());
+require('dotenv').config();
 
 app.use(express.json({ limit: '16MB' }));
 app.use(express.urlencoded({ extended: true }));

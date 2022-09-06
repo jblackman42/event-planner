@@ -10,6 +10,7 @@
     gap: 2px;
 
     max-width: 1000px;
+
     .calender-day {
         width: 14%;
         min-width: 125px;
@@ -17,11 +18,12 @@
         text-align: center;
         box-sizing: border-box;
         background: lightgray;
-        
+
         position: relative;
 
         &.event {
             cursor: pointer;
+
             &:hover {
                 filter: brightness(.8);
             }
@@ -38,6 +40,7 @@
             transition: width 150ms ease-in-out;
             background-color: #e74c3c;
         }
+
         .eventsNumber {
             position: absolute;
             bottom: 5px;
@@ -52,6 +55,7 @@
 #calender-labels {
     display: flex;
     gap: 2px;
+
     p {
         width: 14%;
         text-align: center;
@@ -64,6 +68,7 @@
     justify-content: flex-start;
     align-items: center;
     padding: .5rem;
+
     button {
         height: max-content;
         aspect-ratio: 1 / 1;
@@ -77,15 +82,21 @@
         display: grid;
         place-items: center;
     }
+
     p {
         padding: 0 1rem;
         min-width: 118px;
         text-align: center;
     }
+
     div {
         display: flex;
         justify-content: flex-start;
         align-items: center;
         padding: .5rem;
+
+        select {
+            margin: 0 1rem;
+        }
     }
 }

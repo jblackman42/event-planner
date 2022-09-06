@@ -1,0 +1,54 @@
+<nav>
+    <div>
+        <h4 class="title">Event Planner</h4>
+    </div>
+
+    <div>
+        <div id="loggedIn" style="visibility: hidden; display: none;">
+            <p id="userWelcomeMsg"></p>
+            <button onclick="logout()">Logout</button>
+        </div>
+        <div id="loggedOut">
+            <a href="/login?redirect=calendar" id="loginBtn">Login</a>
+        </div>
+    </div>
+</nav>
+<script>
+    const loggedIn = document.getElementById('loggedIn')
+    const loggedOut = document.getElementById('loggedOut')
+
+    const userWelcomeMsg = document.getElementById('userWelcomeMsg')
+
+    axios({
+        method: 'get',
+        url: '/api/oauth/me',
+        params: {
+            user_id: user_id,
+            token: access_token
+        }
+    })
+        .then(response => response.data)
+        .then(data => {
+            const {user} = data;
+            const name = user.DisplayName.split(', ').reverse().join(' ')
+
+            loggedOut.style.visibility = 'hidden';
+            loggedOut.style.display = 'none';
+
+            userWelcomeMsg.innerHTML = `Welcome, ${name}`;
+            loggedIn.style.visibility = 'visible';
+            loggedIn.style.display = 'flex';
+
+            console.log(user.User_Roles)
+        })
+
+    function logout() {
+        //remove all cookies
+        document.cookie = "user_id= ; expires = Thu, 01 Jan 1970 00:00:00 GMT";
+        document.cookie = "access_token= ; expires = Thu, 01 Jan 1970 00:00:00 GMT";
+
+        window.location = '/'
+    }
+
+    
+</script>

@@ -1,0 +1,31 @@
+nav {
+    background-color: gray;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+
+    div {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+
+        .title {
+            font-size: 1.5rem;
+            padding-inline: 1rem;
+            margin: .5rem;
+        }
+
+        p {
+            margin: 0 1rem;
+        }
+
+        button {
+            padding: 0;
+            height: max-content;
+        }
+    }
+
+    #loggedIn {
+        padding-inline: 1rem;
+    }
+}

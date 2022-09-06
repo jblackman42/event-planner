@@ -7,6 +7,8 @@
     <%- include('../partials/loading'); %>
     <%- include('../partials/popup'); %>
 
+    <%- include('../partials/navbar'); %>
+
     <div id="calender-container">
         <div id="calender-controls">
             <div>
@@ -38,6 +40,8 @@
 <script src="/scripts/calendar.js"></script>
 <script>
     const filterDOM = document.getElementById('filter');
+
+    const authorized = true;
 
     let iteration = 0;
     let events;
@@ -107,7 +111,7 @@
         }
         
     }
-    handleEvents(true, filterDOM.value);
+    if (authorized) handleEvents(true, filterDOM.value);
 
     const handleFilterChange = (e) => {
         filterDOM.value = e.target.value;

@@ -66,22 +66,37 @@ router.get('/redirect', (req, res) => {
     // res.redirect(`/loading`)
 })
 
-router.get('/me', (req, res) => {
-    const token = req.cookies.id_token;
-    if (!token) return res.json({user: null})
+router.get('/me', async (req, res) => {
+    const {user_id, token} = req.query;
+    if (!user_id || !token) return res.json({user: null})
 
-    axios.post('https://my.pureheart.org/ministryplatformapi/oauth/connect/userinfo', {
+    let userInfo = axios({
+        method: 'get',
+        url: `https://my.pureheart.org/ministryplatformapi/users/${user_id}`,
         headers: {
-            Authorization: 'Bearer ' + token
+            'Accept': 'application/json',
+            'Authorization': `Bearer ${token}`
         }
     })
-        // .then(res => res.json())
-        .then(res => console.log(res.data))
-        .catch(err => {
-            console.log(err)
+        .then(response => response.data)
+
+    let user = axios({
+        method: 'get',
+        url: `https://my.pureheart.org/ministryplatformapi/tables/dp_User_Roles?%24filter=User_ID=${user_id}`,
+        headers: {
+            'Accept': 'application/json',
+            'Authorization': `Bearer ${token}`
+        }
+    })
+        .then(response => response.data)
+        .then(async data => {
+            let user = await userInfo;
+            user.User_Roles = data;
+
+            return user;
         })
-    
-    return res.status(200).json({user: true})
+
+    res.json({user: await user})
 })
 
 module.exports = router;

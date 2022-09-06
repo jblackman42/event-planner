@@ -40,7 +40,7 @@ const getRoom = (Room_ID) => {
     if (!Room_ID) return
     const response = axios({
         method: 'get',
-        url: `https://my.pureheart.org/ministryplatformapi/tables/Rooms?%24filter=Room_ID%3D${Room_ID}`,
+        url: `https://my.pureheart.org/ministryplatformapi/tables/Rooms/${Room_ID}`,
         headers: {
             'Accept': 'application/json',
             'Authorization': `Bearer ${access_token}`
@@ -73,7 +73,7 @@ const getLocation = (Location_ID) => {
     if (!Location_ID) return
     const response = axios({
         method: 'get',
-        url: `https://my.pureheart.org/ministryplatformapi/tables/Locations?%24filter=Location_ID%3D${Location_ID}`,
+        url: `https://my.pureheart.org/ministryplatformapi/tables/Locations/${Location_ID}`,
         headers: {
             'Accept': 'application/json',
             'Authorization': `Bearer ${access_token}`

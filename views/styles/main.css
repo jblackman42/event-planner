@@ -416,6 +416,9 @@ html {
   align-items: center;
   padding: 0.5rem;
 }
+#calender-controls div select {
+  margin: 0 1rem;
+}
 
 #loadingScreen {
   position: fixed;
@@ -430,6 +433,36 @@ html {
   z-index: 999;
 }
 
+.loader {
+  /* Light grey */
+  border: 16px solid rgba(0, 0, 0, 0.1333333333);
+  /* Blue */
+  border-top: 16px solid #2980b9;
+  border-bottom: 16px solid #2980b9;
+  border-radius: 50%;
+  width: 100px;
+  height: 100px;
+  -webkit-animation: spin 1.5s linear infinite;
+          animation: spin 1.5s linear infinite;
+}
+
+@-webkit-keyframes spin {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
+}
+
+@keyframes spin {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
+}
 #popup-container {
   position: fixed;
   inset: 0;
@@ -498,4 +531,33 @@ html {
 }
 #popup-container #popup #events-list .event div #rooms-list {
   text-align: right;
+}
+
+nav {
+  background-color: gray;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+nav div {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+nav div .title {
+  font-size: 1.5rem;
+  padding-inline: 1rem;
+  margin: 0.5rem;
+}
+nav div p {
+  margin: 0 1rem;
+}
+nav div button {
+  padding: 0;
+  height: -webkit-max-content;
+  height: -moz-max-content;
+  height: max-content;
+}
+nav #loggedIn {
+  padding-inline: 1rem;
 }/*# sourceMappingURL=main.css.map */

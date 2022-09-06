@@ -4,55 +4,8 @@
     <%- include('../partials/head'); %>
 </head>
 <body>
-    <div id="loggedIn" style="visibility: hidden; display: none;">
-        <p id="userWelcomeMsg"></p>
-        <button onclick="logout()">Logout</button>
-    </div>
-    <div id="loggedOut">
-        <a href="/login?redirect=calendar" id="loginBtn">Login</a>
-    </div>
+    <%- include('../partials/navbar'); %>
     <h1>Hello World</h1>
 </body>
-<script>
-    const loggedIn = document.getElementById('loggedIn')
-    const loggedOut = document.getElementById('loggedOut')
 
-    const userWelcomeMsg = document.getElementById('userWelcomeMsg')
-
-    if (user_id && access_token) {
-        axios({
-            method: 'get',
-            url: `https://my.pureheart.org/ministryplatformapi/users/${user_id}`,
-            headers: {
-                'Accept': 'application/json',
-                'Authorization': `Bearer ${access_token}`
-            }
-        })
-            .then(response => response.data)
-            .then(data => {
-                console.log(data)
-                const name = data.DisplayName.split(', ').reverse().join(' ')
-
-                loggedOut.style.visibility = 'hidden';
-                loggedOut.style.display = 'none';
-
-                userWelcomeMsg.innerHTML = `Welcome, ${name}`;
-                loggedIn.style.visibility = 'visible';
-                loggedIn.style.display = 'block';
-            })
-            .catch(err => {
-                console.error(err)
-            })
-    }
-
-    function logout() {
-        //remove all cookies
-        document.cookie = "user_id= ; expires = Thu, 01 Jan 1970 00:00:00 GMT";
-        document.cookie = "access_token= ; expires = Thu, 01 Jan 1970 00:00:00 GMT";
-
-        window.location = '/'
-    }
-
-    
-</script>
 </html>
