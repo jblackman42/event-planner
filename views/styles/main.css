@@ -468,16 +468,41 @@ html {
   position: fixed;
   inset: 0;
   background-color: rgba(0, 0, 0, 0.6666666667);
-  display: grid;
-  place-items: center;
+  display: flex;
+  justify-content: center;
+  align-items: center;
   visibility: hidden;
   display: none;
   z-index: 999;
+}
+#popup-container #next-day-btn, #popup-container #prev-day-btn {
+  height: -webkit-max-content;
+  height: -moz-max-content;
+  height: max-content;
+  display: grid;
+  place-items: center;
+  padding: 0.25rem;
+  margin: 1rem;
+  border: none;
+  background-color: white;
+  border-radius: 50%;
+  aspect-ratio: 1/1;
+  cursor: pointer;
+  -webkit-user-select: none;
+     -moz-user-select: none;
+      -ms-user-select: none;
+          user-select: none;
+}
+#popup-container #next-day-btn i, #popup-container #prev-day-btn i {
+  font-size: 2.5rem;
 }
 #popup-container #popup {
   background-color: hsl(192deg, 15%, 94%);
   padding: rem;
   width: clamp(50vw, 500px, 90vw);
+  height: -webkit-max-content;
+  height: -moz-max-content;
+  height: max-content;
 }
 #popup-container #popup .title {
   padding-inline: 1rem;

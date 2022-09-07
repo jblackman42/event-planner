@@ -1,4 +1,5 @@
 <div id="popup-container">
+    <button id="prev-day-btn" onClick="prevDay()"><i class="material-icons">keyboard_arrow_left</i></button>
     <div id="popup">
         <div class="title">
             <h1 id="event-date">August 31 2020</h1>
@@ -9,14 +10,34 @@
         <ul id="events-list">
         </ul>
     </div>
+    <button id="next-day-btn" onClick="nextDay()"><i class="material-icons">keyboard_arrow_right</i></button>
 </div>
 
 <script>
+    let currDay;
+    let currNumberOfEvents;
+    const prevDay = () => {
+        hide();
+        let yesterday = new Date(currDay);
+        yesterday.setDate(yesterday.getDate() - 1);
+
+        popup(yesterday.toDateString());
+    }
+
+    const nextDay = () => {
+        hide();
+        let tomorrow = new Date(currDay);
+        tomorrow.setDate(tomorrow.getDate() + 1);
+        currDay = tomorrow;
+
+        popup(tomorrow.toDateString())
+    }
+
     const show = () => {
         const popupContainerDOM = document.getElementById('popup-container');
         const eventsListDOM = document.getElementById('events-list');
         popupContainerDOM.style.visibility = 'visible';
-        popupContainerDOM.style.display = 'grid';
+        popupContainerDOM.style.display = 'flex';
         eventsListDOM.scrollTop = 0;
     }
     const hide = () => {
@@ -33,80 +54,103 @@
         }
     })
 
-    const popup = async (day, numberOfEvents) => { //day is in short form (Fri Aug 05 2022)
+    const popup = async (day) => { //day is in short form (Fri Aug 05 2022)
+        currDay = day;
         const popupContainerDOM = document.getElementById('popup-container');
         const popupDOM = document.getElementById('popup')
         const eventDateDOM = document.getElementById('event-date');
         const numberOfEventsDOM = document.getElementById('number-of-events');
         const eventsListDOM = document.getElementById('events-list');
 
+        const nextDayBtn =  document.getElementById('next-day-btn');
+        const prevDayBtn =  document.getElementById('prev-day-btn');
+
         document.onclick = function(e){
-        if(e.target.id == 'popup-container'){
-            hide();
-        }
-        if(e.target.id == 'popupDOM'){
-            show();
-        }
-    };
+            if(e.target.id == 'popup-container'){
+                hide();
+            }
+            if(e.target.id == 'popupDOM'){
+                show();
+            }
+        };
 
         loading();
-        const eventsList = await getEventsList(day)
+        const eventsList = await getEventsList(day);
+
+        let numberOfEvents = dates.filter((date, index) => {
+            if (date.day == day) {
+                if (index == 0) {
+                    prevDayBtn.style.visibility = 'hidden';
+                    prevDayBtn.style.none = 'none';
+                } else if (index == dates.length - 1) {
+                    nextDayBtn.style.visibility = 'hidden';
+                    nextDayBtn.style.none = 'none';
+                } else {
+                    prevDayBtn.style.visibility = 'visible';
+                    prevDayBtn.style.none = 'block';
+                    nextDayBtn.style.visibility = 'visible';
+                    nextDayBtn.style.none = 'block';
+                }
+                return true;
+            }
+        })[0].numberOfEvents;
+
 
         eventDateDOM.innerText = day;
-        numberOfEventsDOM.innerText = `${numberOfEvents} ${numberOfEvents > 1 ? 'Events' : 'Event'}`;
+        numberOfEventsDOM.innerText = `${numberOfEvents} ${numberOfEvents != 1 ? 'Events' : 'Event'}`;
+
+        if (numberOfEvents < 1) {
+            numberOfEventsDOM.innerText = 'No Events'
+            numberOfEventsDOM.style.textAlign = 'center';
+            numberOfEventsDOM.style.fontSize = '24px';
+        } else {
+            numberOfEventsDOM.style.textAlign = 'left';
+            numberOfEventsDOM.style.fontSize = '100%';
+        }
 
         const getEventsListHTML = async () => {
             return Promise.all(eventsList.map(async (event) => {
-                    const {Event_Title, Event_Start_Date, Event_End_Date, Meeting_Instructions, Rooms, Location_ID} = event;
+                    const {Event_Title, Event_Start_Date, Event_End_Date, Meeting_Instructions, Rooms, Location_ID, Minutes_for_Cleanup, Minutes_for_Setup} = event;
 
                     const location = await getLocation(Location_ID)
 
                     const startTime = new Date(Event_Start_Date);
                     const endTime = new Date(Event_End_Date);
-                    let eventTimes;
-                    let startAMPM = 'AM';
-                    let endAMPM = 'AM';
-                    if (Event_Start_Date.split('T')[0] == Event_End_Date.split('T')[0]) { //Event lasts less than 1 day
-                        let startHour = `${startTime.getHours()}`;
-                        if (startHour > 12) {
-                            startHour -= 12;
-                            startAMPM = 'PM';
-                        };
-                        let startMinutes = `${startTime.getMinutes()}`.padStart(2, '0');
 
-                        let endHour = `${endTime.getHours()}`;
-                        if (endHour > 12) {
-                            endHour -= 12;
-                            endAMPM = 'PM';
-                        };
-                        let endMinutes = `${endTime.getMinutes()}`.padStart(2, '0');
+                    let startHour = startTime.getHours();
+                    let startMinute = startTime.getMinutes();
+                    
+                    let endHour = endTime.getHours();
+                    let endMinute = endTime.getMinutes();
 
-                        eventTimes = `${startHour}:${startMinutes} ${startAMPM} - ${endHour}:${endMinutes} ${endAMPM}`;
-                    } else { //Event lasts more than 1 day
+                    //define whole event time before calculating for setup and cleanup
+                    let eventTimes = `${toTimeFormat(startHour, startMinute)} - ${toTimeFormat(endHour, endMinute)}`;
 
+                    let setupHours = Math.floor(Minutes_for_Setup / 60);
+                    let setupMinutes = Minutes_for_Setup - (setupHours * 60);
+                    let cleanupHours = Math.floor(Minutes_for_Cleanup / 60);
+                    let cleanupMinutes = Minutes_for_Cleanup - (cleanupHours * 60);
 
-                        let startDate = startTime.toDateString();
-                        let endDate = endTime.toDateString();
-
-                        let startHour = `${startTime.getHours()}`;
-                        if (startHour > 12) {
-                            startHour -= 12;
-                            startAMPM = 'PM';
-                        };
-                        let startMinutes = `${startTime.getMinutes()}`.padStart(2, '0');
-
-                        let endHour = `${endTime.getHours()}`;
-                        if (endHour > 12) {
-                            endHour -= 12;
-                            endAMPM = 'PM';
-                        };
-                        let endMinutes = `${endTime.getMinutes()}`.padStart(2, '0');
-
-                        eventTimes = `${startDate} @ ${startHour}:${startMinutes} - ${endDate} @ ${endHour}:${endMinutes}`;
-                        
+                    //if subtracting setuphours goes before 0 restart from 24
+                    startHour - setupHours > 0 ? startHour -= setupHours : 24 + startHour - setupHours;
+                    if (setupMinutes > 0) {
+                        if (startMinute - setupMinutes < 0) startHour --;
+                        startMinute - setupMinutes < 0 ? startMinute -= -60 + setupMinutes : startMinute -= setupMinutes;
                     }
 
-                    const roomsList = Rooms.map(room => room.Room_Name).join(', ');
+                    endHour + cleanupHours < 24 ? endHour += cleanupHours : 0 - endHour + cleanupHours;
+                    if (cleanupMinutes > 0) {
+                        if (endMinute + cleanupMinutes > 60) startHour ++;
+                        endMinute + cleanupMinutes > 60 ? endMinute += 60 - cleanupMinutes : endMinute += cleanupMinutes;
+                    }
+
+                    const eventStartTime = toTimeFormat(startHour, startMinute);
+                    const eventEndTime = toTimeFormat(endHour, endMinute);
+
+                    let reservedTimes = `${toTimeFormat(startHour, startMinute)} - ${toTimeFormat(endHour, endMinute)}`;
+
+                    const allRoomsList = Rooms.map(room => room.Room_Name);
+                    const roomsList = [...new Set(allRoomsList)].join(', ')
 
                     return `
                         <li class="event">
@@ -114,7 +158,11 @@
                                 <h4 id="event-name">${Event_Title}</h4>
                             </div>
                             <div>
-                                <p id="label">Times:</p>
+                                <p id="label">Reserved Time:</p>
+                                <p>${reservedTimes}</p>
+                            </div>
+                            <div>
+                                <p id="label">Event Time:</p>
                                 <p>${eventTimes}</p>
                             </div>
                             <div>
@@ -133,10 +181,18 @@
         const eventsListHTML = await getEventsListHTML();
         
         eventsListDOM.innerHTML += await eventsListHTML.join('');
-        // console.log(await eventsListHTML())
         show();
 
         doneLoading();
         
+    }
+
+    const toTimeFormat = (hours, minutes) => {
+        let AMorPM = 'AM';
+        if (hours > 12) {
+            hours -= 12;
+            AMorPM = 'PM';
+        }
+        return `${hours}:${minutes.toString().padStart(2, '0')} ${AMorPM}`;
     }
 </script>

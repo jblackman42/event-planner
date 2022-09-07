@@ -13,7 +13,7 @@
 	const idToken = query.split('access_token=')[1].split('&')[0];
 	// const sessionState = query.split('session_state=')[1].split('&')[0];
 	// const expTime = window.location.href.substring(1).split('&')[2].split('=')[1];
-	const expTime = 3600;
+	const expTime = 30;
 
 	setCookie('id_token', idToken, expTime);
 	setCookie('session_state', idToken, expTime);

@@ -63,10 +63,39 @@
         events = allEvents;
         // console.log(events)
 
-        console.log(calendarFilterDOM.value)
-        console.log(buildingFilterDOM.value)
-        console.log(roomFilterDOM.value)
+        // console.log(calendarFilterDOM.value)
+        // console.log(buildingFilterDOM.value)
+        // console.log(roomFilterDOM.value)
 
+        if (calendarFilterDOM.value > 0) {
+            events = allEvents.filter(event => event.Location_ID == calendarFilterDOM.value)
+        }
+
+        if (buildingFilterDOM.value > 0 && roomFilterDOM.value > 0) {
+            console.log('room filter')
+            for (let i = 0; i < events.length; i ++) { //loop through all events
+                const {Event_ID} = events[i];
+                const roomIDs = await getEventRoomIDs(Event_ID); //get array of Room_IDs
+                if (!roomIDs.filter(roomID => roomID == roomFilterDOM.value).length) {
+                    events.splice(i, 1);
+                    i --;
+                }
+            }
+        } else if (buildingFilterDOM.value > 0) {
+            console.log('building filter')
+            const currentBuilding = roomsList.filter(building => building.Building_ID == buildingFilterDOM.value)[0];
+            const currentBuildingRooms = currentBuilding.rooms.map(room => room.Room_ID);
+            console.log(currentBuildingRooms)
+
+            for (let i = 0; i < events.length; i ++) { //loop through all events
+                const {Event_ID} = events[i];
+                const roomIDs = await getEventRoomIDs(Event_ID); //get array of Room_IDs
+                if (!roomIDs.filter(roomID => currentBuildingRooms.includes(roomID)).length) {
+                    events.splice(i, 1);
+                    i --;
+                }
+            }
+        }
         
         //loop through all data
         //check if data date is in dates array
@@ -91,13 +120,13 @@
         // const rooms = events.map(async (event, index) => {
         //     return await getEventRooms(event.Event_ID)
         // })
-        const getRooms = async() => {
-            return Promise.all(events.map(async event => {
-                return await getEventRooms(event.Event_ID)
-            }))
-        }
-        const rooms = await getRooms();
-        console.log(rooms)
+        // const getRooms = async() => {
+        //     return Promise.all(events.map(async event => {
+        //         return await getEventRooms(event.Event_ID)
+        //     }))
+        // }
+        // const rooms = await getRooms();
+        // console.log(rooms)
     }
     handleEvents(calendarFilterDOM.value);
 
@@ -152,23 +181,25 @@
 
         const eventsList = async () => {
             return Promise.all(daysEvents.map(async (event) => {
-            const {Event_Title, Event_Start_Date, Event_End_Date, Meeting_Instructions, Event_ID, Location_ID} = event;
+                const {Event_Title, Event_Start_Date, Event_End_Date, Meeting_Instructions, Event_ID, Location_ID, Minutes_for_Cleanup, Minutes_for_Setup} = event;
 
-            const eventRooms = await getEventRooms(Event_ID);
+                const eventRooms = await getEventRooms(Event_ID);
 
-            const rooms = async () => {
-                return Promise.all(eventRooms.map((eventRoom) => getRoom(eventRoom.Room_ID)))
-            }
+                const rooms = async () => {
+                    return Promise.all(eventRooms.map((eventRoom) => getRoom(eventRoom.Room_ID)))
+                }
 
-            return {
-                Event_Title: Event_Title,
-                Event_Start_Date: Event_Start_Date,
-                Event_End_Date: Event_End_Date,
-                Meeting_Instructions: Meeting_Instructions,
-                Rooms: await rooms(),
-                Event_ID: Event_ID,
-                Location_ID: Location_ID
-            }
+                return {
+                    Event_Title: Event_Title,
+                    Event_Start_Date: Event_Start_Date,
+                    Event_End_Date: Event_End_Date,
+                    Meeting_Instructions: Meeting_Instructions,
+                    Rooms: await rooms(),
+                    Event_ID: Event_ID,
+                    Location_ID: Location_ID,
+                    Minutes_for_Setup: Minutes_for_Setup,
+                    Minutes_for_Cleanup: Minutes_for_Cleanup
+                }
             }))
         }
         return await eventsList()

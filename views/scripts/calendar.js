@@ -10,6 +10,33 @@ const maxEvents = 21;
 let allEvents;
 let events;
 
+let locationDetails = [];
+
+let locationsList = [];
+let buildingsList = [];
+let roomsList = [];
+const getLocationDetails = async () => {
+    locationsList = await getLocations();
+
+    for (let i = 0; i < locationsList.length; i ++) {
+        buildingsList.push({
+            Location_ID: locationsList[i].Location_ID,
+            buildings: await getLocationBuildings(locationsList[i].Location_ID)
+        })
+    }
+    for (let i = 0; i < buildingsList.length; i ++) {
+        for (let j = 0; j < buildingsList[i].buildings.length; j ++) {
+            roomsList.push({
+                Building_ID: buildingsList[i].buildings[j].Building_ID,
+                rooms: await getBuildingRooms(buildingsList[i].buildings[j].Building_ID)
+            })
+        }
+    }
+    console.log(buildingsList)
+    console.log(roomsList)
+}
+getLocationDetails();
+
 const getMonth = (year, month) => {
     const date = new Date(year, month, 1);
 
@@ -124,7 +151,7 @@ function drawCalendar() {
         const eventFull = Math.floor((date.numberOfEvents / maxEvents) * 100);
 
         let dateHTML = `
-            <div class='calender-day ${date.numberOfEvents >= 1 ? 'event' : ''}' onClick='popup("${date.day}", ${date.numberOfEvents})'>
+            <div class='calender-day ${date.numberOfEvents >= 1 ? 'event' : ''}' ${date.numberOfEvents > 0 ? `onClick='popup("${date.day}", ${date.numberOfEvents})'` : ''}>
                 <p>${date.monthday}</p>
                 ${date.numberOfEvents > 0 ? `<p class='eventsNumber'>${date.numberOfEvents} ${date.numberOfEvents > 1 ? 'Events' : 'Event'}</p>` : ''}
                 <div class="progressBar" style="width: ${eventFull}%"></div>

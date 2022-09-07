@@ -13,11 +13,11 @@ const getEvents = (currentMonth, currentYear, redirect, LocationFilter) => { //r
     .then(response => response.data)
     .catch(err => {
         console.error(err)
-        // if (!redirect) {
-        //     window.location = '/login'
-        // } else {
-        //     window.location = `/login?redirect=${redirect}`
-        // }
+        if (!redirect) {
+            window.location = '/login'
+        } else {
+            window.location = `/login?redirect=${redirect}`
+        }
     })
     return response;
 }
@@ -33,6 +33,23 @@ const getEventRooms = (Event_ID) => {
         }
     })
     .then(response => response.data)
+    .catch(err => {
+        console.error(err)
+    })
+    return response;
+}
+
+const getEventRoomIDs = (Event_ID) => {
+    if (!Event_ID) return
+    const response = axios({
+        method: 'get',
+        url: `https://my.pureheart.org/ministryplatformapi/tables/Event_Rooms?%24filter=Event_ID%3D${Event_ID}&%24select=Room_ID`,
+        headers: {
+            'Accept': 'application/json',
+            'Authorization': `Bearer ${access_token}`
+        }
+    })
+    .then(response => response.data.map(room => room.Room_ID))
     .catch(err => {
         console.error(err)
     })

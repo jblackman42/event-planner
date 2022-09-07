@@ -71,33 +71,38 @@ router.get('/me', async (req, res) => {
     const {user_id, token} = req.query;
     if (!user_id || !token) return res.json({user: null})
 
-    let userInfo = axios({
-        method: 'get',
-        url: `https://my.pureheart.org/ministryplatformapi/users/${user_id}`,
-        headers: {
-            'Accept': 'application/json',
-            'Authorization': `Bearer ${token}`
-        }
-    })
-        .then(response => response.data)
-
-    let user = axios({
-        method: 'get',
-        url: `https://my.pureheart.org/ministryplatformapi/tables/dp_User_Roles?%24filter=User_ID=${user_id}`,
-        headers: {
-            'Accept': 'application/json',
-            'Authorization': `Bearer ${token}`
-        }
-    })
-        .then(response => response.data)
-        .then(async data => {
-            let user = await userInfo;
-            user.User_Roles = data;
-
-            return user;
+    try {
+        let userInfo = axios({
+            method: 'get',
+            url: `https://my.pureheart.org/ministryplatformapi/users/${user_id}`,
+            headers: {
+                'Accept': 'application/json',
+                'Authorization': `Bearer ${token}`
+            }
         })
+            .then(response => response.data)
 
-    res.json({user: await user})
+        let user = axios({
+            method: 'get',
+            url: `https://my.pureheart.org/ministryplatformapi/tables/dp_User_Roles?%24filter=User_ID=${user_id}`,
+            headers: {
+                'Accept': 'application/json',
+                'Authorization': `Bearer ${token}`
+            }
+        })
+            .then(response => response.data)
+            .then(async data => {
+                let user = await userInfo;
+                user.User_Roles = data;
+
+                return user;
+            })
+
+        res.json({user: await user})
+    }
+    catch {
+        res.render('pages/login', {error: "Session Expired"})
+    }
 })
 
 module.exports = router;
