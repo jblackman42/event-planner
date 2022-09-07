@@ -2,8 +2,13 @@ const calenderDOM = document.getElementById('calender');
 const dateLabel = document.getElementById('date-label');
 
 const calendarFilterDOM = document.getElementById('filter')
+const buildingFilterDOM = document.getElementById('building-filter');
+const roomFilterDOM = document.getElementById('room-filter');
 
 const maxEvents = 21;
+
+let allEvents;
+let events;
 
 const getMonth = (year, month) => {
     const date = new Date(year, month, 1);
@@ -20,7 +25,7 @@ const getMonth = (year, month) => {
         datesArray.push(dateItem);
         date.setDate(date.getDate() + 1);
     }
-
+    
     const firstDate = datesArray[0];
     let prevDay = new Date(new Date(firstDate.day));
 
@@ -66,7 +71,49 @@ const getFilters = async () => {
 }
 getFilters();
 
-function drawCalender() {
+const getBuildingFilters = async (Location_ID) => {
+    buildingFilterDOM.innerHTML = '';
+    await getLocationBuildings(Location_ID)
+        .then(buildings => {
+            const buildingFilterHTML = buildings.map(building => {
+                const {Building_ID, Building_Name} = building;
+                return `
+                    <option value="${Building_ID}">
+                        ${Building_Name}
+                    </option>
+                `
+            })
+            buildingFilterHTML.unshift(`
+                <option value="0">
+                    All
+                </option>
+            `)
+            buildingFilterDOM.innerHTML = buildingFilterHTML.join('')
+        })
+}
+
+const getRoomFilters = async (Building_ID) => {
+    roomFilterDOM.innerHTML = '';
+    await getBuildingRooms(Building_ID)
+        .then(rooms => {
+            const roomFilterHTML = rooms.map(room => {
+                const {Room_ID, Room_Name} = room;
+                return `
+                    <option value="${Room_ID}">
+                        ${Room_Name}
+                    </option>
+                `
+            })
+            roomFilterHTML.unshift(`
+                <option value="0">
+                    All
+                </option>
+            `)
+            roomFilterDOM.innerHTML = roomFilterHTML.join('')
+        })
+}
+
+function drawCalendar() {
     dateLabel.innerHTML = `${toMonthName(currentMonth)} ${currentYear}`;
 
     let calenderHTML = '';
@@ -88,7 +135,7 @@ function drawCalender() {
     calenderDOM.innerHTML = calenderHTML;
 
 }
-drawCalender();
+drawCalendar();
 
 function getEventsFromDay(day) {
     // const daySimplified = day.toDateString();

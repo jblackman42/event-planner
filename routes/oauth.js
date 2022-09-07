@@ -52,7 +52,8 @@ router.post('/login', async (req, res) => {
                     })
             } else {
                 console.log('no access token')
-                res.send({success: false, error: 'invalid credentials'})
+                // res.send({success: false, error: 'invalid credentials'})
+                res.render('pages/login', {error: 'invalid credentials'})
             }
         })
         .catch(err => {

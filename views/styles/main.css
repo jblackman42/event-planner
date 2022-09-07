@@ -381,6 +381,7 @@ html {
 }
 #calender-labels p {
   width: 14%;
+  max-width: 140px;
   text-align: center;
   text-transform: uppercase;
 }
@@ -560,4 +561,101 @@ nav div button {
 }
 nav #loggedIn {
   padding-inline: 1rem;
+}
+
+#loginForm,
+#signUpForm {
+  background-color: #181818;
+  color: white;
+}
+#loginForm h1,
+#signUpForm h1 {
+  text-align: center;
+}
+#loginForm .inputs,
+#signUpForm .inputs {
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  border-radius: 0.25rem;
+}
+#loginForm .inputs input,
+#signUpForm .inputs input {
+  border: none;
+  outline: none;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.1333333333);
+  padding: 0.75rem 1rem;
+}
+#loginForm .inputs input:last-of-type,
+#signUpForm .inputs input:last-of-type {
+  border: none;
+}
+#loginForm .login,
+#loginForm .signIn,
+#signUpForm .login,
+#signUpForm .signIn {
+  color: currentColor;
+  background-color: #7B2D26;
+  border: none;
+  width: 100%;
+  padding: 0.75rem;
+  margin: 1rem 0;
+  border-radius: 0.25rem;
+  cursor: pointer;
+}
+#loginForm .login:hover, #loginForm .login:focus-within,
+#loginForm .signIn:hover,
+#loginForm .signIn:focus-within,
+#signUpForm .login:hover,
+#signUpForm .login:focus-within,
+#signUpForm .signIn:hover,
+#signUpForm .signIn:focus-within {
+  background-color: #611f19;
+}
+#loginForm .form-error,
+#signUpForm .form-error {
+  color: #e74c3c;
+  text-align: center;
+  text-decoration: underline;
+  margin: 0;
+}
+
+#loginForm,
+#signUpForm {
+  width: clamp(30vw, 25rem, 90vw);
+  font-size: clamp(1.25rem, 2.5vw, 1.5rem);
+  padding: 5rem 3rem;
+  box-sizing: border-box;
+  border-radius: 0.75rem;
+  box-shadow: rgba(17, 12, 46, 0.15) 0px 48px 100px 0px;
+}
+@media screen and (max-width: 380px) {
+  #loginForm,
+#signUpForm {
+    padding-inline: 1rem;
+  }
+}
+#loginForm .loginOption,
+#signUpForm .loginOption {
+  background-color: transparent;
+  color: currentColor;
+  width: 100%;
+  border: none;
+  padding: 0;
+  margin: 0;
+  cursor: pointer;
+}
+#loginForm .loginOption:hover, #loginForm .loginOption.focus-within,
+#signUpForm .loginOption:hover,
+#signUpForm .loginOption.focus-within {
+  text-decoration: underline;
+}
+#loginForm .loginOption a,
+#signUpForm .loginOption a {
+  color: currentColor;
+  text-decoration: none;
+}
+#loginForm .loginOption a:active,
+#signUpForm .loginOption a:active {
+  filter: brightness(0.6);
 }/*# sourceMappingURL=main.css.map */

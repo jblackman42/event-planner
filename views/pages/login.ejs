@@ -3,19 +3,23 @@
 <head>
     <%- include('../partials/head'); %>
 </head>
-<body>
-    <h1>Hello World</h1>
-    <form id="loginForm">
-        <label for="username">Username:</label>
-        <input type="text" name="username" id="username"><br />
-        <label for="username">Password:</label>
-        <input type="password" name="password" id="password"><br />
-        <input type="submit">
-    </form>
-    <% if (error) { %>
-        <h2><%= error %></h2>
-    <% } %>
-</body>
+<body class="container">
+
+    <div class="forms-container">
+        <form id="loginForm">
+            <h1>Sign In</h1>
+            <div class="inputs">
+                <input type="text" name="username" id="username" autocomplete="on" placeholder="Username" required>
+                <input type="password" name="password" id="password" autocomplete="on" placeholder="Password" required>
+            </div>
+    
+            <button type="submit" class="login">Sign In</button>
+            
+            <p class="form-error"><%- error %></p>
+        </form>
+    </div>
+      
+    </body>
 <script>
     const urlParams = new URLSearchParams(window.location.search);
     const redirect = urlParams.get('redirect');
@@ -45,7 +49,7 @@
                 if (data.success) {
                     window.location = redirectURL;
                 } else {
-                    console.log(data.error)
+                    document.querySelector('.form-error').innerHTML = data.error;
                 }
             })
     })

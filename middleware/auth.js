@@ -21,16 +21,18 @@ const ensureAuthenticated = async (req,res,next) => {
     return await user
         .then(user => {
             if (!user) {
-                // res.render('pages/login', {error: null});
-                return
+                return;
             }
 
             const {User_Roles} = user;
+            const requiredRoles = [19]
 
-            console.log(User_Roles)
+            // console.log(User_Roles)
             //somewhere here i will verify the user has the correct roles
+            
 
-            if (user) return next();
+            if (User_Roles.filter(role => requiredRoles.includes(role.Role_ID)).length >= 1) return next();
+            return res.render('pages/login', {error: "insufficient rights"})
         })
   }
   

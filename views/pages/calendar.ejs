@@ -19,9 +19,22 @@
             <div>
                 <label for="filter">Location: </label>
                 <select name="filter" id="filter" onchange="handleFilterChange(event)">
-                    <option value="test">test</option>
+                    <option value="0">All</option>
                 </select>
             </div>
+            <div>
+                <label for="building-filter">Building:</label>
+                <select name="building-filter" id="building-filter" onchange="handleBuildingFilterChange(event)">
+                    <option value="0">All</option>
+                </select>
+            </div>
+            <div>
+                <label for="room-filter">Room:</label>
+                <select name="room-filter" id="room-filter">
+                    <option value="0">All</option>
+                </select>
+            </div>
+            <button onclick="handleEvents()">Submit</button>
         </div>
 
         <div id="calender-labels">
@@ -39,50 +52,25 @@
 </body>
 <script src="/scripts/calendar.js"></script>
 <script>
-    const filterDOM = document.getElementById('filter');
 
-    const authorized = true;
-
-    let iteration = 0;
-    let events;
-    let allEvents;
-
-    async function handleEvents(reloadEvents, locationFilter) {
+    async function handleEvents() {
         loading();
-
-        const firstDayVisible = new Date(dates[0].day);
-        const lastDayVisible = new Date(dates[dates.length - 1].day)
 
         //reset number of events
         dates.map(date => date.numberOfEvents = 0)
-        if (reloadEvents) {
-            allEvents = await getEvents('calendar')
-        }
-        if (locationFilter > 0) {
-            events = allEvents.filter(event => event.Location_ID == locationFilter && new Date(event.Event_Start_Date) >= firstDayVisible && new Date(event.Event_End_Date) <= lastDayVisible);
-        } else {
-            events = allEvents;
-        }
 
-        let latestDate = new Date('Dec 31 1960');
-        let earliestDate = new Date('Jan 1 3000');
+        allEvents = await getEvents(currentMonth, currentYear, 'calendar')
+        events = allEvents;
+        // console.log(events)
+
+        console.log(calendarFilterDOM.value)
+        console.log(buildingFilterDOM.value)
+        console.log(roomFilterDOM.value)
+
         
         //loop through all data
         //check if data date is in dates array
         //log data
-
-        for (let i = 0; i < allEvents.length; i ++) {
-            const {Event_Start_Date, Cancelled, Location_ID} = allEvents[i];
-
-            const eventDate = new Date(Event_Start_Date);
-            // console.log(eventDate)
-            if (eventDate > latestDate) {
-                latestDate = eventDate;
-            } else if (eventDate < earliestDate) {
-                earliestDate = eventDate;
-            }
-            
-        }
 
         for (let i = 0; i < events.length; i ++) {
             const {Event_Start_Date, Cancelled, Location_ID} = events[i];
@@ -95,32 +83,47 @@
                 return date;
             })
         }
-
-        //if the events stored dont cover the whole month it will get new months
-        if (earliestDate >= firstDayVisible) {
-            // console.log('earliest date after last visible date')
-            iteration ++;
-            handleEvents(true, filterDOM.value);
-        } else if (latestDate <= lastDayVisible && iteration > 0) {
-            // console.log('latest date before first date visible')
-            iteration --;
-            handleEvents(true, filterDOM.value);
-        } else {
-            drawCalender();
-            doneLoading();
-        }
         
-    }
-    if (authorized) handleEvents(true, filterDOM.value);
+        doneLoading();
+        drawCalendar();
 
-    const handleFilterChange = (e) => {
-        filterDOM.value = e.target.value;
-        handleEvents(false, e.target.value);
+        //background loading to do while calendar is loaded
+        // const rooms = events.map(async (event, index) => {
+        //     return await getEventRooms(event.Event_ID)
+        // })
+        const getRooms = async() => {
+            return Promise.all(events.map(async event => {
+                return await getEventRooms(event.Event_ID)
+            }))
+        }
+        const rooms = await getRooms();
+        console.log(rooms)
+    }
+    handleEvents(calendarFilterDOM.value);
+
+    const handleFilterChange = async (e) => {
+        const filterValue = e.target.value;
+
+        if (filterValue > 0) {
+            getBuildingFilters(filterValue)
+        };
+
+        return filterValue;
+    }
+
+    const handleBuildingFilterChange = async (e) => {
+        const filterValue = e.target.value;
+
+        if (filterValue > 0) {
+            getRoomFilters(filterValue)
+        };
+
+        return e.target.value;
     }
 
     function updateDates() {
         dates = getMonth(currentYear, currentMonth);
-        handleEvents(false, filterDOM.value)
+        handleEvents(calendarFilterDOM.value)
     }
 
     function nextMonth() {
