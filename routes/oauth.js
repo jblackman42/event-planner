@@ -71,8 +71,9 @@ router.get('/me', async (req, res) => {
     const {user_id, token} = req.query;
     if (!user_id || !token) return res.json({user: null})
 
+
     try {
-        let userInfo = axios({
+        axios({
             method: 'get',
             url: `https://my.pureheart.org/ministryplatformapi/users/${user_id}`,
             headers: {
@@ -81,8 +82,22 @@ router.get('/me', async (req, res) => {
             }
         })
             .then(response => response.data)
+            .then(data => res.json({user: data}))
+            .catch(err => {
+                res.json({user: null})
+            })
+    }
+    catch {
+        res.json({user: null})
+    }
+})
 
-        let user = axios({
+router.get('/me/roles', async (req, res) => {
+    const {user_id, token} = req.query;
+    if (!user_id || !token) return res.json({user: null})
+
+    try {
+        axios({
             method: 'get',
             url: `https://my.pureheart.org/ministryplatformapi/tables/dp_User_Roles?%24filter=User_ID=${user_id}`,
             headers: {
@@ -91,17 +106,12 @@ router.get('/me', async (req, res) => {
             }
         })
             .then(response => response.data)
-            .then(async data => {
-                let user = await userInfo;
-                user.User_Roles = data;
-
-                return user;
+            .then(data => res.json({userRoles: data}))
+            .catch(err => {
+                res.json({user: null})
             })
-
-        res.json({user: await user})
-    }
-    catch {
-        res.render('pages/login', {error: "Session Expired"})
+    } catch {
+        res.json({userRoles: null})
     }
 })
 

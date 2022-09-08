@@ -30,6 +30,7 @@
         .then(response => response.data)
         .then(data => {
             const {user} = data;
+            console.log(data)
             const name = user.DisplayName.split(', ').reverse().join(' ')
 
             loggedOut.style.visibility = 'hidden';
@@ -40,6 +41,19 @@
             loggedIn.style.display = 'flex';
 
             // console.log(user.User_Roles)
+        })
+
+    axios({
+        method: 'get',
+        url: '/api/oauth/me/roles',
+        params: {
+            user_id: user_id,
+            token: access_token
+        }
+    })
+        .then(response => response.data)
+        .then(data => {
+            console.log(data)
         })
 
     function logout() {

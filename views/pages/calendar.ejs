@@ -6,35 +6,38 @@
 <body>
     <%- include('../partials/loading'); %>
     <%- include('../partials/popup'); %>
+    <%- include('../partials/datePicker'); %>
 
     <%- include('../partials/navbar'); %>
 
     <div id="calender-container">
         <div id="calender-controls">
-            <div>
+            <div class="date-selector">
                 <button onClick="prevMonth()"><i class="material-icons">keyboard_arrow_left</i></button>
                 <p id="date-label"></p>
                 <button onClick="nextMonth()"><i class="material-icons">keyboard_arrow_right</i></button>
             </div>
-            <div>
-                <label for="filter">Location: </label>
-                <select name="filter" id="filter" onchange="handleFilterChange(event)">
-                    <option value="0">All</option>
-                </select>
+            <div class="filter-controls">
+                <div>
+                    <label for="filter">Location: </label>
+                    <select name="filter" id="filter" onchange="handleFilterChange(event)">
+                        <option value="0">All</option>
+                    </select>
+                </div>
+                <div>
+                    <label for="building-filter">Building:</label>
+                    <select name="building-filter" id="building-filter" onchange="handleBuildingFilterChange(event)">
+                        <option value="0">All</option>
+                    </select>
+                </div>
+                <div>
+                    <label for="room-filter">Room:</label>
+                    <select name="room-filter" id="room-filter">
+                        <option value="0">All</option>
+                    </select>
+                </div>
+                <button onclick="handleEvents()">Submit</button>
             </div>
-            <div>
-                <label for="building-filter">Building:</label>
-                <select name="building-filter" id="building-filter" onchange="handleBuildingFilterChange(event)">
-                    <option value="0">All</option>
-                </select>
-            </div>
-            <div>
-                <label for="room-filter">Room:</label>
-                <select name="room-filter" id="room-filter">
-                    <option value="0">All</option>
-                </select>
-            </div>
-            <button onclick="handleEvents()">Submit</button>
         </div>
 
         <div id="calender-labels">
@@ -55,6 +58,7 @@
 
     async function handleEvents() {
         loading();
+        const percentCompleteDOM = document.getElementById('percent-complete');
 
         //reset number of events
         dates.map(date => date.numberOfEvents = 0)
@@ -73,23 +77,40 @@
 
         if (buildingFilterDOM.value > 0 && roomFilterDOM.value > 0) {
             console.log('room filter')
+            let numOfEvents = events.length;
+            let counter = 0;
             for (let i = 0; i < events.length; i ++) { //loop through all events
+                const percentComplete = `${Math.floor((counter / numOfEvents) * 100)}%`;
+                percentCompleteDOM.innerText = percentComplete;
+                counter ++;
+
                 const {Event_ID} = events[i];
                 const roomIDs = await getEventRoomIDs(Event_ID); //get array of Room_IDs
+                
                 if (!roomIDs.filter(roomID => roomID == roomFilterDOM.value).length) {
                     events.splice(i, 1);
                     i --;
                 }
+
             }
         } else if (buildingFilterDOM.value > 0) {
             console.log('building filter')
+
+            let numOfEvents = events.length;
+            let counter = 0;
+
             const currentBuilding = roomsList.filter(building => building.Building_ID == buildingFilterDOM.value)[0];
             const currentBuildingRooms = currentBuilding.rooms.map(room => room.Room_ID);
-            console.log(currentBuildingRooms)
+            // console.log(currentBuildingRooms)
 
             for (let i = 0; i < events.length; i ++) { //loop through all events
                 const {Event_ID} = events[i];
                 const roomIDs = await getEventRoomIDs(Event_ID); //get array of Room_IDs
+
+                const percentComplete = `${Math.ceil((counter / numOfEvents) * 100)}%`;
+                percentCompleteDOM.innerText = percentComplete;
+                counter ++;
+
                 if (!roomIDs.filter(roomID => currentBuildingRooms.includes(roomID)).length) {
                     events.splice(i, 1);
                     i --;
@@ -113,29 +134,17 @@
             })
         }
         
+        percentCompleteDOM.innerText = '';
         doneLoading();
         drawCalendar();
-
-        //background loading to do while calendar is loaded
-        // const rooms = events.map(async (event, index) => {
-        //     return await getEventRooms(event.Event_ID)
-        // })
-        // const getRooms = async() => {
-        //     return Promise.all(events.map(async event => {
-        //         return await getEventRooms(event.Event_ID)
-        //     }))
-        // }
-        // const rooms = await getRooms();
-        // console.log(rooms)
     }
-    handleEvents(calendarFilterDOM.value);
+    handleEvents();
 
     const handleFilterChange = async (e) => {
         const filterValue = e.target.value;
 
-        if (filterValue > 0) {
-            getBuildingFilters(filterValue)
-        };
+        getBuildingFilters(filterValue)
+        if (filterValue == 0) getRoomFilters(filterValue)
 
         return filterValue;
     }
@@ -143,16 +152,14 @@
     const handleBuildingFilterChange = async (e) => {
         const filterValue = e.target.value;
 
-        if (filterValue > 0) {
-            getRoomFilters(filterValue)
-        };
+        getRoomFilters(filterValue)
 
         return e.target.value;
     }
 
     function updateDates() {
         dates = getMonth(currentYear, currentMonth);
-        handleEvents(calendarFilterDOM.value)
+        handleEvents()
     }
 
     function nextMonth() {

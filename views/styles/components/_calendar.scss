@@ -12,7 +12,8 @@
     max-width: 1000px;
 
     .calender-day {
-        width: 14%;
+        //dont judge me it works
+        width: 14.11562489%;
         min-width: 125px;
         aspect-ratio: 1 / 1;
         text-align: center;
@@ -21,11 +22,15 @@
 
         position: relative;
 
+        // &.inactive {
+        //     opacity: .75;
+        // }
+
         &.event {
             cursor: pointer;
 
             &:hover {
-                filter: brightness(.8);
+                filter: brightness(.9);
             }
         }
 
@@ -34,11 +39,18 @@
             bottom: 0;
             left: 0;
             height: 5px;
-            width: 0;
-            max-width: 100%;
+            animation-name: event-progress;
+            animation-duration: 1s;
+            animation-delay: .2s;
+            animation-fill-mode: forwards;
 
-            transition: width 150ms ease-in-out;
+            border-top-right-radius: 2.5px;
+            border-bottom-right-radius: 2.5px;
             background-color: #e74c3c;
+        }
+        @keyframes event-progress {
+            from {width: 0px;}
+            to {width: 140px;}
         }
 
         .eventsNumber {
@@ -57,8 +69,9 @@
     gap: 2px;
 
     p {
-        width: 14%;
-        max-width: 140px;
+        //dont judge me it works
+        width: 14.11562489%;
+        max-width: 141px;
         text-align: center;
         text-transform: uppercase;
     }
@@ -66,8 +79,7 @@
 
 #calender-controls {
     display: flex;
-    justify-content: flex-start;
-    align-items: center;
+    flex-direction: column;
     padding: .5rem;
 
     button {
@@ -88,16 +100,56 @@
         padding: 0 1rem;
         min-width: 118px;
         text-align: center;
+        cursor: pointer;
+        &:hover {
+            text-decoration: underline;
+        }
     }
 
-    div {
+    .date-selector {
         display: flex;
-        justify-content: flex-start;
         align-items: center;
-        padding: .5rem;
-
-        select {
-            margin: 0 1rem;
+        justify-content: center;
+        font-size: 150%;
+        p {
+            margin: 1rem 0;
         }
+    }
+    .filter-controls {
+        display: flex;
+        align-items: center;
+        gap: 1.5rem;
+        flex-wrap: wrap;
+        max-width: 1000px;
+
+        /* CSS */
+        button {
+            background-color: #13aa52;
+            border: 1px solid #13aa52;
+            border-radius: 4px;
+            box-shadow: rgba(0, 0, 0, .1) 0 2px 4px 0;
+            box-sizing: border-box;
+            color: #fff;
+            cursor: pointer;
+            font-size: 16px;
+            font-weight: 400;
+            padding: 10px 25px;
+            text-align: center;
+            transform: translateY(0);
+            transition: transform 150ms, box-shadow 150ms;
+            user-select: none;
+            aspect-ratio: auto;
+            margin-left: auto;
+            &:hover {
+                box-shadow: rgba(0, 0, 0, .15) 0 3px 9px 0;
+                transform: translateY(-2px);
+            }
+        
+            @media (min-width: 768px) {
+                padding: 10px 30px;
+            }
+        }
+
+        
     }
 }

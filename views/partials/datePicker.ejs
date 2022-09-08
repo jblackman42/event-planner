@@ -1,0 +1,101 @@
+<div id="date-picker-container">
+    <div id="date-picker">
+        <div class="pickers">
+            <div class="month-picker"></div>
+            <div class="year-picker"></div>
+        </div>
+        <div class="date-picker-footer">
+            <button onclick="handleSubmit()">Submit</button>
+        </div>
+    </div>
+</div>
+
+<script>
+    const datePickerContainer = document.querySelector('#date-picker-container');
+    const showDatePicker = () => {
+        datePickerContainer.style.visibility = 'visible';
+        datePickerContainer.style.display = 'grid';
+    }
+    const hideDatePicker = () => {
+        datePickerContainer.style.visibility = 'hidden';
+        datePickerContainer.style.display = 'none';
+    }
+
+    document.addEventListener('keydown', (e) => {
+        if (e.key == "Escape") {
+            hideDatePicker();
+        } else if (e.key == "Enter") {
+            handleSubmit();
+        }
+    })
+
+    document.onclick = function(e){
+        if(e.target.id == 'date-picker-container'){
+            hideDatePicker();
+        }
+        if(e.target.id == 'date-picker'){
+            showDatePicker();
+        }
+    };
+
+    const datePicker = (currYear, currMonth) => {
+        showDatePicker();
+
+        const monthPickerDOM = document.querySelector('.month-picker');
+        const yearPickerDOM = document.querySelector('.year-picker');
+
+
+        const months = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
+
+        const monthChoicesHTML = months.map((month, i) => {
+            return `
+                <div class="choice">
+                    <input type="radio" name="month" id="${month}" value="${i}" ${currMonth == i ? 'checked' : ''}>
+                    <label class="label" for="${month}">${month}</label>
+                </div>
+            `
+        }).join('')
+
+        monthPickerDOM.innerHTML = monthChoicesHTML;
+
+        const choiceHeight = document.querySelector('.choice').clientHeight;
+        monthPickerDOM.scroll({top: currMonth * choiceHeight})
+
+        const yearChoicesHTML = [...new Array(50)].map((val, i) => {
+            const year = 1998 + i;
+            return `
+                <div class="choice">
+                    <input type="radio" name="year" id="${year}" value="${year}" ${currYear == year ? 'checked' : ''}>
+                    <label class="label" for="${year}">${year}</label>
+                </div>
+            `
+        }).join('')
+
+        yearPickerDOM.innerHTML = yearChoicesHTML;
+
+        yearPickerDOM.scroll({top: (currYear - 1998) * choiceHeight})
+
+    }
+    const handleSubmit = () => {
+        const monthRadios = document.getElementsByName('month');
+        const yearRadios = document.getElementsByName('year');
+
+        for (let month of monthRadios) {
+            if (month.checked) {
+                console.log(month.value)
+                currentMonth = parseInt(month.value);
+            }
+        }
+        for (let year of yearRadios) {
+            if (year.checked) {
+                console.log(year.value)
+                currentYear = parseInt(year.value);
+            }
+        }
+
+        dates = getMonth(currentYear, currentMonth);
+        handleEvents()
+
+        hideDatePicker();
+    }
+</script>

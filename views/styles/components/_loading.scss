@@ -8,9 +8,16 @@
     display: grid;
     place-items: center;
 
-    visibility: hidden;
-    display: none;
+    // visibility: hidden;
+    // display: none;
     z-index: 999;
+    h3 {
+        position: absolute;
+        left: 50%;
+        top: 50%;
+        transform: translate(-50%, -50%);
+        margin: 0;
+    }
 }
 
 .loader {

@@ -1,0 +1,84 @@
+#date-picker-container {
+    position: fixed;
+    inset: 0;
+    background-color: #000000AA;
+    color: white;
+    font-size: clamp(1rem, 6vw, 2rem);
+
+    display: grid;
+    place-items: center;
+
+    visibility: hidden;
+    display: none;
+    z-index: 999;
+}
+
+.date-picker-footer {
+    background-color: white;
+    padding: .5rem;
+    display: flex;
+    justify-content: flex-end;
+    button {
+        font-size: 1.5rem;
+    }
+}
+
+.pickers {
+    display: flex;
+    background-color: white;
+    color: black;
+    border-block: 5px solid #000000AA;
+
+    .month-picker, .year-picker {
+        display: flex;
+        flex-direction: column;
+        max-height: 400px;
+        overflow-y: auto;
+        /* width */
+        &::-webkit-scrollbar {
+            width: 5px;
+        }
+        
+        /* Track */
+        &::-webkit-scrollbar-track {
+                box-shadow: inset 0 0 3px #95a5a6;
+        }
+        
+        /* Handle */
+        &::-webkit-scrollbar-thumb {
+            background: #3498db; 
+            border-radius: 5px;
+        }
+        
+        /* Handle on hover */
+        &::-webkit-scrollbar-thumb:hover {
+            background: #2980b9; 
+        }
+    }
+
+    .choice {
+        height: max-content;
+        display: flex;
+        justify-content: flex-start;
+        margin-inline: .5rem;
+        input[type="radio"] {
+            display: none;
+            visibility: hidden;
+        }
+        label {
+            user-select: none;
+            font-size: 1.75rem;
+            height: 35px;
+            width: 100%;
+            display: flex;
+            align-items: center;
+            padding: 0 .25rem;
+            cursor: pointer;
+        }
+    }
+
+    input[type="radio"]:checked ~ label {
+        background-color: #3498db;
+        color: white;
+    }
+}

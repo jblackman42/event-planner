@@ -32,13 +32,12 @@ const getLocationDetails = async () => {
             })
         }
     }
-    console.log(buildingsList)
-    console.log(roomsList)
 }
 getLocationDetails();
 
 const getMonth = (year, month) => {
     const date = new Date(year, month, 1);
+    console.log(year, month)
 
     const datesArray = [];
 
@@ -47,7 +46,8 @@ const getMonth = (year, month) => {
             day: new Date(date).toDateString(),
             weekday: date.getDay(),
             monthday: date.getDate(),
-            numberOfEvents: 0
+            numberOfEvents: 0,
+            active: true
         }
         datesArray.push(dateItem);
         date.setDate(date.getDate() + 1);
@@ -63,7 +63,8 @@ const getMonth = (year, month) => {
             day: prevDay.toDateString(),
             weekday: prevDay.getDay(),
             monthday: prevDay.getDate(),
-            numberOfEvents: 0
+            numberOfEvents: 0,
+            active: false
         }
         datesArray.unshift(dateItem)
     }
@@ -142,6 +143,7 @@ const getRoomFilters = async (Building_ID) => {
 
 function drawCalendar() {
     dateLabel.innerHTML = `${toMonthName(currentMonth)} ${currentYear}`;
+    dateLabel.onclick = () => datePicker(currentYear, currentMonth)
 
     let calenderHTML = '';
 
@@ -151,10 +153,10 @@ function drawCalendar() {
         const eventFull = Math.floor((date.numberOfEvents / maxEvents) * 100);
 
         let dateHTML = `
-            <div class='calender-day ${date.numberOfEvents >= 1 ? 'event' : ''}' ${date.numberOfEvents > 0 ? `onClick='popup("${date.day}", ${date.numberOfEvents})'` : ''}>
+            <div class='calender-day ${date.numberOfEvents >= 1 ? 'event' : ''} ${!date.active ? 'inactive' : ''}' ${date.numberOfEvents > 0 ? `onClick='popup("${date.day}", ${date.numberOfEvents})'` : ''}>
                 <p>${date.monthday}</p>
                 ${date.numberOfEvents > 0 ? `<p class='eventsNumber'>${date.numberOfEvents} ${date.numberOfEvents > 1 ? 'Events' : 'Event'}</p>` : ''}
-                <div class="progressBar" style="width: ${eventFull}%"></div>
+                <div class="progressBar" style="max-width: ${eventFull}%"></div>
             </div>
         `
         calenderHTML += dateHTML;

@@ -2,37 +2,29 @@ const { default: axios } = require("axios");
 
 const ensureAuthenticated = async (req,res,next) => {
     const {user_id, access_token} = req.cookies;
-    if (!user_id || !access_token) res.render('pages/login', {error: null})
-
-    const user = axios({
+    if (!user_id || !access_token) return res.render('pages/login', {error: null})
+    
+    return axios({
         method: 'get',
-        url: 'http://localhost:3000/api/oauth/me',
+        url: `${process.env.DOMAIN_NAME}/api/oauth/me/roles`,
         params: {
             user_id: user_id,
             token: access_token
         }
     })
-        .then(response => response.data.user)
-        .catch(err => {
-            console.error(err)
-            res.render('pages/login', {error: null})
-        })
-    
-    return await user
-        .then(user => {
-            if (!user) {
-                return;
-            }
+        .then(response => response.data)
+        .then(data => {
+            const {userRoles} = data;
+            const requiredRoles = [19]//array of roles that will allow user to log in
 
-            const {User_Roles} = user;
-            const requiredRoles = [19]
-
-            // console.log(User_Roles)
-            //somewhere here i will verify the user has the correct roles
+            if (!userRoles) return res.render('pages/login', {error: "Session Expired"});
             
-
-            if (User_Roles.filter(role => requiredRoles.includes(role.Role_ID)).length >= 1) return next();
-            return res.render('pages/login', {error: "insufficient rights"})
+            if (userRoles.filter(role => requiredRoles.includes(role.Role_ID)).length > 0) next();
+            else res.render('pages/login', {error: "Insufficient Roles"})
+        })
+        .catch(err => {
+            console.log(err)
+            res.render('pages/login', {error: "Session Expired"})
         })
   }
   
