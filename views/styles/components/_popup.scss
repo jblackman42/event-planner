@@ -1,7 +1,13 @@
+$popup-bg: $primary-bg-color;
+$popup-borer-bg: $secondary-bg-color;
+$popup-text: $primary-font-color;
+$arrow-button-bg: $arrow-button-color;
+
 #popup-container {
     position: fixed;
     inset: 0;
     background-color: #000000AA;
+    color: $popup-text;
 
     display: flex;
     justify-content: center;
@@ -11,48 +17,44 @@
     visibility: hidden;
     display: none;
     z-index: 999;
-    #next-day-btn, #prev-day-btn {
+
+    #next-day-btn,
+    #prev-day-btn {
         height: max-content;
         display: grid;
         place-items: center;
         padding: .25rem;
         margin: 1rem;
         border: none;
-        background-color: white;
+        background-color: $arrow-button-bg;
+        color: $popup-text;
         border-radius: 50%;
         aspect-ratio: 1 / 1;
         cursor: pointer;
         user-select: none;
+
         i {
             font-size: 2.5rem;
         }
     }
+
     #popup {
-        background-color: $backgroundColor;
-        padding: rem;
+        background-color: $popup-bg;
         width: clamp(50vw, 500px, 90vw);
         height: max-content;
 
         .title {
             padding-inline: 1rem;
-            border-bottom: 5px solid #000000AA;
+            border-bottom: 5px solid $popup-borer-bg;
             position: relative;
+
             h1 {
-              margin: 0;
-              padding: .5em 0;  
+                margin: 0;
+                padding: .5em 0;
             }
-            #close-button {
-                position: absolute;
-                top: 0;
-                right: 0;
-                display: grid;
-                place-items: center;
-                border: none;
-                padding: .5rem;
-                cursor: pointer;
-                i {
-                    font-size: 2rem;
-                }
+
+            .close-button {
+                color: $popup-text;
             }
         }
 
@@ -63,26 +65,33 @@
 
             max-height: 60vh;
             overflow-y: auto;
+
             .event {
                 display: flex;
                 flex-direction: column;
                 padding: 1rem;
-                border-bottom: 2px solid #00000066;
+                border-bottom: 2px solid $popup-borer-bg;
+
                 &:last-of-type {
                     border: none;
                 }
+
                 div {
                     display: flex;
                     justify-content: space-between;
+
                     p {
                         margin: .5rem;
                     }
+
                     #label {
                         margin-right: 1rem;
                     }
+
                     #event-name {
                         margin: .25rem auto;
                     }
+
                     #rooms-list {
                         text-align: right;
                     }

@@ -1,11 +1,12 @@
 <div id="date-picker-container">
     <div id="date-picker">
+        <div class="date-picker-header">
+            <button class="btn" onclick="handleSubmit()">Submit</button>
+            <button class="close-button" onclick="hideDatePicker()"><i class="material-icons">close</i></button>
+        </div>
         <div class="pickers">
             <div class="month-picker"></div>
             <div class="year-picker"></div>
-        </div>
-        <div class="date-picker-footer">
-            <button onclick="handleSubmit()">Submit</button>
         </div>
     </div>
 </div>

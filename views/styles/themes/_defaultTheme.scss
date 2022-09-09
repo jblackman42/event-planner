@@ -1,34 +1,25 @@
-$backgroundColor: hsl(192, 15%, 94%);
+$backgroundColor: hsl(200, 4%, 14%);
 
-$font-color-light: #f1f2f6;
-$font-color-dark: #17161d;
-$font-color-darkblue: hsl(210, 29%, 25%);
+$primary-font-color: #f1f2f6;
+$secondary-font-color: #17161d;
 
-$clr-light-0: hsl(192, 15%, 94%);
-$clr-light-1: hsl(192, 15%, 89%);
-$clr-light-2: hsl(192, 15%, 84%);
-$clr-light-3: hsl(192, 15%, 79%);
-$clr-light-4: hsl(192, 15%, 74%);
-$clr-light-5: hsl(192, 15%, 69%);
+$primary-bg-color: hsl(0, 1%, 21%);
+$secondary-bg-color: hsl(0, 1%, 36%);
 
-$clr-primary-0: hsl(249, 14%, 10%);
-$clr-primary-1: hsl(235, 15%, 14%);
-$clr-primary-2: hsl(210, 29%, 24%);
-$clr-primary-3: hsl(210, 29%, 29%);
-$clr-primary-4: hsl(210, 29%, 34%);
+$red-accent-color: #e74c3c;
+$blue-accent-color: #3498db;
+$blue-accent-color2: #2980b9;
+$arrow-button-color: gray;
 
-$clr-accent-0: hsl(357, 75.3%, 47.6%);
-$clr-accent-1: hsl(357, 75.3%, 42.6%);
-$clr-accent-2: hsl(357, 75.3%, 37.6%);
+// $backgroundColor: white;
 
-$clr-dark-transparent-0: rgba(0, 0, 0, 0.1);
-$clr-dark-transparent: rgba(0, 0, 0, 0.2);
-$clr-dark-transparent-2: rgba(0, 0, 0, 0.5);
-$clr-light-transparent-0: rgba(255, 255, 255, 0.1);
-$clr-light-transparent: rgba(255, 255, 255, 0.2);
-$clr-light-transparent-2: rgba(255, 255, 255, 0.5);
+// $primary-font-color: #17161d;
+// $secondary-font-color: #f1f2f6;
 
-$clr-darkblue-0: hsl(210, 29%, 10%);
-$clr-darkblue-1: hsl(210, 29%, 15%);
-$clr-darkblue-2: hsl(210, 29%, 20%);
-$clr-darkblue-3: hsl(210, 29%, 25%);
+// $primary-bg-color: lightgray;
+// $secondary-bg-color: gray;
+
+// $red-accent-color: #e74c3c;
+// $blue-accent-color: #3498db;
+// $blue-accent-color2: #2980b9;
+// $arrow-button-color: gray;

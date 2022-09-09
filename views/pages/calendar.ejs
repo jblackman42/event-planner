@@ -18,36 +18,37 @@
                 <button onClick="nextMonth()"><i class="material-icons">keyboard_arrow_right</i></button>
             </div>
             <div class="filter-controls">
-                <div>
+                <div class="filter-box">
                     <label for="filter">Location: </label>
                     <select name="filter" id="filter" onchange="handleFilterChange(event)">
                         <option value="0">All</option>
                     </select>
                 </div>
-                <div>
+                <div class="filter-box">
                     <label for="building-filter">Building:</label>
                     <select name="building-filter" id="building-filter" onchange="handleBuildingFilterChange(event)">
                         <option value="0">All</option>
                     </select>
                 </div>
-                <div>
+                <div class="filter-box">
                     <label for="room-filter">Room:</label>
                     <select name="room-filter" id="room-filter">
                         <option value="0">All</option>
                     </select>
                 </div>
-                <button onclick="handleEvents()">Submit</button>
+                <button class="btn" onclick="handleEvents()">Submit</button>
             </div>
         </div>
 
         <div id="calender-labels">
-            <p>sunday</p>
-            <p>monday</p>
-            <p>tuesday</p>
-            <p>wednesday</p>
-            <p>thursday</p>
-            <p>friday</p>
-            <p>saturday</p>
+            
+            <p>s<span>unday</span></p>
+            <p>m<span>onday</span></p>
+            <p>t<span>uesday</span></p>
+            <p>w<span>ednesday</span></p>
+            <p>t<span>hursday</span></p>
+            <p>f<span>riday</span></p>
+            <p>s<span>aturday</span></p>
         </div>
         
         <div id="calender"></div>
@@ -65,7 +66,7 @@
 
         allEvents = await getEvents(currentMonth, currentYear, 'calendar')
         events = allEvents;
-        // console.log(events)
+        console.log(events.length)
 
         // console.log(calendarFilterDOM.value)
         // console.log(buildingFilterDOM.value)
@@ -75,10 +76,12 @@
             events = allEvents.filter(event => event.Location_ID == calendarFilterDOM.value)
         }
 
+        console.log(events.length)
         if (buildingFilterDOM.value > 0 && roomFilterDOM.value > 0) {
             console.log('room filter')
             let numOfEvents = events.length;
             let counter = 0;
+            console.log(numOfEvents)
             for (let i = 0; i < events.length; i ++) { //loop through all events
                 const percentComplete = `${Math.floor((counter / numOfEvents) * 100)}%`;
                 percentCompleteDOM.innerText = percentComplete;

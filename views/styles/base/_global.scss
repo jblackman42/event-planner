@@ -15,3 +15,107 @@ html {
 	justify-content: center;
 	align-items: center;
 }
+
+.btn {
+	background-color: #13aa52 !important;
+	border: 1px solid #13aa52 !important;
+	border-radius: 4px !important;
+	box-shadow: rgba(0, 0, 0, .1) 0 2px 4px 0;
+	box-sizing: border-box;
+	color: #fff;
+	cursor: pointer;
+	font-size: 16px !important;
+	font-weight: 400 !important;
+	padding: 4px 15px !important;
+	text-align: center;
+	transform: translateY(0);
+	transition: transform 150ms, box-shadow 150ms;
+	user-select: none;
+	aspect-ratio: auto !important;
+	margin-left: auto;
+
+	&:hover {
+		box-shadow: rgba(0, 0, 0, .15) 0 3px 9px 0;
+		transform: translateY(-2px);
+	}
+
+	@media (min-width: 768px) {
+		padding: 10px 30px;
+	}
+}
+
+.close-button {
+	position: absolute;
+	top: 0;
+	right: 0;
+	display: grid;
+	place-items: center;
+	border: none;
+	padding: .5rem;
+	background-color: transparent;
+	cursor: pointer;
+
+	i {
+		font-size: 2rem;
+	}
+}
+
+$filter-background: $primary-bg-color;
+$filter-text: $primary-font-color;
+$filter-dropdown-background: $secondary-bg-color;
+
+.filter-box {
+	position: relative;
+
+	select {
+		background-color: $filter-background;
+		color: $filter-text;
+		padding: 4px 35px 4px 8px;
+		border: none;
+		box-shadow: 0 5px 25px rgba(0, 0, 0, 0.2);
+		border-radius: 5px;
+		appearance: button;
+		outline: none;
+		-webkit-appearance: button;
+		-webkit-border-radius: 2px;
+		-webkit-box-shadow: 0px 1px 3px rgba(0, 0, 0, 0.1);
+		-webkit-user-select: none;
+		font-size: inherit;
+		margin: 0;
+		// overflow: hidden;
+		// text-overflow: ellipsis;
+		// white-space: nowrap;
+
+		option {
+			border: none;
+			outline: none;
+		}
+	}
+
+
+	&::before {
+		content: "\f107";
+		font-family: FontAwesome;
+		position: absolute;
+		top: 0;
+		right: 0;
+		width: 20%;
+		max-width: 50px;
+		min-width: 30px;
+		height: 100%;
+		text-align: center;
+		font-size: 20px;
+		display: grid;
+		place-items: center;
+		color: currentColor;
+		background-color: $filter-dropdown-background;
+		pointer-events: none;
+		border-top-right-radius: 2px;
+		border-bottom-right-radius: 2px;
+	}
+
+	&:focus::before {
+		content: "\f106";
+	}
+
+}

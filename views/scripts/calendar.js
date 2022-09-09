@@ -64,10 +64,27 @@ const getMonth = (year, month) => {
             weekday: prevDay.getDay(),
             monthday: prevDay.getDate(),
             numberOfEvents: 0,
-            active: false
+            active: true
         }
         datesArray.unshift(dateItem)
     }
+
+    const lastDate = datesArray[datesArray.length - 1]
+    let nextDate = new Date(new Date(lastDate.day));
+
+    for (let i = 0; i < (6 - lastDate.weekday); i ++) {
+        nextDate.setDate(nextDate.getDate()+1);
+
+        const dateItem = {
+            day: nextDate.toDateString(),
+            weekday: nextDate.getDay(),
+            monthday: nextDate.getDate(),
+            numberOfEvents: 0,
+            active: false
+        }
+        datesArray.push(dateItem)
+    }
+
     // console.log(datesArray)
     return datesArray;
 }

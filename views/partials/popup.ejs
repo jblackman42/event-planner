@@ -4,7 +4,7 @@
         <div class="title">
             <h1 id="event-date">August 31 2020</h1>
             <p id="number-of-events">1 Event</p>
-            <button id="close-button" onclick="hide()"><i class="material-icons">close</i></button>
+            <button class="close-button" onclick="hide()"><i class="material-icons">close</i></button>
         </div>
         
         <ul id="events-list">
@@ -82,7 +82,7 @@
                 if (index == 0) {
                     prevDayBtn.style.visibility = 'hidden';
                     prevDayBtn.style.none = 'none';
-                } else if (index == dates.length - 1) {
+                } else if (!dates[index + 1].active) {
                     nextDayBtn.style.visibility = 'hidden';
                     nextDayBtn.style.none = 'none';
                 } else {

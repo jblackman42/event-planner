@@ -313,7 +313,7 @@ template {
 
 body,
 html {
-  background-color: hsl(192deg, 15%, 94%);
+  background-color: hsl(200deg, 4%, 14%);
   font-family: "Roboto", "sans-serif";
   min-height: 100vh;
   width: 100%;
@@ -327,34 +327,132 @@ html {
   align-items: center;
 }
 
+.btn {
+  background-color: #13aa52 !important;
+  border: 1px solid #13aa52 !important;
+  border-radius: 4px !important;
+  box-shadow: rgba(0, 0, 0, 0.1) 0 2px 4px 0;
+  box-sizing: border-box;
+  color: #fff;
+  cursor: pointer;
+  font-size: 16px !important;
+  font-weight: 400 !important;
+  padding: 4px 15px !important;
+  text-align: center;
+  transform: translateY(0);
+  transition: transform 150ms, box-shadow 150ms;
+  -webkit-user-select: none;
+     -moz-user-select: none;
+      -ms-user-select: none;
+          user-select: none;
+  aspect-ratio: auto !important;
+  margin-left: auto;
+}
+.btn:hover {
+  box-shadow: rgba(0, 0, 0, 0.15) 0 3px 9px 0;
+  transform: translateY(-2px);
+}
+@media (min-width: 768px) {
+  .btn {
+    padding: 10px 30px;
+  }
+}
+
+.close-button {
+  position: absolute;
+  top: 0;
+  right: 0;
+  display: grid;
+  place-items: center;
+  border: none;
+  padding: 0.5rem;
+  background-color: transparent;
+  cursor: pointer;
+}
+.close-button i {
+  font-size: 2rem;
+}
+
+.filter-box {
+  position: relative;
+}
+.filter-box select {
+  background-color: hsl(0deg, 1%, 21%);
+  color: #f1f2f6;
+  padding: 4px 35px 4px 8px;
+  border: none;
+  box-shadow: 0 5px 25px rgba(0, 0, 0, 0.2);
+  border-radius: 5px;
+  -moz-appearance: button;
+       appearance: button;
+  outline: none;
+  -webkit-appearance: button;
+  -webkit-border-radius: 2px;
+  -webkit-box-shadow: 0px 1px 3px rgba(0, 0, 0, 0.1);
+  -webkit-user-select: none;
+  font-size: inherit;
+  margin: 0;
+}
+.filter-box select option {
+  border: none;
+  outline: none;
+}
+.filter-box::before {
+  content: "\f107";
+  font-family: FontAwesome;
+  position: absolute;
+  top: 0;
+  right: 0;
+  width: 20%;
+  max-width: 50px;
+  min-width: 30px;
+  height: 100%;
+  text-align: center;
+  font-size: 20px;
+  display: grid;
+  place-items: center;
+  color: currentColor;
+  background-color: hsl(0deg, 1%, 36%);
+  pointer-events: none;
+  border-top-right-radius: 2px;
+  border-bottom-right-radius: 2px;
+}
+.filter-box:focus::before {
+  content: "\f106";
+}
+
 #calender-container {
-  width: -webkit-max-content;
-  width: -moz-max-content;
-  width: max-content;
   margin-inline: auto;
+  width: 1000px;
+  max-width: 80vw;
 }
 
 #calender {
   display: flex;
-  justify-content: flex-start;
+  justify-content: center;
   flex-wrap: wrap;
   gap: 2px;
-  max-width: 1000px;
+  width: 100%;
 }
 #calender .calender-day {
-  width: 14.11562489%;
-  min-width: 125px;
+  width: 13.5%;
   aspect-ratio: 1/1;
   text-align: center;
   box-sizing: border-box;
-  background: lightgray;
+  background-color: hsl(0deg, 1%, 21%);
+  color: #f1f2f6;
+  border-radius: 2.5px;
+  overflow: hidden;
   position: relative;
+}
+#calender .calender-day.inactive {
+  visibility: hidden;
 }
 #calender .calender-day.event {
   cursor: pointer;
 }
 #calender .calender-day.event:hover {
-  filter: brightness(0.9);
+  background-color: hsl(0deg, 1%, 36%);
 }
 #calender .calender-day .progressBar {
   position: absolute;
@@ -393,26 +491,42 @@ html {
   position: absolute;
   bottom: 5px;
   text-align: left;
-  color: gray;
+  color: #f1f2f6;
   margin: 0.25rem;
   font-size: 85%;
 }
 
 #calender-labels {
   display: flex;
-  gap: 2px;
+  justify-content: center;
+  color: #f1f2f6;
 }
 #calender-labels p {
-  width: 14.11562489%;
-  max-width: 141px;
+  width: 13.5%;
+  font-size: clamp(0.75rem, 1.5vw, 1.25rem);
   text-align: center;
   text-transform: uppercase;
+  margin: 0.5rem 0;
+  margin-right: 2px;
+}
+#calender-labels p:last-of-type {
+  margin-right: 0;
+}
+@media screen and (max-width: 768px) {
+  #calender-labels p {
+    font-size: 1rem;
+  }
+  #calender-labels span {
+    display: none;
+    visibility: hidden;
+  }
 }
 
 #calender-controls {
   display: flex;
   flex-direction: column;
   padding: 0.5rem;
+  color: #f1f2f6;
 }
 #calender-controls button {
   height: -webkit-max-content;
@@ -421,7 +535,7 @@ html {
   aspect-ratio: 1/1;
   padding: 0;
   background-color: gray;
-  color: white;
+  color: #f1f2f6;
   outline: none;
   border: none;
   border-radius: 50%;
@@ -452,37 +566,7 @@ html {
   gap: 1.5rem;
   flex-wrap: wrap;
   max-width: 1000px;
-  /* CSS */
-}
-#calender-controls .filter-controls button {
-  background-color: #13aa52;
-  border: 1px solid #13aa52;
-  border-radius: 4px;
-  box-shadow: rgba(0, 0, 0, 0.1) 0 2px 4px 0;
-  box-sizing: border-box;
-  color: #fff;
-  cursor: pointer;
-  font-size: 16px;
-  font-weight: 400;
-  padding: 10px 25px;
-  text-align: center;
-  transform: translateY(0);
-  transition: transform 150ms, box-shadow 150ms;
-  -webkit-user-select: none;
-     -moz-user-select: none;
-      -ms-user-select: none;
-          user-select: none;
-  aspect-ratio: auto;
-  margin-left: auto;
-}
-#calender-controls .filter-controls button:hover {
-  box-shadow: rgba(0, 0, 0, 0.15) 0 3px 9px 0;
-  transform: translateY(-2px);
-}
-@media (min-width: 768px) {
-  #calender-controls .filter-controls button {
-    padding: 10px 30px;
-  }
+  margin-inline: 14px;
 }
 
 #loadingScreen {
@@ -507,13 +591,13 @@ html {
   /* Light grey */
   border: 16px solid rgba(0, 0, 0, 0.1333333333);
   /* Blue */
-  border-top: 16px solid #2980b9;
-  border-bottom: 16px solid #2980b9;
+  border-right: 16px solid #2980b9;
+  border-left: 16px solid #2980b9;
   border-radius: 50%;
   width: 100px;
   height: 100px;
-  -webkit-animation: spin 1.5s linear infinite;
-          animation: spin 1.5s linear infinite;
+  -webkit-animation: spin 1s linear infinite;
+          animation: spin 1s linear infinite;
 }
 
 @-webkit-keyframes spin {
@@ -537,6 +621,7 @@ html {
   position: fixed;
   inset: 0;
   background-color: rgba(0, 0, 0, 0.6666666667);
+  color: #f1f2f6;
   display: flex;
   justify-content: center;
   align-items: center;
@@ -544,7 +629,8 @@ html {
   display: none;
   z-index: 999;
 }
-#popup-container #next-day-btn, #popup-container #prev-day-btn {
+#popup-container #next-day-btn,
+#popup-container #prev-day-btn {
   height: -webkit-max-content;
   height: -moz-max-content;
   height: max-content;
@@ -553,7 +639,8 @@ html {
   padding: 0.25rem;
   margin: 1rem;
   border: none;
-  background-color: white;
+  background-color: gray;
+  color: #f1f2f6;
   border-radius: 50%;
   aspect-ratio: 1/1;
   cursor: pointer;
@@ -562,12 +649,12 @@ html {
       -ms-user-select: none;
           user-select: none;
 }
-#popup-container #next-day-btn i, #popup-container #prev-day-btn i {
+#popup-container #next-day-btn i,
+#popup-container #prev-day-btn i {
   font-size: 2.5rem;
 }
 #popup-container #popup {
-  background-color: hsl(192deg, 15%, 94%);
-  padding: rem;
+  background-color: hsl(0deg, 1%, 21%);
   width: clamp(50vw, 500px, 90vw);
   height: -webkit-max-content;
   height: -moz-max-content;
@@ -575,25 +662,15 @@ html {
 }
 #popup-container #popup .title {
   padding-inline: 1rem;
-  border-bottom: 5px solid rgba(0, 0, 0, 0.6666666667);
+  border-bottom: 5px solid hsl(0deg, 1%, 36%);
   position: relative;
 }
 #popup-container #popup .title h1 {
   margin: 0;
   padding: 0.5em 0;
 }
-#popup-container #popup .title #close-button {
-  position: absolute;
-  top: 0;
-  right: 0;
-  display: grid;
-  place-items: center;
-  border: none;
-  padding: 0.5rem;
-  cursor: pointer;
-}
-#popup-container #popup .title #close-button i {
-  font-size: 2rem;
+#popup-container #popup .title .close-button {
+  color: #f1f2f6;
 }
 #popup-container #popup #events-list {
   list-style: none;
@@ -606,7 +683,7 @@ html {
   display: flex;
   flex-direction: column;
   padding: 1rem;
-  border-bottom: 2px solid rgba(0, 0, 0, 0.4);
+  border-bottom: 2px solid hsl(0deg, 1%, 36%);
 }
 #popup-container #popup #events-list .event:last-of-type {
   border: none;
@@ -661,7 +738,7 @@ nav #loggedIn {
   position: fixed;
   inset: 0;
   background-color: rgba(0, 0, 0, 0.6666666667);
-  color: white;
+  color: #f1f2f6;
   font-size: clamp(1rem, 6vw, 2rem);
   display: grid;
   place-items: center;
@@ -670,23 +747,30 @@ nav #loggedIn {
   z-index: 999;
 }
 
-.date-picker-footer {
-  background-color: white;
+#date-picker {
+  position: relative;
+}
+
+.date-picker-header {
+  background-color: hsl(0deg, 1%, 21%);
   padding: 0.5rem;
   display: flex;
-  justify-content: flex-end;
+  justify-content: space-between;
 }
-.date-picker-footer button {
+.date-picker-header button {
   font-size: 1.5rem;
+  margin: 0 !important;
+  background-color: transparent;
 }
 
 .pickers {
   display: flex;
-  background-color: white;
-  color: black;
+  background-color: hsl(0deg, 1%, 21%);
+  color: #f1f2f6;
   border-block: 5px solid rgba(0, 0, 0, 0.6666666667);
 }
-.pickers .month-picker, .pickers .year-picker {
+.pickers .month-picker,
+.pickers .year-picker {
   display: flex;
   flex-direction: column;
   max-height: 400px;
@@ -696,17 +780,21 @@ nav #loggedIn {
   /* Handle */
   /* Handle on hover */
 }
-.pickers .month-picker::-webkit-scrollbar, .pickers .year-picker::-webkit-scrollbar {
+.pickers .month-picker::-webkit-scrollbar,
+.pickers .year-picker::-webkit-scrollbar {
   width: 5px;
 }
-.pickers .month-picker::-webkit-scrollbar-track, .pickers .year-picker::-webkit-scrollbar-track {
+.pickers .month-picker::-webkit-scrollbar-track,
+.pickers .year-picker::-webkit-scrollbar-track {
   box-shadow: inset 0 0 3px #95a5a6;
 }
-.pickers .month-picker::-webkit-scrollbar-thumb, .pickers .year-picker::-webkit-scrollbar-thumb {
+.pickers .month-picker::-webkit-scrollbar-thumb,
+.pickers .year-picker::-webkit-scrollbar-thumb {
   background: #3498db;
   border-radius: 5px;
 }
-.pickers .month-picker::-webkit-scrollbar-thumb:hover, .pickers .year-picker::-webkit-scrollbar-thumb:hover {
+.pickers .month-picker::-webkit-scrollbar-thumb:hover,
+.pickers .year-picker::-webkit-scrollbar-thumb:hover {
   background: #2980b9;
 }
 .pickers .choice {

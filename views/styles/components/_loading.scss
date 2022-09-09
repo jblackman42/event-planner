@@ -11,6 +11,7 @@
     // visibility: hidden;
     // display: none;
     z-index: 999;
+
     h3 {
         position: absolute;
         left: 50%;
@@ -18,18 +19,25 @@
         transform: translate(-50%, -50%);
         margin: 0;
     }
+
+    // #percent-complete {
+    //     display: none;
+    //     visibility: hidden;
+    // }
 }
+
+$spinner-time: 1s;
 
 .loader {
     /* Light grey */
     border: 16px solid #00000022;
     /* Blue */
-    border-top: 16px solid #2980b9;
-    border-bottom: 16px solid #2980b9;
+    border-right: 16px solid #2980b9;
+    border-left: 16px solid #2980b9;
     border-radius: 50%;
     width: 100px;
     height: 100px;
-    animation: spin 1.5s linear infinite;
+    animation: spin $spinner-time linear infinite;
 }
 
 @keyframes spin {
