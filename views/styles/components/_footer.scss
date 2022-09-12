@@ -1,4 +1,5 @@
-$footer-bg: $primary-bg-color;
+$footer-bg: var(--primary-bg-color);
+$footer-text: var(--primary-font-color);
 
 #footer {
     background-color: $footer-bg;
@@ -8,6 +9,6 @@ $footer-bg: $primary-bg-color;
     p, a {
         margin: .5rem;
         text-align: center;
-        color: $primary-font-color;
+        color: $footer-text;
     }
 }

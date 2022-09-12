@@ -8,8 +8,8 @@
     display: grid;
     place-items: center;
 
-    // visibility: hidden;
-    // display: none;
+    visibility: hidden;
+    display: none;
     z-index: 999;
 
     h3 {
@@ -24,6 +24,22 @@
     //     display: none;
     //     visibility: hidden;
     // }
+    #loading-bar {
+        width: 105px;
+        height: 105px;
+        border-radius: 50%;
+        // background-color: red;
+        position: absolute;
+        overflow: hidden;
+        #progress {
+            width: 100%;
+            height: 0%;
+            background-color: #2980b9;
+            position: absolute;
+            left: 0;
+            bottom: 0;
+        }
+    }
 }
 
 $spinner-time: 1s;

@@ -311,9 +311,21 @@ template {
   display: none;
 }
 
+:root {
+  --backgroundColor: #f7f1e3;
+  --primary-font-color: #17161d;
+  --secondary-font-color: #f1f2f6;
+  --primary-bg-color: #e4dccf;
+  --secondary-bg-color: #b2bec3;
+  --red-accent-color: #e74c3c;
+  --blue-accent-color: #3498db;
+  --blue-accent-color2: #2980b9;
+  --arrow-button-color: #b2bec3;
+}
+
 body,
 html {
-  background-color: hsl(200deg, 4%, 14%);
+  background-color: var(--backgroundColor);
   font-family: "Roboto", "sans-serif";
   min-height: 100vh;
   width: 100%;
@@ -335,7 +347,7 @@ html {
   border-radius: 4px !important;
   box-shadow: rgba(0, 0, 0, 0.1) 0 2px 4px 0;
   box-sizing: border-box;
-  color: #fff;
+  color: #fff !important;
   cursor: pointer;
   font-size: 16px !important;
   font-weight: 400 !important;
@@ -379,9 +391,9 @@ html {
   position: relative;
 }
 .filter-box select {
-  background-color: hsl(0deg, 1%, 21%);
-  color: #f1f2f6;
-  padding: 4px 35px 4px 8px;
+  background-color: var(--primary-bg-color);
+  color: var(--primary-font-color);
+  padding: 4px 45px 4px 8px;
   border: none;
   box-shadow: 0 5px 25px rgba(0, 0, 0, 0.2);
   border-radius: 5px;
@@ -403,18 +415,19 @@ html {
   content: "\f107";
   font-family: FontAwesome;
   position: absolute;
-  top: 0;
+  bottom: 0;
   right: 0;
   width: 20%;
   max-width: 50px;
   min-width: 30px;
   height: 100%;
+  max-height: 29px;
   text-align: center;
   font-size: 20px;
   display: grid;
   place-items: center;
-  color: currentColor;
-  background-color: hsl(0deg, 1%, 36%);
+  color: #fff;
+  background-color: var(--secondary-bg-color);
   pointer-events: none;
   border-top-right-radius: 2px;
   border-bottom-right-radius: 2px;
@@ -424,7 +437,7 @@ html {
 }
 
 #calender-container {
-  margin-inline: auto;
+  margin: auto;
   width: 1000px;
   max-width: 95vw;
 }
@@ -434,6 +447,7 @@ html {
   justify-content: center;
   flex-wrap: wrap;
   gap: 2px;
+  margin-bottom: 1rem;
   width: 100%;
 }
 #calender .calender-day {
@@ -441,8 +455,8 @@ html {
   aspect-ratio: 1/1;
   text-align: center;
   box-sizing: border-box;
-  background-color: hsl(0deg, 1%, 21%);
-  color: #f1f2f6;
+  background-color: var(--primary-bg-color);
+  color: var(--primary-font-color);
   border-radius: 2.5px;
   overflow: hidden;
   font-size: clamp(0.5em, 2.5vw, 1.25rem);
@@ -455,7 +469,7 @@ html {
   cursor: pointer;
 }
 #calender .calender-day.event:hover {
-  background-color: hsl(0deg, 1%, 36%);
+  background-color: var(--secondary-bg-color);
 }
 #calender .calender-day .progressBar {
   position: absolute;
@@ -472,7 +486,7 @@ html {
           animation-fill-mode: forwards;
   border-top-right-radius: 2.5px;
   border-bottom-right-radius: 2.5px;
-  background-color: #e74c3c;
+  background-color: var(--red-accent-color);
 }
 @-webkit-keyframes event-progress {
   from {
@@ -494,7 +508,7 @@ html {
   position: absolute;
   bottom: 5px;
   text-align: left;
-  color: #f1f2f6;
+  color: var(--primary-font-color);
   margin: 0.25rem;
   font-size: 85%;
 }
@@ -502,7 +516,8 @@ html {
 #calender-labels {
   display: flex;
   justify-content: center;
-  color: #f1f2f6;
+  gap: 2px;
+  color: var(--primary-font-color);
 }
 #calender-labels p {
   width: 13.5%;
@@ -510,10 +525,6 @@ html {
   text-align: center;
   text-transform: uppercase;
   margin: 0.5rem 0;
-  margin-right: 2px;
-}
-#calender-labels p:last-of-type {
-  margin-right: 0;
 }
 @media screen and (max-width: 768px) {
   #calender-labels p {
@@ -529,7 +540,7 @@ html {
   display: flex;
   flex-direction: column;
   padding: 0.5rem;
-  color: #f1f2f6;
+  color: var(--primary-font-color);
   position: relative;
 }
 #calender-controls button {
@@ -538,8 +549,8 @@ html {
   height: max-content;
   aspect-ratio: 1/1;
   padding: 0;
-  background-color: gray;
-  color: #f1f2f6;
+  background-color: var(--arrow-button-color);
+  color: #fff;
   outline: none;
   border: none;
   border-radius: 50%;
@@ -549,12 +560,17 @@ html {
 #calender-controls #reset-btn {
   position: absolute;
   right: 0;
+  top: 0;
   margin: 1.4rem;
-  transform: translateY(-150%);
   background-color: #e74c3c !important;
   border-color: #e74c3c !important;
   display: none;
   visibility: hidden;
+}
+@media screen and (max-width: 550px) {
+  #calender-controls #reset-btn {
+    transform: translateY(-125%);
+  }
 }
 #calender-controls p {
   padding: 0 1rem;
@@ -582,6 +598,20 @@ html {
   max-width: 1000px;
   margin-inline: 14px;
 }
+#calender-controls .filter-controls div {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+@media screen and (max-width: 612px) {
+  #calender-controls .filter-controls {
+    flex-direction: column;
+  }
+  #calender-controls .filter-controls div {
+    width: 100%;
+    justify-content: flex-end;
+  }
+}
 
 #loadingScreen {
   position: fixed;
@@ -591,6 +621,8 @@ html {
   font-size: clamp(1rem, 6vw, 2rem);
   display: grid;
   place-items: center;
+  visibility: hidden;
+  display: none;
   z-index: 999;
 }
 #loadingScreen h3 {
@@ -599,6 +631,21 @@ html {
   top: 50%;
   transform: translate(-50%, -50%);
   margin: 0;
+}
+#loadingScreen #loading-bar {
+  width: 105px;
+  height: 105px;
+  border-radius: 50%;
+  position: absolute;
+  overflow: hidden;
+}
+#loadingScreen #loading-bar #progress {
+  width: 100%;
+  height: 0%;
+  background-color: #2980b9;
+  position: absolute;
+  left: 0;
+  bottom: 0;
 }
 
 .loader {
@@ -635,7 +682,7 @@ html {
   position: fixed;
   inset: 0;
   background-color: rgba(0, 0, 0, 0.6666666667);
-  color: #f1f2f6;
+  color: var(--primary-font-color);
   display: flex;
   justify-content: center;
   align-items: center;
@@ -653,8 +700,8 @@ html {
   padding: 0.25rem;
   margin: 1rem;
   border: none;
-  background-color: gray;
-  color: #f1f2f6;
+  background-color: var(--arrow-button-color);
+  color: #fff;
   border-radius: 50%;
   aspect-ratio: 1/1;
   cursor: pointer;
@@ -668,7 +715,7 @@ html {
   font-size: 2.5rem;
 }
 #popup-container #popup {
-  background-color: hsl(0deg, 1%, 21%);
+  background-color: var(--primary-bg-color);
   width: clamp(50vw, 500px, 90vw);
   height: -webkit-max-content;
   height: -moz-max-content;
@@ -676,15 +723,16 @@ html {
 }
 #popup-container #popup .title {
   padding-inline: 1rem;
-  border-bottom: 5px solid hsl(0deg, 1%, 36%);
+  border-bottom: 5px solid var(--secondary-bg-color);
   position: relative;
 }
 #popup-container #popup .title h1 {
   margin: 0;
   padding: 0.5em 0;
+  padding-bottom: 0;
 }
 #popup-container #popup .title .close-button {
-  color: #f1f2f6;
+  color: var(--primary-font-color);
 }
 #popup-container #popup #events-list {
   list-style: none;
@@ -697,7 +745,7 @@ html {
   display: flex;
   flex-direction: column;
   padding: 1rem;
-  border-bottom: 2px solid hsl(0deg, 1%, 36%);
+  border-bottom: 2px solid var(--secondary-bg-color);
 }
 #popup-container #popup #events-list .event:last-of-type {
   border: none;
@@ -718,6 +766,29 @@ html {
 #popup-container #popup #events-list .event div #rooms-list {
   text-align: right;
 }
+@media screen and (max-width: 550px) {
+  #popup-container {
+    flex-direction: column;
+  }
+  #popup-container #next-day-btn,
+#popup-container #prev-day-btn {
+    position: absolute;
+    bottom: 0;
+    right: 50%;
+    transform: translateX(calc(100% + 8px));
+    width: 244px;
+    max-width: 43vw;
+    border-radius: 5px;
+    aspect-ratio: auto;
+    margin-inline: 0;
+  }
+  #popup-container #prev-day-btn {
+    order: 2;
+    left: 50%;
+    right: auto;
+    transform: translateX(calc(-100% - 8px));
+  }
+}
 
 nav .icon {
   font-size: 2.75rem;
@@ -733,10 +804,10 @@ nav .openButton {
 }
 nav .openButton .icon {
   margin-block: auto;
-  color: #f1f2f6;
+  color: white;
   cursor: pointer;
   font-weight: bold;
-  text-shadow: 0 0 2rem black, 0 0 0.5rem black;
+  text-shadow: 0 0 2rem rgba(0, 0, 0, 0.4), 0 0 0.5rem rgba(0, 0, 0, 0.7333333333);
 }
 nav .openButton input {
   position: absolute;
@@ -747,7 +818,7 @@ nav .openButton input {
   visibility: hidden;
 }
 nav .navContainer {
-  background-color: hsl(0deg, 1%, 21%);
+  background-color: var(--primary-bg-color);
   position: fixed;
   height: 100%;
   max-width: 16.25rem;
@@ -757,7 +828,7 @@ nav .navContainer {
   display: flex;
   flex-direction: column;
   justify-content: space-between;
-  box-shadow: 0 0 15px black;
+  box-shadow: 0 0 15px rgba(0, 0, 0, 0.4);
   transition: transform 300ms ease-in-out;
 }
 nav .navContainer.open {
@@ -927,7 +998,7 @@ nav .navContainer.closed {
 }
 nav .navContainer .closeButton {
   position: absolute;
-  background-color: hsl(0deg, 1%, 36%);
+  background-color: var(--secondary-bg-color);
   display: grid;
   place-items: center;
   border-radius: 50%;
@@ -939,7 +1010,7 @@ nav .navContainer .closeButton {
   transition: transform 350ms ease-in-out;
 }
 nav .navContainer .closeButton .icon {
-  color: #f1f2f6;
+  color: #fff;
 }
 nav .navContainer .image-container {
   width: 100%;
@@ -951,7 +1022,7 @@ nav .navContainer .image-container .logo {
   filter: drop-shadow(0 0 16px rgba(255, 255, 255, 0.4));
 }
 nav .navContainer .welcome-message {
-  color: #f1f2f6;
+  color: var(--primary-font-color);
   font-size: 1.75rem;
   text-align: center;
   max-height: 96.5px;
@@ -978,7 +1049,7 @@ nav .navContainer .links ul li {
   transform: translateX(-100%);
 }
 nav .navContainer .links ul li a {
-  color: #f1f2f6;
+  color: var(--primary-font-color);
   font-weight: bold;
   text-decoration: none;
   position: relative;
@@ -990,7 +1061,7 @@ nav .navContainer .links ul li a::after {
   height: 2px;
   bottom: -3px;
   left: 0;
-  background: #e74c3c;
+  background: var(--red-accent-color);
   transition: transform 150ms ease 50ms;
   transform-origin: left;
   transform: scaleX(0.1);
@@ -1012,14 +1083,14 @@ nav .navContainer .footer ul {
   justify-content: space-around;
 }
 nav .navContainer .footer ul li a {
-  color: #f1f2f6;
+  color: var(--primary-font-color);
 }
 
 #date-picker-container {
   position: fixed;
   inset: 0;
   background-color: rgba(0, 0, 0, 0.6666666667);
-  color: #f1f2f6;
+  color: var(--primary-font-color);
   font-size: clamp(1rem, 6vw, 2rem);
   display: grid;
   place-items: center;
@@ -1033,8 +1104,8 @@ nav .navContainer .footer ul li a {
 }
 
 .date-picker-header {
-  background-color: hsl(0deg, 1%, 21%);
-  color: #f1f2f6;
+  background-color: var(--primary-bg-color);
+  color: var(--primary-font-color);
   padding: 0.5rem;
   display: flex;
   justify-content: space-between;
@@ -1043,14 +1114,14 @@ nav .navContainer .footer ul li a {
   font-size: 1.5rem;
   margin: 0 !important;
   background-color: transparent;
-  color: #f1f2f6;
+  color: var(--primary-font-color);
 }
 
 .pickers {
   display: flex;
-  background-color: hsl(0deg, 1%, 21%);
-  color: #f1f2f6;
-  border-block: 5px solid hsl(0deg, 1%, 36%);
+  background-color: var(--primary-bg-color);
+  color: var(--primary-font-color);
+  border-block: 5px solid gray;
 }
 .pickers .month-picker,
 .pickers .year-picker {
@@ -1073,12 +1144,12 @@ nav .navContainer .footer ul li a {
 }
 .pickers .month-picker::-webkit-scrollbar-thumb,
 .pickers .year-picker::-webkit-scrollbar-thumb {
-  background: #3498db;
+  background: var(--blue-accent-color);
   border-radius: 5px;
 }
 .pickers .month-picker::-webkit-scrollbar-thumb:hover,
 .pickers .year-picker::-webkit-scrollbar-thumb:hover {
-  background: #2980b9;
+  background: var(--blue-accent-color2);
 }
 .pickers .choice {
   height: -webkit-max-content;
@@ -1106,12 +1177,12 @@ nav .navContainer .footer ul li a {
   cursor: pointer;
 }
 .pickers input[type=radio]:checked ~ label {
-  background-color: #3498db;
+  background-color: var(--blue-accent-color);
   color: white;
 }
 
 #footer {
-  background-color: hsl(0deg, 1%, 21%);
+  background-color: var(--primary-bg-color);
   margin-top: auto;
   display: flex;
   justify-content: center;
@@ -1119,17 +1190,87 @@ nav .navContainer .footer ul li a {
 #footer p, #footer a {
   margin: 0.5rem;
   text-align: center;
-  color: #f1f2f6;
+  color: var(--primary-font-color);
+}
+
+.toggle-switch {
+  display: grid;
+  place-items: center;
+  height: -webkit-max-content;
+  height: -moz-max-content;
+  height: max-content;
+  margin-block: auto;
+}
+
+.switch {
+  position: relative;
+  display: inline-block;
+  width: 54px;
+  height: 28px;
+}
+
+.switch input {
+  display: none;
+}
+
+.slider {
+  position: absolute;
+  cursor: pointer;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: #ccc;
+  transition: 0.4s;
+}
+
+.slider:before {
+  position: absolute;
+  content: "";
+  height: 20px;
+  width: 20px;
+  left: 4px;
+  bottom: 4px;
+  background-color: white;
+  transition: 0.4s;
+}
+
+input:checked + .slider {
+  background-color: #2196F3;
+}
+
+input:focus + .slider {
+  box-shadow: 0 0 1px #2196F3;
+}
+
+input:checked + .slider:before {
+  transform: translateX(26px);
+}
+
+/* Rounded sliders */
+.slider.round {
+  border-radius: 34px;
+}
+
+.slider.round:before {
+  border-radius: 50%;
 }
 
 #loginForm,
 #signUpForm {
   background-color: #181818;
   color: white;
+  max-width: 450px;
 }
 #loginForm h1,
 #signUpForm h1 {
   text-align: center;
+}
+#loginForm .help-msg,
+#signUpForm .help-msg {
+  margin: 0;
+  text-align: center;
+  font-size: 80%;
 }
 #loginForm .inputs,
 #signUpForm .inputs {
@@ -1137,6 +1278,7 @@ nav .navContainer .footer ul li a {
   flex-direction: column;
   overflow: hidden;
   border-radius: 0.25rem;
+  position: relative;
 }
 #loginForm .inputs input,
 #signUpForm .inputs input {
@@ -1148,6 +1290,15 @@ nav .navContainer .footer ul li a {
 #loginForm .inputs input:last-of-type,
 #signUpForm .inputs input:last-of-type {
   border: none;
+}
+#loginForm .inputs #togglePassword,
+#signUpForm .inputs #togglePassword {
+  color: #f1f2f6;
+  position: absolute;
+  bottom: 0;
+  right: 0;
+  margin: 0.9rem 0.5rem;
+  font-size: 1.25rem;
 }
 #loginForm .login,
 #loginForm .signIn,
@@ -1177,6 +1328,7 @@ nav .navContainer .footer ul li a {
   text-align: center;
   text-decoration: underline;
   margin: 0;
+  margin-top: 1rem;
 }
 
 #loginForm,

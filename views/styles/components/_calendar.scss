@@ -1,11 +1,11 @@
-$calendar-day-bg: $primary-bg-color;
-$calendar-day-hover-bg: $secondary-bg-color;
-$calendar-day-text: $primary-font-color;
-$progress-bar-bg: $red-accent-color;
-$button-bg: $arrow-button-color;
+$calendar-day-bg: var(--primary-bg-color);
+$calendar-day-hover-bg: var(--secondary-bg-color);
+$calendar-day-text: var(--primary-font-color);
+$progress-bar-bg: var(--red-accent-color);
+$button-bg: var(--arrow-button-color);
 
 #calender-container {
-    margin-inline: auto;
+    margin: auto;
     width: 1000px;
     max-width: 95vw;
 }
@@ -15,11 +15,11 @@ $button-bg: $arrow-button-color;
     justify-content: center;
     flex-wrap: wrap;
     gap: 2px;
+    margin-bottom: 1rem;
 
     width: 100%;
 
     .calender-day {
-        //dont judge me it works
         width: 13.5%;
         // min-width: 125px;
         aspect-ratio: 1 / 1;
@@ -84,20 +84,15 @@ $button-bg: $arrow-button-color;
 #calender-labels {
     display: flex;
     justify-content: center;
+    gap: 2px;
     color: $calendar-day-text;
 
     p {
-        //dont judge me it works
         width: 13.5%;
         font-size: clamp(.75rem, 1.5vw, 1.25rem);
         text-align: center;
         text-transform: uppercase;
         margin: .5rem 0;
-        margin-right: 2px;
-
-        &:last-of-type {
-            margin-right: 0;
-        }
     }
 
     @media screen and (max-width: 768px) {
@@ -124,7 +119,7 @@ $button-bg: $arrow-button-color;
         aspect-ratio: 1 / 1;
         padding: 0;
         background-color: $button-bg;
-        color: $calendar-day-text;
+        color: #fff;
         outline: none;
         border: none;
         border-radius: 50%;
@@ -135,10 +130,14 @@ $button-bg: $arrow-button-color;
     #reset-btn {
         position: absolute;
         right: 0;
+        top: 0;
         margin: 1.4rem;
-        transform: translateY(-150%);
         background-color: $red-accent-color !important;
         border-color: $red-accent-color !important;
+        
+        @media screen and (max-width: 550px) {
+            transform: translateY(-125%);
+        }
 
         display: none;
         visibility: hidden;
@@ -173,5 +172,17 @@ $button-bg: $arrow-button-color;
         flex-wrap: wrap;
         max-width: 1000px;
         margin-inline: 14px;
+        div {
+            display: flex;
+            align-items: center;
+            gap: .5rem;
+        }
+        @media screen and (max-width: 612px) {
+            flex-direction: column;
+            div {
+                width: 100%;
+                justify-content: flex-end;
+            }
+        }
     }
 }

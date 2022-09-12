@@ -11,9 +11,11 @@
             <div class="inputs">
                 <input type="text" name="username" id="username" autocomplete="on" placeholder="Username" required>
                 <input type="password" name="password" id="password" autocomplete="on" placeholder="Password" required>
+                <i class='far fa-eye-slash' id="togglePassword"></i>
             </div>
     
             <button type="submit" class="login">Sign In</button>
+            <p class="help-msg">Sign In With Ministry Platform</p>
             
             <p class="form-error"><%- error %></p>
         </form>
@@ -21,11 +23,7 @@
       
     </body>
 <script>
-    const urlParams = new URLSearchParams(window.location.search);
-    const redirect = urlParams.get('redirect');
     const loginForm = document.getElementById('loginForm');
-
-    const redirectURL = `/${redirect ? redirect : ''}`
 
     loginForm.addEventListener('submit', (e) => {
         e.preventDefault();
@@ -47,11 +45,23 @@
             .then(response => response.data)
             .then(data => {
                 if (data.success) {
-                    window.location = redirectURL;
+                    window.location = window.location.pathname;
                 } else {
                     document.querySelector('.form-error').innerHTML = data.error;
                 }
             })
     })
+    const togglePassword = document.querySelector("#togglePassword");
+    const password = document.querySelector("#password");
+
+    togglePassword.addEventListener("click", function () {
+        // toggle the type attribute
+        const type = password.getAttribute("type") === "password" ? "text" : "password";
+        password.setAttribute("type", type);
+        
+        // toggle the icon
+        this.classList.toggle("fa-eye-slash");
+        this.classList.toggle("fa-eye");
+    });
 </script>
 </html>

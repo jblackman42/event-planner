@@ -1,7 +1,7 @@
-$date-picker-bg: $primary-bg-color;
-$date-color-text: $primary-font-color;
-$date-picker-accent: $blue-accent-color;
-$date-picker-accent-2: $blue-accent-color2;
+$date-picker-bg: var(--primary-bg-color);
+$date-color-text: var(--primary-font-color);
+$date-picker-accent: var(--blue-accent-color);
+$date-picker-accent-2: var(--blue-accent-color2);
 
 
 #date-picker-container {

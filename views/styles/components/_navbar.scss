@@ -1,6 +1,7 @@
-$nav-background: $primary-bg-color;
-$close-btn-background: $secondary-bg-color;
-$hover-underline: $red-accent-color;
+$nav-background: var(--primary-bg-color);
+$close-btn-background: var(--secondary-bg-color);
+$hover-underline: var(--red-accent-color);
+$nav-text-color: var(--primary-font-color);
 
 nav {
 	.icon {
@@ -18,11 +19,11 @@ nav {
 		left: 1rem;
 		.icon {
 			margin-block: auto;
-			color: $primary-font-color;
+			color: white;
 			cursor: pointer;
 			font-weight: bold;
 
-			text-shadow: 0 0 2rem black, 0 0 0.5rem black;
+			text-shadow: 0 0 2rem #00000066, 0 0 0.5rem #000000BB;
 		}
 		input {
 			position: absolute;
@@ -47,7 +48,7 @@ nav {
 		flex-direction: column;
 		justify-content: space-between;
 
-		box-shadow: 0 0 15px black;
+		box-shadow: 0 0 15px #00000066;
 
 		transition: transform 300ms ease-in-out;
 		&.open {
@@ -89,7 +90,7 @@ nav {
 
 			transition: transform 350ms ease-in-out;
 			.icon {
-				color: $primary-font-color;
+				color: #fff;
 			}
 		}
 		.image-container {
@@ -103,7 +104,7 @@ nav {
 			}
 		}
         .welcome-message {
-            color: $primary-font-color;
+            color: $nav-text-color;
             font-size: 1.75rem;
             text-align: center;
             max-height: 96.5px;
@@ -134,7 +135,7 @@ nav {
 					transform: translateX(-100%);
 
 					a {
-						color: $primary-font-color;
+						color: $nav-text-color;
 						font-weight: bold;
 						text-decoration: none;
 						position: relative;
@@ -175,7 +176,7 @@ nav {
 				display: flex;
 				justify-content: space-around;
 				li a {
-					color: $primary-font-color;
+					color: $nav-text-color;
 				}
 			}
 		}

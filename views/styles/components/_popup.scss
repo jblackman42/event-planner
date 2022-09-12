@@ -1,7 +1,7 @@
-$popup-bg: $primary-bg-color;
-$popup-borer-bg: $secondary-bg-color;
-$popup-text: $primary-font-color;
-$arrow-button-bg: $arrow-button-color;
+$popup-bg: var(--primary-bg-color);
+$popup-borer-bg: var(--secondary-bg-color);
+$popup-text: var(--primary-font-color);
+$arrow-button-bg: var(--arrow-button-color);
 
 #popup-container {
     position: fixed;
@@ -27,7 +27,7 @@ $arrow-button-bg: $arrow-button-color;
         margin: 1rem;
         border: none;
         background-color: $arrow-button-bg;
-        color: $popup-text;
+        color: #fff;
         border-radius: 50%;
         aspect-ratio: 1 / 1;
         cursor: pointer;
@@ -51,6 +51,7 @@ $arrow-button-bg: $arrow-button-color;
             h1 {
                 margin: 0;
                 padding: .5em 0;
+                padding-bottom: 0;
             }
 
             .close-button {
@@ -97,6 +98,28 @@ $arrow-button-bg: $arrow-button-color;
                     }
                 }
             }
+        }
+    }
+
+    @media screen and (max-width: 550px) {
+        flex-direction: column;
+        #next-day-btn,
+        #prev-day-btn {
+            position: absolute;
+            bottom: 0;
+            right: 50%;
+            transform: translateX(calc(100% + 8px));
+            width: 244px;
+            max-width: 43vw;
+            border-radius: 5px;
+            aspect-ratio: auto;
+            margin-inline: 0;
+        }
+        #prev-day-btn {
+            order: 2;
+            left: 50%;
+            right: auto;
+            transform: translateX(calc(-100% - 8px));
         }
     }
 }

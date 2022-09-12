@@ -17,7 +17,7 @@
         <div class="links">
             <ul>
                 <li><a href="/">Home</a></li>
-                <!-- <li><a href="/">New Event</a></li> -->
+                <li><a href="/create">New Event</a></li>
                 <li id="loggedOut"><a href="/login">Login</a></li>
                 <li id="loggedIn"><a onclick="logout()" href="/">Logout</a></li>
             </ul>
@@ -26,27 +26,17 @@
             <ul>
                 <li><a href="/"><i class='fab fa-facebook-square'></i></a></li>
                 <li><a href="/"><i class='fab fa-instagram'></i></a></li>
-                <li><a href="/"><i class='fab fa-github-square'></i></a></li>
+                <li><a href="https://github.com/jblackman42/event-planner"><i class='fab fa-github-square'></i></a></li>
+                <li class='toggle-switch'>
+                    <label class="switch" onclick="toggleColorScheme()">
+                        <input type="checkbox" id="toggle-color-scheme">
+                        <span class="slider round"></span>
+                    </label>
+                </li>
             </ul>
         </div>
     </div>
 </nav>
-  <!-- <script src="../scripts/navbar.js"></script> -->
-<!-- <nav>
-    <div>
-        <h4 class="title">Event Planner</h4>
-    </div>
-
-    <div>
-        <div id="loggedIn" style="visibility: hidden; display: none;">
-            <p id="userWelcomeMsg"></p>
-            <button onclick="logout()">Logout</button>
-        </div>
-        <div id="loggedOut">
-            <a href="/login?redirect=calendar" id="loginBtn">Login</a>
-        </div>
-    </div>
-</nav> -->
 <script>
     const loggedIn = document.getElementById('loggedIn');
     const loggedOut = document.getElementById('loggedOut');
@@ -55,17 +45,18 @@
 
     const openButtonDOM = document.querySelector('.openButton');
     const closeButtonDOM = document.querySelector('.closeButton');
+    const toggleColorSchemeBtn = document.querySelector('#toggle-color-scheme');
 
     const navContainerDOM = document.querySelector('.navContainer');
 
     openButtonDOM.addEventListener('click', () => {
-    navContainerDOM.classList.toggle('open');
-    navContainerDOM.classList.toggle('closed');
+        navContainerDOM.classList.toggle('open');
+        navContainerDOM.classList.toggle('closed');
     })
 
     closeButtonDOM.addEventListener('click', () => {
-    navContainerDOM.classList.toggle('open');
-    navContainerDOM.classList.toggle('closed');
+        navContainerDOM.classList.toggle('open');
+        navContainerDOM.classList.toggle('closed');
     })
 
     axios({
@@ -104,6 +95,14 @@
     //     .then(data => {
     //         // console.log(data)
     //     })
+
+    if (localStorage.getItem('colorScheme') == 'dark') {
+        toggleColorSchemeBtn.checked = true;
+    }
+
+    toggleColorSchemeBtn.addEventListener('change', () => {
+        toggleColorScheme();
+    })
 
     function logout() {
         //remove all cookies

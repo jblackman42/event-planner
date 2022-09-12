@@ -1,8 +1,24 @@
 @import url('https://fonts.googleapis.com/css2?family=Roboto:wght@400;900&display=swap');
 
+//default color scheme
+:root {
+	--backgroundColor: #f7f1e3;
+
+	--primary-font-color: #17161d;
+	--secondary-font-color: #f1f2f6;
+
+	--primary-bg-color: #e4dccf;
+	--secondary-bg-color: #b2bec3;
+
+	--red-accent-color: #e74c3c;
+	--blue-accent-color: #3498db;
+	--blue-accent-color2: #2980b9;
+	--arrow-button-color: #b2bec3;
+}
+
 body,
 html {
-	background-color: $backgroundColor;
+	background-color: var(--backgroundColor);
 	font-family: 'Roboto', 'sans-serif';
 	min-height: 100vh;
 	width: 100%;
@@ -24,7 +40,7 @@ html {
 	border-radius: 4px !important;
 	box-shadow: rgba(0, 0, 0, .1) 0 2px 4px 0;
 	box-sizing: border-box;
-	color: #fff;
+	color: #fff !important;
 	cursor: pointer;
 	font-size: 16px !important;
 	font-weight: 400 !important;
@@ -62,9 +78,9 @@ html {
 	}
 }
 
-$filter-background: $primary-bg-color;
-$filter-text: $primary-font-color;
-$filter-dropdown-background: $secondary-bg-color;
+$filter-background: var(--primary-bg-color);
+$filter-text: var(--primary-font-color);
+$filter-dropdown-background: var(--secondary-bg-color);
 
 .filter-box {
 	position: relative;
@@ -72,7 +88,7 @@ $filter-dropdown-background: $secondary-bg-color;
 	select {
 		background-color: $filter-background;
 		color: $filter-text;
-		padding: 4px 35px 4px 8px;
+		padding: 4px 45px 4px 8px;
 		border: none;
 		box-shadow: 0 5px 25px rgba(0, 0, 0, 0.2);
 		border-radius: 5px;
@@ -99,17 +115,19 @@ $filter-dropdown-background: $secondary-bg-color;
 		content: "\f107";
 		font-family: FontAwesome;
 		position: absolute;
-		top: 0;
+		bottom: 0;
 		right: 0;
+
 		width: 20%;
 		max-width: 50px;
 		min-width: 30px;
 		height: 100%;
+		max-height: 29px;
 		text-align: center;
 		font-size: 20px;
 		display: grid;
 		place-items: center;
-		color: currentColor;
+		color: #fff;
 		background-color: $filter-dropdown-background;
 		pointer-events: none;
 		border-top-right-radius: 2px;
