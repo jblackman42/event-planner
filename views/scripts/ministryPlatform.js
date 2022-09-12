@@ -161,3 +161,35 @@ const getAllUsers = () => {
         })
     return response;
 }
+
+const getEventTypes = () => {
+    const response = axios({
+        method: 'get',
+        url: 'https://my.pureheart.org/ministryplatformapi/tables/Event_Types',
+        headers: {
+            'Accept': 'application/json',
+            'Authorization': `Bearer ${access_token}`
+        }
+    })
+        .then(response => response.data)
+        .catch(err => {
+            console.error(err)
+        })
+    return response;
+}
+
+const getCongregations = () => {
+    const response = axios({
+        method: 'get',
+        url: 'https://my.pureheart.org/ministryplatformapi/tables/Congregations',
+        headers: {
+            'Accept': 'application/json',
+            'Authorization': `Bearer ${access_token}`
+        }
+    })
+        .then(response => response.data.filter(congregation => !congregation.End_Date || new Date() < new Date(congregation.End_Date)))
+        .catch(err => {
+            console.error(err)
+        })
+    return response;
+}
