@@ -7,6 +7,36 @@
     <%- include('../partials/loading'); %>
 
     <%- include('../partials/navbar'); %>
+
+    <div class="form-container">
+        <p>Event Creator: <span id="event-creator"></span></p>
+
+        <form onsubmit="handleSubmit(event)">
+            <div class="input">
+                <label for="event-name">Event Name:</label>
+                <input type="text" name="event-name" id="event-name">
+            </div>
+            <div class="input">
+                <label for="event-desc">Event Description:</label>
+                <textarea name="event-desc" id="event-desc"></textarea>
+            </div>
+            <div class="input">
+                <label for="primary-contact">Primary Contact</label>
+                <select name="primary-contact" id="primary-contact"></select>
+            </div>
+            <div class="input">
+                <label for="start-date">Start Date/Time:</label>
+                <input type="datetime-local" name="start-date" id="start-date">
+            </div>
+            <div class="input">
+                <label for="end-date">End Date/Time:</label>
+                <input type="datetime-local" name="end-date" id="end-date">
+            </div>
+            <button type="submit">Submit</button>
+        </form>
+    </div>
+
     <%- include('../partials/footer'); %>
 </body>
+<script src="../scripts/create.js"></script>
 </html>

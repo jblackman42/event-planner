@@ -145,3 +145,19 @@ const getBuildingRooms = (Building_ID) => {
     })
     return response;
 }
+
+const getAllUsers = () => {
+    const response = axios({
+        method: 'get',
+        url: 'https://my.pureheart.org/ministryplatformapi/users',
+        headers: {
+            'Accept': 'application/json',
+            'Authorization': `Bearer ${access_token}`
+        }
+    })
+        .then(response => response.data)
+        .catch(err => {
+            console.error(err)
+        })
+    return response;
+}

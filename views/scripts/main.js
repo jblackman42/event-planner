@@ -1,3 +1,5 @@
+
+
 function getCookie(cname) {
     let name = cname + "=";
     let decodedCookie = decodeURIComponent(document.cookie);
@@ -16,6 +18,19 @@ function getCookie(cname) {
 
 const user_id = getCookie('user_id');
 const access_token = getCookie('access_token');
+
+const getUser = async () => {
+    return axios({
+        method: 'get',
+        url: '/api/oauth/me',
+        params: {
+            user_id: user_id,
+            token: access_token
+        }
+    })
+        .then(response => response.data)
+        .then(data => data.user)
+}
 
 const loading = () => {
     const loadingScreen = document.getElementById('loadingScreen')

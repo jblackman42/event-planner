@@ -59,29 +59,19 @@
         navContainerDOM.classList.toggle('closed');
     })
 
-    axios({
-        method: 'get',
-        url: '/api/oauth/me',
-        params: {
-            user_id: user_id,
-            token: access_token
-        }
-    })
-        .then(response => response.data)
-        .then(data => {
-            const {user} = data;
-            // console.log(data)
-            const name = user.DisplayName.split(', ').reverse().join(' ')
+    
 
-            loggedOut.style.visibility = 'hidden';
-            loggedOut.style.display = 'none';
+    const welcomeMsg = async () => {
+        const user = await getUser()
+        
+        loggedOut.style.visibility = 'hidden';
+        loggedOut.style.display = 'none';
 
-            userWelcomeMsg.innerHTML = `Welcome, ${name}`;
-            loggedIn.style.visibility = 'visible';
-            loggedIn.style.display = 'flex';
-
-            // console.log(user.User_Roles)
-        })
+        userWelcomeMsg.innerHTML = `Welcome, ${user.DisplayName.split(', ').reverse().join(' ')}`;
+        loggedIn.style.visibility = 'visible';
+        loggedIn.style.display = 'flex';
+    }
+    welcomeMsg();
 
     // axios({
     //     method: 'get',

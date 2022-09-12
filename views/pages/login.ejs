@@ -45,7 +45,7 @@
             .then(response => response.data)
             .then(data => {
                 if (data.success) {
-                    window.location = window.location.pathname;
+                    window.location = window.location.pathname != '/login' ? window.location.pathname : '/';
                 } else {
                     document.querySelector('.form-error').innerHTML = data.error;
                 }

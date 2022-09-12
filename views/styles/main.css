@@ -1369,4 +1369,8 @@ input:checked + .slider:before {
 #loginForm .loginOption a:active,
 #signUpForm .loginOption a:active {
   filter: brightness(0.6);
+}
+
+.form-container {
+  margin: auto;
 }/*# sourceMappingURL=main.css.map */
