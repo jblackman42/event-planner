@@ -5,6 +5,8 @@ const calendarFilterDOM = document.getElementById('filter')
 const buildingFilterDOM = document.getElementById('building-filter');
 const roomFilterDOM = document.getElementById('room-filter');
 
+const resetBtnDOM = document.getElementById('reset-btn');
+
 const maxEvents = 21;
 
 let allEvents;
@@ -37,7 +39,7 @@ getLocationDetails();
 
 const getMonth = (year, month) => {
     const date = new Date(year, month, 1);
-    console.log(year, month)
+    // console.log(year, month)
 
     const datesArray = [];
 
@@ -85,7 +87,6 @@ const getMonth = (year, month) => {
         datesArray.push(dateItem)
     }
 
-    // console.log(datesArray)
     return datesArray;
 }
 let today = new Date();
@@ -118,6 +119,14 @@ getFilters();
 
 const getBuildingFilters = async (Location_ID) => {
     buildingFilterDOM.innerHTML = '';
+    if (Location_ID == 0) {
+        buildingFilterDOM.innerHTML = `
+            <option value="0">
+                All
+            </option>
+        `
+        return;
+    }
     await getLocationBuildings(Location_ID)
         .then(buildings => {
             const buildingFilterHTML = buildings.map(building => {
@@ -139,6 +148,14 @@ const getBuildingFilters = async (Location_ID) => {
 
 const getRoomFilters = async (Building_ID) => {
     roomFilterDOM.innerHTML = '';
+    if (Building_ID == 0) {
+        roomFilterDOM.innerHTML = `
+            <option value="0">
+                All
+            </option>
+        `
+        return;
+    }
     await getBuildingRooms(Building_ID)
         .then(rooms => {
             const roomFilterHTML = rooms.map(room => {

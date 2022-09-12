@@ -1,0 +1,13 @@
+$footer-bg: $primary-bg-color;
+
+#footer {
+    background-color: $footer-bg;
+    margin-top: auto;
+    display: flex;
+    justify-content: center;
+    p, a {
+        margin: .5rem;
+        text-align: center;
+        color: $primary-font-color;
+    }
+}

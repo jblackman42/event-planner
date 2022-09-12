@@ -25,6 +25,7 @@ $date-picker-accent-2: $blue-accent-color2;
 
 .date-picker-header {
     background-color: $date-picker-bg;
+    color: $date-color-text;
     padding: .5rem;
     display: flex;
     justify-content: space-between;
@@ -33,6 +34,7 @@ $date-picker-accent-2: $blue-accent-color2;
         font-size: 1.5rem;
         margin: 0 !important;
         background-color: transparent;
+        color: $date-color-text;
     }
 }
 
@@ -40,7 +42,7 @@ $date-picker-accent-2: $blue-accent-color2;
     display: flex;
     background-color: $date-picker-bg;
     color: $date-color-text;
-    border-block: 5px solid #000000AA;
+    border-block: 5px solid $secondary-bg-color;
 
     .month-picker,
     .year-picker {

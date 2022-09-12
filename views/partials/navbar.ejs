@@ -1,4 +1,38 @@
-<nav>
+
+
+<nav class="navBar">
+    <div class="openButton">
+        <i class="material-icons icon">menu</i>
+    </div>
+    <div class="navContainer closed">
+        <div class="closeButton">
+            <i class="material-icons icon">close</i>
+        </div>
+        <!-- <div class="image-container">
+            <img class="logo" src="../assets/exampleLogo.png" alt="Company Name">
+        </div> -->
+        <div class="welcome-message">
+            <p id="userWelcomeMsg"></p>
+        </div>
+        <div class="links">
+            <ul>
+                <li><a href="/">Home</a></li>
+                <!-- <li><a href="/">New Event</a></li> -->
+                <li id="loggedOut"><a href="/login">Login</a></li>
+                <li id="loggedIn"><a onclick="logout()" href="/">Logout</a></li>
+            </ul>
+        </div>
+        <div class="footer">
+            <ul>
+                <li><a href="/"><i class='fab fa-facebook-square'></i></a></li>
+                <li><a href="/"><i class='fab fa-instagram'></i></a></li>
+                <li><a href="/"><i class='fab fa-github-square'></i></a></li>
+            </ul>
+        </div>
+    </div>
+</nav>
+  <!-- <script src="../scripts/navbar.js"></script> -->
+<!-- <nav>
     <div>
         <h4 class="title">Event Planner</h4>
     </div>
@@ -12,12 +46,27 @@
             <a href="/login?redirect=calendar" id="loginBtn">Login</a>
         </div>
     </div>
-</nav>
+</nav> -->
 <script>
-    const loggedIn = document.getElementById('loggedIn')
-    const loggedOut = document.getElementById('loggedOut')
+    const loggedIn = document.getElementById('loggedIn');
+    const loggedOut = document.getElementById('loggedOut');
 
-    const userWelcomeMsg = document.getElementById('userWelcomeMsg')
+    const userWelcomeMsg = document.getElementById('userWelcomeMsg');
+
+    const openButtonDOM = document.querySelector('.openButton');
+    const closeButtonDOM = document.querySelector('.closeButton');
+
+    const navContainerDOM = document.querySelector('.navContainer');
+
+    openButtonDOM.addEventListener('click', () => {
+    navContainerDOM.classList.toggle('open');
+    navContainerDOM.classList.toggle('closed');
+    })
+
+    closeButtonDOM.addEventListener('click', () => {
+    navContainerDOM.classList.toggle('open');
+    navContainerDOM.classList.toggle('closed');
+    })
 
     axios({
         method: 'get',
@@ -30,7 +79,7 @@
         .then(response => response.data)
         .then(data => {
             const {user} = data;
-            console.log(data)
+            // console.log(data)
             const name = user.DisplayName.split(', ').reverse().join(' ')
 
             loggedOut.style.visibility = 'hidden';
@@ -43,18 +92,18 @@
             // console.log(user.User_Roles)
         })
 
-    axios({
-        method: 'get',
-        url: '/api/oauth/me/roles',
-        params: {
-            user_id: user_id,
-            token: access_token
-        }
-    })
-        .then(response => response.data)
-        .then(data => {
-            console.log(data)
-        })
+    // axios({
+    //     method: 'get',
+    //     url: '/api/oauth/me/roles',
+    //     params: {
+    //         user_id: user_id,
+    //         token: access_token
+    //     }
+    // })
+    //     .then(response => response.data)
+    //     .then(data => {
+    //         // console.log(data)
+    //     })
 
     function logout() {
         //remove all cookies

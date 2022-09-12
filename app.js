@@ -27,7 +27,7 @@ app.use('/api/oauth', require('./routes/oauth.js'))
 
 const start = async () => {
     try {
-        app.listen(port, console.log(`server is listening on port ${port}`));
+        app.listen(port, console.log(`server is listening on port ${port}, http://localhost:3000`));
     } catch (error) { console.log(error) }
 }
 start();

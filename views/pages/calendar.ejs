@@ -37,6 +37,7 @@
                     </select>
                 </div>
                 <button class="btn" onclick="handleEvents()">Submit</button>
+                <button class="btn" id="reset-btn" onclick="handleReset()">Reset</button>
             </div>
         </div>
 
@@ -53,6 +54,7 @@
         
         <div id="calender"></div>
     </div>
+    <%- include('../partials/footer'); %>
 </body>
 <script src="/scripts/calendar.js"></script>
 <script>
@@ -66,7 +68,6 @@
 
         allEvents = await getEvents(currentMonth, currentYear, 'calendar')
         events = allEvents;
-        console.log(events.length)
 
         // console.log(calendarFilterDOM.value)
         // console.log(buildingFilterDOM.value)
@@ -76,12 +77,9 @@
             events = allEvents.filter(event => event.Location_ID == calendarFilterDOM.value)
         }
 
-        console.log(events.length)
         if (buildingFilterDOM.value > 0 && roomFilterDOM.value > 0) {
-            console.log('room filter')
             let numOfEvents = events.length;
             let counter = 0;
-            console.log(numOfEvents)
             for (let i = 0; i < events.length; i ++) { //loop through all events
                 const percentComplete = `${Math.floor((counter / numOfEvents) * 100)}%`;
                 percentCompleteDOM.innerText = percentComplete;
@@ -97,14 +95,12 @@
 
             }
         } else if (buildingFilterDOM.value > 0) {
-            console.log('building filter')
 
             let numOfEvents = events.length;
             let counter = 0;
 
             const currentBuilding = roomsList.filter(building => building.Building_ID == buildingFilterDOM.value)[0];
             const currentBuildingRooms = currentBuilding.rooms.map(room => room.Room_ID);
-            // console.log(currentBuildingRooms)
 
             for (let i = 0; i < events.length; i ++) { //loop through all events
                 const {Event_ID} = events[i];
@@ -146,6 +142,9 @@
     const handleFilterChange = async (e) => {
         const filterValue = e.target.value;
 
+        resetBtnDOM.style.visibility = 'visible';
+        resetBtnDOM.style.display = 'block';
+
         getBuildingFilters(filterValue)
         if (filterValue == 0) getRoomFilters(filterValue)
 
@@ -158,6 +157,17 @@
         getRoomFilters(filterValue)
 
         return e.target.value;
+    }
+
+    const handleReset = () => {
+        calendarFilterDOM.value = 0;
+        buildingFilterDOM.value = 0;
+        roomFilterDOM.value = 0;
+        getBuildingFilters(0);
+        getRoomFilters(0);
+        handleEvents();
+        resetBtnDOM.style.visibility = 'hidden';
+        resetBtnDOM.style.display = 'none';
     }
 
     function updateDates() {
