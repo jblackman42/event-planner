@@ -1,8 +1,17 @@
 const eventCreatorDOM = document.querySelector('#event-creator');
+const eventNameDOM = document.querySelector('#event-name')
+const eventDescDOM = document.querySelector('#event-desc');
 const primaryContactDOM = document.querySelector('#primary-contact');
+const startDateDOM = document.querySelector('#start-date');
+const endDateDOM = document.querySelector('#end-date')
 const eventTypeDOM = document.querySelector('#event-type');
+const attendanceDOM = document.querySelector('#attendance')
 const congregationDOM = document.querySelector('#congregation');
+const setupTimeDOM = document.querySelector('#setup');
+const cleanupTimeDOM = document.querySelector('#cleanup');
+const privacyDOM = document.querySelector('#privacy');
 const eventLocationDOM = document.querySelector('#event-location');
+const visibilityLevelDOM = document.querySelector('#visibility');
 
 let user;
 const loadForm = async () => {
@@ -80,9 +89,49 @@ const loadForm = async () => {
             </option>
         `
     })
+
+    //Visibility Level
+    let visibilityLevels = await getVisibilityLevels();
+    visibilityLevelDOM.innerHTML = visibilityLevels.map(level => {
+        return `
+            <option value='${level.Visibility_Level_ID}'>
+                ${level.Visibility_Level.split(' - ')[1]}
+            </option>
+        `
+    })
 }
 loadForm();
 
+let sectionId = 1;
+const nextSection = () => {
+    const sections = document.querySelectorAll('.section');
+    if (sectionId < sections.length) {
+        sectionId ++;
+        const currSection = document.querySelector(`#section-${sectionId}`);
+        sections.forEach(section => {section.style.display = 'none'; section.style.visibility = 'hidden';})
+        currSection.style.display = 'flex';
+        currSection.style.visibility = 'visible';
+    }
+}
+
+const prevSection = () => {
+    const sections = document.querySelectorAll('.section');
+    if (sectionId > 0) {
+        sectionId --;
+        const currSection = document.querySelector(`#section-${sectionId}`);
+        sections.forEach(section => {section.style.display = 'none'; section.style.visibility = 'hidden';})
+        currSection.style.display = 'flex';
+        currSection.style.visibility = 'visible';
+    }
+}
+
 const handleSubmit = async (e) => {
     e.preventDefault();
+
+    //get the contact id from the user selected from the dropdown
+    const primaryContactID = await getUserInfo(primaryContactDOM.value);
+
+    const event = formatEvent(eventNameDOM.value,eventDescDOM.value,primaryContactID.Contact_ID,startDateDOM.value,endDateDOM.value,eventTypeDOM.value,attendanceDOM.value,congregationDOM.value,setupTimeDOM.value,cleanupTimeDOM.value,privacyDOM.value == 1 ? true : false,eventLocationDOM.value, visibilityLevelDOM.value);
+
+    createEvent([event]);
 }

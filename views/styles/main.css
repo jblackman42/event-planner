@@ -470,6 +470,7 @@ html {
 }
 #calender .calender-day.event:hover {
   background-color: var(--secondary-bg-color);
+  color: #f1f2f6;
 }
 #calender .calender-day .progressBar {
   position: absolute;
@@ -508,7 +509,7 @@ html {
   position: absolute;
   bottom: 5px;
   text-align: left;
-  color: var(--primary-font-color);
+  color: currentColor;
   margin: 0.25rem;
   font-size: 85%;
 }
@@ -1373,4 +1374,93 @@ input:checked + .slider:before {
 
 .form-container {
   margin: auto;
+  color: var(--primary-font-color);
+  height: 100%;
+}
+.form-container p {
+  padding: 0 0.5rem;
+}
+.form-container #event-creator {
+  margin-left: 1rem;
+}
+.form-container form {
+  max-width: 85vw;
+}
+.form-container form div.section {
+  display: none;
+  visibility: hidden;
+  max-width: 600px;
+  flex-wrap: wrap;
+}
+.form-container form div.section:first-of-type {
+  display: flex;
+  visibility: visible;
+}
+.form-container form .button-container {
+  width: 100%;
+  display: flex;
+}
+.form-container form button {
+  margin: 0.5rem;
+  height: -webkit-max-content;
+  height: -moz-max-content;
+  height: max-content;
+  margin: auto 0.5rem 1rem auto;
+}
+.form-container form button.prev {
+  background-color: #e74c3c !important;
+  border-color: #e74c3c !important;
+  margin: auto auto 1rem 0.5rem;
+}
+.form-container form .input {
+  display: flex;
+  justify-content: space-between;
+  flex-direction: column;
+  width: 50%;
+  padding: 1rem 0.5rem;
+  box-sizing: border-box;
+  /* Chrome, Safari, Edge, Opera */
+  /* Firefox */
+}
+.form-container form .input.description textarea {
+  height: -webkit-max-content;
+  height: -moz-max-content;
+  height: max-content;
+}
+.form-container form .input label {
+  margin-top: auto;
+}
+.form-container form .input input, .form-container form .input textarea, .form-container form .input select {
+  padding: 0.25rem 0.5rem;
+  height: 2rem;
+  line-height: 2rem;
+  border: none;
+  background-color: var(--primary-bg-color);
+  color: currentColor;
+  border-radius: 2.5px;
+}
+.form-container form .input select {
+  box-sizing: content-box;
+  padding: 0.25rem 0;
+}
+.form-container form .input textarea {
+  resize: none;
+}
+.form-container form .input input::-webkit-outer-spin-button,
+.form-container form .input input::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+.form-container form .input input[type=number] {
+  -moz-appearance: textfield;
+}
+@media screen and (max-width: 768px) {
+  .form-container form {
+    flex-direction: column;
+  }
+  .form-container form .input {
+    width: 100%;
+    margin: 0;
+    padding: 0.5rem 0;
+  }
 }/*# sourceMappingURL=main.css.map */

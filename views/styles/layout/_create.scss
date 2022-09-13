@@ -1,3 +1,93 @@
+$input-background: var(--primary-bg-color);
+$input-color: var(--primary-font-color);
+
 .form-container {
     margin: auto;
+    color: $input-color;
+    height: 100%;
+
+    p {
+        // display: flex;
+        padding: 0 .5rem;
+    }
+    #event-creator {
+        margin-left: 1rem;
+    }
+    form {
+        max-width: 85vw;
+        div.section {
+            display: none;
+            visibility: hidden;
+
+            max-width: 600px;
+            flex-wrap: wrap;
+            &:first-of-type {
+                display: flex;
+                visibility: visible;
+            }
+        }
+        .button-container {
+            width: 100%;
+            display: flex;
+        }
+        button {
+            margin: .5rem;
+            height: max-content;
+            margin: auto .5rem 1rem auto;
+            &.prev {
+                background-color: $red-accent-color !important;
+                border-color: $red-accent-color !important;
+                margin: auto auto 1rem .5rem;
+            }
+        }
+        .input {
+            display: flex;
+            justify-content: space-between;
+            flex-direction: column;
+            width: 50%;
+            padding: 1rem .5rem;
+            box-sizing: border-box;
+            &.description textarea {
+                height: max-content;
+            }
+            label {
+                margin-top: auto;
+            }
+            input, textarea, select {
+                padding: .25rem .5rem;
+                height: 2rem;
+                line-height: 2rem;
+                border: none;
+                background-color: $input-background;
+                color: currentColor;
+                border-radius: 2.5px;
+            }
+            select {
+                box-sizing: content-box;
+                padding: 0.25rem 0;
+            }
+            textarea {
+                resize: none;
+            }
+            /* Chrome, Safari, Edge, Opera */
+            input::-webkit-outer-spin-button,
+            input::-webkit-inner-spin-button {
+            -webkit-appearance: none;
+            margin: 0;
+            }
+
+            /* Firefox */
+            input[type=number] {
+            -moz-appearance: textfield;
+            }
+        }
+        @media screen and (max-width: 768px) {
+            flex-direction: column;
+            .input {
+                width: 100%;
+                margin: 0;
+                padding: .5rem 0;
+            }
+        }
+    }
 }

@@ -11,60 +11,120 @@
     <div class="form-container">
         <p>Event Creator: <span id="event-creator"></span></p>
 
-        <form onsubmit="handleSubmit(event)">
-            <div class="input">
-                <label for="event-name">Event Name:</label>
-                <input type="text" name="event-name" id="event-name">
+        <form>
+            <div id="section-1" class="section">
+                <div class="input">
+                    <label for="event-name">Event Name:</label>
+                    <input type="text" name="event-name" id="event-name">
+                </div>
+                <div class="input">
+                    <label for="event-location">Event Location:</label>
+                    <select name="event-location" id="event-location"></select>
+                </div>
+                <div class="input">
+                    <label for="start-date">Start Date/Time:</label>
+                    <input type="datetime-local" name="start-date" id="start-date">
+                </div>
+                <div class="input">
+                    <label for="end-date">End Date/Time:</label>
+                    <input type="datetime-local" name="end-date" id="end-date">
+                </div>
+                <div class="input">
+                    <label for="primary-contact">Primary Contact</label>
+                    <select name="primary-contact" id="primary-contact"></select>
+                </div>
+                <div class="input">
+                    <label for="event-type">Event Type:</label>
+                    <select name="event-type" id="event-type"></select>
+                </div>
+                <div class="input">
+                    <label for="attendance">Estimated Attendance:</label>
+                    <input type="number" name="attendance" id="attendance">
+                </div>
+                <div class="input">
+                    <label for="congregation">Congregation:</label>
+                    <select name="congregation" id="congregation"></select>
+                </div>
+                <div class="input">
+                    <label for="setup">Setup Time: (minutes)</label>
+                    <input type="number" name="setup" id="setup">
+                </div>
+                <div class="input">
+                    <label for="cleanup">Cleanup Time: (minutes)</label>
+                    <input type="number" name="cleanup" id="cleanup">
+                </div>
+                <div class="input">
+                    <label for="privacy">On Calendar:</label>
+                    <select name="privacy" id="privacy">
+                        <option value="1">True</option>
+                        <option value="0">False</option>
+                    </select>
+                    <!-- <input type="checkbox" name="privacy" id="privacy" checked> -->
+                </div>
+                <div class="input">
+                    <label for="visibility">Visibility Level:</label>
+                    <select name="visibility" id="visibility"></select>
+                </div>
+                <div class="input description">
+                    <label for="event-desc">Event Description:</label>
+                    <textarea name="event-desc" id="event-desc"></textarea>
+                </div>
+
+                <button type="button" class="btn" onclick="nextSection()">Next</button>
             </div>
-            <div class="input">
-                <label for="event-desc">Event Description:</label>
-                <textarea name="event-desc" id="event-desc"></textarea>
+            <div id="section-2" class="section">
+                <div class="input">
+                    <label for="registration">Needs Registration:</label>
+                    <select name="registration" id="registration">
+                        <option value="0">False</option>
+                        <option value="1">True</option>
+                    </select>
+                </div>
+                <div class="input">
+                    <label for="promotion">Needs Promotion:</label>
+                    <select name="promotion" id="promotion">
+                        <option value="0">False</option>
+                        <option value="1">True</option>
+                    </select>
+                </div>
+                <div class="input">
+                    <label for="av">Needs A/V:</label>
+                    <select name="av" id="av">
+                        <option value="0">False</option>
+                        <option value="1">True</option>
+                    </select>
+                </div>
+                <div class="input">
+                    <label for="facilities">Needs Facilities:</label>
+                    <select name="facilities" id="facilities">
+                        <option value="0">False</option>
+                        <option value="1">True</option>
+                    </select>
+                </div>
+                <div class="input">
+                    <label for="childcare">Needs Childcare:</label>
+                    <select name="childcare" id="childcare">
+                        <option value="0">False</option>
+                        <option value="1">True</option>
+                    </select>
+                </div>
+                <div class="button-container">
+                    <button type="button" class="btn prev" onclick="prevSection()">Back</button>
+                    <button type="button" class="btn" onclick="nextSection()">Next</button>
+                </div>
             </div>
-            <div class="input">
-                <label for="primary-contact">Primary Contact</label>
-                <select name="primary-contact" id="primary-contact"></select>
+            <div id="section-3" class="section">
+                <h1>this is a test</h1>
+                <div class="button-container">
+                    <button type="button" class="btn prev" onclick="prevSection()">Back</button>
+                    <button type="button" class="btn" onclick="console.log('i need help')">Next</button>
+                </div>
             </div>
-            <div class="input">
-                <label for="start-date">Start Date/Time:</label>
-                <input type="datetime-local" name="start-date" id="start-date">
-            </div>
-            <div class="input">
-                <label for="end-date">End Date/Time:</label>
-                <input type="datetime-local" name="end-date" id="end-date">
-            </div>
-            <div class="input">
-                <label for="event-type">Event Type:</label>
-                <select name="event-type" id="event-type"></select>
-            </div>
-            <div class="input">
-                <label for="attendance">Estimated Attendance:</label>
-                <input type="number" name="attendance" id="attendance">
-            </div>
-            <div class="input">
-                <label for="congregation">Congregation:</label>
-                <select name="congregation" id="congregation"></select>
-            </div>
-            <div class="input">
-                <label for="setup">Setup Time:</label>
-                <input type="number" name="setup" id="setup">
-            </div>
-            <div class="input">
-                <label for="cleanup">Cleanup Time:</label>
-                <input type="number" name="cleanup" id="cleanup">
-            </div>
-            <div class="input">
-                <label for="privacy">Public Event:</label>
-                <input type="checkbox" name="privacy" id="privacy" checked>
-            </div>
-            <div class="input">
-                <label for="event-location">Event Location:</label>
-                <select name="event-location" id="event-location"></select>
-            </div>
-            <button type="submit">Submit</button>
         </form>
     </div>
 
     <%- include('../partials/footer'); %>
 </body>
+<script src="../scripts/formatEvent.js"></script>
 <script src="../scripts/create.js"></script>
 </html>

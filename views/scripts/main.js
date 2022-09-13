@@ -59,11 +59,11 @@ const root = document.querySelector(':root');
 const updateColorScheme = () => {
     var colorScheme = localStorage.getItem('colorScheme');
     if (colorScheme == 'light') {
-        root.style.setProperty('--backgroundColor', '#f7f1e3');
+        root.style.setProperty('--backgroundColor', '#e0dcdc');
         root.style.setProperty('--primary-font-color', '#17161d');
         root.style.setProperty('--secondary-font-color', '#f1f2f6');
-        root.style.setProperty('--primary-bg-color', '#e4dccf');
-        root.style.setProperty('--secondary-bg-color', '#b2bec3');
+        root.style.setProperty('--primary-bg-color', '#cdc3c3');
+        root.style.setProperty('--secondary-bg-color', '#716868');
         root.style.setProperty('--red-accent-color', '#e74c3c');
         root.style.setProperty('--blue-accent-color', '#3498db');
         root.style.setProperty('--blue-accent-color2', '#2980b9');

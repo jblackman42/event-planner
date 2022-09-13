@@ -82,7 +82,7 @@ const getLocations = () => {
             'Authorization': `Bearer ${access_token}`
         }
     })
-    .then(response => response.data)
+    .then(response => response.data.filter(location => location.Location_ID != 3))
     .catch(err => {
         console.error(err)
     })
@@ -192,4 +192,54 @@ const getCongregations = () => {
             console.error(err)
         })
     return response;
+}
+
+const getUserInfo = (User_ID) => {
+    if (!User_ID) return
+    const response = axios({
+        method: 'get',
+        url: `https://my.pureheart.org/ministryplatformapi/tables/Contacts?%24filter=User_Account%3D${User_ID}`,
+        headers: {
+            'Accept': 'application/json',
+            'Authorization': `Bearer ${access_token}`
+        }
+    })
+    .then(response => {
+        return response.data[0]
+    })
+    .catch(err => {
+        console.error(err)
+    })
+    return response;
+}
+
+const getVisibilityLevels = () => {
+    const blockedLevels = [2,3,5]
+    const response = axios({
+        method: 'get',
+        url: 'https://my.pureheart.org/ministryplatformapi/tables/Visibility_Levels',
+        headers: {
+            'Accept': 'application/json',
+            'Authorization': `Bearer ${access_token}`
+        }
+    })
+        .then(response => response.data.filter(level => !blockedLevels.includes(level.Visibility_Level_ID)))
+        .catch(err => {
+            console.error(err)
+        })
+    return response;
+}
+
+const createEvent = (event) => {
+    fetch('https://my.pureheart.org/ministryplatformapi/tables/Events', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+            'Accept': 'application/json',
+            'Authorization': `Bearer ${access_token}`
+        },
+        body: JSON.stringify(event),
+    })
+    .then(response => response.json())
+    .catch(err => console.error(err))
 }

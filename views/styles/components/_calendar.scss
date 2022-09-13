@@ -42,6 +42,7 @@ $button-bg: var(--arrow-button-color);
 
             &:hover {
                 background-color: $calendar-day-hover-bg;
+                color: #f1f2f6;
             }
         }
 
@@ -74,7 +75,7 @@ $button-bg: var(--arrow-button-color);
             position: absolute;
             bottom: 5px;
             text-align: left;
-            color: $calendar-day-text;
+            color: currentColor;
             margin: .25rem;
             font-size: 85%;
         }
