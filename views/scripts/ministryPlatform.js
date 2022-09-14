@@ -74,6 +74,7 @@ const getRoom = (Room_ID) => {
 }
 
 const getLocations = () => {
+    const blockekdLocations = [3,6]
     const response = axios({
         method: 'get',
         url: `https://my.pureheart.org/ministryplatformapi/tables/Locations`,
@@ -82,7 +83,7 @@ const getLocations = () => {
             'Authorization': `Bearer ${access_token}`
         }
     })
-    .then(response => response.data.filter(location => location.Location_ID != 3))
+    .then(response => response.data.filter(location => !blockekdLocations.includes(location.Location_ID)))
     .catch(err => {
         console.error(err)
     })
@@ -230,8 +231,8 @@ const getVisibilityLevels = () => {
     return response;
 }
 
-const createEvent = (event) => {
-    fetch('https://my.pureheart.org/ministryplatformapi/tables/Events', {
+const createEvent = async (event) => {
+    return fetch('https://my.pureheart.org/ministryplatformapi/tables/Events', {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json',
@@ -242,4 +243,9 @@ const createEvent = (event) => {
     })
     .then(response => response.json())
     .catch(err => console.error(err))
+}
+
+const bookRoom = (eventId, roomId) => {
+    new Promise(resolve => {
+    })
 }

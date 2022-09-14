@@ -13,6 +13,10 @@ const privacyDOM = document.querySelector('#privacy');
 const eventLocationDOM = document.querySelector('#event-location');
 const visibilityLevelDOM = document.querySelector('#visibility');
 
+const roomSelectors = document.querySelector('.room-selectors');
+const warningMsgDOM = document.querySelector('#warning-msg');
+const formSections = document.querySelectorAll('.section');
+
 let user;
 const loadForm = async () => {
     //logged in user
@@ -125,13 +129,128 @@ const prevSection = () => {
     }
 }
 
+const loadRoomOptions = async () => {
+    const buildingId = eventLocationDOM.value;
+    let buildings = await getLocationBuildings(buildingId);
+    const roomSelectorsDOM = document.getElementById('room-selectors');
+
+    buildings = buildings.sort((a, b) => {
+        let fa = a.Building_Name.toLowerCase(),
+            fb = b.Building_Name.toLowerCase();
+    
+        if (fa < fb) {
+            return -1;
+        }
+        if (fa > fb) {
+            return 1;
+        }
+        return 0;
+    });
+
+    const getRoomSelectorsHTML = async () => {
+        return Promise.all(buildings.map(async (building) => {
+            const {Building_Name, Building_ID} = building;
+            const rooms = await getBuildingRooms(Building_ID);
+            if (rooms.length == 0) return;
+            return `
+                <div class="building">
+                    <p class="building-name" id="building${Building_ID}" onclick="toggleAccordion(${Building_ID})">Building ${Building_Name}</p>
+                    <button type="button" class="toggle-btn" onclick="toggleAccordion(${Building_ID})"><i id="icon-${Building_ID}" class='fas fas fa-angle-down'></i></button>
+                    <ul class="room-accordion closed" id="rooms-${Building_ID}" style="max-height: ${rooms.length * 20}px; transition: max-height ${rooms.length * 25}ms linear;">
+                        ${rooms.map(room => {
+                            const {Room_Name, Room_ID} = room;
+                            return `
+                                <li id="${Room_ID}">
+                                    <input type="checkbox" class="room-input" name="room-${Room_ID}" id="room-${Room_ID}" value="${Room_ID}">
+                                    <label for="room-${Room_ID}">${Room_Name}</label>
+                                </li>
+                            `
+                        }).join('')}
+                    </ul>
+                </div>
+            `
+        }))
+    }
+    const roomSelectorsHTML = await getRoomSelectorsHTML();
+
+    roomSelectorsDOM.innerHTML = roomSelectorsHTML.join('');
+}
+
+const toggleAccordion = (buildingId) => {
+    const accordion = document.getElementById(`rooms-${buildingId}`);
+    const icon = document.getElementById(`icon-${buildingId}`);
+
+    accordion.classList.toggle('closed');
+
+    icon.classList.toggle('fa-angle-down');
+    icon.classList.toggle('fa-angle-up');
+}
+
+document.getElementById('create-form').addEventListener('keypress', (e) => {
+    if ((e.key == "Enter" || e.code == "Enter") && sectionId < formSections.length) {
+        e.preventDefault();
+        nextSection();
+        loadRoomOptions();
+    }
+})
+
 const handleSubmit = async (e) => {
     e.preventDefault();
 
     //get the contact id from the user selected from the dropdown
     const primaryContactID = await getUserInfo(primaryContactDOM.value);
 
-    const event = formatEvent(eventNameDOM.value,eventDescDOM.value,primaryContactID.Contact_ID,startDateDOM.value,endDateDOM.value,eventTypeDOM.value,attendanceDOM.value,congregationDOM.value,setupTimeDOM.value,cleanupTimeDOM.value,privacyDOM.value == 1 ? true : false,eventLocationDOM.value, visibilityLevelDOM.value);
+    //Check if all required inputs have values; if not go back and let user complete the form
+    const allValues = [eventNameDOM.value,eventDescDOM.value,primaryContactID.Contact_ID,startDateDOM.value,endDateDOM.value,eventTypeDOM.value,attendanceDOM.value,congregationDOM.value,setupTimeDOM.value,cleanupTimeDOM.value,privacyDOM.value == 1 ? true : false,eventLocationDOM.value, visibilityLevelDOM.value]
+    if (allValues.filter(value => value.toString() == "").length > 0) {
+        sectionId = 0;
+        nextSection();
 
-    createEvent([event]);
+        warningMsgDOM.innerText = "Not All Fields Completed"
+        return;
+    }
+
+    //turn input data into form for sending to MP
+    const event = [formatEvent(eventNameDOM.value,eventDescDOM.value,primaryContactID.Contact_ID,startDateDOM.value,endDateDOM.value,eventTypeDOM.value,attendanceDOM.value,congregationDOM.value,setupTimeDOM.value,cleanupTimeDOM.value,privacyDOM.value == 1 ? true : false,eventLocationDOM.value, visibilityLevelDOM.value)];
+
+
+    //get an array of the rooms that were selected
+    const allRoomInputs = document.querySelectorAll('.room-input');
+    const selectedRooms = [];
+
+    for (let i = 0; i < allRoomInputs.length; i ++) {
+        if (allRoomInputs[i].checked) {
+            selectedRooms.push(parseInt(allRoomInputs[i].value))
+        }
+    }
+    console.log(selectedRooms)
+
+    const eventId = await createEvent(event)
+        .then(response => response[0].Event_ID)
+        .catch(err => {
+            console.error(err)
+        })
+    
+    console.log(eventId)
+    const bookAllRooms = async () => {
+        for (roomId of selectedRooms) {
+            const room = [{
+                "Event_ID": eventId,
+                "Room_ID": roomId
+            }];
+            console.log(room)
+            await fetch('https://my.pureheart.org/ministryplatformapi/tables/Event_Rooms', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Accept': 'application/json',
+                    'Authorization': `Bearer ${access_token}`
+                },
+                body: JSON.stringify(room),
+            })
+            .then(response => response.json())
+            .catch(err => console.error(err))
+        }
+    }
+    bookAllRooms();
 }
