@@ -13,6 +13,12 @@ const privacyDOM = document.querySelector('#privacy');
 const eventLocationDOM = document.querySelector('#event-location');
 const visibilityLevelDOM = document.querySelector('#visibility');
 
+const registrationDOM = document.querySelector('#registration');
+const promotionDOM = document.querySelector('#promotion');
+const AVDOM = document.querySelector('#av');
+const facilitiesDOM = document.querySelector('#facilities');
+const childcareDOM = document.querySelector('#childcare');
+
 const roomSelectors = document.querySelector('.room-selectors');
 const warningMsgDOM = document.querySelector('#warning-msg');
 const formSections = document.querySelectorAll('.section');
@@ -253,4 +259,40 @@ const handleSubmit = async (e) => {
         }
     }
     bookAllRooms();
+
+    const taskOptions = [
+        {
+            taskType: "registration",
+            taskOwner: registrationUserId
+        },
+        {
+            taskType: "promotion",
+            taskOwner: promotionUserId
+        },
+        {
+            taskType: "a/v",
+            taskOwner: AVUserId
+        },
+        {
+            taskType: "facilities",
+            taskOwner: facilitiesUserId
+        },
+        {
+            taskType: "childcare",
+            taskOwner: childcareUserId
+        }
+    ]
+
+    const sendAllTasks = async () => {
+        for (task of taskOptions) {
+            await sendTask(user.UserId, task.taskOwner, eventId, new Date().toISOString(), task.taskType)
+        }
+    }
+    sendAllTasks();
+
+    // if (registrationDOM.value) sendRegistrationTask(user.UserId, eventId, new Date().toISOString());
+    // if (promotionDOM.value) sendPromotionTask(user.UserId, eventId, new Date().toISOString());
+    // if (AVDOM.value) sendAVTask(user.UserId, eventId, new Date().toISOString());
+    // if (facilitiesDOM.value) sendFacilitesTask(user.UserId, eventId, new Date().toISOString());
+    // if (childcareDOM.value) sendChildcareTask(user.UserId, eventId, new Date().toISOString());
 }

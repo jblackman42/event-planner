@@ -245,7 +245,26 @@ const createEvent = async (event) => {
     .catch(err => console.error(err))
 }
 
-const bookRoom = (eventId, roomId) => {
-    new Promise(resolve => {
+const sendTask = async (authorId, ownerId, eventId, startDate, taskType) => {
+    const task = [{
+        "Action": "Complete",
+        "TaskName": `Task ${taskType}`,
+        "Description": `The attatched event has requested ${taskType}.`,
+        "StartDate": startDate,
+        "AuthorId": authorId,
+        "OwnerID": ownerId,
+        "TableName": "Events",
+        "RecordId": eventId
+    }]
+    return fetch('https://my.pureheart.org/ministryplatformapi/tasks', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+            'Accept': 'application/json',
+            'Authorization': `Bearer ${access_token}`
+        },
+        body: JSON.stringify(task),
     })
+    .then(response => response.json())
+    .catch(err => console.error(err))
 }

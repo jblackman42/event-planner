@@ -1,3 +1,9 @@
+// const registrationUserId = 9;
+const registrationUserId = 15679;
+const promotionUserId = 15679;
+const AVUserId = 15679;
+const facilitiesUserId = 15679;
+const childcareUserId = 15679;
 
 
 function getCookie(cname) {
