@@ -201,7 +201,10 @@ document.getElementById('create-form').addEventListener('keypress', (e) => {
 })
 
 const handleSubmit = async (e) => {
+    loading();
     e.preventDefault();
+    let roomsComplete;
+    let tasksComplete;
 
     //get the contact id from the user selected from the dropdown
     const primaryContactID = await getUserInfo(primaryContactDOM.value);
@@ -257,42 +260,54 @@ const handleSubmit = async (e) => {
             .then(response => response.json())
             .catch(err => console.error(err))
         }
+        roomsComplete = true;
+        completed();
     }
     bookAllRooms();
 
     const taskOptions = [
         {
             taskType: "registration",
-            taskOwner: registrationUserId
+            taskOwner: registrationUserId,
+            taskDOM: registrationDOM
         },
         {
             taskType: "promotion",
-            taskOwner: promotionUserId
+            taskOwner: promotionUserId,
+            taskDOM: promotionDOM
         },
         {
             taskType: "a/v",
-            taskOwner: AVUserId
+            taskOwner: AVUserId,
+            taskDOM: AVDOM
         },
         {
             taskType: "facilities",
-            taskOwner: facilitiesUserId
+            taskOwner: facilitiesUserId,
+            taskDOM: facilitiesDOM
         },
         {
             taskType: "childcare",
-            taskOwner: childcareUserId
+            taskOwner: childcareUserId,
+            taskDOM: childcareDOM
         }
     ]
 
     const sendAllTasks = async () => {
         for (task of taskOptions) {
-            await sendTask(user.UserId, task.taskOwner, eventId, new Date().toISOString(), task.taskType)
+            if (task.taskDOM.value == 1) await sendTask(user.UserId, task.taskOwner, eventId, new Date().toISOString(), task.taskType)
         }
+        tasksComplete = true;
+        completed();
     }
     sendAllTasks();
 
-    // if (registrationDOM.value) sendRegistrationTask(user.UserId, eventId, new Date().toISOString());
-    // if (promotionDOM.value) sendPromotionTask(user.UserId, eventId, new Date().toISOString());
-    // if (AVDOM.value) sendAVTask(user.UserId, eventId, new Date().toISOString());
-    // if (facilitiesDOM.value) sendFacilitesTask(user.UserId, eventId, new Date().toISOString());
-    // if (childcareDOM.value) sendChildcareTask(user.UserId, eventId, new Date().toISOString());
+    const completed = () => {
+        if (tasksComplete && roomsComplete) {
+            doneLoading();
+            window.location = '/create';
+        } else {
+            console.log('not complete yet')
+        }
+    }
 }
