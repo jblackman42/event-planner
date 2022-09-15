@@ -87,6 +87,7 @@ $filter-dropdown-background: var(--secondary-bg-color);
 
 	select {
 		background-color: $filter-background;
+		max-width: 50vw;
 		color: $filter-text;
 		padding: 4px 45px 4px 8px;
 		border: none;

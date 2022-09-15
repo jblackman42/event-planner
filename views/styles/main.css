@@ -392,6 +392,7 @@ html {
 }
 .filter-box select {
   background-color: var(--primary-bg-color);
+  max-width: 50vw;
   color: var(--primary-font-color);
   padding: 4px 45px 4px 8px;
   border: none;
@@ -664,11 +665,17 @@ html {
   background-color: rgba(0, 0, 0, 0.6666666667);
   color: var(--primary-font-color);
   display: flex;
-  justify-content: center;
   align-items: center;
+  justify-content: center;
+  padding: 1rem 0;
   visibility: hidden;
   display: none;
   z-index: 999;
+}
+@media screen and (max-width: 768px) {
+  #popup-container {
+    justify-content: flex-start;
+  }
 }
 #popup-container #next-day-btn,
 #popup-container #prev-day-btn {
