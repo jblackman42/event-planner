@@ -1375,6 +1375,7 @@ input:checked + .slider:before {
   display: none;
   visibility: hidden;
   width: 600px;
+  max-width: 85vw;
   flex-wrap: wrap;
 }
 .form-container form div.section:first-of-type {
@@ -1435,6 +1436,14 @@ input:checked + .slider:before {
   align-items: center;
   justify-content: flex-start;
   gap: 0.5rem;
+}
+@media screen and (max-width: 768px) {
+  .form-container form div.section #room-selectors {
+    flex-direction: column;
+  }
+  .form-container form div.section #room-selectors .building {
+    width: 100%;
+  }
 }
 .form-container form .button-container {
   width: 100%;

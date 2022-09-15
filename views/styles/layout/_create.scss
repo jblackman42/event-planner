@@ -26,6 +26,7 @@ $input-color: var(--primary-font-color);
             visibility: hidden;
 
             width: 600px;
+            max-width: 85vw;
             flex-wrap: wrap;
             &:first-of-type {
                 display: flex;
@@ -88,6 +89,12 @@ $input-color: var(--primary-font-color);
                             justify-content: flex-start;
                             gap: .5rem;
                         }
+                    }
+                }
+                @media screen and (max-width: 768px) {
+                    flex-direction: column;
+                    .building {
+                        width: 100%;
                     }
                 }
             }
