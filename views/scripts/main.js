@@ -1,29 +1,18 @@
 // const registrationUserId = 9;
-const registrationUserId = 15679;
-const promotionUserId = 15679;
-const AVUserId = 15679;
-const facilitiesUserId = 15679;
-const childcareUserId = 15679;
 
-
-function getCookie(cname) {
-    let name = cname + "=";
-    let decodedCookie = decodeURIComponent(document.cookie);
-    let ca = decodedCookie.split(';');
-    for(let i = 0; i <ca.length; i++) {
-        let c = ca[i];
-        while (c.charAt(0) == ' ') {
-        c = c.substring(1);
-        }
-        if (c.indexOf(name) == 0) {
-        return c.substring(name.length, c.length);
-        }
-    }
-    return "";
-}
 
 const user_id = getCookie('user_id');
 const access_token = getCookie('access_token');
+let registrationUserIds,promotionUserIds,AVUserIds,facilitiesUserIds,childcareUserIds;
+
+const getAllTaskUsers = async () => {
+    registrationUserIds = await getUsersWithRole(2194);
+    promotionUserIds = await getUsersWithRole(2195);
+    AVUserIds = await getUsersWithRole(2196);
+    facilitiesUserIds = await getUsersWithRole(2197);
+    childcareUserIds = await getUsersWithRole(2198);
+}
+getAllTaskUsers();
 
 const getUser = async () => {
     return axios({
@@ -87,3 +76,19 @@ const updateColorScheme = () => {
     }
 }
 updateColorScheme();
+
+function getCookie(cname) {
+    let name = cname + "=";
+    let decodedCookie = decodeURIComponent(document.cookie);
+    let ca = decodedCookie.split(';');
+    for(let i = 0; i <ca.length; i++) {
+        let c = ca[i];
+        while (c.charAt(0) == ' ') {
+        c = c.substring(1);
+        }
+        if (c.indexOf(name) == 0) {
+        return c.substring(name.length, c.length);
+        }
+    }
+    return "";
+}

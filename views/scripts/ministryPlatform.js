@@ -22,6 +22,20 @@ const getEvents = (currentMonth, currentYear, redirect, LocationFilter) => { //r
     return response;
 }
 
+const getDaysEventsBetweenTimes = (startTime, endTime) => {
+    const response = axios({
+        method: 'get',
+        url: `https://my.pureheart.org/ministryplatformapi/tables/Events?$filter='${startTime}' BETWEEN Event_Start_Date AND Event_End_Date OR '${endTime}' BETWEEN Event_Start_Date AND Event_End_Date OR Event_Start_Date BETWEEN '${startTime}' AND '${endTime}' OR Event_End_Date BETWEEN '${startTime}' AND '${endTime}'`,
+        headers: {
+            'Accept': 'application/json',
+            'Authorization': `Bearer ${access_token}`
+        }
+    })
+    .then(response => response.data.filter(event => !event.Cancelled))
+    .catch(err => {console.error(err)})
+    return response;
+}
+
 const getEventRooms = (Event_ID) => {
     if (!Event_ID) return
     const response = axios({
@@ -207,6 +221,25 @@ const getUserInfo = (User_ID) => {
     })
     .then(response => {
         return response.data[0]
+    })
+    .catch(err => {
+        console.error(err)
+    })
+    return response;
+}
+
+const getUsersWithRole = (Role_ID) => {
+    if (!Role_ID) return
+    const response = axios({
+        method: 'get',
+        url: `https://my.pureheart.org/ministryplatformapi/tables/dp_User_Roles?$select=User_ID&$filter=Role_ID=${Role_ID}`,
+        headers: {
+            'Accept': 'application/json',
+            'Authorization': `Bearer ${access_token}`
+        }
+    })
+    .then(response => {
+        return response.data.map(user => user.User_ID)
     })
     .catch(err => {
         console.error(err)

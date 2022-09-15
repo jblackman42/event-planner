@@ -135,6 +135,28 @@ const prevSection = () => {
     }
 }
 
+let overlappingEventRooms = [];
+
+const updateEventTimes = async () => {
+    const startDateValue = startDateDOM.value;
+    const endDateValue = endDateDOM.value;
+
+    overlappingEventRooms = [];
+    
+    if (startDateValue && endDateValue) {
+        console.log(startDateValue, endDateValue)
+        const overlapEvents = await getDaysEventsBetweenTimes(startDateValue + ':00.00', endDateValue + ':00.00');
+        
+        for (let i = 0; i < overlapEvents.length; i ++) {
+            const {Event_ID} = overlapEvents[i];
+            const eventRooms = await getEventRooms(Event_ID);
+            eventRooms.forEach(room => {
+                overlappingEventRooms.push(room.Room_ID)
+            })
+        }
+    }
+}
+
 const loadRoomOptions = async () => {
     const buildingId = eventLocationDOM.value;
     let buildings = await getLocationBuildings(buildingId);
@@ -165,10 +187,11 @@ const loadRoomOptions = async () => {
                     <ul class="room-accordion closed" id="rooms-${Building_ID}" style="max-height: ${rooms.length * 20}px; transition: max-height ${rooms.length * 25}ms linear;">
                         ${rooms.map(room => {
                             const {Room_Name, Room_ID} = room;
+                            const roomUnavailable = overlappingEventRooms.includes(Room_ID);
                             return `
                                 <li id="${Room_ID}">
-                                    <input type="checkbox" class="room-input" name="room-${Room_ID}" id="room-${Room_ID}" value="${Room_ID}">
-                                    <label for="room-${Room_ID}">${Room_Name}</label>
+                                    <input type="checkbox" class="room-input" name="room-${Room_ID}" id="room-${Room_ID}" value="${Room_ID}" ${roomUnavailable ? 'disabled' : ''}>
+                                    <label for="room-${Room_ID}" ${roomUnavailable ? 'style="text-decoration:line-through;"' : ''}>${Room_Name}</label>
                                 </li>
                             `
                         }).join('')}
@@ -268,34 +291,36 @@ const handleSubmit = async (e) => {
     const taskOptions = [
         {
             taskType: "registration",
-            taskOwner: registrationUserId,
+            taskOwners: registrationUserIds,
             taskDOM: registrationDOM
         },
         {
             taskType: "promotion",
-            taskOwner: promotionUserId,
+            taskOwners: promotionUserIds,
             taskDOM: promotionDOM
         },
         {
             taskType: "a/v",
-            taskOwner: AVUserId,
+            taskOwners: AVUserIds,
             taskDOM: AVDOM
         },
         {
             taskType: "facilities",
-            taskOwner: facilitiesUserId,
+            taskOwners: facilitiesUserIds,
             taskDOM: facilitiesDOM
         },
         {
             taskType: "childcare",
-            taskOwner: childcareUserId,
+            taskOwners: childcareUserIds,
             taskDOM: childcareDOM
         }
     ]
 
     const sendAllTasks = async () => {
         for (task of taskOptions) {
-            if (task.taskDOM.value == 1) await sendTask(user.UserId, task.taskOwner, eventId, new Date().toISOString(), task.taskType)
+            for (taskOwner of task.taskOwners) {
+                if (task.taskDOM.value == 1) await sendTask(user.UserId, taskOwner, eventId, new Date().toISOString(), task.taskType)
+            }
         }
         tasksComplete = true;
         completed();

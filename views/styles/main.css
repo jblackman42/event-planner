@@ -411,30 +411,6 @@ html {
   border: none;
   outline: none;
 }
-.filter-box::before {
-  content: "\f107";
-  font-family: FontAwesome;
-  position: absolute;
-  bottom: 0;
-  right: 0;
-  width: 20%;
-  max-width: 50px;
-  min-width: 30px;
-  height: 100%;
-  max-height: 29px;
-  text-align: center;
-  font-size: 20px;
-  display: grid;
-  place-items: center;
-  color: #fff;
-  background-color: var(--secondary-bg-color);
-  pointer-events: none;
-  border-top-right-radius: 2px;
-  border-bottom-right-radius: 2px;
-}
-.filter-box:focus::before {
-  content: "\f106";
-}
 
 #calender-container {
   margin: auto;
