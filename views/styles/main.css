@@ -1400,14 +1400,19 @@ input:checked + .slider:before {
   box-sizing: border-box;
   background-color: var(--primary-bg-color);
 }
+.form-container form div.section #room-selectors .building .building-header {
+  display: flex;
+  justify-content: space-between;
+  cursor: pointer;
+}
 .form-container form div.section #room-selectors .building .building-name {
   margin: 0;
   padding: 0;
-  padding-block: 0.5rem;
-  cursor: pointer;
+  display: grid;
+  place-items: center;
 }
 .form-container form div.section #room-selectors .building .toggle-btn {
-  padding: 1rem;
+  padding: 0.5rem;
   margin: 0;
   display: grid;
   place-items: center;
@@ -1415,10 +1420,6 @@ input:checked + .slider:before {
   background-color: transparent;
   color: var(--primary-font-color);
   cursor: pointer;
-  position: absolute;
-  top: 0;
-  right: 0;
-  bottom: 0;
 }
 .form-container form div.section #room-selectors .building .room-accordion {
   list-style: none;

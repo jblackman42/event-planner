@@ -182,8 +182,10 @@ const loadRoomOptions = async () => {
             if (rooms.length == 0) return;
             return `
                 <div class="building">
-                    <p class="building-name" id="building${Building_ID}" onclick="toggleAccordion(${Building_ID})">Building ${Building_Name}</p>
-                    <button type="button" class="toggle-btn" onclick="toggleAccordion(${Building_ID})"><i id="icon-${Building_ID}" class='fas fas fa-angle-down'></i></button>
+                    <div class="building-header" onclick="toggleAccordion(${Building_ID})">
+                        <p class="building-name" id="building${Building_ID}">Building ${Building_Name}</p>
+                        <button type="button" class="toggle-btn"><i id="icon-${Building_ID}" class='fas fas fa-angle-down'></i></button>
+                    </div>
                     <ul class="room-accordion closed" id="rooms-${Building_ID}" style="max-height: ${rooms.length * 20}px; transition: max-height ${rooms.length * 25}ms linear;">
                         ${rooms.map(room => {
                             const {Room_Name, Room_ID} = room;
