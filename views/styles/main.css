@@ -404,6 +404,9 @@ html {
   -webkit-border-radius: 2px;
   -webkit-box-shadow: 0px 1px 3px rgba(0, 0, 0, 0.1);
   -webkit-user-select: none;
+  -moz-user-select: none;
+   -ms-user-select: none;
+       user-select: none;
   font-size: inherit;
   margin: 0;
 }
@@ -672,6 +675,7 @@ html {
   height: -webkit-max-content;
   height: -moz-max-content;
   height: max-content;
+  max-height: 48px;
   display: grid;
   place-items: center;
   padding: 0.25rem;
@@ -1413,6 +1417,7 @@ input:checked + .slider:before {
   position: absolute;
   top: 0;
   right: 0;
+  bottom: 0;
 }
 .form-container form div.section #room-selectors .building .room-accordion {
   list-style: none;

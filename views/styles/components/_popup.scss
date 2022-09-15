@@ -21,6 +21,7 @@ $arrow-button-bg: var(--arrow-button-color);
     #next-day-btn,
     #prev-day-btn {
         height: max-content;
+        max-height: 48px;
         display: grid;
         place-items: center;
         padding: .25rem;
