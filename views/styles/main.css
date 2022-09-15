@@ -777,7 +777,7 @@ html {
     transform: translateX(calc(-100% - 8px));
   }
   #popup-container #events-list {
-    max-height: 50vw;
+    max-height: 50vh !important;
   }
 }
 
