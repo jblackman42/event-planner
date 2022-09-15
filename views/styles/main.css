@@ -312,11 +312,11 @@ template {
 }
 
 :root {
-  --backgroundColor: #f7f1e3;
+  --backgroundColor: #e0dcdc;
   --primary-font-color: #17161d;
   --secondary-font-color: #f1f2f6;
-  --primary-bg-color: #e4dccf;
-  --secondary-bg-color: #b2bec3;
+  --primary-bg-color: #cdc3c3;
+  --secondary-bg-color: #716868;
   --red-accent-color: #e74c3c;
   --blue-accent-color: #3498db;
   --blue-accent-color2: #2980b9;
@@ -1443,8 +1443,10 @@ input:checked + .slider:before {
 }
 .form-container form div.section #room-selectors .building .room-accordion li {
   display: flex;
-  height: 20px;
-  align-items: center;
+  height: -webkit-max-content;
+  height: -moz-max-content;
+  height: max-content;
+  align-items: flex-start;
   justify-content: flex-start;
   gap: 0.5rem;
 }

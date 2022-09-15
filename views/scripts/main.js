@@ -3,7 +3,8 @@
 
 const user_id = getCookie('user_id');
 const access_token = getCookie('access_token');
-let registrationUserIds,promotionUserIds,AVUserIds,facilitiesUserIds,childcareUserIds;
+let registrationUserIds,promotionUserIds,AVUserIds,facilitiesUserIds,childcareUserIds,allTaskUserIds,peoriaUserIds;
+const peoriaCampusID = 4;
 
 const getAllTaskUsers = async () => {
     registrationUserIds = await getUsersWithRole(2194);
@@ -11,6 +12,8 @@ const getAllTaskUsers = async () => {
     AVUserIds = await getUsersWithRole(2196);
     facilitiesUserIds = await getUsersWithRole(2197);
     childcareUserIds = await getUsersWithRole(2198);
+    allTaskUserIds = await getUsersWithRole(2199);
+    peoriaUserIds = await getUsersWithRole(2200);
 }
 getAllTaskUsers();
 
@@ -38,16 +41,7 @@ const doneLoading = () => {
     loadingScreen.style.display = 'none';
 }
 
-const toggleColorScheme = () => {
-    var colorScheme = localStorage.getItem('colorScheme');  
-
-    if (colorScheme == 'light') {
-        localStorage.setItem('colorScheme', 'dark');
-    } else {
-        localStorage.setItem('colorScheme', 'light');
-    }
-    updateColorScheme();
-}
+// toggleColorScheme();
 
 const root = document.querySelector(':root');
 
@@ -73,9 +67,23 @@ const updateColorScheme = () => {
         root.style.setProperty('--blue-accent-color', '#3498db');
         root.style.setProperty('--blue-accent-color2', '#2980b9');
         root.style.setProperty('--arrow-button-color', 'gray');
+    } else {
+        localStorage.setItem('colorScheme', 'light');
+        updateColorScheme();
     }
 }
 updateColorScheme();
+
+const toggleColorScheme = () => {
+    var colorScheme = localStorage.getItem('colorScheme');  
+
+    if (colorScheme == 'light') {
+        localStorage.setItem('colorScheme', 'dark');
+    } else {
+        localStorage.setItem('colorScheme', 'light');
+    }
+    updateColorScheme();
+}
 
 function getCookie(cname) {
     let name = cname + "=";

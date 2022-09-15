@@ -186,7 +186,7 @@ const loadRoomOptions = async () => {
                         <p class="building-name" id="building${Building_ID}">Building ${Building_Name}</p>
                         <button type="button" class="toggle-btn"><i id="icon-${Building_ID}" class='fas fas fa-angle-down'></i></button>
                     </div>
-                    <ul class="room-accordion closed" id="rooms-${Building_ID}" style="max-height: ${rooms.length * 20}px; transition: max-height ${rooms.length * 25}ms linear;">
+                    <ul class="room-accordion closed" id="rooms-${Building_ID}" style="max-height: ${rooms.length * 25}px; transition: max-height ${rooms.length * 25}ms linear;">
                         ${rooms.map(room => {
                             const {Room_Name, Room_ID} = room;
                             const roomUnavailable = overlappingEventRooms.includes(Room_ID);
@@ -247,6 +247,15 @@ const handleSubmit = async (e) => {
     //turn input data into form for sending to MP
     const event = [formatEvent(eventNameDOM.value,eventDescDOM.value,primaryContactID.Contact_ID,startDateDOM.value,endDateDOM.value,eventTypeDOM.value,attendanceDOM.value,congregationDOM.value,setupTimeDOM.value,cleanupTimeDOM.value,privacyDOM.value == 1 ? true : false,eventLocationDOM.value, visibilityLevelDOM.value)];
 
+    const completed = () => {
+        if (tasksComplete && roomsComplete) {
+            doneLoading();
+            console.log('complete')
+            // window.location = '/create';
+        } else {
+            console.log('not complete yet')
+        }
+    }
 
     //get an array of the rooms that were selected
     const allRoomInputs = document.querySelectorAll('.room-input');
@@ -320,7 +329,18 @@ const handleSubmit = async (e) => {
 
     const sendAllTasks = async () => {
         for (task of taskOptions) {
+            //send tasks to specific task owners for each request
             for (taskOwner of task.taskOwners) {
+                if (task.taskDOM.value == 1) await sendTask(user.UserId, taskOwner, eventId, new Date().toISOString(), task.taskType)
+            }
+            //if event locatin is peoria, send to peoria staff
+            if (eventLocationDOM.value == peoriaCampusID) {
+                for (taskOwner of peoriaUserIds) {
+                    if (task.taskDOM.value == 1) await sendTask(user.UserId, taskOwner, eventId, new Date().toISOString(), task.taskType)
+                }
+            }
+            //always send to all-tasks user role 
+            for (taskOwner of allTaskUserIds) {
                 if (task.taskDOM.value == 1) await sendTask(user.UserId, taskOwner, eventId, new Date().toISOString(), task.taskType)
             }
         }
@@ -329,12 +349,5 @@ const handleSubmit = async (e) => {
     }
     sendAllTasks();
 
-    const completed = () => {
-        if (tasksComplete && roomsComplete) {
-            doneLoading();
-            window.location = '/create';
-        } else {
-            console.log('not complete yet')
-        }
-    }
+    
 }

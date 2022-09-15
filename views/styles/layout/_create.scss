@@ -85,8 +85,8 @@ $input-color: var(--primary-font-color);
 
                         li {
                             display: flex;
-                            height: 20px;
-                            align-items: center;
+                            height: max-content;
+                            align-items: flex-start;
                             justify-content: flex-start;
                             gap: .5rem;
                         }
