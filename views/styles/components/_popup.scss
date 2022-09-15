@@ -126,5 +126,8 @@ $arrow-button-bg: var(--arrow-button-color);
             right: auto;
             transform: translateX(calc(-100% - 8px));
         }
+        #events-list {
+            max-height: 50vw;
+        }
     }
 }
