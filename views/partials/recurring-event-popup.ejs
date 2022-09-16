@@ -1,0 +1,49 @@
+<div class="recurring-event-container">
+    <div class="recurring-event">
+        <div class="recurring-header">
+            <p>Recurrence Pattern</p>
+            <button class="close-button" onclick="console.log('hide')"><i class="material-icons">close</i></button>
+        </div>
+        <div class="nav-options">
+            <ul>
+                <li class="active">Daily</li>
+                <li>Weekly</li>
+                <li>Monthly</li>
+                <li>Yearly</li>
+            </ul>
+        </div>
+        <div class="recurring-pattern">
+            <div class="input">
+                <input type="radio" name="daily" id="days">
+                <label for="days">Every <input type="number"> day(s)</label>
+            </div>
+            <div class="input">
+                <input type="radio" name="daily" id="weekday">
+                <label for="weekday">Every Weekday</label>
+            </div>
+        </div>
+        <div class="date-options">
+            <div class="input">
+                <label for="start-by" class="title-label">Start By:</label>
+                <input type="date" name="start-by" id="start-by">
+            </div>
+            <div class="input">
+                <label for="end-by" class="title-label">End:</label>
+                <div class="input-options">
+                    <div class="input">
+                        <input type="radio" name="occurrence" id="occurrence">
+                        <label for="occurrence">After <input type="number" name="occurrence-num" id="occurrence-num"> occurrences</label>
+                    </div>
+                    <div class="input">
+                        <input type="radio" name="by-date" id="by-date">
+                        <label for="by-date">By date <input type="date" name="by-date-input" id="by-date-input"></label>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="button-container">
+            <button class="btn"><i class='fas fa-save'></i> Save</button>
+            <button class="btn cancel"><i class='fas fa-ban'></i> Cancel</button>
+        </div>
+    </div>
+</div>

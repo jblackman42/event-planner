@@ -1254,6 +1254,99 @@ input:checked + .slider:before {
   border-radius: 50%;
 }
 
+.recurring-event-container {
+  display: grid;
+  place-items: center;
+  position: fixed;
+  inset: 0;
+  background-color: rgba(0, 0, 0, 0.6666666667);
+  color: var(--primary-font-color);
+  z-index: 999;
+  display: none;
+  visibility: hidden;
+}
+.recurring-event-container .recurring-event {
+  background-color: var(--primary-bg-color);
+  border-radius: 2.5px;
+  overflow: hidden;
+}
+.recurring-event-container .recurring-event .recurring-header {
+  background-color: var(--secondary-bg-color);
+}
+.recurring-event-container .recurring-event .recurring-header p {
+  padding: 1rem;
+  margin: 0;
+  font-size: 1.5rem;
+}
+.recurring-event-container .recurring-event .nav-options ul {
+  list-style: none;
+  display: flex;
+  align-items: center;
+  justify-content: space-around;
+  margin: 0;
+  padding: 0;
+}
+.recurring-event-container .recurring-event .nav-options ul li {
+  padding: 1rem;
+  width: 100%;
+  text-align: center;
+  cursor: pointer;
+}
+.recurring-event-container .recurring-event .nav-options ul li.active {
+  border-bottom: 2px solid var(--blue-accent-color);
+}
+.recurring-event-container .recurring-event .nav-options ul li:hover {
+  background-color: var(--secondary-bg-color);
+}
+.recurring-event-container .recurring-event .recurring-pattern {
+  padding: 1rem;
+  display: flex;
+  flex-direction: column;
+  border-bottom: 2px solid var(--secondary-bg-color);
+}
+.recurring-event-container .recurring-event .date-options {
+  padding: 1rem;
+}
+.recurring-event-container .recurring-event .date-options label {
+  min-width: 80px;
+  height: -webkit-max-content;
+  height: -moz-max-content;
+  height: max-content;
+}
+.recurring-event-container .recurring-event .date-options label.title-label {
+  margin: 0.5rem 0;
+}
+.recurring-event-container .recurring-event .input {
+  padding: 0.25rem;
+  display: flex;
+  gap: 0.5rem;
+}
+.recurring-event-container .recurring-event .input input {
+  padding: 0.25rem 0.5rem;
+  margin: 0 0.5rem;
+  background-color: var(--primary-bg-color);
+  color: currentColor;
+  border-radius: 2.5px;
+  border: 1px solid var(--primary-font-color);
+}
+.recurring-event-container .recurring-event .input input[type=number] {
+  max-width: 100px;
+}
+.recurring-event-container .recurring-event .button-container {
+  display: flex;
+  justify-content: flex-end;
+  padding: 1rem;
+  gap: 1rem;
+  border-top: 2px solid var(--secondary-bg-color);
+}
+.recurring-event-container .recurring-event .button-container .btn {
+  margin: 0;
+}
+.recurring-event-container .recurring-event .button-container .btn.cancel {
+  background-color: transparent !important;
+  border-color: var(--secondary-bg-color) !important;
+}
+
 #loginForm,
 #signUpForm {
   background-color: #181818;
