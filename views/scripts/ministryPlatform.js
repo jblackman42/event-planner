@@ -180,7 +180,7 @@ const getBuildingRooms = (Building_ID) => {
     if (!Building_ID) return
     const response = axios({
         method: 'get',
-        url: `https://my.pureheart.org/ministryplatformapi/tables/Rooms?%24filter=Building_ID=${Building_ID}`,
+        url: `https://my.pureheart.org/ministryplatformapi/tables/Rooms?%24filter=Building_ID=${Building_ID} AND Bookable='true'`,
         headers: {
             'Accept': 'application/json',
             'Authorization': `Bearer ${access_token}`

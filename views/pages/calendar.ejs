@@ -101,10 +101,8 @@
             let eventIDs = []
             
             for (id of currRooms) {
-                console.log(id)
                 const newEventIDs = [...new Set(await getEventRoomsFromIDs(allEventIds, id))];
                 eventIDs = eventIDs.concat(newEventIDs);
-                console.log(eventIDs)
             }
 
             eventIDs = [...new Set(eventIDs)]
@@ -117,59 +115,6 @@
             console.log('no filter')
             events = allEvents;
         }
-
-        // console.log(calendarFilterDOM.value)
-        // console.log(buildingFilterDOM.value)
-        // console.log(roomFilterDOM.value)
-
-        //LOCATION
-        // if (calendarFilterDOM.value > 0) {
-        //     events = allEvents.filter(event => event.Location_ID == calendarFilterDOM.value)
-        // }
-
-        //ROOM
-        // if (buildingFilterDOM.value > 0 && roomFilterDOM.value > 0) {
-        //     let numOfEvents = events.length;
-        //     let counter = 0;
-        //     for (let i = 0; i < events.length; i ++) { //loop through all events
-        //         const percentComplete = `${Math.floor((counter / numOfEvents) * 100)}%`;
-        //         percentCompleteDOM.innerText = percentComplete;
-        //         percentProgressDOM.style.height = percentComplete;
-        //         counter ++;
-
-        //         const {Event_ID} = events[i];
-        //         const roomIDs = await getEventRoomIDs(Event_ID); //get array of Room_IDs
-                
-        //         if (!roomIDs.filter(roomID => roomID == roomFilterDOM.value).length) {
-        //             events.splice(i, 1);
-        //             i --;
-        //         }
-
-        //     }
-        //BUILDING
-        // } else if (buildingFilterDOM.value > 0) {
-
-        //     let numOfEvents = events.length;
-        //     let counter = 0;
-
-        //     const currentBuilding = roomsList.filter(building => building.Building_ID == buildingFilterDOM.value)[0];
-        //     const currentBuildingRooms = currentBuilding.rooms.map(room => room.Room_ID);
-
-        //     for (let i = 0; i < events.length; i ++) { //loop through all events
-        //         const {Event_ID} = events[i];
-        //         const roomIDs = await getEventRoomIDs(Event_ID); //get array of Room_IDs
-
-        //         const percentComplete = `${Math.ceil((counter / numOfEvents) * 100)}%`;
-        //         percentCompleteDOM.innerText = percentComplete;
-        //         percentProgressDOM.style.height = percentComplete;
-        //         counter ++;
-
-        //         if (!roomIDs.filter(roomID => currentBuildingRooms.includes(roomID)).length) {
-        //             events.splice(i, 1);
-        //             i --;
-        //         }
-        //     }
-        // }
         
         //loop through all data
         //check if data date is in dates array
