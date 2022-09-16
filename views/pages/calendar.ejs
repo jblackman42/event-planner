@@ -45,13 +45,14 @@
                     </div>
                 </div>
 
-                <button class="btn" onclick="handleEvents()">Submit</button>
-                <button class="btn" id="reset-btn" onclick="handleReset()">Reset</button>
+                <div class="button-container">
+                    <button class="btn" id="reset-btn" onclick="handleReset()">Reset</button>
+                    <button class="btn" onclick="handleEvents()">Submit</button>
+                </div>
             </div>
         </div>
 
         <div id="calender-labels">
-            
             <p>s<span>unday</span></p>
             <p>m<span>onday</span></p>
             <p>t<span>uesday</span></p>
@@ -77,57 +78,98 @@
         dates.map(date => date.numberOfEvents = 0)
 
         allEvents = await getEvents(currentMonth, currentYear, 'calendar')
-        events = allEvents;
+        events = [];
+
+        if (buildingFilterDOM.value > 0 && roomFilterDOM.value > 0) {
+            console.log('room filter')
+            events = allEvents.filter(event => event.Location_ID == calendarFilterDOM.value)
+
+            const allEventIds = events.map(event => event.Event_ID).sort()
+            console.log(allEventIds)
+            // allEventIds.length = 100
+            const eventIDs = await getEventRoomsFromIDs(allEventIds, roomFilterDOM.value);
+            events = events.filter(event => eventIDs.includes(event.Event_ID))
+
+        } else if (buildingFilterDOM.value > 0) {
+            console.log('building filter')
+            events = allEvents.filter(event => event.Location_ID == calendarFilterDOM.value)
+
+            const allEventIds = events.map(event => event.Event_ID).sort()
+
+            const currRooms = roomsList.filter(building => building.Building_ID == buildingFilterDOM.value)[0].rooms.map(room => room.Room_ID);
+            
+            let eventIDs = []
+            
+            for (id of currRooms) {
+                console.log(id)
+                const newEventIDs = [...new Set(await getEventRoomsFromIDs(allEventIds, id))];
+                eventIDs = eventIDs.concat(newEventIDs);
+                console.log(eventIDs)
+            }
+
+            eventIDs = [...new Set(eventIDs)]
+            events = events.filter(event => eventIDs.includes(event.Event_ID))
+
+        } else if (calendarFilterDOM.value > 0) {
+            console.log('location filter')
+            events = allEvents.filter(event => event.Location_ID == calendarFilterDOM.value)
+        } else {
+            console.log('no filter')
+            events = allEvents;
+        }
 
         // console.log(calendarFilterDOM.value)
         // console.log(buildingFilterDOM.value)
         // console.log(roomFilterDOM.value)
 
-        if (calendarFilterDOM.value > 0) {
-            events = allEvents.filter(event => event.Location_ID == calendarFilterDOM.value)
-        }
+        //LOCATION
+        // if (calendarFilterDOM.value > 0) {
+        //     events = allEvents.filter(event => event.Location_ID == calendarFilterDOM.value)
+        // }
 
-        if (buildingFilterDOM.value > 0 && roomFilterDOM.value > 0) {
-            let numOfEvents = events.length;
-            let counter = 0;
-            for (let i = 0; i < events.length; i ++) { //loop through all events
-                const percentComplete = `${Math.floor((counter / numOfEvents) * 100)}%`;
-                percentCompleteDOM.innerText = percentComplete;
-                percentProgressDOM.style.height = percentComplete;
-                counter ++;
+        //ROOM
+        // if (buildingFilterDOM.value > 0 && roomFilterDOM.value > 0) {
+        //     let numOfEvents = events.length;
+        //     let counter = 0;
+        //     for (let i = 0; i < events.length; i ++) { //loop through all events
+        //         const percentComplete = `${Math.floor((counter / numOfEvents) * 100)}%`;
+        //         percentCompleteDOM.innerText = percentComplete;
+        //         percentProgressDOM.style.height = percentComplete;
+        //         counter ++;
 
-                const {Event_ID} = events[i];
-                const roomIDs = await getEventRoomIDs(Event_ID); //get array of Room_IDs
+        //         const {Event_ID} = events[i];
+        //         const roomIDs = await getEventRoomIDs(Event_ID); //get array of Room_IDs
                 
-                if (!roomIDs.filter(roomID => roomID == roomFilterDOM.value).length) {
-                    events.splice(i, 1);
-                    i --;
-                }
+        //         if (!roomIDs.filter(roomID => roomID == roomFilterDOM.value).length) {
+        //             events.splice(i, 1);
+        //             i --;
+        //         }
 
-            }
-        } else if (buildingFilterDOM.value > 0) {
+        //     }
+        //BUILDING
+        // } else if (buildingFilterDOM.value > 0) {
 
-            let numOfEvents = events.length;
-            let counter = 0;
+        //     let numOfEvents = events.length;
+        //     let counter = 0;
 
-            const currentBuilding = roomsList.filter(building => building.Building_ID == buildingFilterDOM.value)[0];
-            const currentBuildingRooms = currentBuilding.rooms.map(room => room.Room_ID);
+        //     const currentBuilding = roomsList.filter(building => building.Building_ID == buildingFilterDOM.value)[0];
+        //     const currentBuildingRooms = currentBuilding.rooms.map(room => room.Room_ID);
 
-            for (let i = 0; i < events.length; i ++) { //loop through all events
-                const {Event_ID} = events[i];
-                const roomIDs = await getEventRoomIDs(Event_ID); //get array of Room_IDs
+        //     for (let i = 0; i < events.length; i ++) { //loop through all events
+        //         const {Event_ID} = events[i];
+        //         const roomIDs = await getEventRoomIDs(Event_ID); //get array of Room_IDs
 
-                const percentComplete = `${Math.ceil((counter / numOfEvents) * 100)}%`;
-                percentCompleteDOM.innerText = percentComplete;
-                percentProgressDOM.style.height = percentComplete;
-                counter ++;
+        //         const percentComplete = `${Math.ceil((counter / numOfEvents) * 100)}%`;
+        //         percentCompleteDOM.innerText = percentComplete;
+        //         percentProgressDOM.style.height = percentComplete;
+        //         counter ++;
 
-                if (!roomIDs.filter(roomID => currentBuildingRooms.includes(roomID)).length) {
-                    events.splice(i, 1);
-                    i --;
-                }
-            }
-        }
+        //         if (!roomIDs.filter(roomID => currentBuildingRooms.includes(roomID)).length) {
+        //             events.splice(i, 1);
+        //             i --;
+        //         }
+        //     }
+        // }
         
         //loop through all data
         //check if data date is in dates array

@@ -548,9 +548,11 @@ html {
   display: none;
   visibility: hidden;
 }
-@media screen and (max-width: 550px) {
+@media screen and (max-width: 612px) {
   #calender-controls #reset-btn {
-    transform: translateY(-125%);
+    position: static;
+    margin: 0;
+    margin-right: auto;
   }
 }
 #calender-controls p {
@@ -583,6 +585,9 @@ html {
   display: flex;
   align-items: center;
   gap: 0.5rem;
+}
+#calender-controls .filter-controls div.button-container {
+  margin-left: auto;
 }
 @media screen and (max-width: 612px) {
   #calender-controls .filter-controls {
@@ -1177,8 +1182,10 @@ nav .navContainer .footer ul li a {
   margin-top: auto;
   display: flex;
   justify-content: center;
+  flex-wrap: wrap;
 }
-#footer p, #footer a {
+#footer p,
+#footer a {
   margin: 0.5rem;
   text-align: center;
   color: var(--primary-font-color);
@@ -1370,6 +1377,16 @@ input:checked + .slider:before {
 .form-container p {
   padding: 0 0.5rem;
 }
+@media screen and (max-width: 768px) {
+  .form-container p {
+    text-align: center;
+  }
+}
+.form-container h1 {
+  padding: 0;
+  margin: 0;
+  text-align: center;
+}
 .form-container #event-creator {
   margin-left: 1rem;
 }
@@ -1493,7 +1510,9 @@ input:checked + .slider:before {
 .form-container form .input label {
   margin-top: auto;
 }
-.form-container form .input input, .form-container form .input textarea, .form-container form .input select {
+.form-container form .input input,
+.form-container form .input textarea,
+.form-container form .input select {
   padding: 0.25rem 0.5rem;
   height: 2rem;
   line-height: 2rem;

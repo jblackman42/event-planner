@@ -1,5 +1,5 @@
 $input-background: var(--primary-bg-color);
-$secondary-background:  var(--secondary-bg-color);
+$secondary-background: var(--secondary-bg-color);
 $input-color: var(--primary-font-color);
 
 .form-container {
@@ -10,17 +10,31 @@ $input-color: var(--primary-font-color);
     p {
         // display: flex;
         padding: 0 .5rem;
+
+        @media screen and (max-width: 768px) {
+            text-align: center;
+        }
     }
+
+    h1 {
+        padding: 0;
+        margin: 0;
+        text-align: center;
+    }
+
     #event-creator {
         margin-left: 1rem;
     }
+
     #warning-msg {
         color: $red-accent-color;
         text-align: center;
         font-weight: bold;
     }
+
     form {
         max-width: 85vw;
+
         div.section {
             display: none;
             visibility: hidden;
@@ -28,6 +42,7 @@ $input-color: var(--primary-font-color);
             width: 600px;
             max-width: 85vw;
             flex-wrap: wrap;
+
             &:first-of-type {
                 display: flex;
                 visibility: visible;
@@ -39,6 +54,7 @@ $input-color: var(--primary-font-color);
                 margin-block: 1rem;
                 gap: 1rem;
                 width: 100%;
+
                 .building {
                     width: calc(50% - 1rem);
                     height: max-content;
@@ -48,11 +64,13 @@ $input-color: var(--primary-font-color);
                     box-sizing: border-box;
 
                     background-color: $input-background;
+
                     .building-header {
                         display: flex;
                         justify-content: space-between;
                         cursor: pointer;
                     }
+
                     .building-name {
                         // font-weight: bold;
                         margin: 0;
@@ -60,6 +78,7 @@ $input-color: var(--primary-font-color);
                         display: grid;
                         place-items: center;
                     }
+
                     .toggle-btn {
                         padding: .5rem;
                         margin: 0;
@@ -78,7 +97,7 @@ $input-color: var(--primary-font-color);
                         padding: 0;
                         overflow: hidden;
 
-                        
+
                         &.closed {
                             max-height: 0 !important;
                         }
@@ -92,29 +111,35 @@ $input-color: var(--primary-font-color);
                         }
                     }
                 }
+
                 @media screen and (max-width: 768px) {
                     flex-direction: column;
+
                     .building {
                         width: 100%;
                     }
                 }
             }
         }
+
         .button-container {
             width: 100%;
             display: flex;
             order: 999;
         }
+
         button {
             margin: .5rem;
             height: max-content;
             margin: auto .5rem 1rem auto;
+
             &.prev {
-                background-color: $red-accent-color !important;
-                border-color: $red-accent-color !important;
+                background-color: $red-accent-color  !important;
+                border-color: $red-accent-color  !important;
                 margin: auto auto 1rem .5rem;
             }
         }
+
         .input {
             display: flex;
             justify-content: space-between;
@@ -122,13 +147,18 @@ $input-color: var(--primary-font-color);
             width: 50%;
             padding: 1rem .5rem;
             box-sizing: border-box;
+
             &.description textarea {
                 height: max-content;
             }
+
             label {
                 margin-top: auto;
             }
-            input, textarea, select {
+
+            input,
+            textarea,
+            select {
                 padding: .25rem .5rem;
                 height: 2rem;
                 line-height: 2rem;
@@ -137,27 +167,32 @@ $input-color: var(--primary-font-color);
                 color: currentColor;
                 border-radius: 2.5px;
             }
+
             select {
                 box-sizing: content-box;
                 padding: 0.25rem 0;
             }
+
             textarea {
                 resize: none;
             }
+
             /* Chrome, Safari, Edge, Opera */
             input::-webkit-outer-spin-button,
             input::-webkit-inner-spin-button {
-            -webkit-appearance: none;
-            margin: 0;
+                -webkit-appearance: none;
+                margin: 0;
             }
 
             /* Firefox */
             input[type=number] {
-            -moz-appearance: textfield;
+                -moz-appearance: textfield;
             }
         }
+
         @media screen and (max-width: 768px) {
             flex-direction: column;
+
             .input {
                 width: 100%;
                 margin: 0;

@@ -53,6 +53,40 @@ const getEventRooms = (Event_ID) => {
     return response;
 }
 
+const getEventRoomsFromIDs = (Event_IDs, Room_ID) => {
+    if (!Event_IDs || !Room_ID) return
+    const response = axios({
+        method: 'get',
+        url: `https://my.pureheart.org/ministryplatformapi/tables/Event_Rooms?%24filter=Room_ID = ${Room_ID} AND Event_ID BETWEEN ${Event_IDs[0]} AND ${Event_IDs[Event_IDs.length - 1]}`,
+        headers: {
+            'Accept': 'application/json',
+            'Authorization': `Bearer ${access_token}`
+        }
+    })
+    .then(response => response.data.map(event => event.Event_ID))
+    .catch(err => {
+        console.error(err)
+    })
+    return response;
+}
+
+const getEventRoomsForBuilding = (Event_IDs, Room_IDs, skip) => {
+    if (!Event_IDs || !Room_IDs) return
+    const response = axios({
+        method: 'get',
+        url: `https://my.pureheart.org/ministryplatformapi/tables/Event_Rooms?${skip ? `$skip=${skip}&` : ''}%24filter=${Room_IDs.map(id => `Room_ID=${id} AND Event_ID BETWEEN ${Event_IDs[0]} AND ${Event_IDs[Event_IDs.length - 1]}`).join(' OR ')}`,
+        headers: {
+            'Accept': 'application/json',
+            'Authorization': `Bearer ${access_token}`
+        }
+    })
+    .then(response => response.data.map(event => event.Event_ID))
+    .catch(err => {
+        console.error(err)
+    })
+    return response;
+}
+
 const getEventRoomIDs = (Event_ID) => {
     if (!Event_ID) return
     const response = axios({

@@ -6,7 +6,10 @@ $footer-text: var(--primary-font-color);
     margin-top: auto;
     display: flex;
     justify-content: center;
-    p, a {
+    flex-wrap: wrap;
+
+    p,
+    a {
         margin: .5rem;
         text-align: center;
         color: $footer-text;

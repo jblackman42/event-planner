@@ -128,16 +128,19 @@ $button-bg: var(--arrow-button-color);
         display: grid;
         place-items: center;
     }
+
     #reset-btn {
         position: absolute;
         right: 0;
         top: 0;
         margin: 1.4rem;
-        background-color: $red-accent-color !important;
-        border-color: $red-accent-color !important;
-        
-        @media screen and (max-width: 550px) {
-            transform: translateY(-125%);
+        background-color: $red-accent-color  !important;
+        border-color: $red-accent-color  !important;
+
+        @media screen and (max-width: 612px) {
+            position: static;
+            margin: 0;
+            margin-right: auto;
         }
 
         display: none;
@@ -173,13 +176,20 @@ $button-bg: var(--arrow-button-color);
         flex-wrap: wrap;
         max-width: 1000px;
         margin-inline: 14px;
+
         div {
             display: flex;
             align-items: center;
             gap: .5rem;
+
+            &.button-container {
+                margin-left: auto;
+            }
         }
+
         @media screen and (max-width: 612px) {
             flex-direction: column;
+
             div {
                 width: 100%;
                 justify-content: flex-end;
