@@ -1269,14 +1269,20 @@ input:checked + .slider:before {
   background-color: var(--primary-bg-color);
   border-radius: 2.5px;
   overflow: hidden;
+  position: relative;
+  width: 600px;
+  max-width: 90vw;
 }
 .recurring-event-container .recurring-event .recurring-header {
-  background-color: var(--secondary-bg-color);
+  border-bottom: 2px solid var(--secondary-bg-color);
 }
 .recurring-event-container .recurring-event .recurring-header p {
   padding: 1rem;
   margin: 0;
   font-size: 1.5rem;
+}
+.recurring-event-container .recurring-event .recurring-header .close-button {
+  color: currentColor;
 }
 .recurring-event-container .recurring-event .nav-options ul {
   list-style: none;
@@ -1316,6 +1322,14 @@ input:checked + .slider:before {
 .recurring-event-container .recurring-event .date-options label.title-label {
   margin: 0.5rem 0;
 }
+.recurring-event-container .recurring-event .inputs-list {
+  display: flex;
+  flex-wrap: wrap;
+  margin: 1rem 0;
+}
+.recurring-event-container .recurring-event .inputs-list .input {
+  width: 150px;
+}
 .recurring-event-container .recurring-event .input {
   padding: 0.25rem;
   display: flex;
@@ -1331,6 +1345,9 @@ input:checked + .slider:before {
 }
 .recurring-event-container .recurring-event .input input[type=number] {
   max-width: 100px;
+}
+.recurring-event-container .recurring-event .input p {
+  margin: 0.5rem 0;
 }
 .recurring-event-container .recurring-event .button-container {
   display: flex;
@@ -1468,7 +1485,8 @@ input:checked + .slider:before {
   height: 100%;
 }
 .form-container p {
-  padding: 0 0.5rem;
+  padding: 0;
+  margin: auto 0.25rem;
 }
 @media screen and (max-width: 768px) {
   .form-container p {
@@ -1601,7 +1619,7 @@ input:checked + .slider:before {
   height: max-content;
 }
 .form-container form .input label {
-  margin-top: auto;
+  margin-bottom: 0.5rem;
 }
 .form-container form .input input,
 .form-container form .input textarea,
@@ -1620,6 +1638,27 @@ input:checked + .slider:before {
 }
 .form-container form .input textarea {
   resize: none;
+}
+.form-container form .input #recurring-event-input {
+  display: flex;
+  justify-content: space-between;
+  background-color: var(--primary-bg-color);
+  border-radius: 2.5px;
+  height: 40px;
+}
+.form-container form .input #recurring-event-input button {
+  border: none;
+  background-color: transparent;
+  color: currentColor;
+  display: grid;
+  place-items: center;
+  padding: 0.25rem 1rem;
+  margin: auto;
+  margin-right: 0;
+  cursor: pointer;
+}
+.form-container form .input #recurring-event-input button i {
+  font-size: 1.25rem;
 }
 .form-container form .input input::-webkit-outer-spin-button,
 .form-container form .input input::-webkit-inner-spin-button {

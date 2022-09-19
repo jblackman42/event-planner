@@ -109,6 +109,13 @@
                         <option value="1">True</option>
                     </select>
                 </div>
+                <div class="input">
+                    <label for="recurring-event">Recurring Event</label>
+                    <div id="recurring-event-input">
+                        <p id="recurring-label">One Time Event</p>
+                        <button type="button" onclick="patternShow()"><i class='fas fa-ellipsis-h'></i></button>
+                    </div>
+                </div>
                 <div class="button-container">
                     <button type="button" class="btn prev" onclick="prevSection()">Back</button>
                     <button type="button" class="btn" onclick="nextSection();loadRoomOptions()">Next</button>

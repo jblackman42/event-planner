@@ -19,14 +19,21 @@ $recurring-header-bg: var(--secondary-bg-color);
         background-color: $recurring-container-bg;
         border-radius: 2.5px;
         overflow: hidden;
+        position: relative;
 
+        width: 600px;
+        max-width: 90vw;
         .recurring-header {
-            background-color: $recurring-header-bg;
+            // background-color: $recurring-header-bg;
+            border-bottom: 2px solid $recurring-header-bg;
 
             p {
                 padding: 1rem;
                 margin: 0;
                 font-size: 1.5rem;
+            }
+            .close-button {
+                color: currentColor;
             }
         }
 
@@ -76,6 +83,14 @@ $recurring-header-bg: var(--secondary-bg-color);
 
         }
 
+        .inputs-list {
+            display: flex;
+            flex-wrap: wrap;
+            margin: 1rem 0;
+            .input {
+                width: 150px;
+            }
+        }
         .input {
             padding: .25rem;
             display: flex;
@@ -92,6 +107,10 @@ $recurring-header-bg: var(--secondary-bg-color);
 
             input[type="number"] {
                 max-width: 100px;
+            }
+
+            p {
+                margin: .5rem 0;
             }
         }
 

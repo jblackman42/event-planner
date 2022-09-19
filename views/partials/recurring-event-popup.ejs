@@ -2,48 +2,184 @@
     <div class="recurring-event">
         <div class="recurring-header">
             <p>Recurrence Pattern</p>
-            <button class="close-button" onclick="console.log('hide')"><i class="material-icons">close</i></button>
+            <button class="close-button" onclick="patternHide()"><i class="material-icons">close</i></button>
         </div>
         <div class="nav-options">
             <ul>
-                <li class="active">Daily</li>
-                <li>Weekly</li>
-                <li>Monthly</li>
-                <li>Yearly</li>
+                <li id="daily" onclick="showDaily()">Daily</li>
+                <li id="weekly" class="active" onclick="showWeekly()">Weekly</li>
+                <li id="monthly" onclick="showMonthly()">Monthly</li>
+                <li id="yearly" onclick="showYearly()">Yearly</li>
             </ul>
         </div>
         <div class="recurring-pattern">
-            <div class="input">
-                <input type="radio" name="daily" id="days">
-                <label for="days">Every <input type="number"> day(s)</label>
+            <div id="daily-options">
+                <div class="input">
+                    <input type="radio" name="daily" id="days">
+                    <label for="days">Every <input type="number" id="days-number-option" value="1" min="1" max="31"> day(s)</label>
+                </div>
+                <div class="input">
+                    <input type="radio" name="daily" id="weekday">
+                    <label for="weekday">Every Weekday</label>
+                </div>
             </div>
-            <div class="input">
-                <input type="radio" name="daily" id="weekday">
-                <label for="weekday">Every Weekday</label>
+
+            <div id="weekly-options">
+                <div class="input">
+                    <label for="days">Every <input type="number" id="week-pattern" min="1" max="52" value="1"> week(s) on</label>
+                </div>
+                <div class="inputs-list">
+                    <div class="input">
+                        <input type="checkbox" id="week-pattern-sunday" value="sunday">
+                        <label for="week-pattern-sunday">Sunday</label>
+                    </div>
+                    <div class="input">
+                        <input type="checkbox" id="week-pattern-monday" value="monday">
+                        <label for="week-pattern-monday">Monday</label>
+                    </div>
+                    <div class="input">
+                        <input type="checkbox" id="week-pattern-tuesday" value="tuesday">
+                        <label for="week-pattern-tuesday">Tuesday</label>
+                    </div>
+                    <div class="input">
+                        <input type="checkbox" id="week-pattern-wednesday" value="wednesday">
+                        <label for="week-pattern-wednesday">Wednesday</label>
+                    </div>
+                    <div class="input">
+                        <input type="checkbox" id="week-pattern-thursday" value="thursday">
+                        <label for="week-pattern-thursday">Thursday</label>
+                    </div>
+                    <div class="input">
+                        <input type="checkbox" id="week-pattern-friday" value="friday">
+                        <label for="week-pattern-friday">Friday</label>
+                    </div>
+                    <div class="input">
+                        <input type="checkbox" id="week-pattern-saturday" value="saturday">
+                        <label for="week-pattern-saturday">Saturday</label>
+                    </div>
+                </div>
+            </div>
+
+            <div id="monthly-options">
+                <div class="input">
+                    <input type="radio" name="monthly" id="day-of-month">
+                    <label for="day-of-month">Day <input type="number" id="month-day" value="1" min="1" max="31"> of every <input type="number" id="every-month-num" value="1" min="1" max="11"> month(s)</label>
+                </div>
+                <div class="input">
+                    <input type="radio" name="monthly" id="times-of-month">
+                    <label for="times-of-month">The 
+                        <select name="monthly-day-pattern" id="monthly-day-pattern">
+                            <option value="first">First</option>
+                            <option value="second">Second</option>
+                            <option value="third">Third</option>
+                            <option value="fourth">Fourth</option>
+                            <option value="last">Last</option>
+                        </select>
+                        <select name="weekday-pattern" id="weekday-pattern">
+                            <option value="sunday">Sunday</option>
+                            <option value="monday">Monday</option>
+                            <option value="tuesday">Tuesday</option>
+                            <option value="wednesday">Wednesday</option>
+                            <option value="thursday">Thursday</option>
+                            <option value="friday">Friday</option>
+                            <option value="saturday">Saturday</option>
+                            <!-- <option value="weekday">Weekday</option>
+                            <option value="weekend">Weekend Day</option> -->
+                            <option value="day">Day</option>
+                        </select>
+                        of every
+                        <input type="number" id="every-month-num-2" value="1" min="1" max="11">
+                        month(s)
+                    </label>
+                </div>
+            </div>
+
+            <div id="yearly-options">
+                <div class="input">
+                    <input type="radio" name="yearly" id="single-month-day">
+                    <label for="single-month-day">Every
+                        <select name="month-year-pattern" id="month-year-pattern">
+                            <option value="january">January</option>
+                            <option value="february">February</option>
+                            <option value="march">March</option>
+                            <option value="april">April</option>
+                            <option value="may">May</option>
+                            <option value="june">June</option>
+                            <option value="july">July</option>
+                            <option value="august">August</option>
+                            <option value="september">September</option>
+                            <option value="october">October</option>
+                            <option value="november">November</option>
+                            <option value="december">December</option>
+                        </select>
+                        <input type="number" id="month-pattern-number" min="1" max="31" value="1">
+                    </label>
+                </div>
+                <div class="input">
+                    <input type="radio" name="yearly" id="single-month-time">
+                    <label for="single-month-time">The 
+                        <select name="yearly-day-pattern" id="yearly-day-pattern">
+                            <option value="first">First</option>
+                            <option value="second">Second</option>
+                            <option value="third">Third</option>
+                            <option value="fourth">Fourth</option>
+                            <option value="last">Last</option>
+                        </select>
+                        <select name="yearly-week-pattern" id="yearly-week-pattern">
+                            <option value="sunday">Sunday</option>
+                            <option value="monday">Monday</option>
+                            <option value="tuesday">Tuesday</option>
+                            <option value="wednesday">Wednesday</option>
+                            <option value="thursday">Thursday</option>
+                            <option value="friday">Friday</option>
+                            <option value="saturday">Saturday</option>
+                            <!-- <option value="weekday">Weekday</option>
+                            <option value="weekend">Weekend Day</option> -->
+                            <option value="day">Day</option>
+                        </select>
+                        of every
+                        <select name="yearly-month -pattern" id="yearly-month-pattern">
+                            <option value="january">January</option>
+                            <option value="february">February</option>
+                            <option value="march">March</option>
+                            <option value="april">April</option>
+                            <option value="may">May</option>
+                            <option value="june">June</option>
+                            <option value="july">July</option>
+                            <option value="august">August</option>
+                            <option value="september">September</option>
+                            <option value="october">October</option>
+                            <option value="november">November</option>
+                            <option value="december">December</option>
+                        </select>
+                    </label>
+                </div>
             </div>
         </div>
         <div class="date-options">
             <div class="input">
                 <label for="start-by" class="title-label">Start By:</label>
-                <input type="date" name="start-by" id="start-by">
+                <!-- <input type="datetime" name="start-by" id="start-by" readonly> -->
+                <p id="start-by">Please choose start date</p>
             </div>
             <div class="input">
                 <label for="end-by" class="title-label">End:</label>
                 <div class="input-options">
                     <div class="input">
-                        <input type="radio" name="occurrence" id="occurrence">
-                        <label for="occurrence">After <input type="number" name="occurrence-num" id="occurrence-num"> occurrences</label>
+                        <input type="radio" name="end-by" id="occurrence">
+                        <label for="occurrence">After <input type="number" id="occurrence-num" min="1" max="50" value="1"> occurrences</label>
                     </div>
                     <div class="input">
-                        <input type="radio" name="by-date" id="by-date">
-                        <label for="by-date">By date <input type="date" name="by-date-input" id="by-date-input"></label>
+                        <input type="radio" name="end-by" id="by-date">
+                        <label for="by-date">By date <input type="date" id="by-date-input"></label>
                     </div>
                 </div>
             </div>
         </div>
         <div class="button-container">
-            <button class="btn"><i class='fas fa-save'></i> Save</button>
-            <button class="btn cancel"><i class='fas fa-ban'></i> Cancel</button>
+            <button class="btn" onclick="handleSave()"><i class='fas fa-save'></i> Save</button>
+            <button class="btn cancel" onclick="cancel()"><i class='fas fa-ban'></i> Cancel</button>
         </div>
     </div>
 </div>
+<script src="../scripts/recurringEvent.js"></script>

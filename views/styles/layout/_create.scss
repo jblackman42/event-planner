@@ -9,7 +9,8 @@ $input-color: var(--primary-font-color);
 
     p {
         // display: flex;
-        padding: 0 .5rem;
+        padding: 0;
+        margin: auto .25rem;
 
         @media screen and (max-width: 768px) {
             text-align: center;
@@ -153,7 +154,7 @@ $input-color: var(--primary-font-color);
             }
 
             label {
-                margin-top: auto;
+                margin-bottom: .5rem;
             }
 
             input,
@@ -175,6 +176,29 @@ $input-color: var(--primary-font-color);
 
             textarea {
                 resize: none;
+            }
+
+            #recurring-event-input {
+                display: flex;
+                justify-content: space-between;
+                background-color: $input-background;
+                border-radius: 2.5px;
+                height: 40px;
+                
+                button {
+                    border: none;
+                    background-color: transparent;
+                    color: currentColor;
+                    display: grid;
+                    place-items: center;
+                    padding: .25rem 1rem;
+                    margin: auto;
+                    margin-right: 0;
+                    cursor: pointer;
+                    i {
+                        font-size: 1.25rem;
+                    }
+                }
             }
 
             /* Chrome, Safari, Edge, Opera */

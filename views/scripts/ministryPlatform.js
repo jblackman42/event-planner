@@ -335,3 +335,27 @@ const sendTask = async (authorId, ownerId, eventId, startDate, taskType) => {
     .then(response => response.json())
     .catch(err => console.error(err))
 }
+
+const sendRecurringEventTask = async (authorId, ownerId, eventId, startDate, instructions) => {
+    const task = [{
+        "Action": "Complete",
+        "TaskName": `Setup Recurring Event`,
+        "Description": `${instructions}.`,
+        "StartDate": startDate,
+        "AuthorId": authorId,
+        "OwnerID": ownerId,
+        "TableName": "Events",
+        "RecordId": eventId
+    }]
+    return fetch('https://my.pureheart.org/ministryplatformapi/tasks', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+            'Accept': 'application/json',
+            'Authorization': `Bearer ${access_token}`
+        },
+        body: JSON.stringify(task),
+    })
+    .then(response => response.json())
+    .catch(err => console.error(err))
+}
