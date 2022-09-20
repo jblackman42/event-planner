@@ -23,6 +23,16 @@ $recurring-header-bg: var(--secondary-bg-color);
 
         width: 600px;
         max-width: 90vw;
+        #recurring-warning-msg {
+            font-weight: bold;
+            color: $red-accent-color;
+            text-align: center;
+            margin: 0;
+            margin-bottom: 1rem;
+
+            display: none;
+            visibility: hidden;
+        }
         .recurring-header {
             // background-color: $recurring-header-bg;
             border-bottom: 2px solid $recurring-header-bg;

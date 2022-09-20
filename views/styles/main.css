@@ -1273,6 +1273,15 @@ input:checked + .slider:before {
   width: 600px;
   max-width: 90vw;
 }
+.recurring-event-container .recurring-event #recurring-warning-msg {
+  font-weight: bold;
+  color: #e74c3c;
+  text-align: center;
+  margin: 0;
+  margin-bottom: 1rem;
+  display: none;
+  visibility: hidden;
+}
 .recurring-event-container .recurring-event .recurring-header {
   border-bottom: 2px solid var(--secondary-bg-color);
 }

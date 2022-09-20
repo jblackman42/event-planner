@@ -3,7 +3,7 @@
 
 const user_id = getCookie('user_id');
 const access_token = getCookie('access_token');
-let registrationUserIds,promotionUserIds,AVUserIds,facilitiesUserIds,childcareUserIds,allTaskUserIds,peoriaUserIds;
+let registrationUserIds,promotionUserIds,AVUserIds,facilitiesUserIds,childcareUserIds,allTaskUserIds,peoriaUserIds,recurringEventUserIds;
 const peoriaCampusID = 4;
 
 const getAllTaskUsers = async () => {
@@ -14,6 +14,7 @@ const getAllTaskUsers = async () => {
     childcareUserIds = await getUsersWithRole(2198);
     allTaskUserIds = await getUsersWithRole(2199);
     peoriaUserIds = await getUsersWithRole(2200);
+    recurringEventUserIds = await getUsersWithRole(2201);
 }
 getAllTaskUsers();
 

@@ -115,18 +115,18 @@ loadForm();
 
 let sectionId = 1;
 const nextSection = async () => {
-    //get the contact id from the user selected from the dropdown
-    const primaryContactID = await getUserInfo(primaryContactDOM.value);
+    // //get the contact id from the user selected from the dropdown
+    // const primaryContactID = await getUserInfo(primaryContactDOM.value);
     
-    //Check if all required inputs have values; if not go back and let user complete the form
-    const allValues = [eventNameDOM.value,eventDescDOM.value,primaryContactID.Contact_ID,startDateDOM.value,endDateDOM.value,eventTypeDOM.value,attendanceDOM.value,congregationDOM.value,setupTimeDOM.value,cleanupTimeDOM.value,privacyDOM.value == 1 ? true : false,eventLocationDOM.value, visibilityLevelDOM.value]
-    if (allValues.filter(value => value.toString() == "").length > 0) {
-        sectionId = 0;
-        nextSection();
+    // //Check if all required inputs have values; if not go back and let user complete the form
+    // const allValues = [eventNameDOM.value,eventDescDOM.value,primaryContactID.Contact_ID,startDateDOM.value,endDateDOM.value,eventTypeDOM.value,attendanceDOM.value,congregationDOM.value,setupTimeDOM.value,cleanupTimeDOM.value,privacyDOM.value == 1 ? true : false,eventLocationDOM.value, visibilityLevelDOM.value]
+    // if (allValues.filter(value => value.toString() == "").length > 0) {
+    //     sectionId = 0;
+    //     nextSection();
 
-        warningMsgDOM.innerText = "Not All Fields Completed"
-        return;
-    }
+    //     warningMsgDOM.innerText = "Not All Fields Completed"
+    //     return;
+    // }
     const sections = document.querySelectorAll('.section');
     if (sectionId < sections.length) {
         sectionId ++;
@@ -265,7 +265,7 @@ const handleSubmit = async (e) => {
         if (tasksComplete && roomsComplete) {
             doneLoading();
             console.log('complete')
-            // window.location = '/create';
+            window.location = '/create';
         } else {
             console.log('not complete yet')
         }
@@ -358,16 +358,15 @@ const handleSubmit = async (e) => {
                 if (task.taskDOM.value == 1) await sendTask(user.UserId, taskOwner, eventId, new Date().toISOString(), task.taskType)
             }
         }
+        //if event is a recurring event, send a task to anyone with the Recurring-Event-Tasks role
+        if (recurrencePattern) {
+            for (taskOwner of recurringEventUserIds) {
+                await sendRecurringEventTask(user.UserId, taskOwner, eventId, new Date().toISOString(), recurrencePattern)
+            }
+        }
         tasksComplete = true;
         completed();
     }
     sendAllTasks();
 
-    if (recurrencePattern) {
-        console.log(registrationUserIds)
-        for (taskOwner of registrationUserIds) {
-            console.log('sending task')
-            await sendRecurringEventTask(user.UserId, taskOwner, eventId, new Date().toISOString(), recurrencePattern)
-        }
-    }
 }
