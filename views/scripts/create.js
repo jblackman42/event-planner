@@ -113,7 +113,19 @@ const loadForm = async () => {
 loadForm();
 
 let sectionId = 1;
-const nextSection = () => {
+const nextSection = async () => {
+    //get the contact id from the user selected from the dropdown
+    const primaryContactID = await getUserInfo(primaryContactDOM.value);
+    
+    //Check if all required inputs have values; if not go back and let user complete the form
+    const allValues = [eventNameDOM.value,eventDescDOM.value,primaryContactID.Contact_ID,startDateDOM.value,endDateDOM.value,eventTypeDOM.value,attendanceDOM.value,congregationDOM.value,setupTimeDOM.value,cleanupTimeDOM.value,privacyDOM.value == 1 ? true : false,eventLocationDOM.value, visibilityLevelDOM.value]
+    if (allValues.filter(value => value.toString() == "").length > 0) {
+        sectionId = 0;
+        nextSection();
+
+        warningMsgDOM.innerText = "Not All Fields Completed"
+        return;
+    }
     const sections = document.querySelectorAll('.section');
     if (sectionId < sections.length) {
         sectionId ++;
