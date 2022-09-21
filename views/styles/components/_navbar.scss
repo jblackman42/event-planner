@@ -134,6 +134,11 @@ nav {
 					transition: transform 450ms ease;
 					transform: translateX(-100%);
 
+					&#new-event-btn {
+						display: none;
+						visibility: hidden;
+					}
+
 					a {
 						color: $nav-text-color;
 						font-weight: bold;

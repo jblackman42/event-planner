@@ -264,8 +264,6 @@ const handleSubmit = async (e) => {
             doneLoading();
             console.log('complete')
             window.location = '/create';
-        } else {
-            console.log('not complete yet')
         }
     }
 

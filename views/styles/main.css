@@ -1044,6 +1044,10 @@ nav .navContainer .links ul li {
   transition: transform 450ms ease;
   transform: translateX(-100%);
 }
+nav .navContainer .links ul li#new-event-btn {
+  display: none;
+  visibility: hidden;
+}
 nav .navContainer .links ul li a {
   color: var(--primary-font-color);
   font-weight: bold;
