@@ -263,7 +263,7 @@ const handleSubmit = async (e) => {
         if (tasksComplete && roomsComplete) {
             doneLoading();
             console.log('complete')
-            // window.location = '/create';
+            window.location = '/create';
         } else {
             console.log('not complete yet')
         }
