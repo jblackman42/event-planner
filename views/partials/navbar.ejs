@@ -24,8 +24,8 @@
         </div>
         <div class="footer">
             <ul>
-                <li><a href="/"><i class='fab fa-facebook-square'></i></a></li>
-                <li><a href="/"><i class='fab fa-instagram'></i></a></li>
+                <!-- <li><a href="/"><i class='fab fa-facebook-square'></i></a></li>
+                <li><a href="/"><i class='fab fa-instagram'></i></a></li> -->
                 <li><a href="https://github.com/jblackman42/event-planner"><i class='fab fa-github-square'></i></a></li>
                 <li class='toggle-switch'>
                     <label class="switch" onclick="toggleColorScheme()">
@@ -61,7 +61,7 @@
         navContainerDOM.classList.toggle('closed');
     })
 
-    
+    const checkDuplicates = (arr1, arr2) => [...new Set(arr1.concat(arr2))].length != arr1.concat(arr2).length;
 
     const welcomeMsg = async () => {
         const user = await getUser()
@@ -85,12 +85,12 @@
     })
         .then(response => response.data)
         .then(data => {
-            const eventCreatorRoleId = 2202;
+            const eventCreatorRoleId = [2202, 2];
             const {userRoles} = data;
             const userRoleIds = userRoles.map(role => role.Role_ID);
             
             //if logged in user is  authorized to create events
-            if (userRoleIds.includes(eventCreatorRoleId)) {
+            if (checkDuplicates(userRoleIds, eventCreatorRoleId)) {
                 //add new event from navbar
                 newEventBtn.style.display = 'block';
                 newEventBtn.style.visibility = 'visible';

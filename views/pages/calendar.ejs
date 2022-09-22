@@ -81,7 +81,7 @@
         events = [];
 
         if (buildingFilterDOM.value > 0 && roomFilterDOM.value > 0) {
-            console.log('room filter')
+            // console.log('room filter') 
             events = allEvents.filter(event => event.Location_ID == calendarFilterDOM.value)
 
             const allEventIds = events.map(event => event.Event_ID).sort()
@@ -91,7 +91,7 @@
             events = events.filter(event => eventIDs.includes(event.Event_ID))
 
         } else if (buildingFilterDOM.value > 0) {
-            console.log('building filter')
+            // console.log('building filter')
             events = allEvents.filter(event => event.Location_ID == calendarFilterDOM.value)
 
             const allEventIds = events.map(event => event.Event_ID).sort()
@@ -109,10 +109,10 @@
             events = events.filter(event => eventIDs.includes(event.Event_ID))
 
         } else if (calendarFilterDOM.value > 0) {
-            console.log('location filter')
+            // console.log('location filter')
             events = allEvents.filter(event => event.Location_ID == calendarFilterDOM.value)
         } else {
-            console.log('no filter')
+            // console.log('no filter')
             events = allEvents;
         }
         

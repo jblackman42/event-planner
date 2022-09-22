@@ -49,11 +49,11 @@
                 </div>
                 <div class="input">
                     <label for="setup">Setup Time: (minutes)</label>
-                    <input type="number" name="setup" id="setup">
+                    <input type="number" name="setup" id="setup" value="0" onchange="updateEventTimes()">
                 </div>
                 <div class="input">
                     <label for="cleanup">Cleanup Time: (minutes)</label>
-                    <input type="number" name="cleanup" id="cleanup">
+                    <input type="number" name="cleanup" id="cleanup" value="0" onchange="updateEventTimes()">
                 </div>
                 <div class="input">
                     <label for="privacy">On Calendar:</label>
@@ -71,7 +71,7 @@
                     </select>
                 </div>
                 <div class="input description">
-                    <label for="event-desc">Event Description:</label>`
+                    <label for="event-desc">Event Description:</label>
                     <textarea name="event-desc" id="event-desc"></textarea>
                 </div>
 

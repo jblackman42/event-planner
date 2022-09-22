@@ -45,7 +45,7 @@ const ensureAdminAuthenticated = async (req, res, next) => {
         .then(response => response.data)
         .then(data => {
             const {userRoles} = data;
-            const requiredRoles = [2202]//array of roles that will allow user to log in and create events
+            const requiredRoles = [2202, 2]//array of roles that will allow user to log in and create events
 
             if (!userRoles) return res.render('pages/login', {error: "Session Expired"});
             

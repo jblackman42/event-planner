@@ -53,7 +53,7 @@ const loadForm = async () => {
                 ${userInfo.Name}
             </option>
         `
-    })
+    }).join('')
     primaryContactDOM.value = user.UserId;
 
     //Event Types
@@ -77,7 +77,7 @@ const loadForm = async () => {
                 ${type.Event_Type}
             </option>
         `
-    })
+    }).join('')
     eventTypeDOM.value = 15; //set default value to 'class'
 
     //Congregation Type
@@ -88,7 +88,7 @@ const loadForm = async () => {
                 ${congregation.Congregation_Name}
             </option>
         `
-    })
+    }).join('')
 
     //Event Location
     let eventLocations = await getLocations();
@@ -98,7 +98,7 @@ const loadForm = async () => {
                 ${location.Location_Name}
             </option>
         `
-    })
+    }).join('')
 
     //Visibility Level
     let visibilityLevels = await getVisibilityLevels();
@@ -108,7 +108,7 @@ const loadForm = async () => {
                 ${level.Visibility_Level.split(' - ')[1]}
             </option>
         `
-    })
+    }).join('')
 }
 loadForm();
 
@@ -147,17 +147,31 @@ const prevSection = () => {
     }
 }
 
+const addMinutesToDate = (date, minutes) => {
+    const tzOffset = 7 * 3600000;
+    return new Date(new Date((date.getTime() + minutes * 60000) - tzOffset).toLocaleString()).toISOString();
+}
+const subtractMinutesToDate = (date, minutes) => {
+    const tzOffset = 7 * 3600000;
+    return new Date(new Date((date.getTime() - minutes * 60000) - tzOffset).toLocaleString()).toISOString();
+}
+
 let overlappingEventRooms = [];
 
 const updateEventTimes = async () => {
-    const startDateValue = startDateDOM.value;
-    const endDateValue = endDateDOM.value;
-
+    let startDateValue = startDateDOM.value;
+    let endDateValue = endDateDOM.value;
+    const setupTime = setupTimeDOM.value;
+    const cleanupTime = cleanupTimeDOM.value;
+    
+    if (startDateValue) startDateValue = subtractMinutesToDate(new Date(startDateValue), setupTime);
+    if (endDateValue) endDateValue = addMinutesToDate(new Date(endDateValue), cleanupTime);
     overlappingEventRooms = [];
     
     if (startDateValue && endDateValue) {
         console.log(startDateValue, endDateValue)
-        const overlapEvents = await getDaysEventsBetweenTimes(startDateValue + ':00.00', endDateValue + ':00.00');
+        const overlapEvents = await getDaysEventsBetweenTimes(startDateValue, endDateValue);
+        // const overlapEvents = [];
         
         for (let i = 0; i < overlapEvents.length; i ++) {
             const {Event_ID} = overlapEvents[i];
