@@ -9,7 +9,7 @@
                 <li id="daily" onclick="showDaily()">Daily</li>
                 <li id="weekly" class="active" onclick="showWeekly()">Weekly</li>
                 <li id="monthly" onclick="showMonthly()">Monthly</li>
-                <li id="yearly" onclick="showYearly()">Yearly</li>
+                <!-- <li id="yearly" onclick="showYearly()">Yearly</li> -->
             </ul>
         </div>
         <div class="recurring-pattern">
@@ -69,23 +69,23 @@
                     <input type="radio" name="monthly" id="times-of-month">
                     <label for="times-of-month">The 
                         <select name="monthly-day-pattern" id="monthly-day-pattern">
-                            <option value="first">First</option>
-                            <option value="second">Second</option>
-                            <option value="third">Third</option>
-                            <option value="fourth">Fourth</option>
-                            <option value="last">Last</option>
+                            <option value="1">First</option>
+                            <option value="2">Second</option>
+                            <option value="3">Third</option>
+                            <option value="4">Fourth</option>
+                            <option value="0">Last</option>
                         </select>
                         <select name="weekday-pattern" id="weekday-pattern">
-                            <option value="sunday">Sunday</option>
-                            <option value="monday">Monday</option>
-                            <option value="tuesday">Tuesday</option>
-                            <option value="wednesday">Wednesday</option>
-                            <option value="thursday">Thursday</option>
-                            <option value="friday">Friday</option>
-                            <option value="saturday">Saturday</option>
+                            <option value="0">Sunday</option>
+                            <option value="1">Monday</option>
+                            <option value="2">Tuesday</option>
+                            <option value="3">Wednesday</option>
+                            <option value="4">Thursday</option>
+                            <option value="5">Friday</option>
+                            <option value="6">Saturday</option>
                             <!-- <option value="weekday">Weekday</option>
                             <option value="weekend">Weekend Day</option> -->
-                            <option value="day">Day</option>
+                            <option value="-1">Day</option>
                         </select>
                         of every
                         <input type="number" id="every-month-num-2" value="1" min="1" max="11">
@@ -94,7 +94,7 @@
                 </div>
             </div>
 
-            <div id="yearly-options">
+            <!-- <div id="yearly-options">
                 <div class="input">
                     <input type="radio" name="yearly" id="single-month-day">
                     <label for="single-month-day">Every
@@ -133,8 +133,6 @@
                             <option value="thursday">Thursday</option>
                             <option value="friday">Friday</option>
                             <option value="saturday">Saturday</option>
-                            <!-- <option value="weekday">Weekday</option>
-                            <option value="weekend">Weekend Day</option> -->
                             <option value="day">Day</option>
                         </select>
                         of every
@@ -154,7 +152,7 @@
                         </select>
                     </label>
                 </div>
-            </div>
+            </div> -->
         </div>
         <div class="date-options">
             <div class="input">
@@ -166,7 +164,7 @@
                 <label for="end-by" class="title-label">End:</label>
                 <div class="input-options">
                     <div class="input">
-                        <input type="radio" name="end-by" id="occurrence">
+                        <input type="radio" name="end-by" id="occurrence" checked>
                         <label for="occurrence">After <input type="number" id="occurrence-num" min="1" max="50" value="1"> occurrences</label>
                     </div>
                     <div class="input">
@@ -184,3 +182,7 @@
     </div>
 </div>
 <script src="../scripts/recurringEvent.js"></script>
+
+
+
+
