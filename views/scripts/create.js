@@ -410,7 +410,7 @@ const handleSubmit = async (e) => {
     const completed = () => {
         doneLoading();
         console.log('complete')
-        // window.location = '/create';
+        window.location = '/calendar';
     }
     
     if (days.length) {
