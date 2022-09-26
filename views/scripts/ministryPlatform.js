@@ -12,7 +12,7 @@ const getEvents = (currentMonth, currentYear, LocationFilter) => { //redirect is
     })
     .then(response => response.data)
     .catch(err => {
-        if (err.status == 401) {
+        if (err.response.status == 500) {
             window.location = '/login'
         }
     })
@@ -30,7 +30,7 @@ const getDaysEventsBetweenTimes = (startTime, endTime) => {
     })
     .then(response => response.data.filter(event => !event.Cancelled))
     .catch(err => {
-        if (err.status == 401) {
+        if (err.response.status == 500) {
             window.location = '/login'
         }
     })
@@ -49,7 +49,7 @@ const getEventRooms = (Event_ID) => {
     })
     .then(response => response.data)
     .catch(err => {
-        if (err.status == 401) {
+        if (err.response.status == 500) {
             window.location = '/login'
         }
     })
@@ -68,7 +68,7 @@ const getEventRoomsFromIDs = (Event_IDs, Room_ID) => {
     })
     .then(response => response.data.map(event => event.Event_ID))
     .catch(err => {
-        if (err.status == 401) {
+        if (err.response.status == 500) {
             window.location = '/login'
         }
     })
@@ -87,7 +87,7 @@ const getEventRoomsForBuilding = (Event_IDs, Room_IDs, skip) => {
     })
     .then(response => response.data.map(event => event.Event_ID))
     .catch(err => {
-        if (err.status == 401) {
+        if (err.response.status == 500) {
             window.location = '/login'
         }
     })
@@ -106,7 +106,7 @@ const getEventRoomIDs = (Event_ID) => {
     })
     .then(response => response.data.map(room => room.Room_ID))
     .catch(err => {
-        if (err.status == 401) {
+        if (err.response.status == 500) {
             window.location = '/login'
         }
     })
@@ -125,7 +125,7 @@ const getRoom = (Room_ID) => {
     })
     .then(response => response.data[0])
     .catch(err => {
-        if (err.status == 401) {
+        if (err.response.status == 500) {
             window.location = '/login'
         }
     })
@@ -144,7 +144,7 @@ const getLocations = () => {
     })
     .then(response => response.data.filter(location => !blockekdLocations.includes(location.Location_ID)))
     .catch(err => {
-        if (err.status == 401) {
+        if (err.response.status == 500) {
             window.location = '/login'
         }
     })
@@ -165,7 +165,7 @@ const getLocation = (Location_ID) => {
         return response.data[0]
     })
     .catch(err => {
-        if (err.status == 401) {
+        if (err.response.status == 500) {
             window.location = '/login'
         }
     })
@@ -186,7 +186,7 @@ const getLocationBuildings = (Location_ID) => {
         return response.data
     })
     .catch(err => {
-        if (err.status == 401) {
+        if (err.response.status == 500) {
             window.location = '/login'
         }
     })
@@ -207,7 +207,7 @@ const getBuildingRooms = (Building_ID) => {
         return response.data
     })
     .catch(err => {
-        if (err.status == 401) {
+        if (err.response.status == 500) {
             window.location = '/login'
         }
     })
@@ -225,7 +225,7 @@ const getAllUsers = () => {
     })
         .then(response => response.data)
         .catch(err => {
-            if (err.status == 401) {
+            if (err.response.status == 500) {
                 window.location = '/login'
             }
         })
@@ -243,7 +243,7 @@ const getEventTypes = () => {
     })
         .then(response => response.data)
         .catch(err => {
-            if (err.status == 401) {
+            if (err.response.status == 500) {
                 window.location = '/login'
             }
         })
@@ -261,7 +261,7 @@ const getCongregations = () => {
     })
         .then(response => response.data.filter(congregation => !congregation.End_Date || new Date() < new Date(congregation.End_Date)))
         .catch(err => {
-            if (err.status == 401) {
+            if (err.response.status == 500) {
                 window.location = '/login'
             }
         })
@@ -282,7 +282,7 @@ const getUserInfo = (User_ID) => {
         return response.data[0]
     })
     .catch(err => {
-        if (err.status == 401) {
+        if (err.response.status == 500) {
             window.location = '/login'
         }
     })
@@ -303,7 +303,7 @@ const getUsersWithRole = (Role_ID) => {
         return response.data.map(user => user.User_ID)
     })
     .catch(err => {
-        if (err.status == 401) {
+        if (err.response.status == 500) {
             window.location = '/login'
         }
     })
@@ -322,7 +322,7 @@ const getVisibilityLevels = () => {
     })
         .then(response => response.data.filter(level => !blockedLevels.includes(level.Visibility_Level_ID)))
         .catch(err => {
-            if (err.status == 401) {
+            if (err.response.status == 500) {
                 window.location = '/login'
             }
         })
@@ -341,7 +341,7 @@ const createEvent = async (event) => {
     })
     .then(response => response.json())
     .catch(err => {
-        if (err.status == 401) {
+        if (err.response.status == 500) {
             window.location = '/login'
         }
     })
@@ -369,7 +369,7 @@ const sendTask = async (authorId, ownerId, eventId, startDate, taskType) => {
     })
     .then(response => response.json())
     .catch(err => {
-        if (err.status == 401) {
+        if (err.response.status == 500) {
             window.location = '/login'
         }
     })
@@ -397,7 +397,7 @@ const sendRecurringEventTask = async (authorId, ownerId, eventId, startDate, ins
     })
     .then(response => response.json())
     .catch(err => {
-        if (err.status == 401) {
+        if (err.response.status == 500) {
             window.location = '/login'
         }
     })
