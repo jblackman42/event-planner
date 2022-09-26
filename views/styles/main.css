@@ -366,6 +366,12 @@ html {
   box-shadow: rgba(0, 0, 0, 0.15) 0 3px 9px 0;
   transform: translateY(-2px);
 }
+.btn:disabled {
+  opacity: 0.6;
+}
+.btn:disabled:hover {
+  transform: none;
+}
 @media (min-width: 768px) {
   .btn {
     padding: 10px 30px;

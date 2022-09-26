@@ -28,7 +28,6 @@ const patternHide = () => {
 
 const cancel = () => {
     const recurringLabel = document.getElementById('recurring-label');
-    recurrencePattern = undefined;
     recurringLabel.innerText = 'One Time Event';
     patternHide();
 }
@@ -85,21 +84,21 @@ const getDailyPattern = (endOccurrences, endDate, startDate) => {
     const daysOption = document.getElementById('days');
     const weekdaysOption = document.getElementById('weekday');
 
-    days = [];
+    days = [new Date(startDate).toISOString()];
     let currDate = startDate;
 
     if (daysOption.checked) {
         const daysNumberOption = document.getElementById('days-number-option');
         
-        while ((days.length < endOccurrences - 1 || new Date(currDate) <= new Date(endDate)) && days.length < eventCreateLimit) {
+        while ((days.length < endOccurrences || new Date(currDate) <= new Date(endDate)) && days.length < eventCreateLimit) {
             let tomorrow = new Date(currDate);
             tomorrow.setDate(tomorrow.getDate() + parseInt(daysNumberOption.value));
             currDate = tomorrow;
             days.push(tomorrow.toISOString());
         }
-        console.log(days)
+        // console.log(days)
     } else if (weekdaysOption.checked) {
-        while ((days.length < endOccurrences - 1 || new Date(currDate) <= new Date(endDate)) && days.length < eventCreateLimit) {
+        while ((days.length < endOccurrences || new Date(currDate) <= new Date(endDate)) && days.length < eventCreateLimit) {
             let tomorrow = new Date(currDate);
             tomorrow.setDate(tomorrow.getDate() + 1);
             currDate = tomorrow;
@@ -107,7 +106,7 @@ const getDailyPattern = (endOccurrences, endDate, startDate) => {
                 days.push(tomorrow.toISOString());
             }
         }
-        console.log(days)
+        // console.log(days)
     } else {
         return false;
     }
@@ -128,21 +127,20 @@ const getWeeklyPattern = (endOccurrences, endDate, startDate) => {
     const weekdays = ['sunday', 'monday', 'tuesday', 'wednesday', 'thursday', 'friday', 'saturday']
     const selectedDays = weekdayOptions.filter(elem => elem.checked).map(elem => weekdays.indexOf(elem.value));
 
-    console.log(selectedDays)
-
     // simplifiedInstructions = `Every ${weekPattern.value} week(s) on ${selectedDays.map(elem => elem.value).join(', ')}`;
     if (!selectedDays.length) {
         return false;
     }
 
-    days = [];
+    days = [new Date(startDate).toISOString()];
     let allDays = [];
-    let currDate = startDate;
+    let currDate = new Date(startDate);
     let currentWeek = []
-    while ((new Date(endDate) >= new Date(currDate) || days.length <= (endOccurrences * selectedDays.length) - 1) && days.length < eventCreateLimit) {
+    while ((currDate <= new Date(endDate) || days.length <= endOccurrences * selectedDays.length) && days.length < eventCreateLimit) {
         let tomorrow = new Date(currDate);
         tomorrow.setDate(tomorrow.getDate() + 1);
         currDate = tomorrow;
+        // console.log(new Date(endDate) < currDate, currDate)
         
         if (currDate.getDay() == 0 && currentWeek.length) {
             allDays.push(currentWeek);
@@ -151,7 +149,13 @@ const getWeeklyPattern = (endOccurrences, endDate, startDate) => {
                 days = days.concat(currentWeek)
             }
             currentWeek = [];
-        } else if (new Date(endDate) < currDate) {
+        }
+
+        if (selectedDays.includes(currDate.getDay())) {
+            currentWeek.push(currDate.toISOString())
+        }
+
+        if (new Date(endDate) < currDate) {
             allDays.push(currentWeek)
             
             if ((allDays.length - 1) % weekPattern.value == 0) {
@@ -159,23 +163,32 @@ const getWeeklyPattern = (endOccurrences, endDate, startDate) => {
             }
         }
 
-        if (selectedDays.includes(currDate.getDay())) {
-            currentWeek.push(currDate.toISOString())
-        }
 
     }
     
     if (occurrenceInput.checked && days.length > endOccurrences * selectedDays.length) {
         days.length = endOccurrences * selectedDays.length;
     }
+
+    return true;
 }
 
 const getWeekdayOfMonth = (dateString, dayOfWeek, weekValue) => {
-    console.log(dateString, dayOfWeek, weekValue)
+    // console.log(dateString, dayOfWeek, weekValue)
     var date = new Date(dateString);
 
     var day = date.getDay();
     var diffDays = 0;
+
+    //if user chooses 'last' option
+    if (weekValue == 0) {
+        return getLastWeekdayOfMonth(date.getFullYear(), date.getMonth(), dayOfWeek)
+    }
+
+    //if user chooses 'day' option
+    if (dayOfWeek == -1) {
+        return new Date(date.getFullYear(), date.getMonth(), weekValue)
+    }
 
     if (day > dayOfWeek) {
       diffDays = 7 - (day - dayOfWeek);
@@ -190,14 +203,21 @@ const getLastWeekdayOfMonth = (year, month, weekday) => {
 
     var days = [];
 
+    //if user chooses 'last' and 'day' options
+    if (weekday == -1) {
+        //returns the last day of the month
+        return new Date(date.getFullYear(), date.getMonth() + 1, 0)
+    }
+
     while (date.getMonth() === month) {
-        if (date.getDay() === weekday) days.push(new Date(date).toISOString())
+        if (date.getDay() === weekday) days.push(new Date(date))
         date.setDate(date.getDate() + 1);
     }
 
-    return days[days.length -1];
+    return days[days.length -1]; 
 }
 const getMonthlyPattern = (endOccurrences, endDate, startDate) => {
+    endDate = endDate.split('-').join('/')
     //MONTHLY CODE
     const dayOfMonthOption = document.getElementById('day-of-month');
     const timesOfMonthOption = document.getElementById('times-of-month');
@@ -208,12 +228,17 @@ const getMonthlyPattern = (endOccurrences, endDate, startDate) => {
 
         days = [new Date(startDate).toISOString()];
         let currDate = new Date(new Date(startDate).setDate(monthDayValue.value))
-        while ((currDate < new Date(endDate) || days.length < endOccurrences) && days.length < eventCreateLimit) {
-            console.log(everyMonthValue.value)
+        while ((currDate <= new Date(endDate) || days.length < endOccurrences) && days.length < eventCreateLimit) {
+            // console.log(everyMonthValue.value)
             currDate = new Date(new Date(currDate).setMonth(currDate.getMonth() + parseInt(everyMonthValue.value)))
-            days.push(currDate.toISOString());
+            
+            if (new Date(currDate.toLocaleDateString()) <= new Date(endDate) ||  days.length < endOccurrences) {
+                days.push(currDate.toISOString());
+            } else {
+                break;
+            }
         }
-        console.log(days)
+        // console.log(days)
 
     } else if (timesOfMonthOption.checked) {
         const monthDayPattern = document.getElementById('monthly-day-pattern');
@@ -227,7 +252,7 @@ const getMonthlyPattern = (endOccurrences, endDate, startDate) => {
         let currDate = new Date(fullStartDate.getFullYear(), fullStartDate.getMonth() + parseInt(everyMonthValue.value), 1)
         while ((currDate <= new Date(endDate) || days.length < endOccurrences) && days.length < eventCreateLimit) {
             let newDate = getWeekdayOfMonth(currDate.toLocaleDateString(), parseInt(weekdayPattern.value), parseInt(monthDayPattern.value))
-            console.log(newDate)
+            // console.log(newDate)
             days.push(newDate.toISOString().split('T')[0] + 'T' + fullStartDate.toISOString().split('T')[1]);
             // days.push(currDate)
             currDate = new Date(currDate.getFullYear(), currDate.getMonth() + parseInt(everyMonthValue.value), 1)
@@ -235,9 +260,9 @@ const getMonthlyPattern = (endOccurrences, endDate, startDate) => {
         // console.log(days)
         
     } else {
-        // console.log('missing parameters')
-        // errors.push('missing parameters')
+        return false;
     }
+    return true;
 }
 
 const showWarning = () => {
@@ -272,10 +297,13 @@ const handleSave = () => {
         return;
     }
 
+
     switch (patternType) {
         case 0:
              if (getDailyPattern(occurrenceInput.checked ? occurrenceNumber.value : 0, byDateInput.checked ? byDateInputDate.value : '', startDateDOM.value)) {
                 hideWarning();
+                patternHide();
+                updateEventTimes();
              } else {
                 showWarning();
                 return;
@@ -284,6 +312,8 @@ const handleSave = () => {
         case 1:
             if (getWeeklyPattern(occurrenceInput.checked ? occurrenceNumber.value : 0, byDateInput.checked ? byDateInputDate.value : '', startDateDOM.value)) {
                 hideWarning();
+                patternHide();
+                updateEventTimes();
             } else {
                 showWarning();
                 return;
@@ -292,6 +322,8 @@ const handleSave = () => {
         case 2:
             if (getMonthlyPattern(occurrenceInput.checked ? occurrenceNumber.value : 0, byDateInput.checked ? byDateInputDate.value : '', startDateDOM.value)) {
                 hideWarning();
+                patternHide();
+                updateEventTimes();
             } else {
                 showWarning();
                 return;
@@ -300,13 +332,14 @@ const handleSave = () => {
         default:
             break;
     }
-}
-function getEveryNth(arr, nth) {
-    const result = [];
-  
-    for (let i = 0; i < arr.length; i += nth) {
-      result.push(arr[i]);
-    }
-  
-    return result;
+
+    //convert all days to the correct time zone
+    days = days.map(day => {
+        const date = new Date(day);
+        return new Date( date.getTime() - ( date.getTimezoneOffset() * 60000 ) );
+    })
+    console.log('days')
+
+    const recurringLabel = document.getElementById('recurring-label');
+    recurringLabel.innerText = `${days.length} Events`;
 }

@@ -149,6 +149,18 @@ const prevSection = () => {
     }
 }
 
+const overlappingRoomsLoading = () => {
+    loading();
+    const nextBtn = document.querySelector('#next-btn');
+    nextBtn.disabled = true;
+}
+
+const overlappingRoomsDone = () => {
+    doneLoading();
+    const nextBtn = document.querySelector('#next-btn');
+    nextBtn.disabled = false;
+}
+
 let overlappingEventRooms = [];
 
 const updateEventTimes = async () => {
@@ -157,7 +169,27 @@ const updateEventTimes = async () => {
 
     overlappingEventRooms = [];
     
-    if (startDateValue && endDateValue) {
+    if (days.length) {
+        overlappingRoomsLoading();
+
+        const eventLength = new Date(endDateDOM.value).getTime() - new Date(startDateDOM.value).getTime();
+        for (day of days) {
+            const currEventStart = new Date(day).toISOString();
+            const currEventEnd = new  Date(new Date(day).getTime() + eventLength).toISOString();
+            const overlapEvents = await getDaysEventsBetweenTimes(currEventStart, currEventEnd);
+            
+            for (let i = 0; i < overlapEvents.length; i ++) {
+                const {Event_ID} = overlapEvents[i];
+                const eventRooms = await getEventRooms(Event_ID);
+                eventRooms.forEach(room => {
+                    overlappingEventRooms.push(room.Room_ID)
+                })
+            }
+        }
+        overlappingEventRooms =  [...new Set(overlappingEventRooms)]
+
+        overlappingRoomsDone();
+    } else if (startDateValue && endDateValue) {
         console.log(startDateValue, endDateValue)
         const overlapEvents = await getDaysEventsBetweenTimes(startDateValue + ':00.00', endDateValue + ':00.00');
         
@@ -169,6 +201,8 @@ const updateEventTimes = async () => {
             })
         }
     }
+
+    console.log(overlappingEventRooms)
 }
 
 const loadRoomOptions = async () => {
@@ -239,37 +273,9 @@ document.getElementById('create-form').addEventListener('keypress', (e) => {
     }
 })
 
-const handleSubmit = async (e) => {
-    e.preventDefault();
+const publishEvent = async (event) => {
     let roomsComplete;
     let tasksComplete;
-
-    //get the contact id from the user selected from the dropdown
-    const primaryContactID = await getUserInfo(primaryContactDOM.value);
-
-    //Check if all required inputs have values; if not go back and let user complete the form
-    const allValues = [eventNameDOM.value,eventDescDOM.value,primaryContactID.Contact_ID,startDateDOM.value,endDateDOM.value,eventTypeDOM.value,attendanceDOM.value,congregationDOM.value,setupTimeDOM.value,cleanupTimeDOM.value,privacyDOM.value == 1 ? true : false,eventLocationDOM.value, visibilityLevelDOM.value]
-    if (allValues.filter(value => value.toString() == "").length > 0) {
-        sectionId = 0;
-        nextSection();
-
-        warningMsgDOM.innerText = "Not All Fields Completed"
-        return;
-    }
-    loading();
-
-    //turn input data into form for sending to MP
-    const event = [formatEvent(eventNameDOM.value,eventDescDOM.value,primaryContactID.Contact_ID,startDateDOM.value,endDateDOM.value,eventTypeDOM.value,attendanceDOM.value,congregationDOM.value,setupTimeDOM.value,cleanupTimeDOM.value,privacyDOM.value == 1 ? true : false,eventLocationDOM.value, visibilityLevelDOM.value)];
-
-    const completed = () => {
-        if (tasksComplete && roomsComplete) {
-            doneLoading();
-            console.log('complete')
-            window.location = '/create';
-        } else {
-            console.log('not complete yet')
-        }
-    }
 
     //get an array of the rooms that were selected
     const allRoomInputs = document.querySelectorAll('.room-input');
@@ -287,7 +293,7 @@ const handleSubmit = async (e) => {
         .catch(err => {
             console.error(err)
         })
-    
+
     console.log(eventId)
     const bookAllRooms = async () => {
         for (roomId of selectedRooms) {
@@ -309,7 +315,6 @@ const handleSubmit = async (e) => {
             .catch(err => console.error(err))
         }
         roomsComplete = true;
-        completed();
     }
     bookAllRooms();
 
@@ -365,8 +370,50 @@ const handleSubmit = async (e) => {
             }
         }
         tasksComplete = true;
-        completed();
     }
     sendAllTasks();
+}
+
+const handleSubmit = async (e) => {
+    e.preventDefault();
+
+    //get the contact id from the user selected from the dropdown
+    const primaryContactID = await getUserInfo(primaryContactDOM.value);
+
+    //Check if all required inputs have values; if not go back and let user complete the form
+    const allValues = [eventNameDOM.value,eventDescDOM.value,primaryContactID.Contact_ID,startDateDOM.value,endDateDOM.value,eventTypeDOM.value,attendanceDOM.value,congregationDOM.value,setupTimeDOM.value,cleanupTimeDOM.value,privacyDOM.value == 1 ? true : false,eventLocationDOM.value, visibilityLevelDOM.value]
+    if (allValues.filter(value => value.toString() == "").length > 0) {
+        sectionId = 0;
+        nextSection();
+
+        warningMsgDOM.innerText = "Not All Fields Completed"
+        return;
+    }
+    loading();
+
+
+    const completed = () => {
+        doneLoading();
+        console.log('complete')
+        // window.location = '/create';
+    }
+    
+    if (days.length) {
+        console.log('multiple events')
+        const eventLength = new Date(endDateDOM.value).getTime() - new Date(startDateDOM.value).getTime();
+        for (day of days) {
+            const event = [formatEvent(eventNameDOM.value,eventDescDOM.value,primaryContactID.Contact_ID,day,new Date(new Date(day).getTime() + eventLength).toISOString(),eventTypeDOM.value,attendanceDOM.value,congregationDOM.value,setupTimeDOM.value,cleanupTimeDOM.value,privacyDOM.value == 1 ? true : false,eventLocationDOM.value, visibilityLevelDOM.value)];
+            await publishEvent(event)
+        }
+        completed();
+    } else {
+        console.log('single event')
+        //turn input data into form for sending to MP
+        const event = [formatEvent(eventNameDOM.value,eventDescDOM.value,primaryContactID.Contact_ID,startDateDOM.value,endDateDOM.value,eventTypeDOM.value,attendanceDOM.value,congregationDOM.value,setupTimeDOM.value,cleanupTimeDOM.value,privacyDOM.value == 1 ? true : false,eventLocationDOM.value, visibilityLevelDOM.value)];
+
+        await publishEvent(event)
+        completed();
+    }
+
 
 }
