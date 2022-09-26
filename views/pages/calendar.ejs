@@ -77,7 +77,7 @@
         //reset number of events
         dates.map(date => date.numberOfEvents = 0)
 
-        allEvents = await getEvents(currentMonth, currentYear, 'calendar')
+        allEvents = await getEvents(currentMonth, currentYear)
         events = [];
 
         if (buildingFilterDOM.value > 0 && roomFilterDOM.value > 0) {
