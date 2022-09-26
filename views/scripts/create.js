@@ -188,8 +188,8 @@ const updateEventTimes = async () => {
         const eventLength = new Date(endDateDOM.value).getTime() - new Date(startDateDOM.value).getTime();
         for (day of days) {
             const currEventStart = subtractMinutesToDate(new Date(day), setupTime);
-            const currEventEnd = new  addMinutesToDate(new Date(new Date(day).getTime() + eventLength), cleanupTime);
-            
+            const currEventEnd = addMinutesToDate(new Date(new Date(day).getTime() + eventLength), cleanupTime);
+
             const overlapEvents = await getDaysEventsBetweenTimes(currEventStart, currEventEnd);
             
             for (let i = 0; i < overlapEvents.length; i ++) {
