@@ -21,7 +21,7 @@ const ensureAuthenticated = async (req,res,next) => {
             if (!userRoles) return res.render('pages/login', {error: "Session Expired"});
             
             if (userRoles.filter(role => requiredRoles.includes(role.Role_ID)).length > 0) next();
-            else res.render('pages/login', {error: "Insufficient Roles"})
+            else res.render('pages/calendar')
         })
         .catch(err => {
             console.log(err)
@@ -45,12 +45,12 @@ const ensureAdminAuthenticated = async (req, res, next) => {
         .then(response => response.data)
         .then(data => {
             const {userRoles} = data;
-            const requiredRoles = [19, 39]//array of roles that will allow user to log in and create events
+            const requiredRoles = [2202, 2]//array of roles that will allow user to log in and create events
 
             if (!userRoles) return res.render('pages/login', {error: "Session Expired"});
             
             if (userRoles.filter(role => requiredRoles.includes(role.Role_ID)).length > 0) next();
-            else res.render('pages/login', {error: "Insufficient Roles"})
+            else res.render('pages/calendar')
         })
         .catch(err => {
             console.log(err)

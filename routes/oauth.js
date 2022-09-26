@@ -48,6 +48,7 @@ router.post('/login', async (req, res) => {
                         res.send({success: true})
                     })
                     .catch(err => {
+                        console.error(err)
                         res.send({success: false, error: 'internal server error: please try again later.'})
                     })
             } else {

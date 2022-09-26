@@ -54,7 +54,7 @@ const loadForm = async () => {
                 ${userInfo.Name}
             </option>
         `
-    })
+    }).join('')
     primaryContactDOM.value = user.UserId;
 
     //Event Types
@@ -78,7 +78,7 @@ const loadForm = async () => {
                 ${type.Event_Type}
             </option>
         `
-    })
+    }).join('')
     eventTypeDOM.value = 15; //set default value to 'class'
 
     //Congregation Type
@@ -89,7 +89,7 @@ const loadForm = async () => {
                 ${congregation.Congregation_Name}
             </option>
         `
-    })
+    }).join('')
 
     //Event Location
     let eventLocations = await getLocations();
@@ -99,7 +99,7 @@ const loadForm = async () => {
                 ${location.Location_Name}
             </option>
         `
-    })
+    }).join('')
 
     //Visibility Level
     let visibilityLevels = await getVisibilityLevels();
@@ -109,24 +109,24 @@ const loadForm = async () => {
                 ${level.Visibility_Level.split(' - ')[1]}
             </option>
         `
-    })
+    }).join('')
 }
 loadForm();
 
 let sectionId = 1;
 const nextSection = async () => {
-    // //get the contact id from the user selected from the dropdown
-    // const primaryContactID = await getUserInfo(primaryContactDOM.value);
+    //get the contact id from the user selected from the dropdown
+    const primaryContactID = await getUserInfo(primaryContactDOM.value);
     
-    // //Check if all required inputs have values; if not go back and let user complete the form
-    // const allValues = [eventNameDOM.value,eventDescDOM.value,primaryContactID.Contact_ID,startDateDOM.value,endDateDOM.value,eventTypeDOM.value,attendanceDOM.value,congregationDOM.value,setupTimeDOM.value,cleanupTimeDOM.value,privacyDOM.value == 1 ? true : false,eventLocationDOM.value, visibilityLevelDOM.value]
-    // if (allValues.filter(value => value.toString() == "").length > 0) {
-    //     sectionId = 0;
-    //     nextSection();
+    //Check if all required inputs have values; if not go back and let user complete the form
+    const allValues = [eventNameDOM.value,eventDescDOM.value,primaryContactID.Contact_ID,startDateDOM.value,endDateDOM.value,eventTypeDOM.value,attendanceDOM.value,congregationDOM.value,setupTimeDOM.value,cleanupTimeDOM.value,privacyDOM.value == 1 ? true : false,eventLocationDOM.value, visibilityLevelDOM.value]
+    if (allValues.filter(value => value.toString() == "").length > 0) {
+        sectionId = 0;
+        nextSection();
 
-    //     warningMsgDOM.innerText = "Not All Fields Completed"
-    //     return;
-    // }
+        warningMsgDOM.innerText = "Not All Fields Completed"
+        return;
+    }
     const sections = document.querySelectorAll('.section');
     if (sectionId < sections.length) {
         sectionId ++;
@@ -161,12 +161,25 @@ const overlappingRoomsDone = () => {
     nextBtn.disabled = false;
 }
 
+const addMinutesToDate = (date, minutes) => {
+    const tzOffset = 7 * 3600000;
+    return new Date(new Date((date.getTime() + minutes * 60000) - tzOffset).toLocaleString()).toISOString();
+}
+const subtractMinutesToDate = (date, minutes) => {
+    const tzOffset = 7 * 3600000;
+    return new Date(new Date((date.getTime() - minutes * 60000) - tzOffset).toLocaleString()).toISOString();
+}
+
 let overlappingEventRooms = [];
 
 const updateEventTimes = async () => {
-    const startDateValue = startDateDOM.value;
-    const endDateValue = endDateDOM.value;
-
+    let startDateValue = startDateDOM.value;
+    let endDateValue = endDateDOM.value;
+    const setupTime = setupTimeDOM.value;
+    const cleanupTime = cleanupTimeDOM.value;
+    
+    if (startDateValue) startDateValue = subtractMinutesToDate(new Date(startDateValue), setupTime);
+    if (endDateValue) endDateValue = addMinutesToDate(new Date(endDateValue), cleanupTime);
     overlappingEventRooms = [];
     
     if (days.length) {
@@ -174,8 +187,9 @@ const updateEventTimes = async () => {
 
         const eventLength = new Date(endDateDOM.value).getTime() - new Date(startDateDOM.value).getTime();
         for (day of days) {
-            const currEventStart = new Date(day).toISOString();
-            const currEventEnd = new  Date(new Date(day).getTime() + eventLength).toISOString();
+            const currEventStart = subtractMinutesToDate(new Date(day), setupTime);
+            const currEventEnd = new  addMinutesToDate(new Date(new Date(day).getTime() + eventLength), cleanupTime);
+            
             const overlapEvents = await getDaysEventsBetweenTimes(currEventStart, currEventEnd);
             
             for (let i = 0; i < overlapEvents.length; i ++) {
@@ -191,7 +205,8 @@ const updateEventTimes = async () => {
         overlappingRoomsDone();
     } else if (startDateValue && endDateValue) {
         console.log(startDateValue, endDateValue)
-        const overlapEvents = await getDaysEventsBetweenTimes(startDateValue + ':00.00', endDateValue + ':00.00');
+        const overlapEvents = await getDaysEventsBetweenTimes(startDateValue, endDateValue);
+        // const overlapEvents = [];
         
         for (let i = 0; i < overlapEvents.length; i ++) {
             const {Event_ID} = overlapEvents[i];

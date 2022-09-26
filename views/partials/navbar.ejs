@@ -17,15 +17,15 @@
         <div class="links">
             <ul>
                 <li><a href="/">Calendar</a></li>
-                <li><a href="/create">New Event</a></li>
+                <li id="new-event-btn"><a href="/create">New Event</a></li>
                 <li id="loggedOut"><a href="/login">Login</a></li>
                 <li id="loggedIn"><a onclick="logout()" href="/">Logout</a></li>
             </ul>
         </div>
         <div class="footer">
             <ul>
-                <li><a href="/"><i class='fab fa-facebook-square'></i></a></li>
-                <li><a href="/"><i class='fab fa-instagram'></i></a></li>
+                <!-- <li><a href="/"><i class='fab fa-facebook-square'></i></a></li>
+                <li><a href="/"><i class='fab fa-instagram'></i></a></li> -->
                 <li><a href="https://github.com/jblackman42/event-planner"><i class='fab fa-github-square'></i></a></li>
                 <li class='toggle-switch'>
                     <label class="switch" onclick="toggleColorScheme()">
@@ -49,6 +49,8 @@
 
     const navContainerDOM = document.querySelector('.navContainer');
 
+    const newEventBtn = document.querySelector('#new-event-btn');
+
     openButtonDOM.addEventListener('click', () => {
         navContainerDOM.classList.toggle('open');
         navContainerDOM.classList.toggle('closed');
@@ -59,7 +61,7 @@
         navContainerDOM.classList.toggle('closed');
     })
 
-    
+    const checkDuplicates = (arr1, arr2) => [...new Set(arr1.concat(arr2))].length != arr1.concat(arr2).length;
 
     const welcomeMsg = async () => {
         const user = await getUser()
@@ -73,18 +75,27 @@
     }
     welcomeMsg();
 
-    // axios({
-    //     method: 'get',
-    //     url: '/api/oauth/me/roles',
-    //     params: {
-    //         user_id: user_id,
-    //         token: access_token
-    //     }
-    // })
-    //     .then(response => response.data)
-    //     .then(data => {
-    //         // console.log(data)
-    //     })
+    axios({
+        method: 'get',
+        url: '/api/oauth/me/roles',
+        params: {
+            user_id: user_id,
+            token: access_token
+        }
+    })
+        .then(response => response.data)
+        .then(data => {
+            const eventCreatorRoleId = [2202, 2];
+            const {userRoles} = data;
+            const userRoleIds = userRoles.map(role => role.Role_ID);
+            
+            //if logged in user is  authorized to create events
+            if (checkDuplicates(userRoleIds, eventCreatorRoleId)) {
+                //add new event from navbar
+                newEventBtn.style.display = 'block';
+                newEventBtn.style.visibility = 'visible';
+            }
+        })
 
     if (localStorage.getItem('colorScheme') == 'dark') {
         toggleColorSchemeBtn.checked = true;
