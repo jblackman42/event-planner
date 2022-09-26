@@ -25,11 +25,11 @@
                 </div>
                 <div class="input">
                     <label for="start-date">Start Date/Time:</label>
-                    <input type="datetime-local" name="start-date" id="start-date" onchange="updateEventTimes()">
+                    <input type="datetime-local" name="start-date" id="start-date">
                 </div>
                 <div class="input">
                     <label for="end-date">End Date/Time:</label>
-                    <input type="datetime-local" name="end-date" id="end-date" onchange="updateEventTimes()">
+                    <input type="datetime-local" name="end-date" id="end-date">
                 </div>
                 <div class="input">
                     <label for="primary-contact">Primary Contact</label>
@@ -75,7 +75,7 @@
                     <textarea name="event-desc" id="event-desc"></textarea>
                 </div>
 
-                <button type="button" class="btn" onclick="nextSection()">Next</button>
+                <button type="button" class="btn" onclick="nextSection();updateEventTimes();">Next</button>
             </div>
             <div id="section-2" class="section">
                 <div class="input">
@@ -122,7 +122,7 @@
                 </div>
                 <div class="button-container">
                     <button type="button" class="btn prev" onclick="prevSection()">Back</button>
-                    <button id="next-btn" type="button" class="btn" onclick="nextSection();loadRoomOptions();updateEventTimes();">Next</button>
+                    <button id="next-btn" type="button" class="btn" onclick="nextSection();loadRoomOptions();">Next</button>
                 </div>
             </div>
             <div id="section-3" class="section">
