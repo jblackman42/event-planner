@@ -333,16 +333,16 @@ const handleSave = () => {
             break;
     }
 
-    console.log(days)
     //convert all days to the correct time zone
     days = days.map(day => {
         const date = new Date(day);
         return new Date( date.getTime() - ( date.getTimezoneOffset() * 60000 ) ).toISOString();
     })
-    console.log(days)
 
     const recurringLabel = document.getElementById('recurring-label');
     recurringLabel.innerText = `${days.length} Events`;
+
+    reviewShow();
 }
 
 const elem = document.getElementById('days-number-option');
