@@ -52,20 +52,12 @@ router.post('/login', async (req, res) => {
                         res.send({success: false, error: 'internal server error: please try again later.'})
                     })
             } else {
-                console.log('no access token')
-                // res.send({success: false, error: 'invalid credentials'})
-                res.render('pages/login', {error: 'invalid credentials'})
+                res.render('pages/login', {error: 'Incorrect Username or Password'})
             }
         })
         .catch(err => {
-            res.send({success: false, error: 'invalid credentials'})
+            res.send({success: false, error: 'Incorrect Username or Password'})
         })
-})
-
-router.get('/redirect', (req, res) => {
-    console.log(req.query)
-    res.sendStatus(200)
-    // res.redirect(`/loading`)
 })
 
 router.get('/me', async (req, res) => {

@@ -333,13 +333,57 @@ const handleSave = () => {
             break;
     }
 
+    console.log(days)
     //convert all days to the correct time zone
     days = days.map(day => {
         const date = new Date(day);
-        return new Date( date.getTime() - ( date.getTimezoneOffset() * 60000 ) );
+        return new Date( date.getTime() - ( date.getTimezoneOffset() * 60000 ) ).toISOString();
     })
-    console.log('days')
+    console.log(days)
 
     const recurringLabel = document.getElementById('recurring-label');
     recurringLabel.innerText = `${days.length} Events`;
+}
+
+const elem = document.getElementById('days-number-option');
+const dailyOption1 = () => {
+    elem.disabled = false ;
+}
+const dailyOption2 = () => {
+    elem.disabled = true;
+}
+//option 1
+const month1Opt1 = document.getElementById('month-day');
+const month1Opt2 = document.getElementById('every-month-num');
+//option2
+const month2Opt1 = document.getElementById('monthly-day-pattern');
+const month2Opt2 = document.getElementById('weekday-pattern');
+const month2Opt3 = document.getElementById('every-month-num-2');
+const monthlyOption1 = () => {
+    month1Opt1.disabled = false;
+    month1Opt2.disabled = false;
+
+    month2Opt1.disabled = true;
+    month2Opt2.disabled = true;
+    month2Opt3.disabled = true;
+}
+const monthlyOption2 = () => {
+    month1Opt1.disabled = true;
+    month1Opt2.disabled = true;
+
+    month2Opt1.disabled = false;
+    month2Opt2.disabled = false;
+    month2Opt3.disabled = false;
+}
+//option 1
+const endOpt1 =  document.getElementById('occurrence-num');
+//option 2
+const endOpt2 = document.getElementById('by-date-input');
+const endOption1 = () => {
+    endOpt1.disabled = false;
+    endOpt2.disabled = true;
+}
+const endOption2 = () => {
+    endOpt1.disabled = true;
+    endOpt2.disabled = false;
 }

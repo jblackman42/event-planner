@@ -220,6 +220,13 @@ const updateEventTimes = async () => {
     console.log(overlappingEventRooms)
 }
 
+const resetRecurring = () => {
+    days = [];
+    updateEventTimes();
+    const recurringLabel = document.getElementById('recurring-label');
+    recurringLabel.innerText = `One Time Event`;
+}
+
 const loadRoomOptions = async () => {
     const buildingId = eventLocationDOM.value;
     let buildings = await getLocationBuildings(buildingId);

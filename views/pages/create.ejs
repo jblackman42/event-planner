@@ -9,6 +9,7 @@
 
     <%- include('../partials/navbar'); %>
     <%- include('../partials/recurring-event-popup'); %>
+    <%- include('../partials/review-days'); %>
 
     <div class="form-container">
         <p>Event Creator: <span id="event-creator"></span></p>
@@ -25,11 +26,11 @@
                 </div>
                 <div class="input">
                     <label for="start-date">Start Date/Time:</label>
-                    <input type="datetime-local" name="start-date" id="start-date">
+                    <input type="datetime-local" name="start-date" id="start-date" onchange="resetRecurring()">
                 </div>
                 <div class="input">
                     <label for="end-date">End Date/Time:</label>
-                    <input type="datetime-local" name="end-date" id="end-date">
+                    <input type="datetime-local" name="end-date" id="end-date" onchange="resetRecurring()">
                 </div>
                 <div class="input">
                     <label for="primary-contact">Primary Contact</label>
@@ -49,11 +50,11 @@
                 </div>
                 <div class="input">
                     <label for="setup">Setup Time: (minutes)</label>
-                    <input type="number" name="setup" id="setup" value="0" onchange="updateEventTimes()">
+                    <input type="number" name="setup" id="setup" value="0" onchange="resetRecurring()">
                 </div>
                 <div class="input">
                     <label for="cleanup">Cleanup Time: (minutes)</label>
-                    <input type="number" name="cleanup" id="cleanup" value="0" onchange="updateEventTimes()">
+                    <input type="number" name="cleanup" id="cleanup" value="0" onchange="resetRecurring()">
                 </div>
                 <div class="input">
                     <label for="privacy">On Calendar:</label>
@@ -75,7 +76,7 @@
                     <textarea name="event-desc" id="event-desc"></textarea>
                 </div>
 
-                <button type="button" class="btn" onclick="nextSection();updateEventTimes();">Next</button>
+                <button type="button" class="btn" onclick="nextSection();">Next</button>
             </div>
             <div id="section-2" class="section">
                 <div class="input">
@@ -122,7 +123,7 @@
                 </div>
                 <div class="button-container">
                     <button type="button" class="btn prev" onclick="prevSection()">Back</button>
-                    <button id="next-btn" type="button" class="btn" onclick="nextSection();loadRoomOptions();">Next</button>
+                    <button id="next-btn" type="button" class="btn" onclick="nextSection();loadRoomOptions()">Next</button>
                 </div>
             </div>
             <div id="section-3" class="section">

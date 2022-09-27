@@ -118,7 +118,9 @@ $recurring-header-bg: var(--secondary-bg-color);
             input[type="number"] {
                 max-width: 100px;
             }
-
+            input[type="number"]:disabled, input[type="date"]:disabled {
+                opacity: .5;
+            }
             p {
                 margin: .5rem 0;
             }

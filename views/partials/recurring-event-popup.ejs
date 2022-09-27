@@ -15,11 +15,11 @@
         <div class="recurring-pattern">
             <div id="daily-options">
                 <div class="input">
-                    <input type="radio" name="daily" id="days">
+                    <input type="radio" name="daily" id="days" onclick="dailyOption1()">
                     <label for="days">Every <input type="number" id="days-number-option" value="1" min="1" max="31"> day(s)</label>
                 </div>
                 <div class="input">
-                    <input type="radio" name="daily" id="weekday">
+                    <input type="radio" name="daily" id="weekday" onclick="dailyOption2()">
                     <label for="weekday">Every Weekday</label>
                 </div>
             </div>
@@ -62,11 +62,11 @@
 
             <div id="monthly-options">
                 <div class="input">
-                    <input type="radio" name="monthly" id="day-of-month">
+                    <input type="radio" name="monthly" id="day-of-month" onclick="monthlyOption1()">
                     <label for="day-of-month">Day <input type="number" id="month-day" value="1" min="1" max="31"> of every <input type="number" id="every-month-num" value="1" min="1" max="11"> month(s)</label>
                 </div>
                 <div class="input">
-                    <input type="radio" name="monthly" id="times-of-month">
+                    <input type="radio" name="monthly" id="times-of-month" onclick="monthlyOption2()">
                     <label for="times-of-month">The 
                         <select name="monthly-day-pattern" id="monthly-day-pattern">
                             <option value="1">First</option>
@@ -164,19 +164,19 @@
                 <label for="end-by" class="title-label">End:</label>
                 <div class="input-options">
                     <div class="input">
-                        <input type="radio" name="end-by" id="occurrence" checked>
+                        <input type="radio" name="end-by" id="occurrence" onclick="endOption1()" checked>
                         <label for="occurrence">After <input type="number" id="occurrence-num" min="1" max="52" value="1"> occurrences</label>
                     </div>
                     <div class="input">
-                        <input type="radio" name="end-by" id="by-date">
-                        <label for="by-date">By date <input type="date" id="by-date-input"></label>
+                        <input type="radio" name="end-by" id="by-date" onclick="endOption2()">
+                        <label for="by-date">By date <input type="date" id="by-date-input" disabled></label>
                     </div>
                 </div>
             </div>
         </div>
         <div class="button-container">
-            <button class="btn" onclick="handleSave()"><i class='fas fa-save'></i> Save</button>
             <button class="btn cancel" onclick="cancel()"><i class='fas fa-ban'></i> Cancel</button>
+            <button class="btn" onclick="handleSave(); reviewShow();"><i class='fas fa-save'></i> Save</button>
         </div>
         <p id="recurring-warning-msg">Not All Fields Completed</p>
     </div>
