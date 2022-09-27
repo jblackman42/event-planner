@@ -295,9 +295,17 @@ document.getElementById('create-form').addEventListener('keypress', (e) => {
     }
 })
 
+let roomsComplete = false;
+let tasksComplete = false;
+
+const completed = () => {
+    if (roomsComplete && tasksComplete) {
+        doneLoading();
+        window.location = '/calendar';
+    }
+}
+
 const publishEvent = async (event) => {
-    let roomsComplete;
-    let tasksComplete;
 
     //get an array of the rooms that were selected
     const allRoomInputs = document.querySelectorAll('.room-input');
@@ -337,6 +345,7 @@ const publishEvent = async (event) => {
             .catch(err => console.error(err))
         }
         roomsComplete = true;
+        completed();
     }
     bookAllRooms();
 
@@ -385,13 +394,8 @@ const publishEvent = async (event) => {
                 if (task.taskDOM.value == 1) await sendTask(user.UserId, taskOwner, eventId, new Date().toISOString(), task.taskType)
             }
         }
-        //if event is a recurring event, send a task to anyone with the Recurring-Event-Tasks role
-        if (recurrencePattern) {
-            for (taskOwner of recurringEventUserIds) {
-                await sendRecurringEventTask(user.UserId, taskOwner, eventId, new Date().toISOString(), recurrencePattern)
-            }
-        }
         tasksComplete = true;
+        completed();
     }
     sendAllTasks();
 }
@@ -414,11 +418,6 @@ const handleSubmit = async (e) => {
     loading();
 
 
-    const completed = () => {
-        doneLoading();
-        console.log('complete')
-        window.location = '/calendar';
-    }
     
     if (days.length) {
         console.log('multiple events')
