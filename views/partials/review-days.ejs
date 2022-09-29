@@ -25,26 +25,9 @@
 
     const loadDaysList = () => {
         const daysListHTML = days.map(day => {
-            let AMPM = 'AM';
-            let hour = day.split('T')[1].split(':')[0]
-            const minutes = day.split('T')[1].split(':')[1]
-            if (hour >= 12 && hour < 24) AMPM = 'PM'
-            if (hour > 12) hour -= 12
-
             const eventLength = new Date(endDateDOM.value).getTime() - new Date(startDateDOM.value).getTime();
-
-            let endAMPM = 'AM'
-            let endHours = parseInt(hour) + Math.floor(eventLength / 3600000);
-            let endMinutes = (parseInt(minutes) + Math.floor(eventLength / 60000) - (Math.floor(eventLength / 3600000) * 60));
-            if (endMinutes >= 60) {
-                endHours += Math.floor(endMinutes / 60);
-                endMinutes -= 60 * Math.floor(endMinutes / 60);
-            }
-            console.log(endHours)
-            console.log(eventLength)
-            if (endHours >= 12 && endHours < 24) endAMPM = 'PM';
-            if (endHours > 12) endHours -= 12;
-            return `<li>${new Date(day).toDateString()} @ ${hour}:${minutes} ${AMPM} - ${endHours.toString().padStart(2, '0')}:${endMinutes.toString().padStart(2,'0')} ${endAMPM}</li>`
+            const eventEndDate = new Date(new Date(day).getTime() + eventLength)
+            return `<li>${new Date(day).toDateString()} @ ${new Date(day).toLocaleTimeString()} - ${eventEndDate.toLocaleTimeString()}</li>`
         }).join('')
         daysListDOM.innerHTML = daysListHTML;
         eventTitleDOM.innerText = eventNameDOM.value;

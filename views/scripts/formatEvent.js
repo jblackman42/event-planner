@@ -20,7 +20,7 @@ const formatEvent = (event_name, event_desc, primary_contact_id, start_date, end
         "Ignore_Program_Groups": false,
         "Late_Check-in_Period": null,
         "Location_ID": parseInt(location_id),
-        "Meeting_Instructions": "This is a test event",
+        "Meeting_Instructions": "",
         "Minutes_for_Cleanup": parseInt(cleanup_time),
         "Minutes_for_Setup": parseInt(setup_time),
         "Notification_Settings": null,

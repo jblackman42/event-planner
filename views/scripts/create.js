@@ -204,7 +204,7 @@ const updateEventTimes = async () => {
 
         overlappingRoomsDone();
     } else if (startDateValue && endDateValue) {
-        console.log(startDateValue, endDateValue)
+        // console.log(startDateValue, endDateValue)
         const overlapEvents = await getDaysEventsBetweenTimes(startDateValue, endDateValue);
         // const overlapEvents = [];
         
@@ -217,7 +217,7 @@ const updateEventTimes = async () => {
         }
     }
 
-    console.log(overlappingEventRooms)
+    // console.log(overlappingEventRooms)
 }
 
 const resetRecurring = () => {
@@ -299,15 +299,13 @@ let roomsComplete = false;
 let tasksComplete = false;
 
 const completed = () => {
-    if (roomsComplete && tasksComplete) {
-        doneLoading();
-        window.location = '/calendar';
-    }
+    doneLoading();
+    window.location = '/calendar';
 }
 
 const publishEvent = async (event) => {
 
-    //get an array of the rooms that were selected
+    //get an array of the rooms that were selected   
     const allRoomInputs = document.querySelectorAll('.room-input');
     const selectedRooms = [];
 
@@ -324,14 +322,13 @@ const publishEvent = async (event) => {
             console.error(err)
         })
 
-    console.log(eventId)
     const bookAllRooms = async () => {
         for (roomId of selectedRooms) {
             const room = [{
                 "Event_ID": eventId,
                 "Room_ID": roomId
             }];
-            console.log(room)
+            console.log('room: ', room)
             await fetch('https://my.pureheart.org/ministryplatformapi/tables/Event_Rooms', {
                 method: 'POST',
                 headers: {
@@ -344,10 +341,8 @@ const publishEvent = async (event) => {
             .then(response => response.json())
             .catch(err => console.error(err))
         }
-        roomsComplete = true;
-        completed();
     }
-    bookAllRooms();
+    await bookAllRooms()
 
     const taskOptions = [
         {
@@ -394,8 +389,6 @@ const publishEvent = async (event) => {
                 if (task.taskDOM.value == 1) await sendTask(user.UserId, taskOwner, eventId, new Date().toISOString(), task.taskType)
             }
         }
-        tasksComplete = true;
-        completed();
     }
     sendAllTasks();
 }
@@ -423,7 +416,8 @@ const handleSubmit = async (e) => {
         console.log('multiple events')
         const eventLength = new Date(endDateDOM.value).getTime() - new Date(startDateDOM.value).getTime();
         for (day of days) {
-            const event = [formatEvent(eventNameDOM.value,eventDescDOM.value,primaryContactID.Contact_ID,day,new Date(new Date(day).getTime() + eventLength).toISOString(),eventTypeDOM.value,attendanceDOM.value,congregationDOM.value,setupTimeDOM.value,cleanupTimeDOM.value,privacyDOM.value == 1 ? true : false,eventLocationDOM.value, visibilityLevelDOM.value)];
+            const eventDay = new Date(new Date(day).getTime() - (new Date(day).getTimezoneOffset() * 60000))
+            const event = [formatEvent(eventNameDOM.value,eventDescDOM.value,primaryContactID.Contact_ID,eventDay,new Date(new Date(eventDay).getTime() + eventLength).toISOString(),eventTypeDOM.value,attendanceDOM.value,congregationDOM.value,setupTimeDOM.value,cleanupTimeDOM.value,privacyDOM.value == 1 ? true : false,eventLocationDOM.value, visibilityLevelDOM.value)];
             await publishEvent(event)
         }
         completed();

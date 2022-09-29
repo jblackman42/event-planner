@@ -132,10 +132,10 @@ const getWeeklyPattern = (endOccurrences, endDate, startDate) => {
         return false;
     }
 
-    days = [new Date(startDate).toISOString()];
+    days = [];
     let allDays = [];
     let currDate = new Date(startDate);
-    let currentWeek = []
+    let currentWeek = [new Date(startDate).toISOString()]
     while ((currDate <= new Date(endDate) || days.length <= endOccurrences * selectedDays.length) && days.length < eventCreateLimit) {
         let tomorrow = new Date(currDate);
         tomorrow.setDate(tomorrow.getDate() + 1);
@@ -248,13 +248,20 @@ const getMonthlyPattern = (endOccurrences, endDate, startDate) => {
         let fullStartDate = new Date(startDate)
 
         days = [new Date(startDate).toISOString()];
+
         //gets the first day of the next month after the start date
         let currDate = new Date(fullStartDate.getFullYear(), fullStartDate.getMonth() + parseInt(everyMonthValue.value), 1)
         while ((currDate <= new Date(endDate) || days.length < endOccurrences) && days.length < eventCreateLimit) {
+            //newDate is correct day with a time of 00:00:00
             let newDate = getWeekdayOfMonth(currDate.toLocaleDateString(), parseInt(weekdayPattern.value), parseInt(monthDayPattern.value))
-            // console.log(newDate)
-            days.push(newDate.toISOString().split('T')[0] + 'T' + fullStartDate.toISOString().split('T')[1]);
-            // days.push(currDate)
+            //time offset is the number of milliseconds from 00:00:00 to time of event start
+
+            newDate.setHours(fullStartDate.getHours(), fullStartDate.getMinutes(), 0)
+
+            console.log(newDate)
+
+            days.push(newDate.toISOString());
+            
             currDate = new Date(currDate.getFullYear(), currDate.getMonth() + parseInt(everyMonthValue.value), 1)
         }
         // console.log(days)
@@ -275,7 +282,7 @@ const hideWarning = () => {
 }
 
 const handleSave = () => {
-    const activeOption = document.querySelector('.active').id;
+     const activeOption = document.querySelector('.active').id;
 
     let patternTypes = ['daily', 'weekly', 'monthly'];
     let patternType = patternTypes.indexOf(activeOption);
@@ -332,12 +339,6 @@ const handleSave = () => {
         default:
             break;
     }
-
-    //convert all days to the correct time zone
-    days = days.map(day => {
-        const date = new Date(day);
-        return new Date( date.getTime() - ( date.getTimezoneOffset() * 60000 ) ).toISOString();
-    })
 
     const recurringLabel = document.getElementById('recurring-label');
     recurringLabel.innerText = `${days.length} Events`;
