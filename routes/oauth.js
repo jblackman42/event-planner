@@ -108,4 +108,21 @@ router.get('/me/roles', async (req, res) => {
     }
 })
 
+router.get('/authorize', async (req, res) => {
+    const data = await axios({
+        method: 'post',
+        url: 'https://my.pureheart.org/ministryplatformapi/oauth/connect/token',
+        data: qs.stringify({
+            grant_type: "client_credentials",
+            scope: "http://www.thinkministry.com/dataplatform/scopes/all",
+            client_id: process.env.CLIENT_ID,
+            client_secret: process.env.CLIENT_SECRET
+        })
+    })
+        .then(response => response.data)
+    const {access_token, expires_in} = data;
+    const expiresDate = new Date(new Date().getTime() + (expires_in * 1000)).toISOString()
+    res.send({access_token: access_token, expires_in: expiresDate})
+})
+
 module.exports = router;
