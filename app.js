@@ -16,6 +16,8 @@ app.use(function(req, res, next) {
     next();
 });
 //other imported functions
+const connectDB = require('./db/connect.js');
+
 // set the view engine to ejs
 app.set('view engine', 'ejs');
 
@@ -29,9 +31,11 @@ const port = process.env.PORT || 3000;
 //navigation routing
 app.use('/', require('./routes/index'))
 app.use('/api/oauth', require('./routes/oauth.js'))
+app.use('/api/widgets', require('./routes/widgets.js'))
 
 const start = async () => {
     try {
+        await connectDB(process.env.MONGO_URI);
         app.listen(port, console.log(`server is listening on port ${port}, http://localhost:3000`));
     } catch (error) { console.log(error) }
 }
