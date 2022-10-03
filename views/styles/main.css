@@ -1451,6 +1451,47 @@ input:checked + .slider:before {
   border-color: var(--red-accent-color) !important;
 }
 
+#staff-widget-update {
+  background-color: #34495e;
+  display: grid;
+  place-items: center;
+}
+
+.staff-loading {
+  border: 2px solid white;
+  color: white;
+  border-radius: 4px;
+  width: 250px;
+  min-width: 50vw;
+  max-width: 700px;
+  height: 30px;
+  margin-inline: auto;
+  position: relative;
+}
+.staff-loading .staff-loading-bar {
+  position: absolute;
+  inset: 0;
+  background-color: #27ae60;
+  width: 0;
+  max-width: 100%;
+}
+.staff-loading .staff-loading-percent-label {
+  position: absolute;
+  left: 0;
+  top: 50%;
+  transform: translateY(-46%);
+  margin: 0;
+  display: grid;
+  margin: 0 0.5rem;
+  place-items: center;
+}
+.staff-loading #update-label {
+  position: absolute;
+  left: 50%;
+  top: 100%;
+  transform: translateX(-50%);
+}
+
 #loginForm,
 #signUpForm {
   background-color: #181818;
