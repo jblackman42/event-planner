@@ -3,7 +3,17 @@
     display: grid;
     place-items: center;
 }
-
+#staff-warning {
+    position: absolute;
+    left: 50%;
+    top: 0;
+    transform: translate(-50%, -100%);
+    margin: 0;
+    padding: 1rem 0;
+    color: #e74c3c;
+    font-weight: bold;
+    text-transform: uppercase;
+}
 .staff-loading {
     border: 2px solid white;
     color: white;
