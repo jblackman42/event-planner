@@ -166,7 +166,7 @@
 
                     const {Contact_ID} = await getParticipantFromID(participants[j].Participant_ID)
                     const contact = await getContactFromID(Contact_ID);
-                    const {Nickname, First_Name, Last_Name, Email_Address, Email_Unlisted, Mobile_Phone, Mobile_Phone_Unlisted} = contact;
+                    const {Nickname, First_Name, Last_Name, Email_Address, Email_Unlisted, Mobile_Phone, Mobile_Phone_Unlisted, Web_Page} = contact;
                     const {Job_Title} = await getStaffRecordFromContactID(Contact_ID);
                     const {UniqueFileId} = await getFilesFromContactID(Contact_ID);
                     const imageUrl = `https://my.pureheart.org/ministryplatformapi/files/${UniqueFileId}`
@@ -184,7 +184,8 @@
                         Email: email,
                         Phone: phone,
                         Job_Title: Job_Title,
-                        Image_URL: imageUrl
+                        Image_URL: imageUrl,
+                        Web_Page: Web_Page
                     })
                 }
                 
