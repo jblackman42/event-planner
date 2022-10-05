@@ -85,9 +85,22 @@ const ensureAdministrator = async (req, res, next) => {
             res.render('pages/login', {error: "Session Expired"})
         })
 }
+
+const ensureWebhook = (req, res, next) => {
+    const authKey = req.header('Auth-Key')
+    
+    if (authKey == process.env.WIDGET_AUTH_SECRET) {
+        //webhook is authorized
+        next();
+    } else {
+        //webhook is not authorized
+        res.sendStatus(401)
+    }
+}
   
 module.exports = {
     ensureAuthenticated,
     ensureAdminAuthenticated,
-    ensureAdministrator
+    ensureAdministrator,
+    ensureWebhook
 };;
