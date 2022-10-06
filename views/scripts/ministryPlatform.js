@@ -257,6 +257,34 @@ const getUserInfo = (User_ID) => {
     return response;
 }
 
+const getUserTasks = (User_ID) => {
+    if (!User_ID) return;
+    return axios({
+        method: 'get',
+        url: `https://my.pureheart.org/ministryplatformapi/tables/dp_Tasks?$filter=Assigned_User_ID=${User_ID} AND Completed=0`,
+        headers: {
+            'Accept': 'application/json',
+            'Authorization': `Bearer ${access_token}`
+        }
+    })
+    .then(response => response.data)
+    .catch(err => console.error(err))
+}
+
+const completeTask = (TaskId) => {
+    if (!TaskId) return;
+    return axios({
+        method: 'delete',
+        url: `https://my.pureheart.org/ministryplatformapi/tasks/${TaskId}`,
+        headers: {
+            'Accept': 'application/json',
+            'Authorization': `Bearer ${access_token}`
+        }
+    })
+    .then(response => response)
+    .catch(err => console.error(err))
+}
+
 const getUsersWithRole = (Role_ID) => {
     if (!Role_ID) return
     const response = axios({

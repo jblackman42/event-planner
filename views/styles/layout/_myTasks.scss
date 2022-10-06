@@ -1,0 +1,102 @@
+$tasks-color: var(--primary-font-color);
+$task-bg-color: var(--primary-bg-color);
+$task-title-color: var(--primary-font-color);
+$task-btn-color: var(--secondary-bg-color);
+
+#task-page-title {
+    color: $task-title-color;
+    text-align: center;
+}
+
+#tasks-container {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    color: $tasks-color;
+    width: 80vw;
+    max-width: 800px;
+    margin: 0 auto;
+    gap: 1rem;
+    .task {
+        display: flex;
+        justify-content: start;
+        flex-wrap: wrap;
+        width: 100%;
+        background-color: $task-bg-color;
+        border-radius: 4px;
+        overflow: hidden;
+        position: relative;
+        .task-title, .task-start-date, .task-record {
+            margin: 0;
+            width: max-content;
+            width: 30%;
+            display: grid;
+            align-items: center;
+            padding: .5rem 1rem;
+            box-sizing: border-box;
+        }
+        .dropdown-btn {
+            border: none;
+            margin: 0;
+            padding: 0;
+            background-color: transparent;
+            color: inherit;
+            cursor: pointer;
+            margin-inline: auto .5rem;
+            display: flex;
+            align-items: center;
+        }
+        .dropdown {
+            transition: font-size .1s,
+                        margin .1s,
+                        padding .1s,
+                        opacity .2s .1s;
+
+            width: 100%;
+            height: 100%;
+            box-sizing: content-box;
+
+            &.closed, &.closed * {
+                font-size: 0 !important;
+                margin: 0 !important;
+                opacity: 0 !important;
+                padding: 0 !important;
+                /* fade out, then shrink */
+                transition: opacity .1s,
+                            font-size .2s .1s,
+                            margin .2s .1s,
+                            padding .2s .1s;
+            }
+            
+            p {
+                margin: .5rem 1rem;
+            }
+            .btn-container {
+                padding: .5rem 1rem;
+                padding-top: 0;
+                display: flex;
+                justify-content: space-between;
+                .btn {
+                    margin: 0;
+                }
+                .link {
+                    background-color: $task-btn-color !important;
+                    border-color: $task-btn-color !important;
+                }
+            }
+        }
+        @media screen and (max-width: 768px) {
+            flex-direction: column;
+            .task-title, .task-start-date, .task-record {
+                width: 100%;
+                text-align: center;
+            }
+            .dropdown-btn {
+                position: absolute;
+                top: 0;
+                right: 0;
+            }
+        }
+    }
+}

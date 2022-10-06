@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <%- include('../partials/head'); %>
+    </head>
+<body>
+    <%- include('../partials/loading'); %>
+
+    <%- include('../partials/navbar'); %>
+
+    <h1 id="task-page-title">My Tasks</h1>
+    <div id="tasks-container"></div>
+
+    <%- include('../partials/footer'); %>
+</body>
+<script>
+    const taskContainerDOM = document.getElementById('tasks-container');
+    const getAllTasks = async () => {
+        loading();
+        const user = await getUser();
+        const {UserId} = user;
+
+        const tasks = await getUserTasks(UserId)
+        
+        if (!tasks.length) {
+            doneLoading();
+            taskContainerDOM.innerHTML = '<h3>You Have No Tasks</h3>'   
+            return;
+        }
+        console.log(tasks)
+
+        const allTasksHTML = [];
+        for (let i = 0; i < tasks.length; i ++) {
+            const {Task_ID, Description, _Record_Description, Title, Start_Date, _Record_ID, _Table_Name, Author_User_ID} = tasks[i];
+
+            const taskAuthor = await getUserInfo(Author_User_ID);
+
+            allTasksHTML.push(`
+                <div class="task" onclick="toggleDropdown(${Task_ID})">
+                    <p class="task-title">${Title}</p>
+                    <p class="task-start-date">${new Date(Start_Date).toLocaleDateString()} ${new Date(Start_Date).toLocaleTimeString()}</p>
+                    <p class="task-record">${_Table_Name}: ${_Record_Description.split(' |')[0]}</p>
+                    <button class="dropdown-btn"><i class="material-icons dropdown-btn-icon-${Task_ID}">keyboard_arrow_down</i></button>
+                    <div class="dropdown closed" id="dropdown-${Task_ID}" onclick="toggleDropdown(${Task_ID})">
+                        <p class="task-author">Created By: ${taskAuthor.Display_Name}</p>
+                        <p class="description">${Description}</p>
+                        <div class="btn-container">
+                            <button class="btn" onclick="completeTask(${Task_ID});location.reload();">Complete</button>
+                            <button class="btn link">View Record</button>
+                        </div>
+                    </div>
+                </div>
+            `)
+        }
+        taskContainerDOM.innerHTML = allTasksHTML.join('');
+
+        doneLoading();
+    }
+    getAllTasks();
+
+    const toggleDropdown = (id) => {
+        const dropdownElem = document.getElementById(`dropdown-${id}`);
+        const dropdownBtnElem = document.querySelector(`.dropdown-btn-icon-${id}`);
+
+        dropdownElem.classList.toggle('closed')
+
+        dropdownBtnElem.innerHTML == 'keyboard_arrow_down' ? dropdownBtnElem.innerHTML = 'keyboard_arrow_up' : dropdownBtnElem.innerHTML = 'keyboard_arrow_down'
+    }
+</script>
+</html>
