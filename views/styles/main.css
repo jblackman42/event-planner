@@ -1852,7 +1852,7 @@ input:checked + .slider:before {
   color: var(--primary-font-color);
   width: 80vw;
   max-width: 800px;
-  margin: 0 auto;
+  margin: 0 auto 1rem auto;
   gap: 1rem;
 }
 #tasks-container .task {

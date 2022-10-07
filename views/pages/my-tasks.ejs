@@ -15,12 +15,13 @@
 </body>
 <script>
     const taskContainerDOM = document.getElementById('tasks-container');
+    let tasks;
     const getAllTasks = async () => {
         loading();
         const user = await getUser();
         const {UserId} = user;
 
-        const tasks = await getUserTasks(UserId)
+        tasks = await getUserTasks(UserId)
         
         if (!tasks.length) {
             doneLoading();
@@ -28,6 +29,13 @@
             return;
         }
 
+        await drawTasks();        
+
+        doneLoading();
+    }
+    getAllTasks();
+
+    const drawTasks = async () => {
         const allTasksHTML = [];
         for (let i = 0; i < tasks.length; i ++) {
             const {Task_ID, Description, _Record_Description, Title, Start_Date, _Record_ID, _Table_Name, Author_User_ID} = tasks[i];
@@ -38,7 +46,7 @@
             const {Page_ID} = page;
 
             allTasksHTML.push(`
-                <div class="task" onclick="toggleDropdown(${Task_ID})">
+                <div class="task" id="task-${Task_ID}" onclick="toggleDropdown(${Task_ID})">
                     <p class="task-title">${Title}</p>
                     <p class="task-start-date">${new Date(Start_Date).toLocaleDateString()} ${new Date(Start_Date).toLocaleTimeString()}</p>
                     <p class="task-record">${_Table_Name}: ${_Record_Description.split(' |')[0]}</p>
@@ -55,10 +63,7 @@
             `)
         }
         taskContainerDOM.innerHTML = allTasksHTML.join('');
-
-        doneLoading();
     }
-    getAllTasks();
 
     const toggleDropdown = (id) => {
         const dropdownElem = document.getElementById(`dropdown-${id}`);
@@ -70,12 +75,12 @@
     }
 
     const completeTask = async (id) => {
-        try {
-            await deleteTask(id)
-            location.reload();
-        } catch (err) {
-            alert(err)
-        }
+        await deleteTask(id)
+        
+        const completedTask = document.getElementById(`task-${id}`);
+        taskContainerDOM.removeChild(completedTask)
+
+        if (taskContainerDOM.childElementCount <= 0) getAllTasks();
     }
 </script>
 </html>

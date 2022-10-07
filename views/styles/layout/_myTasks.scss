@@ -16,7 +16,7 @@ $task-btn-color: var(--secondary-bg-color);
     color: $tasks-color;
     width: 80vw;
     max-width: 800px;
-    margin: 0 auto;
+    margin: 0 auto 1rem auto;
     gap: 1rem;
     .task {
         display: flex;
