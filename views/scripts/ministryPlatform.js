@@ -271,7 +271,7 @@ const getUserTasks = (User_ID) => {
     .catch(err => console.error(err))
 }
 
-const completeTask = (TaskId) => {
+const deleteTask = (TaskId) => {
     if (!TaskId) return;
     return axios({
         method: 'delete',
@@ -282,7 +282,7 @@ const completeTask = (TaskId) => {
         }
     })
     .then(response => response)
-    .catch(err => console.error(err))
+    .catch(err => err)
 }
 
 const getUsersWithRole = (Role_ID) => {

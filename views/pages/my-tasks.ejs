@@ -45,7 +45,7 @@
                         <p class="task-author">Created By: ${taskAuthor.Display_Name}</p>
                         <p class="description">${Description}</p>
                         <div class="btn-container">
-                            <button class="btn" onclick="completeTask(${Task_ID});location.reload();">Complete</button>
+                            <button class="btn" onclick="completeTask(${Task_ID});">Complete</button>
                             <button class="btn link">View Record</button>
                         </div>
                     </div>
@@ -65,6 +65,15 @@
         dropdownElem.classList.toggle('closed')
 
         dropdownBtnElem.innerHTML == 'keyboard_arrow_down' ? dropdownBtnElem.innerHTML = 'keyboard_arrow_up' : dropdownBtnElem.innerHTML = 'keyboard_arrow_down'
+    }
+
+    const completeTask = async (id) => {
+        try {
+            await deleteTask(id)
+            location.reload();
+        } catch (err) {
+            alert(err)
+        }
     }
 </script>
 </html>
