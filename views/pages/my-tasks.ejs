@@ -35,6 +35,10 @@
 
             const taskAuthor = await getUserInfo(Author_User_ID);
 
+            const page = await getPageID(_Table_Name);
+            console.log(page)
+            const {Page_ID} = page;
+
             allTasksHTML.push(`
                 <div class="task" onclick="toggleDropdown(${Task_ID})">
                     <p class="task-title">${Title}</p>
@@ -46,7 +50,7 @@
                         <p class="description">${Description}</p>
                         <div class="btn-container">
                             <button class="btn" onclick="completeTask(${Task_ID});">Complete</button>
-                            <button class="btn link">View Record</button>
+                            <a class="btn link" href="${MP_URL}/${Page_ID}/${_Record_ID}" target="_blank">View Record</a>
                         </div>
                     </div>
                 </div>

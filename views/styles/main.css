@@ -1912,6 +1912,7 @@ input:checked + .slider:before {
 }
 #tasks-container .task .dropdown .btn-container .btn {
   margin: 0;
+  text-decoration: none;
 }
 #tasks-container .task .dropdown .btn-container .link {
   background-color: var(--secondary-bg-color) !important;

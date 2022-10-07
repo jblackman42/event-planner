@@ -79,6 +79,7 @@ $task-btn-color: var(--secondary-bg-color);
                 justify-content: space-between;
                 .btn {
                     margin: 0;
+                    text-decoration: none;
                 }
                 .link {
                     background-color: $task-btn-color !important;

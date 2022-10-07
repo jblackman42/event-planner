@@ -358,3 +358,20 @@ const sendTask = async (authorId, ownerId, eventId, startDate, taskType) => {
     .then(response => response.json())
     .catch(err => console.error(err))
 }
+
+const getPageID = (Table_Name) => {
+    if (!Table_Name) return;
+    return axios({
+        method: 'post',
+        url: `https://my.pureheart.org/ministryplatformapi/procs/api_Common_GetPageID`,
+        data: {
+            "@TableName": Table_Name
+        },
+        headers: {
+            'Accept': 'application/json',
+            'Authorization': `Bearer ${access_token}`
+        }
+    })
+    .then(response => response.data[0][0])
+    .catch(err => console.error(err))
+}

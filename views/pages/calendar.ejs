@@ -85,7 +85,6 @@
             events = allEvents.filter(event => event.Location_ID == calendarFilterDOM.value)
 
             const allEventIds = events.map(event => event.Event_ID).sort()
-            console.log(allEventIds)
             // allEventIds.length = 100
             const eventIDs = await getEventRoomsFromIDs(allEventIds, roomFilterDOM.value);
             events = events.filter(event => eventIDs.includes(event.Event_ID))
