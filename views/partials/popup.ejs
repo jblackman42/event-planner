@@ -112,8 +112,13 @@
         const getEventsListHTML = async () => {
             return Promise.all(eventsList.map(async (event) => {
                     const {Event_Title, Event_Start_Date, Event_End_Date, Meeting_Instructions, Rooms, Location_ID, Minutes_for_Cleanup, Minutes_for_Setup} = event;
+            
+                    console.log(event)
+                    console.log(Location_ID)
 
                     const location = await getLocation(Location_ID)
+
+                    console.log(location)
 
                     const startTime = new Date(Event_Start_Date);
                     const endTime = new Date(Event_End_Date);
@@ -168,7 +173,7 @@
                             </div>
                             <div>
                                 <p>Location:</p>
-                                <p>${location.Location_Name}</p>
+                                <p>${location ? location.Location_Name : 'Unknown'}</p>
                             </div>
                             <div>
                                 <p id="label">Rooms:</p>

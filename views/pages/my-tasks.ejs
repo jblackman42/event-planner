@@ -27,7 +27,6 @@
             taskContainerDOM.innerHTML = '<h3>You Have No Tasks</h3>'   
             return;
         }
-        console.log(tasks)
 
         const allTasksHTML = [];
         for (let i = 0; i < tasks.length; i ++) {
@@ -36,7 +35,6 @@
             const taskAuthor = await getUserInfo(Author_User_ID);
 
             const page = await getPageID(_Table_Name);
-            console.log(page)
             const {Page_ID} = page;
 
             allTasksHTML.push(`
