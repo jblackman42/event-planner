@@ -77,7 +77,7 @@ router.get('/me', async (req, res) => {
             .then(response => response.data)
             .then(data => res.json({user: data}))
             .catch(err => {
-                res.json({user: null})
+                res.redirect('/login')
             })
     }
     catch {

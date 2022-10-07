@@ -32,6 +32,40 @@ const getUser = async () => {
         .then(data => data.user)
 }
 
+//5 minutes
+const sessionLength = 60 * 1000 * 60;
+setInterval(async () => {
+    window.location = '/login'
+}, sessionLength)
+
+const sendExampleTask = async () => {
+    //authorId, ownerId, eventId, startDate, taskType
+    const user = await getUser();
+    const {UserId} = user;
+
+    const task = [{
+        "Action": "Complete",
+        "TaskName": `Example Task`,
+        "Description": `This is an example task for testing purposes`,
+        "StartDate": new Date().toISOString(),
+        "AuthorId": new Date().toISOString(),
+        "OwnerID": UserId,
+        "TableName": "Events",
+        "RecordId": 47864
+    }]
+    return fetch('https://my.pureheart.org/ministryplatformapi/tasks', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+            'Accept': 'application/json',
+            'Authorization': `Bearer ${access_token}`
+        },
+        body: JSON.stringify(task),
+    })
+    .then(response => response.json())
+    .catch(err => console.error(err))
+}
+
 const loading = () => {
     const loadingScreen = document.getElementById('loadingScreen')
     loadingScreen.style.visibility = 'visible';

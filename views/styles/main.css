@@ -1640,7 +1640,7 @@ input:checked + .slider:before {
 }
 
 .form-container {
-  margin: auto;
+  margin: 4rem auto;
   color: var(--primary-font-color);
   height: 100%;
 }
