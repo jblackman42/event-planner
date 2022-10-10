@@ -840,7 +840,7 @@ html {
   list-style: none;
   margin: 0;
   padding: 0;
-  max-height: calc(65vh - 48px);
+  max-height: calc(60vh - 48px);
   overflow-y: auto;
   background-color: var(--secondary-bg-color);
 }
