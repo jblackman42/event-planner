@@ -6,8 +6,6 @@ const getEvents = (currentMonth, currentYear) => { //redirect is the url after t
     const firstVisibleDate = new Date(currentYear, currentMonth, 1 - firstOfMonth.getDay())
     const lastVisibleDate = new Date(currentYear, currentMonth + 1, 0)
     lastVisibleDate.setTime(lastVisibleDate.getTime() + 86399999)
-    console.log(firstVisibleDate.toISOString())
-    console.log(lastVisibleDate.toISOString())
     
     const response = axios({
         method: 'get',

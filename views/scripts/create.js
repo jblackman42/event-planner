@@ -314,7 +314,7 @@ const publishEvent = async (event) => {
             selectedRooms.push(parseInt(allRoomInputs[i].value))
         }
     }
-    console.log(selectedRooms)
+    // console.log(selectedRooms)
 
     const eventId = await createEvent(event)
         .then(response => response[0].Event_ID)
@@ -328,7 +328,6 @@ const publishEvent = async (event) => {
                 "Event_ID": eventId,
                 "Room_ID": roomId
             }];
-            console.log('room: ', room)
             await fetch('https://my.pureheart.org/ministryplatformapi/tables/Event_Rooms', {
                 method: 'POST',
                 headers: {
@@ -413,7 +412,6 @@ const handleSubmit = async (e) => {
 
     
     if (days.length) {
-        console.log('multiple events')
         const eventLength = new Date(endDateDOM.value).getTime() - new Date(startDateDOM.value).getTime();
         for (day of days) {
             const eventDay = new Date(new Date(day).getTime() - (new Date(day).getTimezoneOffset() * 60000))
@@ -422,7 +420,6 @@ const handleSubmit = async (e) => {
         }
         completed();
     } else {
-        console.log('single event')
         //turn input data into form for sending to MP
         const event = [formatEvent(eventNameDOM.value,eventDescDOM.value,primaryContactID.Contact_ID,startDateDOM.value,endDateDOM.value,eventTypeDOM.value,attendanceDOM.value,congregationDOM.value,setupTimeDOM.value,cleanupTimeDOM.value,privacyDOM.value == 1 ? true : false,eventLocationDOM.value, visibilityLevelDOM.value)];
 

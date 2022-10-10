@@ -50,8 +50,6 @@ const handleSearchResult = (eventId, day) => {
     searchResultsContainer.innerHTML = '';
     searchResultsContainer.style.display = 'none';
     searchResultsContainer.style.visibility = 'hidden';
-
-    console.log(eventId)
     popup(day, eventId)
 }
 

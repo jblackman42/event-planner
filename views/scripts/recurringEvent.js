@@ -258,8 +258,6 @@ const getMonthlyPattern = (endOccurrences, endDate, startDate) => {
 
             newDate.setHours(fullStartDate.getHours(), fullStartDate.getMinutes(), 0)
 
-            console.log(newDate)
-
             days.push(newDate.toISOString());
             
             currDate = new Date(currDate.getFullYear(), currDate.getMonth() + parseInt(everyMonthValue.value), 1)
