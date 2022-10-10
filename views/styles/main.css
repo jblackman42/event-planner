@@ -558,9 +558,6 @@ html {
   border: none;
 }
 #calender-controls #reset-btn {
-  position: absolute;
-  right: 0;
-  top: 0;
   margin: 1.4rem;
   background-color: #e74c3c !important;
   border-color: #e74c3c !important;
