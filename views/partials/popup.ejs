@@ -54,7 +54,7 @@
         }
     })
 
-    const popup = async (day) => { //day is in short form (Fri Aug 05 2022)
+    const popup = async (day, scrollToId) => { //day is in short form (Fri Aug 05 2022)
         currDay = day;
         const popupContainerDOM = document.getElementById('popup-container');
         const popupDOM = document.getElementById('popup')
@@ -111,14 +111,9 @@
 
         const getEventsListHTML = async () => {
             return Promise.all(eventsList.map(async (event) => {
-                    const {Event_Title, Event_Start_Date, Event_End_Date, Meeting_Instructions, Rooms, Location_ID, Minutes_for_Cleanup, Minutes_for_Setup} = event;
-            
-                    console.log(event)
-                    console.log(Location_ID)
+                    const {Event_Title, Event_Start_Date, Event_End_Date, Meeting_Instructions, Rooms, Location_ID, Minutes_for_Cleanup, Minutes_for_Setup,Event_ID} = event;
 
                     const location = await getLocation(Location_ID)
-
-                    console.log(location)
 
                     const startTime = new Date(Event_Start_Date);
                     const endTime = new Date(Event_End_Date);
@@ -159,7 +154,7 @@
                     const roomsList = [...new Set(allRoomsList)].join(', ')
 
                     return `
-                        <li class="event">
+                        <li class="event" id="event-${Event_ID}">
                             <div>
                                 <h4 id="event-name">${Event_Title}</h4>
                             </div>
@@ -192,7 +187,28 @@
         show();
 
         doneLoading();
+
+        console.log(scrollToId)
+        if (!scrollToId) return;
         
+        const scrollToElem = document.getElementById(`event-${scrollToId}`);
+        const children = eventsListDOM.children;
+        let indexOfElem = 9999;
+        let scrollHeight = 0;
+        for (let i = 0; i < children.length; i ++) {
+            if (children[i].id == `event-${scrollToId}`) indexOfElem = i;
+
+            if (i < indexOfElem) scrollHeight += children[i].offsetHeight + 2
+        }
+
+        if (eventsList[0].Event_ID != scrollToId) eventsListDOM.scrollTo({
+            top: scrollHeight,
+            behavior: 'smooth'
+        })
+        // scrollToElem.style.borderColor = '2px solid transparent'
+        scrollToElem.classList.add('hightlight')
+        // scrollToElem.style.borderColor = 'lime'
+        // scrollToElem.style.transition = 'border-color 1s linear 1s'
     }
 
     const toTimeFormat = (hours, minutes) => {

@@ -78,7 +78,7 @@ $arrow-button-bg: var(--arrow-button-color);
 
             max-height: calc(70vh - 48px); 
             overflow-y: auto;
-
+            background-color: var(--secondary-bg-color);
             .event {
                 display: flex;
                 flex-direction: column;
@@ -87,11 +87,14 @@ $arrow-button-bg: var(--arrow-button-color);
                 background-color: $popup-bg;
 
                 counter-increment: event;
-
-                &:last-of-type {
-                    border: none;
+                transition: border-color 1s linear 2s;
+                border-color: #2ecc71;
+                &.hightlight {
+                    border: 3px solid transparent !important;
                 }
-
+                &:last-of-type {
+                    margin-bottom: 0;
+                }
                 div {
                     display: flex;
                     justify-content: space-between;
@@ -108,7 +111,7 @@ $arrow-button-bg: var(--arrow-button-color);
                         margin: .25rem auto;
                         font-size: large;
                         position: relative;
-                        max-width: 75vw;
+                        max-width: 50vw;
                         &:before {
                             content: counter(event) ".";
                             position: absolute;

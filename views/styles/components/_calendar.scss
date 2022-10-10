@@ -5,7 +5,7 @@ $progress-bar-bg: var(--red-accent-color);
 $button-bg: var(--arrow-button-color);
 
 #calender-container {
-    margin: auto;
+    margin: 0 auto;
     width: 1000px;
     max-width: 95vw;
 }
@@ -117,7 +117,14 @@ $button-bg: var(--arrow-button-color);
     color: $calendar-day-text;
     position: relative;
 
-    button {
+    .row {
+        display: flex;
+        justify-content: space-between;
+        flex-wrap: wrap;
+        margin: 0 14px;
+    }
+
+    .nav-buttons {
         height: max-content;
         aspect-ratio: 1 / 1;
         padding: 0;
@@ -129,6 +136,9 @@ $button-bg: var(--arrow-button-color);
 
         display: grid;
         place-items: center;
+    }
+    button {
+        border: none;
     }
 
     #reset-btn {
@@ -171,6 +181,83 @@ $button-bg: var(--arrow-button-color);
         }
     }
 
+    .calendar-search {
+        display: flex;
+        margin: auto 0;
+        width: 100%;
+        height: max-content;
+        max-width: 400px;
+        #search {
+            border-radius: 0;
+            border-top-left-radius: 15px;
+            border-bottom-left-radius: 15px;
+            border: none;
+            height: 30px;
+            box-sizing: border-box;
+            width: 100%;
+            padding-left: .75rem;
+        }
+
+        #search-btn {
+            background-color: $calendar-day-bg;
+            color: $calendar-day-text;
+            border-radius: 0;
+            aspect-ratio: auto;
+            border-top-right-radius: 15px;
+            border-bottom-right-radius: 15px;
+            padding: .25rem .75rem .25rem .5rem;
+            height: 30px;
+            width: 70px;
+            cursor: pointer;
+            &:active {
+                background-color: $calendar-day-hover-bg;
+            }
+            &:focus-visible {
+                outline: 2px solid white;
+            }
+        }
+
+        position: relative;
+        .search-results {
+            position: absolute;
+            top: 100%;
+            left: 0;
+            right: 0;
+            display: flex;
+            flex-direction: column;
+            gap: 1px;
+            z-index: 9;
+            box-shadow: rgba(0, 0, 0, 0.16) 0px 3px 6px, rgba(0, 0, 0, 0.23) 0px 3px 6px;
+            background-color: $calendar-day-hover-bg;
+
+            display: none;
+            visibility: hidden;
+            .result {
+                display: flex;
+                justify-content: space-between;
+                padding: .5rem 1rem;
+                background-color: $calendar-day-bg;
+                color: $calendar-day-text;
+                text-align: left;
+                &:not(.no-results) {
+                    cursor: pointer;
+                    &:hover {
+                        background-color: $calendar-day-hover-bg;
+                    }
+                }
+
+                .event-title {
+                    max-width: 60%;
+                }
+                .event-date {
+                    text-align: right;
+                    max-width: 40%;
+                    padding-left: .25rem;
+                }
+            }
+        }
+    }
+
     .filter-controls {
         display: flex;
         align-items: center;
@@ -196,6 +283,18 @@ $button-bg: var(--arrow-button-color);
                 width: 100%;
                 justify-content: flex-end;
             }
+        }
+    }
+}
+
+@media screen and (max-width: 768px) {
+    #calender-controls {
+        .row {
+            flex-direction: column;
+        }
+        .calendar-search {
+            margin-inline: auto;
+            margin-bottom: 1rem;
         }
     }
 }

@@ -12,10 +12,17 @@
 
     <div id="calender-container">
         <div id="calender-controls">
-            <div class="date-selector">
-                <button onClick="prevMonth()"><i class="material-icons">keyboard_arrow_left</i></button>
-                <p id="date-label"></p>
-                <button onClick="nextMonth()"><i class="material-icons">keyboard_arrow_right</i></button>
+            <div class="row">
+                <div class="date-selector">
+                    <button class="nav-buttons" onClick="prevMonth()"><i class="material-icons">keyboard_arrow_left</i></button>
+                    <p id="date-label"></p>
+                    <button class="nav-buttons" onClick="nextMonth()"><i class="material-icons">keyboard_arrow_right</i></button>
+                </div>
+                <div class="calendar-search">
+                    <input type="text" id="search">
+                    <button id="search-btn">Search</button>
+                    <div class="search-results"></div>
+                </div>
             </div>
             <div class="filter-controls">
                 <div>
@@ -67,6 +74,7 @@
     <%- include('../partials/footer'); %>
 </body>
 <script src="/scripts/calendar.js"></script>
+<script src="/scripts/search.js"></script>
 <script>
 
     async function handleEvents() {
