@@ -209,7 +209,7 @@ function drawCalendar() {
     calenderDOM.innerHTML = calenderHTML;
 
 }
-drawCalendar();
+// drawCalendar();
 
 function getEventsFromDay(day) {
     // const daySimplified = day.toDateString();

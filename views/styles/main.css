@@ -449,6 +449,230 @@ html {
   overflow: hidden;
   font-size: clamp(0.5em, 2.5vw, 1.25rem);
   position: relative;
+  transform: translateY(20%);
+  opacity: 0;
+  -webkit-animation: calendar-fade 500ms ease-in-out 200ms 1 normal forwards;
+          animation: calendar-fade 500ms ease-in-out 200ms 1 normal forwards;
+}
+#calender .calender-day:nth-of-type(1) {
+  -webkit-animation-delay: 15ms;
+          animation-delay: 15ms;
+}
+#calender .calender-day:nth-of-type(2) {
+  -webkit-animation-delay: 30ms;
+          animation-delay: 30ms;
+}
+#calender .calender-day:nth-of-type(3) {
+  -webkit-animation-delay: 45ms;
+          animation-delay: 45ms;
+}
+#calender .calender-day:nth-of-type(4) {
+  -webkit-animation-delay: 60ms;
+          animation-delay: 60ms;
+}
+#calender .calender-day:nth-of-type(5) {
+  -webkit-animation-delay: 75ms;
+          animation-delay: 75ms;
+}
+#calender .calender-day:nth-of-type(6) {
+  -webkit-animation-delay: 90ms;
+          animation-delay: 90ms;
+}
+#calender .calender-day:nth-of-type(7) {
+  -webkit-animation-delay: 105ms;
+          animation-delay: 105ms;
+}
+#calender .calender-day:nth-of-type(8) {
+  -webkit-animation-delay: 120ms;
+          animation-delay: 120ms;
+}
+#calender .calender-day:nth-of-type(9) {
+  -webkit-animation-delay: 135ms;
+          animation-delay: 135ms;
+}
+#calender .calender-day:nth-of-type(10) {
+  -webkit-animation-delay: 150ms;
+          animation-delay: 150ms;
+}
+#calender .calender-day:nth-of-type(11) {
+  -webkit-animation-delay: 165ms;
+          animation-delay: 165ms;
+}
+#calender .calender-day:nth-of-type(12) {
+  -webkit-animation-delay: 180ms;
+          animation-delay: 180ms;
+}
+#calender .calender-day:nth-of-type(13) {
+  -webkit-animation-delay: 195ms;
+          animation-delay: 195ms;
+}
+#calender .calender-day:nth-of-type(14) {
+  -webkit-animation-delay: 210ms;
+          animation-delay: 210ms;
+}
+#calender .calender-day:nth-of-type(15) {
+  -webkit-animation-delay: 225ms;
+          animation-delay: 225ms;
+}
+#calender .calender-day:nth-of-type(16) {
+  -webkit-animation-delay: 240ms;
+          animation-delay: 240ms;
+}
+#calender .calender-day:nth-of-type(17) {
+  -webkit-animation-delay: 255ms;
+          animation-delay: 255ms;
+}
+#calender .calender-day:nth-of-type(18) {
+  -webkit-animation-delay: 270ms;
+          animation-delay: 270ms;
+}
+#calender .calender-day:nth-of-type(19) {
+  -webkit-animation-delay: 285ms;
+          animation-delay: 285ms;
+}
+#calender .calender-day:nth-of-type(20) {
+  -webkit-animation-delay: 300ms;
+          animation-delay: 300ms;
+}
+#calender .calender-day:nth-of-type(21) {
+  -webkit-animation-delay: 315ms;
+          animation-delay: 315ms;
+}
+#calender .calender-day:nth-of-type(22) {
+  -webkit-animation-delay: 330ms;
+          animation-delay: 330ms;
+}
+#calender .calender-day:nth-of-type(23) {
+  -webkit-animation-delay: 345ms;
+          animation-delay: 345ms;
+}
+#calender .calender-day:nth-of-type(24) {
+  -webkit-animation-delay: 360ms;
+          animation-delay: 360ms;
+}
+#calender .calender-day:nth-of-type(25) {
+  -webkit-animation-delay: 375ms;
+          animation-delay: 375ms;
+}
+#calender .calender-day:nth-of-type(26) {
+  -webkit-animation-delay: 390ms;
+          animation-delay: 390ms;
+}
+#calender .calender-day:nth-of-type(27) {
+  -webkit-animation-delay: 405ms;
+          animation-delay: 405ms;
+}
+#calender .calender-day:nth-of-type(28) {
+  -webkit-animation-delay: 420ms;
+          animation-delay: 420ms;
+}
+#calender .calender-day:nth-of-type(29) {
+  -webkit-animation-delay: 435ms;
+          animation-delay: 435ms;
+}
+#calender .calender-day:nth-of-type(30) {
+  -webkit-animation-delay: 450ms;
+          animation-delay: 450ms;
+}
+#calender .calender-day:nth-of-type(31) {
+  -webkit-animation-delay: 465ms;
+          animation-delay: 465ms;
+}
+#calender .calender-day:nth-of-type(32) {
+  -webkit-animation-delay: 480ms;
+          animation-delay: 480ms;
+}
+#calender .calender-day:nth-of-type(33) {
+  -webkit-animation-delay: 495ms;
+          animation-delay: 495ms;
+}
+#calender .calender-day:nth-of-type(34) {
+  -webkit-animation-delay: 510ms;
+          animation-delay: 510ms;
+}
+#calender .calender-day:nth-of-type(35) {
+  -webkit-animation-delay: 525ms;
+          animation-delay: 525ms;
+}
+#calender .calender-day:nth-of-type(36) {
+  -webkit-animation-delay: 540ms;
+          animation-delay: 540ms;
+}
+#calender .calender-day:nth-of-type(37) {
+  -webkit-animation-delay: 555ms;
+          animation-delay: 555ms;
+}
+#calender .calender-day:nth-of-type(38) {
+  -webkit-animation-delay: 570ms;
+          animation-delay: 570ms;
+}
+#calender .calender-day:nth-of-type(39) {
+  -webkit-animation-delay: 585ms;
+          animation-delay: 585ms;
+}
+#calender .calender-day:nth-of-type(40) {
+  -webkit-animation-delay: 600ms;
+          animation-delay: 600ms;
+}
+#calender .calender-day:nth-of-type(41) {
+  -webkit-animation-delay: 615ms;
+          animation-delay: 615ms;
+}
+#calender .calender-day:nth-of-type(42) {
+  -webkit-animation-delay: 630ms;
+          animation-delay: 630ms;
+}
+#calender .calender-day:nth-of-type(43) {
+  -webkit-animation-delay: 645ms;
+          animation-delay: 645ms;
+}
+#calender .calender-day:nth-of-type(44) {
+  -webkit-animation-delay: 660ms;
+          animation-delay: 660ms;
+}
+#calender .calender-day:nth-of-type(45) {
+  -webkit-animation-delay: 675ms;
+          animation-delay: 675ms;
+}
+#calender .calender-day:nth-of-type(46) {
+  -webkit-animation-delay: 690ms;
+          animation-delay: 690ms;
+}
+#calender .calender-day:nth-of-type(47) {
+  -webkit-animation-delay: 705ms;
+          animation-delay: 705ms;
+}
+#calender .calender-day:nth-of-type(48) {
+  -webkit-animation-delay: 720ms;
+          animation-delay: 720ms;
+}
+#calender .calender-day:nth-of-type(49) {
+  -webkit-animation-delay: 735ms;
+          animation-delay: 735ms;
+}
+#calender .calender-day:nth-of-type(50) {
+  -webkit-animation-delay: 750ms;
+          animation-delay: 750ms;
+}
+@-webkit-keyframes calendar-fade {
+  from {
+    transform: translateY(20%);
+    opacity: 0;
+  }
+  to {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}
+@keyframes calendar-fade {
+  from {
+    transform: translateY(20%);
+    opacity: 0;
+  }
+  to {
+    transform: translateY(0);
+    opacity: 1;
+  }
 }
 #calender .calender-day.inactive {
   visibility: hidden;
