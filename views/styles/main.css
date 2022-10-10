@@ -718,21 +718,28 @@ html {
   font-size: 2.5rem;
 }
 #popup-container #popup {
-  background-color: var(--primary-bg-color);
-  width: clamp(50vw, 500px, 90vw);
+  width: 90vw;
+  max-width: 700px;
   height: -webkit-max-content;
   height: -moz-max-content;
   height: max-content;
+  border-radius: 5px;
+  overflow: hidden;
 }
 #popup-container #popup .title {
   padding-inline: 1rem;
-  border-bottom: 5px solid var(--secondary-bg-color);
   position: relative;
+  background-color: var(--primary-bg-color);
+  margin-bottom: 2px;
 }
 #popup-container #popup .title h1 {
   margin: 0;
   padding: 0.5em 0;
   padding-bottom: 0;
+}
+#popup-container #popup .title #number-of-events {
+  margin: 0;
+  padding: 1rem 0;
 }
 #popup-container #popup .title .close-button {
   color: var(--primary-font-color);
@@ -741,14 +748,16 @@ html {
   list-style: none;
   margin: 0;
   padding: 0;
-  max-height: 60vh;
+  max-height: calc(70vh - 48px);
   overflow-y: auto;
 }
 #popup-container #popup #events-list .event {
   display: flex;
   flex-direction: column;
   padding: 1rem;
-  border-bottom: 2px solid var(--secondary-bg-color);
+  margin-bottom: 2px;
+  background-color: var(--primary-bg-color);
+  counter-increment: event;
 }
 #popup-container #popup #events-list .event:last-of-type {
   border: none;
@@ -765,6 +774,18 @@ html {
 }
 #popup-container #popup #events-list .event div #event-name {
   margin: 0.25rem auto;
+  font-size: large;
+  position: relative;
+  max-width: 75vw;
+}
+#popup-container #popup #events-list .event div #event-name:before {
+  content: counter(event) ".";
+  position: absolute;
+  top: 0;
+  left: 0;
+  font-weight: 300;
+  padding-right: 0.25rem;
+  transform: translateX(-100%);
 }
 #popup-container #popup #events-list .event div #rooms-list {
   text-align: right;
@@ -790,9 +811,6 @@ html {
     left: 50%;
     right: auto;
     transform: translateX(calc(-100% - 8px));
-  }
-  #popup-container #events-list {
-    max-height: 50vh !important;
   }
 }
 

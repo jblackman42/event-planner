@@ -164,19 +164,21 @@
                                 <h4 id="event-name">${Event_Title}</h4>
                             </div>
                             <div>
-                                <p id="label">Reserved Time:</p>
-                                <p>${reservedTimes}</p>
+                                <p>Location:</p>
+                                <p>${location ? location.Location_Name : 'Unknown'}</p>
                             </div>
+                            ${Minutes_for_Setup && Minutes_for_Cleanup ? `
+                                <div>
+                                    <p id="label">Reserved Time:</p>
+                                    <p>${reservedTimes}</p>
+                                </div>
+                            ` : ''}
                             <div>
                                 <p id="label">Event Time:</p>
                                 <p>${eventTimes}</p>
                             </div>
                             <div>
-                                <p>Location:</p>
-                                <p>${location ? location.Location_Name : 'Unknown'}</p>
-                            </div>
-                            <div>
-                                <p id="label">Rooms:</p>
+                                <p id="label">${allRoomsList.length == 1 ? 'Room' : 'Rooms'}:</p>
                                 <p id="rooms-list">${roomsList.length ? roomsList : 'No Rooms Booked'}</p>
                             </div>
                         </li>

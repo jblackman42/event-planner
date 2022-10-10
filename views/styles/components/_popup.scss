@@ -44,19 +44,26 @@ $arrow-button-bg: var(--arrow-button-color);
     }
 
     #popup {
-        background-color: $popup-bg;
-        width: clamp(50vw, 500px, 90vw);
+        width: 90vw;
+        max-width: 700px;
         height: max-content;
+        border-radius: 5px;
+        overflow: hidden;
 
         .title {
             padding-inline: 1rem;
-            border-bottom: 5px solid $popup-borer-bg;
             position: relative;
+            background-color: $popup-bg;
+            margin-bottom: 2px;
 
             h1 {
                 margin: 0;
                 padding: .5em 0;
                 padding-bottom: 0;
+            }
+            #number-of-events {
+                margin: 0;
+                padding: 1rem 0;
             }
 
             .close-button {
@@ -69,14 +76,17 @@ $arrow-button-bg: var(--arrow-button-color);
             margin: 0;
             padding: 0;
 
-            max-height: 60vh;
+            max-height: calc(70vh - 48px); 
             overflow-y: auto;
 
             .event {
                 display: flex;
                 flex-direction: column;
                 padding: 1rem;
-                border-bottom: 2px solid $popup-borer-bg;
+                margin-bottom: 2px;
+                background-color: $popup-bg;
+
+                counter-increment: event;
 
                 &:last-of-type {
                     border: none;
@@ -96,6 +106,18 @@ $arrow-button-bg: var(--arrow-button-color);
 
                     #event-name {
                         margin: .25rem auto;
+                        font-size: large;
+                        position: relative;
+                        max-width: 75vw;
+                        &:before {
+                            content: counter(event) ".";
+                            position: absolute;
+                            top: 0;
+                            left: 0;
+                            font-weight: 300;
+                            padding-right: .25rem;
+                            transform: translateX(-100%);
+                        }
                     }
 
                     #rooms-list {
@@ -125,9 +147,6 @@ $arrow-button-bg: var(--arrow-button-color);
             left: 50%;
             right: auto;
             transform: translateX(calc(-100% - 8px));
-        }
-        #events-list {
-            max-height: 50vh !important;
         }
     }
 }
