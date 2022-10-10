@@ -1,10 +1,18 @@
-const getEvents = (currentMonth, currentYear, LocationFilter) => { //redirect is the url after the first / defining what page will load if request fails
+const getEvents = (currentMonth, currentYear) => { //redirect is the url after the first / defining what page will load if request fails
     let monthOffset = currentMonth - new Date().getMonth();
     let yearOffset = currentYear - new Date().getFullYear();
+
+    const firstOfMonth = new Date(currentYear, currentMonth, 1);
+    const firstVisibleDate = new Date(currentYear, currentMonth, 1 - firstOfMonth.getDay())
+    const lastVisibleDate = new Date(currentYear, currentMonth + 1, 0)
+    lastVisibleDate.setTime(lastVisibleDate.getTime() + 86399999)
+    console.log(firstVisibleDate.toISOString())
+    console.log(lastVisibleDate.toISOString())
     
     const response = axios({
         method: 'get',
-        url: `https://my.pureheart.org/ministryplatformapi/tables/Events?%24filter=YEAR(Event_Start_Date)%3DYEAR(GETDATE())%2B${yearOffset}%20AND%20MONTH(Event_Start_Date)%3EMONTH(GETDATE())%2B${monthOffset-1}%20AND%20MONTH(Event_Start_Date)%3CMONTH(GETDATE())%2B${monthOffset+1}${LocationFilter ? `%20AND%20Location_ID%3D${LocationFilter}` : ''}&%24orderby=Event_Start_Date`,
+        // url: `https://my.pureheart.org/ministryplatformapi/tables/Events?%24filter=YEAR(Event_Start_Date)%3DYEAR(GETDATE())%2B${yearOffset}%20AND%20MONTH(Event_Start_Date)%3EMONTH(GETDATE())%2B${monthOffset-1}%20AND%20MONTH(Event_Start_Date)%3CMONTH(GETDATE())%2B${monthOffset+1}&%24orderby=Event_Start_Date`,
+        url: `https://my.pureheart.org/ministryplatformapi/tables/Events?$filter=Event_Start_Date BETWEEN '${firstVisibleDate.toISOString()}' AND '${lastVisibleDate.toISOString()}'`,
         headers: {
             'Accept': 'application/json',
             'Authorization': `Bearer ${access_token}`

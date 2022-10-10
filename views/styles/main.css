@@ -318,7 +318,7 @@ template {
   --dark-font-color: #17161d;
   --light-font-color: #f1f2f6;
   --primary-bg-color: #cdc3c3;
-  --secondary-bg-color: #716868;
+  --secondary-bg-color: #9f9696;
   --red-accent-color: #e74c3c;
   --blue-accent-color: #3498db;
   --blue-accent-color2: #2980b9;
@@ -455,10 +455,12 @@ html {
 }
 #calender .calender-day.event {
   cursor: pointer;
+  transition: background-color 250ms linear, color 250ms linear;
 }
 #calender .calender-day.event:hover {
+  transition: background-color 100ms linear, color 100ms linear;
   background-color: var(--secondary-bg-color);
-  color: #f1f2f6;
+  color: var(--primary-font-color);
 }
 #calender .calender-day .progressBar {
   position: absolute;
@@ -1402,7 +1404,7 @@ input:checked + .slider:before {
   margin: 0;
 }
 .recurring-event-container .recurring-event .button-container .btn.cancel {
-  background-color: transparent !important;
+  background-color: hsl(0deg, 1%, 36%) !important;
   border-color: var(--secondary-bg-color) !important;
 }
 

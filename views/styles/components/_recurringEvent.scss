@@ -137,7 +137,7 @@ $recurring-header-bg: var(--secondary-bg-color);
                 margin: 0;
 
                 &.cancel {
-                    background-color: transparent !important;
+                    background-color: hsl(0, 1%, 36%) !important;
                     border-color: $recurring-header-bg  !important;
                 }
             }
