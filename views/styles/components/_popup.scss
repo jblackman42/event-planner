@@ -54,7 +54,7 @@ $arrow-button-bg: var(--arrow-button-color);
             padding-inline: 1rem;
             position: relative;
             background-color: $popup-bg;
-            margin-bottom: 2px;
+            border-bottom: 2px solid var(--secondary-bg-color);
 
             h1 {
                 margin: 0;
@@ -107,11 +107,16 @@ $arrow-button-bg: var(--arrow-button-color);
                         margin-right: 1rem;
                     }
 
+                    #event-link {
+                        color: inherit;
+                        margin: .5rem;
+                    }
                     #event-name {
-                        margin: .25rem auto;
+                        margin: .25rem;
+                        margin-left: 1.5rem;
                         font-size: large;
                         position: relative;
-                        max-width: 50vw;
+                        text-align: left;
                         &:before {
                             content: counter(event) ".";
                             position: absolute;
@@ -121,6 +126,7 @@ $arrow-button-bg: var(--arrow-button-color);
                             padding-right: .25rem;
                             transform: translateX(-100%);
                         }
+
                     }
 
                     #rooms-list {

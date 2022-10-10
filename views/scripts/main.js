@@ -6,6 +6,7 @@ const access_token = getCookie('access_token');
 let registrationUserIds,promotionUserIds,AVUserIds,facilitiesUserIds,childcareUserIds,allTaskUserIds,peoriaUserIds,recurringEventUserIds;
 const peoriaCampusID = 4;
 const MP_URL = 'https://my.pureheart.org/mp';
+const MP_Events_Table_ID = 308;
 
 const getAllTaskUsers = async () => {
     registrationUserIds = await getUsersWithRole(2194);

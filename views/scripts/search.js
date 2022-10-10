@@ -16,7 +16,7 @@ searchInput.addEventListener('input', (e) => {
     }
     
     //get all events with a title that contains search input
-    const filteredEvents = allEvents.filter(event => event.Event_Title.toLowerCase().includes(value));
+    const filteredEvents = events.filter(event => event.Event_Title.toLowerCase().includes(value));
     
     //trim results down to 10
     if (filteredEvents.length > 10) filteredEvents.length = 10;

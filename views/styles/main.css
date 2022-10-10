@@ -819,7 +819,7 @@ html {
   padding-inline: 1rem;
   position: relative;
   background-color: var(--primary-bg-color);
-  margin-bottom: 2px;
+  border-bottom: 2px solid var(--secondary-bg-color);
 }
 #popup-container #popup .title h1 {
   margin: 0;
@@ -867,11 +867,16 @@ html {
 #popup-container #popup #events-list .event div #label {
   margin-right: 1rem;
 }
+#popup-container #popup #events-list .event div #event-link {
+  color: inherit;
+  margin: 0.5rem;
+}
 #popup-container #popup #events-list .event div #event-name {
-  margin: 0.25rem auto;
+  margin: 0.25rem;
+  margin-left: 1.5rem;
   font-size: large;
   position: relative;
-  max-width: 50vw;
+  text-align: left;
 }
 #popup-container #popup #events-list .event div #event-name:before {
   content: counter(event) ".";
