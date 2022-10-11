@@ -49,8 +49,12 @@ router.post('/login', async (req, res) => {
                         res.send({success: true})
                     })
                     .catch(err => {
-                        console.error(err)
-                        res.send({success: false, error: 'internal server error: please try again later.'})
+                        console.error(err.response.status)
+                        if (err.response.status >= 400 && err.response.status < 500) {
+                            res.send({success: false, error: 'Unauthorized: Insufficient Security Roles'})
+                        } else {
+                            res.send({success: false, error: 'internal server error: please try again later.'})
+                        }
                     })
             } else {
                 res.render('pages/login', {error: 'Incorrect Username or Password'})
