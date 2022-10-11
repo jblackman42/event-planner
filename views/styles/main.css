@@ -457,8 +457,12 @@ html {
   perspective: 1000px;
   transform-origin: bottom;
   opacity: 0;
-  -webkit-animation: calendar-fade 500ms ease-in-out 200ms 1 normal forwards;
-          animation: calendar-fade 500ms ease-in-out 200ms 1 normal forwards;
+}
+@media screen and (max-width: 768px) {
+  #calender .calender-day {
+    -webkit-animation: calendar-fade 500ms ease-in-out 200ms 1 normal forwards;
+            animation: calendar-fade 500ms ease-in-out 200ms 1 normal forwards;
+  }
 }
 #calender .calender-day:nth-of-type(1) {
   -webkit-animation-delay: 20ms;
@@ -1009,9 +1013,11 @@ html {
   display: flex;
   visibility: visible;
 }
-#popup-container.open #popup, #popup-container.open #next-day-btn, #popup-container.open #prev-day-btn {
-  -webkit-animation: fade-in 200ms;
-          animation: fade-in 200ms;
+@media screen and (min-width: 768px) {
+  #popup-container.open #popup, #popup-container.open #next-day-btn, #popup-container.open #prev-day-btn {
+    -webkit-animation: fade-in 200ms;
+            animation: fade-in 200ms;
+  }
 }
 @-webkit-keyframes fade-in {
   from {
@@ -1679,9 +1685,14 @@ input:checked + .slider:before {
   display: grid;
   visibility: visible;
 }
-.recurring-event-container.open .recurring-event {
-  -webkit-animation: fade-in 200ms;
-          animation: fade-in 200ms;
+@media screen and (min-width: 768px) {
+  .recurring-event-container.open {
+    display: grid;
+  }
+  .recurring-event-container.open .recurring-event {
+    -webkit-animation: fade-in 200ms;
+            animation: fade-in 200ms;
+  }
 }
 @keyframes fade-in {
   from {

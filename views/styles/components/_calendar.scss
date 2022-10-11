@@ -39,13 +39,16 @@ $button-bg: var(--arrow-button-color);
         transform-origin: bottom;
 
         opacity: 0;
-        animation: calendar-fade 500ms ease-in-out 200ms 1 normal forwards;
+        
+        @media screen and (max-width: 768px) {
+            animation: calendar-fade 500ms ease-in-out 200ms 1 normal forwards;
+        }
 
         @for $i from 1 through 50 {
             &:nth-of-type(#{$i}) {
               animation-delay: 20ms * $i;
             }
-          }
+        }
 
         @keyframes calendar-fade {
             from {
