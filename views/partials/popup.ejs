@@ -97,7 +97,7 @@
             }
         })[0].numberOfEvents;
 
-        let eventDate = new Date(day).toLocaleDateString('en-us', { weekday:"long", year:"numeric", month:"long", day:"numeric"}) 
+        let eventDate = new Date(day).toLocaleDateString('en-us', { weekday:"short", year:"numeric", month:"short", day:"numeric"}) 
 
         eventDateDOM.innerText = eventDate;
         numberOfEventsDOM.innerText = `${numberOfEvents} ${numberOfEvents != 1 ? 'Events' : 'Event'}`;
