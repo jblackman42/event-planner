@@ -2,6 +2,7 @@ const express = require('express');
 const router = express.Router();
 const qs = require('qs')
 const axios = require('axios');
+const { response } = require('express');
 
 router.post('/login', async (req, res) => {
     const {username, password} = req.body;
@@ -125,4 +126,23 @@ router.get('/authorize', async (req, res) => {
     res.send({access_token: access_token, expires_in: expiresDate})
 })
 
+router.get('/app/authorize', async (req, res) => {
+    const data = await axios({
+        method: 'post',
+        url: 'https://my.pureheart.org/ministryplatformapi/oauth/connect/token',
+        data: qs.stringify({
+            grant_type: "client_credentials",
+            scope: "http://www.thinkministry.com/dataplatform/scopes/all",
+            client_id: process.env.APP_CLIENT_ID,
+            client_secret: process.env.APP_CLIENT_SECRET
+        })
+    })
+        .then(response => response.data)
+        .catch(err => console.error(err))
+    const {access_token, expires_in} = data;
+    res.send({
+        access_token: access_token,
+        expires_in: expires_in
+    })
+})
 module.exports = router;

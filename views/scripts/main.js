@@ -1,12 +1,21 @@
 // const registrationUserId = 9;
 
-
 const user_id = getCookie('user_id');
-const access_token = getCookie('access_token');
+let user_token = getCookie('access_token')
+let access_token = getCookie('access_token');
 let registrationUserIds,promotionUserIds,AVUserIds,facilitiesUserIds,childcareUserIds,allTaskUserIds,peoriaUserIds,recurringEventUserIds;
 const peoriaCampusID = 4;
 const MP_URL = 'https://my.pureheart.org/mp';
 const MP_Events_Table_ID = 308;
+
+const getAccessToken = async () => {
+    access_token = await axios({
+        method: 'get',
+        url: '/api/oauth/app/authorize'
+    })
+        .then(response => response.data.access_token)
+}
+getAccessToken()
 
 const getAllTaskUsers = async () => {
     registrationUserIds = await getUsersWithRole(2194);

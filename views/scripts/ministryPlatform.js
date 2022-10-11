@@ -284,7 +284,7 @@ const deleteTask = (TaskId) => {
         url: `https://my.pureheart.org/ministryplatformapi/tasks/${TaskId}`,
         headers: {
             'Accept': 'application/json',
-            'Authorization': `Bearer ${access_token}`
+            'Authorization': `Bearer ${user_token}`
         }
     })
     .then(response => response)

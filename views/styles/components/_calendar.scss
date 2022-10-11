@@ -7,7 +7,10 @@ $button-bg: var(--arrow-button-color);
 #calender-container {
     margin: 0 auto;
     width: 1000px;
-    max-width: 95vw;
+    max-width: 90vw;
+    @media screen and (max-width: 768px) {
+        max-width: 98vw;
+    }
 }
 
 #calender {

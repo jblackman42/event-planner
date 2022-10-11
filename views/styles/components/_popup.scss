@@ -69,6 +69,9 @@ $arrow-button-bg: var(--arrow-button-color);
             .close-button {
                 color: $popup-text;
             }
+            #event-date {
+                max-width: calc(100% - 48px);
+            }
         }
 
         #events-list {
