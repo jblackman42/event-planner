@@ -13,8 +13,9 @@ const warningMsg = document.getElementById('recurring-warning-msg');
 let recurrencePattern = undefined;
 
 const patternShow = () => {
-    recurringEventContainer.style.visibility = 'visible';
-    recurringEventContainer.style.display = 'grid';
+    // recurringEventContainer.style.visibility = 'visible';
+    // recurringEventContainer.style.display = 'grid';
+    recurringEventContainer.classList.add('open');
 
     if (startDateDOM.value) {
         startByDate.innerText = new Date(startDateDOM.value).toDateString() + ' @ ' + new Date(startDateDOM.value).toLocaleTimeString();
@@ -22,8 +23,9 @@ const patternShow = () => {
 }
 
 const patternHide = () => {
-    recurringEventContainer.style.visibility = 'hidden';
-    recurringEventContainer.style.display = 'none';
+    // recurringEventContainer.style.visibility = 'hidden';
+    // recurringEventContainer.style.display = 'none';
+    recurringEventContainer.classList.remove('open');
 }
 
 const cancel = () => {

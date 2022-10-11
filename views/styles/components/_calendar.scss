@@ -35,24 +35,25 @@ $button-bg: var(--arrow-button-color);
         font-size: clamp(.5em, 2.5vw, 1.25rem);
         position: relative;
         // margin: 1px;
+        perspective: 1000px;
+        transform-origin: bottom;
 
-        transform: translateY(20%);
         opacity: 0;
         animation: calendar-fade 500ms ease-in-out 200ms 1 normal forwards;
 
         @for $i from 1 through 50 {
             &:nth-of-type(#{$i}) {
-              animation-delay: 15ms * $i;
+              animation-delay: 20ms * $i;
             }
           }
 
         @keyframes calendar-fade {
             from {
-                transform: translateY(20%);
+                transform: translate(5%, 20%);
                 opacity: 0;
             }
             to {
-                transform: translateY(0);
+                transform: translate(0, 0);
                 opacity: 1;
             }
         }

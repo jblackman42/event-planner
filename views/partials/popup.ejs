@@ -36,15 +36,17 @@
     const show = () => {
         const popupContainerDOM = document.getElementById('popup-container');
         const eventsListDOM = document.getElementById('events-list');
-        popupContainerDOM.style.visibility = 'visible';
-        popupContainerDOM.style.display = 'flex';
+        // popupContainerDOM.style.visibility = 'visible';
+        // popupContainerDOM.style.display = 'flex';
+        popupContainerDOM.classList.add('open');
         eventsListDOM.scrollTop = 0;
     }
     const hide = () => {
         const popupContainerDOM = document.getElementById('popup-container');
         const eventsListDOM = document.getElementById('events-list');
-        popupContainerDOM.style.visibility = 'hidden';
-        popupContainerDOM.style.display = 'none';
+        // popupContainerDOM.style.visibility = 'hidden';
+        // popupContainerDOM.style.display = 'none';
+        popupContainerDOM.classList.remove('open');
         eventsListDOM.innerHTML = '';
     }
 

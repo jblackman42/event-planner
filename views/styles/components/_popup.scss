@@ -9,7 +9,7 @@ $arrow-button-bg: var(--arrow-button-color);
     background-color: #000000AA;
     color: $popup-text;
 
-    display: flex;
+    // display: flex;
     align-items: center;
     justify-content: center;
     padding: 1rem 0;
@@ -17,6 +17,23 @@ $arrow-button-bg: var(--arrow-button-color);
     visibility: hidden;
     display: none;
     z-index: 999;
+
+    &.open {
+        display: flex;
+        visibility: visible;
+        #popup, #next-day-btn, #prev-day-btn {animation: fade-in 200ms;}
+    }
+
+    @keyframes fade-in {
+        from {
+          opacity: 0;
+          transform: translate(0, 10%);
+        }
+        to {
+          opacity: 1;
+          transform: translate(0, 0);
+        }
+    }
 
     @media screen and (max-width: 768px) {
         justify-content: flex-start;
