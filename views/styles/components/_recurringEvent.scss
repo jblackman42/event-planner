@@ -21,7 +21,6 @@ $recurring-header-bg: var(--secondary-bg-color);
     }
     @media screen and (min-width: 768px) {
         &.open {
-            display: grid;
             .recurring-event {animation: fade-in 200ms;}
         }
     }

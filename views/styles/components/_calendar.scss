@@ -38,9 +38,9 @@ $button-bg: var(--arrow-button-color);
         perspective: 1000px;
         transform-origin: bottom;
 
-        opacity: 0;
         
-        @media screen and (max-width: 768px) {
+        @media screen and (min-width: 768px) {
+            opacity: 0;
             animation: calendar-fade 500ms ease-in-out 200ms 1 normal forwards;
         }
 

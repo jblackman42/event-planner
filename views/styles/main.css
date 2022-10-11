@@ -456,10 +456,10 @@ html {
   position: relative;
   perspective: 1000px;
   transform-origin: bottom;
-  opacity: 0;
 }
-@media screen and (max-width: 768px) {
+@media screen and (min-width: 768px) {
   #calender .calender-day {
+    opacity: 0;
     -webkit-animation: calendar-fade 500ms ease-in-out 200ms 1 normal forwards;
             animation: calendar-fade 500ms ease-in-out 200ms 1 normal forwards;
   }
@@ -1686,9 +1686,6 @@ input:checked + .slider:before {
   visibility: visible;
 }
 @media screen and (min-width: 768px) {
-  .recurring-event-container.open {
-    display: grid;
-  }
   .recurring-event-container.open .recurring-event {
     -webkit-animation: fade-in 200ms;
             animation: fade-in 200ms;
