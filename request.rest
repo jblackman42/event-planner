@@ -1,0 +1,27 @@
+GET http://localhost:3000/api/main-service-attendance HTTP/1.1
+###
+GET http://localhost:3000/api/attendance/6346e0c083463b35864eccf0 HTTP/1.1
+###
+POST http://localhost:3000/api/attendance HTTP/1.1
+Content-Type: application/json
+
+{
+    "Year": 2022,
+    "Month": 9,
+    "Day": 12,
+    "Time": "8:00",
+    "Campus": "Glendale Campus",
+    "Congregation": "main-service",
+    "Attendance": 99
+}
+###
+PATCH http://localhost:3000/api/attendance/6346df199a76c3a95a76250b HTTP/1.1
+Content-Type: application/json
+
+{
+    "Year": 2023
+}
+###
+DELETE http://localhost:3000/api/attendance HTTP/1.1
+###
+DELETE http://localhost:3000/api/attendance/6346df199a76c3a95a76250b HTTP/1.1

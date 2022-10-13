@@ -17,4 +17,8 @@ navigation.get('/create', ensureAdminAuthenticated, (req, res) => {
   res.render('pages/create')
 })
 
+navigation.get('/health-assesment', ensureAuthenticated, (req, res) => {
+  res.render('pages/health-assesment')
+})
+
 module.exports = navigation;
