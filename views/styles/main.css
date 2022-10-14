@@ -323,6 +323,7 @@ template {
   --blue-accent-color: #3498db;
   --blue-accent-color2: #2980b9;
   --arrow-button-color: #b2bec3;
+  --green-accent-color: #2ecc71;
 }
 
 body,
@@ -341,6 +342,15 @@ html {
   flex-direction: column;
   justify-content: center;
   align-items: center;
+  color: var(--primary-font-color);
+}
+
+.flex-container {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+  color: var(--primary-font-color);
 }
 
 .btn {
@@ -2337,4 +2347,51 @@ input:checked + .slider:before {
     top: 0;
     right: 0;
   }
+}
+
+#table-container {
+  display: flex;
+  gap: 1rem;
+}
+
+table {
+  border-collapse: collapse;
+  margin: 0;
+  font-size: 1em;
+  font-family: sans-serif;
+  min-width: 400px;
+  border-radius: 5px;
+  overflow: hidden;
+  box-shadow: rgba(0, 0, 0, 0.16) 0px 3px 6px, rgba(0, 0, 0, 0.23) 0px 3px 6px;
+}
+table thead {
+  background-color: var(--blue-accent-color2);
+  color: var(--light-font-color);
+  text-align: left;
+}
+table th, table td {
+  padding: 12px 16px;
+  position: relative;
+}
+table th#positive, table td#positive {
+  background-color: var(--green-transparent-accent-color);
+}
+table th#negative, table td#negative {
+  background-color: var(--red-transparent-accent-color);
+}
+table tr {
+  position: relative;
+  border-bottom: 1px solid var(--secondary-bg-color);
+}
+table tr:nth-of-type(even) {
+  background-color: var(--primary-bg-color);
+}
+table tr:last-of-type {
+  border: none;
+}
+
+#table-title {
+  width: 100%;
+  margin: 0.5rem 0;
+  text-align: center;
 }/*# sourceMappingURL=main.css.map */
