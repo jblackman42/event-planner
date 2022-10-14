@@ -1,10 +1,21 @@
 // const registrationUserId = 9;
 
-
 const user_id = getCookie('user_id');
-const access_token = getCookie('access_token');
+let user_token = getCookie('access_token')
+let access_token = getCookie('access_token');
 let registrationUserIds,promotionUserIds,AVUserIds,facilitiesUserIds,childcareUserIds,allTaskUserIds,peoriaUserIds,recurringEventUserIds;
 const peoriaCampusID = 4;
+const MP_URL = 'https://my.pureheart.org/mp';
+const MP_Events_Table_ID = 308;
+
+const getAccessToken = async () => {
+    access_token = await axios({
+        method: 'get',
+        url: '/api/oauth/app/authorize'
+    })
+        .then(response => response.data.access_token)
+}
+getAccessToken()
 
 const getAllTaskUsers = async () => {
     registrationUserIds = await getUsersWithRole(2194);
@@ -31,6 +42,40 @@ const getUser = async () => {
         .then(data => data.user)
 }
 
+//5 minutes
+const sessionLength = 60 * 1000 * 60;
+setInterval(async () => {
+    window.location = '/login'
+}, sessionLength)
+
+const sendExampleTask = async () => {
+    //authorId, ownerId, eventId, startDate, taskType
+    const user = await getUser();
+    const {UserId} = user;
+
+    const task = [{
+        "Action": "Complete",
+        "TaskName": `Example Task`,
+        "Description": `This is an example task for testing purposes`,
+        "StartDate": new Date().toISOString(),
+        "AuthorId": new Date().toISOString(),
+        "OwnerID": UserId,
+        "TableName": "Events",
+        "RecordId": 47864
+    }]
+    return fetch('https://my.pureheart.org/ministryplatformapi/tasks', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+            'Accept': 'application/json',
+            'Authorization': `Bearer ${access_token}`
+        },
+        body: JSON.stringify(task),
+    })
+    .then(response => response.json())
+    .catch(err => console.error(err))
+}
+
 const loading = () => {
     const loadingScreen = document.getElementById('loadingScreen')
     loadingScreen.style.visibility = 'visible';
@@ -53,7 +98,7 @@ const updateColorScheme = () => {
         root.style.setProperty('--primary-font-color', '#17161d');
         root.style.setProperty('--secondary-font-color', '#f1f2f6');
         root.style.setProperty('--primary-bg-color', '#cdc3c3');
-        root.style.setProperty('--secondary-bg-color', '#716868');
+        root.style.setProperty('--secondary-bg-color', '#9f9696');
         root.style.setProperty('--red-accent-color', '#e74c3c');
         root.style.setProperty('--blue-accent-color', '#3498db');
         root.style.setProperty('--blue-accent-color2', '#2980b9');

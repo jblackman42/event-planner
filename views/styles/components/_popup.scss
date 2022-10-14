@@ -9,7 +9,7 @@ $arrow-button-bg: var(--arrow-button-color);
     background-color: #000000AA;
     color: $popup-text;
 
-    display: flex;
+    // display: flex;
     align-items: center;
     justify-content: center;
     padding: 1rem 0;
@@ -17,6 +17,28 @@ $arrow-button-bg: var(--arrow-button-color);
     visibility: hidden;
     display: none;
     z-index: 999;
+
+    &.open {
+        display: flex;
+        visibility: visible;
+    }
+
+    @media screen and (min-width: 768px) {
+        &.open {
+            #popup, #next-day-btn, #prev-day-btn {animation: fade-in 200ms;}
+        }
+    }
+
+    @keyframes fade-in {
+        from {
+          opacity: 0;
+          transform: translate(0, 10%);
+        }
+        to {
+          opacity: 1;
+          transform: translate(0, 0);
+        }
+    }
 
     @media screen and (max-width: 768px) {
         justify-content: flex-start;
@@ -44,23 +66,33 @@ $arrow-button-bg: var(--arrow-button-color);
     }
 
     #popup {
-        background-color: $popup-bg;
-        width: clamp(50vw, 500px, 90vw);
+        width: 90vw;
+        max-width: 700px;
         height: max-content;
+        border-radius: 5px;
+        overflow: hidden;
 
         .title {
             padding-inline: 1rem;
-            border-bottom: 5px solid $popup-borer-bg;
             position: relative;
+            background-color: $popup-bg;
+            border-bottom: 2px solid var(--secondary-bg-color);
 
             h1 {
                 margin: 0;
                 padding: .5em 0;
                 padding-bottom: 0;
             }
+            #number-of-events {
+                margin: 0;
+                padding: 1rem 0;
+            }
 
             .close-button {
                 color: $popup-text;
+            }
+            #event-date {
+                max-width: calc(100% - 48px);
             }
         }
 
@@ -69,19 +101,25 @@ $arrow-button-bg: var(--arrow-button-color);
             margin: 0;
             padding: 0;
 
-            max-height: 60vh;
+            max-height: calc(60vh - 48px); 
             overflow-y: auto;
-
+            background-color: var(--secondary-bg-color);
             .event {
                 display: flex;
                 flex-direction: column;
                 padding: 1rem;
-                border-bottom: 2px solid $popup-borer-bg;
+                margin-bottom: 2px;
+                background-color: $popup-bg;
 
-                &:last-of-type {
-                    border: none;
+                counter-increment: event;
+                transition: border-color 1s linear 2s;
+                border-color: #2ecc71;
+                &.hightlight {
+                    border: 3px solid transparent !important;
                 }
-
+                &:last-of-type {
+                    margin-bottom: 0;
+                }
                 div {
                     display: flex;
                     justify-content: space-between;
@@ -94,8 +132,26 @@ $arrow-button-bg: var(--arrow-button-color);
                         margin-right: 1rem;
                     }
 
+                    #event-link {
+                        color: inherit;
+                        margin: .5rem;
+                    }
                     #event-name {
-                        margin: .25rem auto;
+                        margin: .25rem;
+                        margin-left: 1.5rem;
+                        font-size: large;
+                        position: relative;
+                        text-align: left;
+                        &:before {
+                            content: counter(event) ".";
+                            position: absolute;
+                            top: 0;
+                            left: 0;
+                            font-weight: 300;
+                            padding-right: .25rem;
+                            transform: translateX(-100%);
+                        }
+
                     }
 
                     #rooms-list {
@@ -125,9 +181,6 @@ $arrow-button-bg: var(--arrow-button-color);
             left: 50%;
             right: auto;
             transform: translateX(calc(-100% - 8px));
-        }
-        #events-list {
-            max-height: 50vh !important;
         }
     }
 }

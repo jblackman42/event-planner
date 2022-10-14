@@ -1,10 +1,16 @@
-const getEvents = (currentMonth, currentYear, redirect, LocationFilter) => { //redirect is the url after the first / defining what page will load if request fails
+const getEvents = (currentMonth, currentYear) => { //redirect is the url after the first / defining what page will load if request fails
     let monthOffset = currentMonth - new Date().getMonth();
     let yearOffset = currentYear - new Date().getFullYear();
+
+    const firstOfMonth = new Date(currentYear, currentMonth, 1);
+    const firstVisibleDate = new Date(currentYear, currentMonth, 1 - firstOfMonth.getDay())
+    const lastVisibleDate = new Date(currentYear, currentMonth + 1, 0)
+    lastVisibleDate.setTime(lastVisibleDate.getTime() + 86399999)
     
     const response = axios({
         method: 'get',
-        url: `https://my.pureheart.org/ministryplatformapi/tables/Events?%24filter=YEAR(Event_Start_Date)%3DYEAR(GETDATE())%2B${yearOffset}%20AND%20MONTH(Event_Start_Date)%3EMONTH(GETDATE())%2B${monthOffset-1}%20AND%20MONTH(Event_Start_Date)%3CMONTH(GETDATE())%2B${monthOffset+1}${LocationFilter ? `%20AND%20Location_ID%3D${LocationFilter}` : ''}&%24orderby=Event_Start_Date`,
+        // url: `https://my.pureheart.org/ministryplatformapi/tables/Events?%24filter=YEAR(Event_Start_Date)%3DYEAR(GETDATE())%2B${yearOffset}%20AND%20MONTH(Event_Start_Date)%3EMONTH(GETDATE())%2B${monthOffset-1}%20AND%20MONTH(Event_Start_Date)%3CMONTH(GETDATE())%2B${monthOffset+1}&%24orderby=Event_Start_Date`,
+        url: `https://my.pureheart.org/ministryplatformapi/tables/Events?$filter=Event_Start_Date BETWEEN '${firstVisibleDate.toISOString()}' AND '${lastVisibleDate.toISOString()}'`,
         headers: {
             'Accept': 'application/json',
             'Authorization': `Bearer ${access_token}`
@@ -13,11 +19,6 @@ const getEvents = (currentMonth, currentYear, redirect, LocationFilter) => { //r
     .then(response => response.data)
     .catch(err => {
         console.error(err)
-        if (!redirect) {
-            window.location = '/login'
-        } else {
-            window.location = `/login?redirect=${redirect}`
-        }
     })
     return response;
 }
@@ -262,6 +263,34 @@ const getUserInfo = (User_ID) => {
     return response;
 }
 
+const getUserTasks = (User_ID) => {
+    if (!User_ID) return;
+    return axios({
+        method: 'get',
+        url: `https://my.pureheart.org/ministryplatformapi/tables/dp_Tasks?$filter=Assigned_User_ID=${User_ID} AND Completed=0`,
+        headers: {
+            'Accept': 'application/json',
+            'Authorization': `Bearer ${access_token}`
+        }
+    })
+    .then(response => response.data)
+    .catch(err => console.error(err))
+}
+
+const deleteTask = (TaskId) => {
+    if (!TaskId) return;
+    return axios({
+        method: 'delete',
+        url: `https://my.pureheart.org/ministryplatformapi/tasks/${TaskId}`,
+        headers: {
+            'Accept': 'application/json',
+            'Authorization': `Bearer ${user_token}`
+        }
+    })
+    .then(response => response)
+    .catch(err => err)
+}
+
 const getUsersWithRole = (Role_ID) => {
     if (!Role_ID) return
     const response = axios({
@@ -316,7 +345,7 @@ const sendTask = async (authorId, ownerId, eventId, startDate, taskType) => {
     const task = [{
         "Action": "Complete",
         "TaskName": `Task ${taskType}`,
-        "Description": `The attatched event has requested ${taskType}.`,
+        "Description": `The attatched event has requested ${taskType}. Please contact the event creator or event's primary contact to set up ${taskType} for this event. Thank You!`,
         "StartDate": startDate,
         "AuthorId": authorId,
         "OwnerID": ownerId,
@@ -336,26 +365,19 @@ const sendTask = async (authorId, ownerId, eventId, startDate, taskType) => {
     .catch(err => console.error(err))
 }
 
-const sendRecurringEventTask = async (authorId, ownerId, eventId, startDate, instructions) => {
-    const task = [{
-        "Action": "Complete",
-        "TaskName": `Setup Recurring Event`,
-        "Description": `${instructions}.`,
-        "StartDate": startDate,
-        "AuthorId": authorId,
-        "OwnerID": ownerId,
-        "TableName": "Events",
-        "RecordId": eventId
-    }]
-    return fetch('https://my.pureheart.org/ministryplatformapi/tasks', {
-        method: 'POST',
+const getPageID = (Table_Name) => {
+    if (!Table_Name) return;
+    return axios({
+        method: 'post',
+        url: `https://my.pureheart.org/ministryplatformapi/procs/api_Common_GetPageID`,
+        data: {
+            "@TableName": Table_Name
+        },
         headers: {
-            'Content-Type': 'application/json',
             'Accept': 'application/json',
             'Authorization': `Bearer ${access_token}`
-        },
-        body: JSON.stringify(task),
+        }
     })
-    .then(response => response.json())
+    .then(response => response.data[0][0])
     .catch(err => console.error(err))
 }

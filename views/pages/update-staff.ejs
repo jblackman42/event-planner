@@ -1,0 +1,214 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <link rel="shortcut icon" href="/assets/favicon.ico" type="image/x-icon">
+    <link rel="stylesheet" href="/styles/main.css">
+
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+
+    <script src="https://kit.fontawesome.com/e61ab9568e.js" crossorigin="anonymous"></script>
+    <title>PHC - Widgets | Update Staff</title>
+
+
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+</head>
+<body id="staff-widget-update">
+    <div class="staff-loading">
+        <p id="staff-warning">please do not close this page</p>
+        <div id="percent-bar" class="staff-loading-bar"></div>
+        <p id="percent" class="staff-loading-percent-label">0%</p>
+        <p id="update-label"></p>
+    </div>
+</body>
+<script>
+    (async () => {
+        const percentDOM = document.getElementById('percent')
+        const percentBarDOM = document.getElementById('percent-bar')
+        const updateLabelDOM = document.getElementById('update-label')
+        const staffWarningDOM = document.getElementById('staff-warning')
+        
+        //delete all staff records
+        // await StaffSchema.deleteMany({});
+
+        //get access token for accessing database informatin
+        const accessToken = await axios({
+            method: 'get',
+            mode: 'cors',
+            url: 'https://phc.events/api/oauth/authorize'
+        })
+            .then(response => response.data.access_token)
+            .catch(err => console.error(err))
+            
+        //2443 - lead pastor
+        //2464 - executive and campus pastors
+        //2387 - lead pastors
+        //2388 - pastors
+        //2389 - directors
+        //2390 - support staff
+        const webStaffGroupIDs = [
+            {id: 2443, title: "Senior Pastor"},
+            {id: 2464, title: "Executive and Campus Pastors"},
+            {id: 2387, title: "Lead Pastors"},
+            {id: 2388, title: "Pastors"},
+            {id: 2389, title: "Directors"},
+            {id: 2390, title: "Support Staff"},
+        ]
+        const getWebStaffGroupParticipants = async (Group_ID) => {
+            return await axios({
+                method: 'get',
+                url: `https://my.pureheart.org/ministryplatformapi/tables/Group_Participants?%24select=Participant_ID&%24filter=Group_ID%3D${Group_ID}%20AND%20End_Date%20IS%20NULL`,
+                mode: 'cors',
+                headers: {
+                    Accept: 'application/json',
+                    Authorization: `Bearer ${accessToken}`
+                }
+            })
+                .then(response => response.data)
+                .catch(err => console.error(err))
+
+        }
+
+        const getParticipantFromID = async (Participant_ID) => {
+            return await axios({
+                method: 'get',
+                url: `https://my.pureheart.org/ministryplatformapi/tables/Participants/${Participant_ID}`,
+                mode: 'cors',
+                headers: {
+                    Accept: 'application/json',
+                    Authorization: `Bearer ${accessToken}`
+                }
+            })
+                .then(response => response.data[0])
+                .catch(err => console.error(err))
+        }
+
+        const getContactFromID = async (Contact_ID) => {
+            return await axios({
+                method: 'get',
+                url: `https://my.pureheart.org/ministryplatformapi/tables/Contacts/${Contact_ID}`,
+                mode: 'cors',
+                headers: {
+                    Accept: 'application/json',
+                    Authorization: `Bearer ${accessToken}`
+                }
+            })
+                .then(response => response.data[0])
+                .catch(err => console.error(err))
+        }
+
+        const getFilesFromContactID = async (Contact_ID) => {
+            return await axios({
+                method: 'get',
+                url: `https://my.pureheart.org/ministryplatformapi/files/Contacts/${Contact_ID}`,
+                mode: 'cors',
+                headers: {
+                    Accept: 'application/json',
+                    Authorization: `Bearer ${accessToken}`
+                }
+            })
+                .then(response => response.data.filter(file => file.IsDefaultImage)[0])
+                .catch(err => console.error(err))
+        }
+        //link for images
+        //https://my.pureheart.org/ministryplatformapi/files/${FileId}
+
+        const getStaffRecordFromContactID = async (Contact_ID) => {
+            return await axios({
+                method: 'get',
+                url: `https://my.pureheart.org/ministryplatformapi/tables/Staff?%24filter=Contact_ID=${Contact_ID}`,
+                mode: 'cors',
+                headers: {
+                    Accept: 'application/json',
+                    Authorization: `Bearer ${accessToken}`
+                }
+            })
+                .then(response => response.data[0])
+                .catch(err => console.error(err))
+        }
+
+        const getStaffLength = async () => {
+            return await axios({
+                method: 'get',
+                url: '/api/widgets/staff',
+                mode: 'same-origin'
+            })
+                .then(response => {
+                    const {data: {staff}} = response
+                    return staff.map(group => group.Participants.length).reduce((accum, value) => accum + value, 0)
+                })
+        }
+
+        const staffLength = await getStaffLength();
+        let counter = 0;
+
+        const formatStaff = async () => {
+            // console.log(webStaffGroupIDs)
+
+            await axios({
+                method: 'delete',
+                url: '/api/widgets/update-staff',
+                mode: 'same-origin'
+            })
+
+            for (let i = 0; i < webStaffGroupIDs.length; i ++) {
+                const {id, title} = webStaffGroupIDs[i];
+                let staffParticipants = [];
+                const participants = await getWebStaffGroupParticipants(id)
+                for (let j = 0; j < participants.length; j ++) {
+                    counter ++;
+                    const percent = counter <= staffLength ? `${Math.floor((counter / staffLength)  * 100)}%` : '100%';
+                    percentDOM.innerText = percent;
+                    percentBarDOM.style.width = percent;
+
+                    const {Contact_ID} = await getParticipantFromID(participants[j].Participant_ID)
+                    const contact = await getContactFromID(Contact_ID);
+                    const {Nickname, First_Name, Last_Name, Email_Address, Email_Unlisted, Mobile_Phone, Mobile_Phone_Unlisted, Web_Page} = contact;
+                    const {Job_Title, Bio} = await getStaffRecordFromContactID(Contact_ID);
+                    const {UniqueFileId} = await getFilesFromContactID(Contact_ID);
+                    const imageUrl = `https://my.pureheart.org/ministryplatformapi/files/${UniqueFileId}`
+                    const display_name = `${Nickname} ${Last_Name}`;
+                    const email = Email_Unlisted ? null : Email_Address;
+                    const phone = Mobile_Phone_Unlisted ? null : Mobile_Phone;
+                    // console.log(display_name)
+                    updateLabelDOM.innerText = counter < staffLength ? `Updated ${display_name}` : `Added ${display_name}`;
+                    
+                    staffParticipants.push({
+                        Contact_ID: Contact_ID,
+                        First_Name: First_Name,
+                        Last_Name: Last_Name,
+                        Display_Name: display_name,
+                        Email: email,
+                        Phone: phone,
+                        Job_Title: Job_Title,
+                        Image_URL: imageUrl,
+                        Web_Page: Web_Page,
+                        Bio: Bio
+                    })
+                }
+                
+                await axios({
+                    method: 'post',
+                    url: '/api/widgets/update-staff',
+                    mode: 'same-origin',
+                    data: {
+                        Group_ID: id,
+                        Group_Title: title,
+                        Participants: staffParticipants
+                    }
+                })
+                    .then(response => response)
+                    .catch(err => console.error(`whoops: ${err}`))
+            }
+            updateLabelDOM.innerText = counter <= staffLength ? `Update Complete` : `Update Complete - Added ${counter - staffLength} Employee(s)`;
+            staffWarningDOM.style.visibility = 'hidden';
+            staffWarningDOM.style.display = 'none';
+        }
+
+        formatStaff()
+    })()
+</script>
+</html>

@@ -18,6 +18,7 @@
             <ul>
                 <li><a href="/">Calendar</a></li>
                 <li id="new-event-btn"><a href="/create">New Event</a></li>
+                <li><a href="/my-tasks" id="tasks-link">My Tasks</a></li>
                 <li id="loggedOut"><a href="/login">Login</a></li>
                 <li id="loggedIn"><a onclick="logout()" href="/">Logout</a></li>
             </ul>
@@ -74,6 +75,23 @@
         loggedIn.style.display = 'flex';
     }
     welcomeMsg();
+
+    const tasksLink = document.getElementById('tasks-link')
+    const getTasks = async () => {
+        const user = await getUser();
+        const {UserId} = user;
+
+        const tasks = await getUserTasks(UserId)
+        
+        if (!tasks.length) { return }
+        
+        const tasksNotif = document.createElement('p');
+        tasksNotif.id = 'tasks-notification';
+        tasksNotif.innerText = tasks.length;
+
+        tasksLink.appendChild(tasksNotif)
+    }
+    getTasks();
 
     axios({
         method: 'get',

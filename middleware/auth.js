@@ -57,8 +57,50 @@ const ensureAdminAuthenticated = async (req, res, next) => {
             res.render('pages/login', {error: "Session Expired"})
         })
 }
+
+const ensureAdministrator = async (req, res, next) => {
+    const {user_id, access_token} = req.cookies;
+    if (!user_id || !access_token) return res.render('pages/login', {error: null})
+    
+    return axios({
+        method: 'get',
+        url: `${process.env.DOMAIN_NAME}/api/oauth/me/roles`,
+        params: {
+            user_id: user_id,
+            token: access_token
+        }
+    })
+        .then(response => response.data)
+        .then(data => {
+            const {userRoles} = data;
+            const requiredRoles = [2]//array of roles that will allow user to log in and create events
+
+            if (!userRoles) return res.render('pages/login', {error: "Session Expired"});
+            
+            if (userRoles.filter(role => requiredRoles.includes(role.Role_ID)).length > 0) next();
+            else res.redirect('/')
+        })
+        .catch(err => {
+            console.log(err)
+            res.render('pages/login', {error: "Session Expired"})
+        })
+}
+
+const ensureWebhook = (req, res, next) => {
+    const authKey = req.header('Auth-Key')
+    
+    if (authKey == process.env.WIDGET_AUTH_SECRET) {
+        //webhook is authorized
+        next();
+    } else {
+        //webhook is not authorized
+        res.sendStatus(401)
+    }
+}
   
 module.exports = {
     ensureAuthenticated,
-    ensureAdminAuthenticated
+    ensureAdminAuthenticated,
+    ensureAdministrator,
+    ensureWebhook
 };;

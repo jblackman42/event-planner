@@ -2,6 +2,7 @@ const express = require('express');
 const router = express.Router();
 const qs = require('qs')
 const axios = require('axios');
+const { response } = require('express');
 
 router.post('/login', async (req, res) => {
     const {username, password} = req.body;
@@ -48,24 +49,20 @@ router.post('/login', async (req, res) => {
                         res.send({success: true})
                     })
                     .catch(err => {
-                        console.error(err)
-                        res.send({success: false, error: 'internal server error: please try again later.'})
+                        console.error(err.response.status)
+                        if (err.response.status >= 400 && err.response.status < 500) {
+                            res.send({success: false, error: 'Unauthorized: Insufficient Security Roles'})
+                        } else {
+                            res.send({success: false, error: 'internal server error: please try again later.'})
+                        }
                     })
             } else {
-                console.log('no access token')
-                // res.send({success: false, error: 'invalid credentials'})
-                res.render('pages/login', {error: 'invalid credentials'})
+                res.render('pages/login', {error: 'Incorrect Username or Password'})
             }
         })
         .catch(err => {
-            res.send({success: false, error: 'invalid credentials'})
+            res.send({success: false, error: 'Incorrect Username or Password'})
         })
-})
-
-router.get('/redirect', (req, res) => {
-    console.log(req.query)
-    res.sendStatus(200)
-    // res.redirect(`/loading`)
 })
 
 router.get('/me', async (req, res) => {
@@ -85,7 +82,7 @@ router.get('/me', async (req, res) => {
             .then(response => response.data)
             .then(data => res.json({user: data}))
             .catch(err => {
-                res.json({user: null})
+                res.redirect('/login')
             })
     }
     catch {
@@ -116,4 +113,40 @@ router.get('/me/roles', async (req, res) => {
     }
 })
 
+router.get('/authorize', async (req, res) => {
+    const data = await axios({
+        method: 'post',
+        url: 'https://my.pureheart.org/ministryplatformapi/oauth/connect/token',
+        data: qs.stringify({
+            grant_type: "client_credentials",
+            scope: "http://www.thinkministry.com/dataplatform/scopes/all",
+            client_id: process.env.CLIENT_ID,
+            client_secret: process.env.CLIENT_SECRET
+        })
+    })
+        .then(response => response.data)
+    const {access_token, expires_in} = data;
+    const expiresDate = new Date(new Date().getTime() + (expires_in * 1000)).toISOString()
+    res.send({access_token: access_token, expires_in: expiresDate})
+})
+
+router.get('/app/authorize', async (req, res) => {
+    const data = await axios({
+        method: 'post',
+        url: 'https://my.pureheart.org/ministryplatformapi/oauth/connect/token',
+        data: qs.stringify({
+            grant_type: "client_credentials",
+            scope: "http://www.thinkministry.com/dataplatform/scopes/all",
+            client_id: process.env.APP_CLIENT_ID,
+            client_secret: process.env.APP_CLIENT_SECRET
+        })
+    })
+        .then(response => response.data)
+        .catch(err => console.error(err))
+    const {access_token, expires_in} = data;
+    res.send({
+        access_token: access_token,
+        expires_in: expires_in
+    })
+})
 module.exports = router;

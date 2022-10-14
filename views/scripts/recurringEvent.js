@@ -13,8 +13,9 @@ const warningMsg = document.getElementById('recurring-warning-msg');
 let recurrencePattern = undefined;
 
 const patternShow = () => {
-    recurringEventContainer.style.visibility = 'visible';
-    recurringEventContainer.style.display = 'grid';
+    // recurringEventContainer.style.visibility = 'visible';
+    // recurringEventContainer.style.display = 'grid';
+    recurringEventContainer.classList.add('open');
 
     if (startDateDOM.value) {
         startByDate.innerText = new Date(startDateDOM.value).toDateString() + ' @ ' + new Date(startDateDOM.value).toLocaleTimeString();
@@ -22,8 +23,9 @@ const patternShow = () => {
 }
 
 const patternHide = () => {
-    recurringEventContainer.style.visibility = 'hidden';
-    recurringEventContainer.style.display = 'none';
+    // recurringEventContainer.style.visibility = 'hidden';
+    // recurringEventContainer.style.display = 'none';
+    recurringEventContainer.classList.remove('open');
 }
 
 const cancel = () => {
@@ -132,10 +134,10 @@ const getWeeklyPattern = (endOccurrences, endDate, startDate) => {
         return false;
     }
 
-    days = [new Date(startDate).toISOString()];
+    days = [];
     let allDays = [];
     let currDate = new Date(startDate);
-    let currentWeek = []
+    let currentWeek = [new Date(startDate).toISOString()]
     while ((currDate <= new Date(endDate) || days.length <= endOccurrences * selectedDays.length) && days.length < eventCreateLimit) {
         let tomorrow = new Date(currDate);
         tomorrow.setDate(tomorrow.getDate() + 1);
@@ -248,13 +250,18 @@ const getMonthlyPattern = (endOccurrences, endDate, startDate) => {
         let fullStartDate = new Date(startDate)
 
         days = [new Date(startDate).toISOString()];
+
         //gets the first day of the next month after the start date
         let currDate = new Date(fullStartDate.getFullYear(), fullStartDate.getMonth() + parseInt(everyMonthValue.value), 1)
         while ((currDate <= new Date(endDate) || days.length < endOccurrences) && days.length < eventCreateLimit) {
+            //newDate is correct day with a time of 00:00:00
             let newDate = getWeekdayOfMonth(currDate.toLocaleDateString(), parseInt(weekdayPattern.value), parseInt(monthDayPattern.value))
-            // console.log(newDate)
-            days.push(newDate.toISOString().split('T')[0] + 'T' + fullStartDate.toISOString().split('T')[1]);
-            // days.push(currDate)
+            //time offset is the number of milliseconds from 00:00:00 to time of event start
+
+            newDate.setHours(fullStartDate.getHours(), fullStartDate.getMinutes(), 0)
+
+            days.push(newDate.toISOString());
+            
             currDate = new Date(currDate.getFullYear(), currDate.getMonth() + parseInt(everyMonthValue.value), 1)
         }
         // console.log(days)
@@ -275,7 +282,7 @@ const hideWarning = () => {
 }
 
 const handleSave = () => {
-    const activeOption = document.querySelector('.active').id;
+     const activeOption = document.querySelector('.active').id;
 
     let patternTypes = ['daily', 'weekly', 'monthly'];
     let patternType = patternTypes.indexOf(activeOption);
@@ -333,13 +340,51 @@ const handleSave = () => {
             break;
     }
 
-    //convert all days to the correct time zone
-    days = days.map(day => {
-        const date = new Date(day);
-        return new Date( date.getTime() - ( date.getTimezoneOffset() * 60000 ) );
-    })
-    console.log('days')
-
     const recurringLabel = document.getElementById('recurring-label');
     recurringLabel.innerText = `${days.length} Events`;
+
+    reviewShow();
+}
+
+const elem = document.getElementById('days-number-option');
+const dailyOption1 = () => {
+    elem.disabled = false ;
+}
+const dailyOption2 = () => {
+    elem.disabled = true;
+}
+//option 1
+const month1Opt1 = document.getElementById('month-day');
+const month1Opt2 = document.getElementById('every-month-num');
+//option2
+const month2Opt1 = document.getElementById('monthly-day-pattern');
+const month2Opt2 = document.getElementById('weekday-pattern');
+const month2Opt3 = document.getElementById('every-month-num-2');
+const monthlyOption1 = () => {
+    month1Opt1.disabled = false;
+    month1Opt2.disabled = false;
+
+    month2Opt1.disabled = true;
+    month2Opt2.disabled = true;
+    month2Opt3.disabled = true;
+}
+const monthlyOption2 = () => {
+    month1Opt1.disabled = true;
+    month1Opt2.disabled = true;
+
+    month2Opt1.disabled = false;
+    month2Opt2.disabled = false;
+    month2Opt3.disabled = false;
+}
+//option 1
+const endOpt1 =  document.getElementById('occurrence-num');
+//option 2
+const endOpt2 = document.getElementById('by-date-input');
+const endOption1 = () => {
+    endOpt1.disabled = false;
+    endOpt2.disabled = true;
+}
+const endOption2 = () => {
+    endOpt1.disabled = true;
+    endOpt2.disabled = false;
 }

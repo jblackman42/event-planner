@@ -204,7 +204,7 @@ const updateEventTimes = async () => {
 
         overlappingRoomsDone();
     } else if (startDateValue && endDateValue) {
-        console.log(startDateValue, endDateValue)
+        // console.log(startDateValue, endDateValue)
         const overlapEvents = await getDaysEventsBetweenTimes(startDateValue, endDateValue);
         // const overlapEvents = [];
         
@@ -217,7 +217,14 @@ const updateEventTimes = async () => {
         }
     }
 
-    console.log(overlappingEventRooms)
+    // console.log(overlappingEventRooms)
+}
+
+const resetRecurring = () => {
+    days = [];
+    updateEventTimes();
+    const recurringLabel = document.getElementById('recurring-label');
+    recurringLabel.innerText = `One Time Event`;
 }
 
 const loadRoomOptions = async () => {
@@ -288,11 +295,17 @@ document.getElementById('create-form').addEventListener('keypress', (e) => {
     }
 })
 
-const publishEvent = async (event) => {
-    let roomsComplete;
-    let tasksComplete;
+let roomsComplete = false;
+let tasksComplete = false;
 
-    //get an array of the rooms that were selected
+const completed = () => {
+    doneLoading();
+    window.location = '/calendar';
+}
+
+const publishEvent = async (event) => {
+
+    //get an array of the rooms that were selected   
     const allRoomInputs = document.querySelectorAll('.room-input');
     const selectedRooms = [];
 
@@ -301,7 +314,7 @@ const publishEvent = async (event) => {
             selectedRooms.push(parseInt(allRoomInputs[i].value))
         }
     }
-    console.log(selectedRooms)
+    // console.log(selectedRooms)
 
     const eventId = await createEvent(event)
         .then(response => response[0].Event_ID)
@@ -309,14 +322,12 @@ const publishEvent = async (event) => {
             console.error(err)
         })
 
-    console.log(eventId)
     const bookAllRooms = async () => {
         for (roomId of selectedRooms) {
             const room = [{
                 "Event_ID": eventId,
                 "Room_ID": roomId
             }];
-            console.log(room)
             await fetch('https://my.pureheart.org/ministryplatformapi/tables/Event_Rooms', {
                 method: 'POST',
                 headers: {
@@ -329,9 +340,8 @@ const publishEvent = async (event) => {
             .then(response => response.json())
             .catch(err => console.error(err))
         }
-        roomsComplete = true;
     }
-    bookAllRooms();
+    await bookAllRooms()
 
     const taskOptions = [
         {
@@ -378,13 +388,6 @@ const publishEvent = async (event) => {
                 if (task.taskDOM.value == 1) await sendTask(user.UserId, taskOwner, eventId, new Date().toISOString(), task.taskType)
             }
         }
-        //if event is a recurring event, send a task to anyone with the Recurring-Event-Tasks role
-        if (recurrencePattern) {
-            for (taskOwner of recurringEventUserIds) {
-                await sendRecurringEventTask(user.UserId, taskOwner, eventId, new Date().toISOString(), recurrencePattern)
-            }
-        }
-        tasksComplete = true;
     }
     sendAllTasks();
 }
@@ -407,22 +410,16 @@ const handleSubmit = async (e) => {
     loading();
 
 
-    const completed = () => {
-        doneLoading();
-        console.log('complete')
-        // window.location = '/create';
-    }
     
     if (days.length) {
-        console.log('multiple events')
         const eventLength = new Date(endDateDOM.value).getTime() - new Date(startDateDOM.value).getTime();
         for (day of days) {
-            const event = [formatEvent(eventNameDOM.value,eventDescDOM.value,primaryContactID.Contact_ID,day,new Date(new Date(day).getTime() + eventLength).toISOString(),eventTypeDOM.value,attendanceDOM.value,congregationDOM.value,setupTimeDOM.value,cleanupTimeDOM.value,privacyDOM.value == 1 ? true : false,eventLocationDOM.value, visibilityLevelDOM.value)];
+            const eventDay = new Date(new Date(day).getTime() - (new Date(day).getTimezoneOffset() * 60000))
+            const event = [formatEvent(eventNameDOM.value,eventDescDOM.value,primaryContactID.Contact_ID,eventDay,new Date(new Date(eventDay).getTime() + eventLength).toISOString(),eventTypeDOM.value,attendanceDOM.value,congregationDOM.value,setupTimeDOM.value,cleanupTimeDOM.value,privacyDOM.value == 1 ? true : false,eventLocationDOM.value, visibilityLevelDOM.value)];
             await publishEvent(event)
         }
         completed();
     } else {
-        console.log('single event')
         //turn input data into form for sending to MP
         const event = [formatEvent(eventNameDOM.value,eventDescDOM.value,primaryContactID.Contact_ID,startDateDOM.value,endDateDOM.value,eventTypeDOM.value,attendanceDOM.value,congregationDOM.value,setupTimeDOM.value,cleanupTimeDOM.value,privacyDOM.value == 1 ? true : false,eventLocationDOM.value, visibilityLevelDOM.value)];
 

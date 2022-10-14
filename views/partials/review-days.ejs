@@ -1,0 +1,61 @@
+<div id="review-days-container">
+    <div id="review-days">
+        <div class="review-header">
+            <h1>Recurring Events</h1>
+            <button class="close-button" onclick="reviewHide()"><i class="material-icons">close</i></button>
+        </div>
+        <div class="days">
+            <h2 id="review-event-title"></h2>
+            <ol id="days-list">
+            </ol>
+        </div>
+        <!-- <p style="text-align: center">Warning: 10 Events will be created</p> -->
+        <div class="btn-container">
+            <button class="btn cancel" onclick="reviewHide();patternShow();">Cancel</button>
+            <button id="review-confirm-btn" class="btn" onclick="reviewHide()">Confirm 0 Events</button>
+        </div>
+    </div>
+</div>
+<script>
+    const reviewContainerDOM = document.querySelector('#review-days-container');
+
+    const eventTitleDOM = document.getElementById('review-event-title');
+    const daysListDOM = document.getElementById('days-list');
+    const reviewConfirmBtnDOM = document.getElementById('review-confirm-btn');
+
+    const loadDaysList = () => {
+        const daysListHTML = days.map(day => {
+            const eventLength = new Date(endDateDOM.value).getTime() - new Date(startDateDOM.value).getTime();
+            const eventEndDate = new Date(new Date(day).getTime() + eventLength)
+            return `<li>${new Date(day).toDateString()} @ ${new Date(day).toLocaleTimeString()} - ${eventEndDate.toLocaleTimeString()}</li>`
+        }).join('')
+        daysListDOM.innerHTML = daysListHTML;
+        eventTitleDOM.innerText = eventNameDOM.value;
+        reviewConfirmBtnDOM.innerText = `Confirm ${days.length} Events`
+    }
+
+    const reviewHide = () => {
+        reviewContainerDOM.style.display = 'none';
+        reviewContainerDOM.style.visibility = 'hidden';
+    }
+    const reviewShow = () => {
+        reviewContainerDOM.style.display = 'grid';
+        reviewContainerDOM.style.visibility = 'visible';
+
+        loadDaysList();
+    }
+
+    document.addEventListener('keydown', (e) => {
+        if (e.key == "Escape") {
+            reviewHide();
+        }
+    })
+    document.onclick = function(e){
+        if(e.target.id == 'review-days-container'){
+            reviewHide();
+        }
+        if(e.target.id == 'review-days'){
+            reviewShow();
+        }
+    };
+</script>

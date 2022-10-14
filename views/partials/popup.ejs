@@ -36,15 +36,17 @@
     const show = () => {
         const popupContainerDOM = document.getElementById('popup-container');
         const eventsListDOM = document.getElementById('events-list');
-        popupContainerDOM.style.visibility = 'visible';
-        popupContainerDOM.style.display = 'flex';
+        // popupContainerDOM.style.visibility = 'visible';
+        // popupContainerDOM.style.display = 'flex';
+        popupContainerDOM.classList.add('open');
         eventsListDOM.scrollTop = 0;
     }
     const hide = () => {
         const popupContainerDOM = document.getElementById('popup-container');
         const eventsListDOM = document.getElementById('events-list');
-        popupContainerDOM.style.visibility = 'hidden';
-        popupContainerDOM.style.display = 'none';
+        // popupContainerDOM.style.visibility = 'hidden';
+        // popupContainerDOM.style.display = 'none';
+        popupContainerDOM.classList.remove('open');
         eventsListDOM.innerHTML = '';
     }
 
@@ -54,7 +56,7 @@
         }
     })
 
-    const popup = async (day) => { //day is in short form (Fri Aug 05 2022)
+    const popup = async (day, scrollToId) => { //day is in short form (Fri Aug 05 2022)
         currDay = day;
         const popupContainerDOM = document.getElementById('popup-container');
         const popupDOM = document.getElementById('popup')
@@ -95,7 +97,7 @@
             }
         })[0].numberOfEvents;
 
-        let eventDate = new Date(day).toLocaleDateString('en-us', { weekday:"long", year:"numeric", month:"long", day:"numeric"}) 
+        let eventDate = new Date(day).toLocaleDateString('en-us', { weekday:"short", year:"numeric", month:"short", day:"numeric"}) 
 
         eventDateDOM.innerText = eventDate;
         numberOfEventsDOM.innerText = `${numberOfEvents} ${numberOfEvents != 1 ? 'Events' : 'Event'}`;
@@ -111,7 +113,7 @@
 
         const getEventsListHTML = async () => {
             return Promise.all(eventsList.map(async (event) => {
-                    const {Event_Title, Event_Start_Date, Event_End_Date, Meeting_Instructions, Rooms, Location_ID, Minutes_for_Cleanup, Minutes_for_Setup} = event;
+                    const {Event_Title, Event_Start_Date, Event_End_Date, Meeting_Instructions, Rooms, Location_ID, Minutes_for_Cleanup, Minutes_for_Setup,Event_ID} = event;
 
                     const location = await getLocation(Location_ID)
 
@@ -154,24 +156,27 @@
                     const roomsList = [...new Set(allRoomsList)].join(', ')
 
                     return `
-                        <li class="event">
-                            <div>
+                        <li class="event" id="event-${Event_ID}">
+                            <div style="flex-wrap:wrap;">
                                 <h4 id="event-name">${Event_Title}</h4>
+                                <a id="event-link" href="https://my.pureheart.org/mp/${MP_Events_Table_ID}/${Event_ID}" target="_blank">View on MP</a>
                             </div>
                             <div>
-                                <p id="label">Reserved Time:</p>
-                                <p>${reservedTimes}</p>
+                                <p>Location:</p>
+                                <p>${location ? location.Location_Name : 'Unknown'}</p>
                             </div>
+                            ${Minutes_for_Setup && Minutes_for_Cleanup ? `
+                                <div>
+                                    <p id="label">Reserved Time:</p>
+                                    <p>${reservedTimes}</p>
+                                </div>
+                            ` : ''}
                             <div>
                                 <p id="label">Event Time:</p>
                                 <p>${eventTimes}</p>
                             </div>
                             <div>
-                                <p>Location:</p>
-                                <p>${location.Location_Name}</p>
-                            </div>
-                            <div>
-                                <p id="label">Rooms:</p>
+                                <p id="label">${allRoomsList.length == 1 ? 'Room' : 'Rooms'}:</p>
                                 <p id="rooms-list">${roomsList.length ? roomsList : 'No Rooms Booked'}</p>
                             </div>
                         </li>
@@ -185,7 +190,27 @@
         show();
 
         doneLoading();
+
+        if (!scrollToId) return;
         
+        const scrollToElem = document.getElementById(`event-${scrollToId}`);
+        const children = eventsListDOM.children;
+        let indexOfElem = 9999;
+        let scrollHeight = 0;
+        for (let i = 0; i < children.length; i ++) {
+            if (children[i].id == `event-${scrollToId}`) indexOfElem = i;
+
+            if (i < indexOfElem) scrollHeight += children[i].offsetHeight + 2
+        }
+
+        if (eventsList[0].Event_ID != scrollToId) eventsListDOM.scrollTo({
+            top: scrollHeight,
+            behavior: 'smooth'
+        })
+        // scrollToElem.style.borderColor = '2px solid transparent'
+        scrollToElem.classList.add('hightlight')
+        // scrollToElem.style.borderColor = 'lime'
+        // scrollToElem.style.transition = 'border-color 1s linear 1s'
     }
 
     const toTimeFormat = (hours, minutes) => {

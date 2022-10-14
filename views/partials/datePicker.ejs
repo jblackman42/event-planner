@@ -25,8 +25,6 @@
     document.addEventListener('keydown', (e) => {
         if (e.key == "Escape") {
             hideDatePicker();
-        } else if (e.key == "Enter") {
-            handleSubmit();
         }
     })
 
@@ -83,13 +81,13 @@
 
         for (let month of monthRadios) {
             if (month.checked) {
-                console.log(month.value)
+                // console.log(month.value)
                 currentMonth = parseInt(month.value);
             }
         }
         for (let year of yearRadios) {
             if (year.checked) {
-                console.log(year.value)
+                // console.log(year.value)
                 currentYear = parseInt(year.value);
             }
         }

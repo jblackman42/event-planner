@@ -10,9 +10,13 @@ require('dotenv').config();
 app.use(express.json({ limit: '16MB' }));
 app.use(express.urlencoded({ extended: true }));
 
+app.use(function(req, res, next) {
+    res.header("Access-Control-Allow-Origin", "*");
+    res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
+    next();
+});
 //other imported functions
 const connectDB = require('./db/connect.js');
-const populate = require('./populate')
 
 // set the view engine to ejs
 app.set('view engine', 'ejs');
@@ -27,7 +31,7 @@ const port = process.env.PORT || 3000;
 //navigation routing
 app.use('/', require('./routes/index'))
 app.use('/api/oauth', require('./routes/oauth.js'))
-// app.use('/api/widgets', require('./routes/widgets.js'))
+app.use('/api/widgets', require('./routes/widgets.js'))
 app.use('/api/main-service-attendance', require('./routes/MainServiceAttendanceRoutes.js'))
 
 const start = async () => {
