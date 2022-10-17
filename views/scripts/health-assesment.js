@@ -1,18 +1,22 @@
 const tableContainer = document.getElementById('table-container');
 
-const drawTable = async (year, campus) => {
+const drawTable = async (year, campus, congregation) => {
     const tableContainerElem = document.createElement('div');
     tableContainerElem.id = 'attendance-table'
 
     const attendanceData = await axios({
         method: 'get',
-        url: `http://localhost:3000/api/main-service-attendance`,
+        url: `http://localhost:3000/api/attendance`,
     })
         .then(response => response.data)
         
     // const years = [...new Set(attendanceData.map(attendance => attendance.Year))]
-    const currYearAttendance = campus 
+    const currYearAttendance = campus && congregation
+    ? attendanceData.filter(attendance => attendance.Year == year && attendance.Campus == campus && attendance.Congregation == congregation)
+    : campus
     ? attendanceData.filter(attendance => attendance.Year == year && attendance.Campus == campus)
+    : congregation
+    ? attendanceData.filter(attendance => attendance.Year == year && attendance.Congregation == congregation)
     : attendanceData.filter(attendance => attendance.Year == year);
 
     const sundays = [...new Set(currYearAttendance.map(attendance => `${attendance.Month + 1}/${attendance.Day}`))];
@@ -39,7 +43,7 @@ const drawTable = async (year, campus) => {
     
     const tableTitleElem = document.createElement('h1');
     tableTitleElem.id = 'table-title'
-    const tableTitle = document.createTextNode(`${year} ${campus ? campus : "Totals"}`);
+    const tableTitle = document.createTextNode(`${year} ${campus ? campus : "Totals"} ${congregation ? `: ${congregation}` : ''}`);
     tableTitleElem.appendChild(tableTitle)
 
     yearTableHeadElem.appendChild(yearTableRowElem)
@@ -74,6 +78,7 @@ const drawTable = async (year, campus) => {
         })
 
         const currWeekTotalElem = document.createElement('td'); //create table data elem
+        currWeekTotalElem.id = 'total'
         const total = currWeek.reduce((accum, value) => accum + value.Attendance, 0);
         prevTotal = total;
         const currWeekTotal = document.createTextNode(`${total}`); //create text that goes in table data elem
@@ -88,5 +93,6 @@ const drawTable = async (year, campus) => {
 
     tableContainer.appendChild(tableContainerElem)
 }
-drawTable(2022, "Glendale Campus")
-drawTable(2021, "Glendale Campus")
+// drawTable(2022, "", "JR High")
+drawTable(2022, "", "High School")
+// drawTable(2021)

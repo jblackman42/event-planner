@@ -2356,7 +2356,7 @@ input:checked + .slider:before {
 
 table {
   border-collapse: collapse;
-  margin: 0;
+  margin: 0 auto;
   font-size: 1em;
   font-family: sans-serif;
   min-width: 400px;
@@ -2378,6 +2378,9 @@ table th#positive, table td#positive {
 }
 table th#negative, table td#negative {
   background-color: var(--red-transparent-accent-color);
+}
+table th#total, table td#total {
+  font-weight: bold;
 }
 table tr {
   position: relative;

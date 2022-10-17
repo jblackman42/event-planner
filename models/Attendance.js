@@ -22,6 +22,10 @@ const AttendanceSchema = new mongoose.Schema({
         type: String,
         required: [true, "Must provide campus"]
     },
+    Congregation: {
+        type: String,
+        required: [true, "Must provide congregation"]
+    },
     Attendance: {
         type: Number,
         default: 0
@@ -29,4 +33,4 @@ const AttendanceSchema = new mongoose.Schema({
 });
 
 // This is basic validation not advanced
-module.exports = mongoose.model('MainAttendance', AttendanceSchema);
+module.exports = mongoose.model('Attendance', AttendanceSchema);

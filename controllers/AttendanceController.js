@@ -1,4 +1,4 @@
-const AttendanceSchema = require('../models/MainServiceAttendance');
+const AttendanceSchema = require('../models/Attendance');
 
 const getAllAttendance = async (req, res) => {
     try {

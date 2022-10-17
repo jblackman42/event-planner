@@ -1,166 +1,489 @@
 [
     {
-        "date": "1/2",
-        "attendance": [227,318,372,157,95,174,0]
+        "congregation": "Adult Ministry",
+        "columns": ["8:30", "10:00", "11:30", "5:30", "9:00", "11:00", "O/C"],
+        "campusRule": ["Glendale Campus", "Glendale Campus", "Glendale Campus", "Glendale Campus", "Peoria Campus", "Peoria Campus", "Off Campus"],
+        "attendance": [
+            {"day": "1/2", "headcounts":[227,318,372,157,95,174,0]},
+            {"day": "1/9", "headcounts":[249,377,385,224,120,149,0]},
+            {"day": "1/16", "headcounts":[259,315,308,219,87,131,0]},
+            {"day": "1/23", "headcounts":[265,394,319,218,112,145,0]},
+            {"day": "1/30", "headcounts":[252,415,371,233,128,156,0]},
+            {"day": "2/6", "headcounts":[251,455,440,254,126,152,0]},
+            {"day": "2/13", "headcounts":[242,411,385,241,119,166,0]},
+            {"day": "2/20", "headcounts":[264,439,378,235,118,145,0]},
+            {"day": "2/27", "headcounts":[280,434,328,271,132,148,0]},
+            {"day": "3/6", "headcounts":[312,496,411,223,126,173,0]},
+            {"day": "3/13", "headcounts":[316,469,397,251,136,177,0]},
+            {"day": "3/20", "headcounts":[303,425,439,254,102,164,20]},
+            {"day": "3/27", "headcounts":[305,441,479,242,137,201,0]},
+            {"day": "4/3", "headcounts":[321,449,413,272,157,167,0]},
+            {"day": "4/10", "headcounts":[320,515,453,269,127,220,0]},
+            {"day": "4/17", "headcounts":[607,912,714,632,175,246,780]},
+            {"day": "4/24", "headcounts":[296,518,502,269,152,168,80]},
+            {"day": "5/1", "headcounts":[267,532,424,273,150,157,0]},
+            {"day": "5/8", "headcounts":[368,589,431,247,150,168,0]},
+            {"day": "5/15", "headcounts":[324,481,374,245,148,160,0]},
+            {"day": "5/22", "headcounts":[289,472,411,249,130,159,0]},
+            {"day": "5/29", "headcounts":[295,410,355,211,142,163,32]},
+            {"day": "6/5", "headcounts":[271,512,448,245,128,175,0]},
+            {"day": "6/12", "headcounts":[317,463,388,250,156,148,0]},
+            {"day": "6/19", "headcounts":[331,467,351,255,136,212,0]},
+            {"day": "6/26", "headcounts":[269,464,369,210,130,185,22]},
+            {"day": "7/3", "headcounts":[268,373,332,225,128,139,0]},
+            {"day": "7/10", "headcounts":[239,443,421,259,107,178,14]},
+            {"day": "7/17", "headcounts":[252,409,382,207,128,176,0]},
+            {"day": "7/24", "headcounts":[252,414,343,215,137,160,0]},
+            {"day": "7/31", "headcounts":[312,469,447,234,127,173,0]},
+            {"day": "8/7", "headcounts":[309,538,383,322,143,195,0]},
+            {"day": "8/14", "headcounts":[315,502,425,282,131,170,57]},
+            {"day": "8/21", "headcounts":[331,590,439,274,128,206,12]},
+            {"day": "8/28", "headcounts":[301,536,414,261,127,176,250]},
+            {"day": "9/4", "headcounts":[292,493,404,205,138,173,0]},
+            {"day": "9/11", "headcounts":[349,539,432,275,129,188,0]},
+            {"day": "9/18", "headcounts":[328,464,413,250,127,175,0]},
+            {"day": "9/25", "headcounts":[340,514,375,244,142,172,0]},
+            {"day": "10/2", "headcounts":[326,544,401,256,126,170,0]},
+            {"day": "10/9", "headcounts": [312,477,407,248,123,240,0]}
+        ]
     },
+
     {
-        "date": "1/9",
-        "attendance": [249,377,385,224,120,149,0]
+        "congregation": "Nursery",
+        "columns": ["8:30", "10:00", "11:30", "5:30", "9:00", "11:00"],
+        "campusRule": ["Glendale Campus", "Glendale Campus", "Glendale Campus", "Glendale Campus", "Peoria Campus", "Peoria Campus"],
+        "attendance": [
+            {"day": "1/2", "headcounts": [2,9,15,3,1,1]},
+            {"day": "1/9", "headcounts": [2,10,10,5,1,0]},
+            {"day": "1/16", "headcounts": [6,7,15,3,4,2]},
+            {"day": "1/23", "headcounts": [3,12,10,3,1,2]},
+            {"day": "1/30", "headcounts": [4,16,14,7,2,1]},
+            {"day": "2/6", "headcounts": [5,14,19,7,4,6]},
+            {"day": "2/13", "headcounts": [6,12,20,5,5,3]},
+            {"day": "2/20", "headcounts": [3,15,17,9,3,3]},
+            {"day": "2/27", "headcounts": [7,21,17,7,3,4]},
+            {"day": "3/6", "headcounts": [10,26,16,9,0,4]},
+            {"day": "3/13", "headcounts": [11,24,13,6,4,7]},
+            {"day": "3/20", "headcounts": [14,18,18,14,2,3]},
+            {"day": "3/27", "headcounts": [7,13,10,10,4,5]},
+            {"day": "4/3", "headcounts": [8,16,17,4,0,4]},
+            {"day": "4/10", "headcounts": [8,18,9,8,1,6]},
+            {"day": "4/17", "headcounts": [22,36,16,33,5,10]},
+            {"day": "4/24", "headcounts": [10,18,20,7,1,3]},
+            {"day": "5/1", "headcounts": [8,25,17,5,0,3]},
+            {"day": "5/8", "headcounts": [9,24,16,9,2,5]},
+            {"day": "5/15", "headcounts": [7,18,10,7,2,4]},
+            {"day": "5/22", "headcounts": [3,22,16,10,3,3]},
+            {"day": "5/29", "headcounts": [7,16,20,5,3,3]},
+            {"day": "6/5", "headcounts": [6,24,16,8,2,2]},
+            {"day": "6/12", "headcounts": [9,21,22,6,6,6]},
+            {"day": "6/19", "headcounts": [4,21,13,7,5,4]},
+            {"day": "6/26", "headcounts": [11,22,13,8,0,5]},
+            {"day": "7/3", "headcounts": [4,10,10,6,4,7]},
+            {"day": "7/10", "headcounts": [3,11,10,5,1,4]},
+            {"day": "7/17", "headcounts": [6,8,8,6,1,3]},
+            {"day": "7/24", "headcounts": [5,11,14,11,3,3]},
+            {"day": "7/31", "headcounts": [10,13,14,7,0,6]},
+            {"day": "8/7", "headcounts": [9,22,18,11,2,5]},
+            {"day": "8/14", "headcounts": [8,12,14,7,1,5]},
+            {"day": "8/21", "headcounts": [12,15,10,8,0,4]},
+            {"day": "8/28", "headcounts": [7,24,9,9,1,4]},
+            {"day": "9/4", "headcounts": [3,9,9,8,2,7]},
+            {"day": "9/11", "headcounts": [10,10,11,11,4,2]},
+            {"day": "9/18", "headcounts": [11,14,12,8,4,6]},
+            {"day": "9/25", "headcounts": [6,18,12,5,2,6]},
+            {"day": "10/2", "headcounts": [9,16,14,7,2,7]},
+            {"day": "10/9", "headcounts": [9,16,12,8,6,10]}
+        ]
     },
+
     {
-        "date": "1/16",
-        "attendance": [259,315,308,219,87,131,0]
+        "congregation": "2 Year Olds",
+        "columns": ["8:30", "10:00", "11:30", "5:30", "9:00", "11:00"],
+        "campusRule": ["Glendale Campus", "Glendale Campus", "Glendale Campus", "Glendale Campus", "Peoria Campus", "Peoria Campus"],
+        "attendance": [
+
+            {"day": "1/2", "headcounts": [1,6,7,1,0,2]},
+            {"day": "1/9", "headcounts": [3,6,13,4,1,4]},
+            {"day": "1/16", "headcounts": [2,7,8,2,2,3]},
+            {"day": "1/23", "headcounts": [3,6,4,4,2,1]},
+            {"day": "1/30", "headcounts": [1,6,5,6,3,1]},
+            {"day": "2/6", "headcounts": [1,7,9,5,0,2]},
+            {"day": "2/13", "headcounts": [3,7,5,3,0,3]},
+            {"day": "2/20", "headcounts": [2,12,6,2,0,1]},
+            {"day": "2/27", "headcounts": [4,10,8,2,0,2]},
+            {"day": "3/6", "headcounts": [3,11,11,2,1,3]},
+            {"day": "3/13", "headcounts": [3,9,8,4,2,2]},
+            {"day": "3/20", "headcounts": [5,8,9,2,1,3]},
+            {"day": "3/27", "headcounts": [7,10,9,6,1,3]},
+            {"day": "4/3", "headcounts": [3,9,7,5,1,2]},
+            {"day": "4/10", "headcounts": [8,9,6,4,0,2]},
+            {"day": "4/17", "headcounts": [10,16,12,27,2,4]},
+            {"day": "4/24", "headcounts": [7,9,7,6,1,4]},
+            {"day": "5/1", "headcounts": [4,7,6,4,2,4]},
+            {"day": "5/8", "headcounts": [7,11,7,4,2,3]},
+            {"day": "5/15", "headcounts": [5,8,6,6,3,5]},
+            {"day": "5/22", "headcounts": [5,9,6,4,1,1]},
+            {"day": "5/29", "headcounts": [6,10,8,4,3,4]},
+            {"day": "6/5", "headcounts": [4,6,7,7,4,3]},
+            {"day": "6/12", "headcounts": [8,14,6,3,0,0]},
+            {"day": "6/19", "headcounts": [4,9,9,5,2,2]},
+            {"day": "6/26", "headcounts": [4,7,8,8,2,2]},
+            {"day": "7/3", "headcounts": [3,3,4,5,2,2]},
+            {"day": "7/10", "headcounts": [7,8,8,2,2,3]},
+            {"day": "7/17", "headcounts": [6,11,9,3,1,1]},
+            {"day": "7/24", "headcounts": [5,8,12,4,1,3]},
+            {"day": "7/31", "headcounts": [5,7,10,5,1,0]},
+            {"day": "8/7", "headcounts": [6,7,8,9,0,2]},
+            {"day": "8/14", "headcounts": [7,9,10,5,2,1]},
+            {"day": "8/21", "headcounts": [8,6,15,4,0,0]},
+            {"day": "8/28", "headcounts": [6,9,9,5,3,0]},
+            {"day": "9/4", "headcounts": [5,7,9,1,0,1]},
+            {"day": "9/11", "headcounts": [7,10,10,5,1,2]},
+            {"day": "9/18", "headcounts": [8,8,9,5,0,2]},
+            {"day": "9/25", "headcounts": [7,6,7,4,2,1]},
+            {"day": "10/2", "headcounts": [8,12,10,2,0,3]},
+            {"day": "10/9", "headcounts": [7,6,9,4,1,2]}
+        ]
     },
+
     {
-        "date": "1/23",
-        "attendance": [265,394,319,218,112,145,0]
+        "congregation": "3 Year Olds",
+        "columns": ["8:30", "10:00", "11:30", "5:30", "9:00", "11:00"],
+        "campusRule": ["Glendale Campus", "Glendale Campus", "Glendale Campus", "Glendale Campus", "Peoria Campus", "Peoria Campus"],
+        "attendance": [
+            {"day": "1/2", "headcounts": [2,5,7,0,0,1]},
+            {"day": "1/9", "headcounts": [3,9,10,1,0,1]},
+            {"day": "1/16", "headcounts": [4,10,12,3,3,4]},
+            {"day": "1/23", "headcounts": [3,5,7,1,1,3]},
+            {"day": "1/30", "headcounts": [4,9,7,3,1,5]},
+            {"day": "2/6", "headcounts": [5,7,15,4,1,5]},
+            {"day": "2/13", "headcounts": [5,6,11,1,2,2]},
+            {"day": "2/20", "headcounts": [6,3,11,1,3,5]},
+            {"day": "2/27", "headcounts": [4,9,13,4,2,5]},
+            {"day": "3/6", "headcounts": [6,10,11,1,2,4]},
+            {"day": "3/13", "headcounts": [4,13,11,3,3,7]},
+            {"day": "3/20", "headcounts": [10,7,10,3,1,5]},
+            {"day": "3/27", "headcounts": [3,10,13,4,3,5]},
+            {"day": "4/3", "headcounts": [4,8,14,4,2,8]},
+            {"day": "4/10", "headcounts": [6,13,10,4,2,5]},
+            {"day": "4/17", "headcounts": [8,15,16,22,6,8]},
+            {"day": "4/24", "headcounts": [3,10,15,2,2,6]},
+            {"day": "5/1", "headcounts": [3,7,13,3,0,4]},
+            {"day": "5/8", "headcounts": [4,11,15,5,4,5]},
+            {"day": "5/15", "headcounts": [9,5,10,4,1,4]},
+            {"day": "5/22", "headcounts": [5,3,17,6,1,2]},
+            {"day": "5/29", "headcounts": [6,8,11,6,1,1]},
+            {"day": "6/5", "headcounts": [6,5,16,4,0,3]},
+            {"day": "6/12", "headcounts": [9,9,11,7,6,5]},
+            {"day": "6/19", "headcounts": [8,10,12,4,2,2]},
+            {"day": "6/26", "headcounts": [8,5,13,4,1,4]},
+            {"day": "7/3", "headcounts": [8,8,9,5,1,3]},
+            {"day": "7/10", "headcounts": [5,9,11,6,1,2]},
+            {"day": "7/17", "headcounts": [7,2,7,6,1,3]},
+            {"day": "7/24", "headcounts": [7,6,10,3,2,4]},
+            {"day": "7/31", "headcounts": [8,6,11,4,1,4]},
+            {"day": "8/7", "headcounts": [4,6,9,5,2,4]},
+            {"day": "8/14", "headcounts": [2,9,4,9,0,1]},
+            {"day": "8/21", "headcounts": [9,7,9,5,0,3]},
+            {"day": "8/28", "headcounts": [6,7,9,5,4,1]},
+            {"day": "9/4", "headcounts": [6,7,12,1,1,2]},
+            {"day": "9/11", "headcounts": [6,5,8,5,2,4]},
+            {"day": "9/18", "headcounts": [7,8,10,7,1,5]},
+            {"day": "9/25", "headcounts": [5,7,8,6,1,5]},
+            {"day": "10/2", "headcounts": [11,9,6,5,1,4]},
+            {"day": "10/9", "headcounts": [6,5,8,7,3,3]}
+        ]
     },
+
     {
-        "date": "1/30",
-        "attendance": [252,415,371,233,128,156,0]
+        "congregation": "4 Year Olds",
+        "columns": ["8:30", "10:00", "11:30", "5:30", "9:00", "11:00"],
+        "campusRule": ["Glendale Campus", "Glendale Campus", "Glendale Campus", "Glendale Campus", "Peoria Campus", "Peoria Campus"],
+        "attendance": [
+            {"day": "1/2", "headcounts": [5,6,22,7,0,7]},
+            {"day": "1/9", "headcounts": [10,9,21,9,2,7]},
+            {"day": "1/16", "headcounts": [5,8,12,5,4,9]},
+            {"day": "1/23", "headcounts": [7,10,12,7,1,4]},
+            {"day": "1/30", "headcounts": [5,10,27,8,2,9]},
+            {"day": "2/6", "headcounts": [7,17,19,10,0,9]},
+            {"day": "2/13", "headcounts": [11,15,18,7,1,9]},
+            {"day": "2/20", "headcounts": [8,19,19,9,1,8]},
+            {"day": "2/27", "headcounts": [9,17,18,5,3,8]},
+            {"day": "3/6", "headcounts": [15,20,20,8,2,6]},
+            {"day": "3/13", "headcounts": [7,19,27,4,4,15]},
+            {"day": "3/20", "headcounts": [17,20,14,8,1,10]},
+            {"day": "3/27", "headcounts": [10,21,17,8,2,11]},
+            {"day": "4/3", "headcounts": [7,16,23,8,2,11]},
+            {"day": "4/10", "headcounts": [12,21,11,6,2,11]},
+            {"day": "4/17", "headcounts": [10,21,9,14,2,4]},
+            {"day": "4/24", "headcounts": [10,15,18,10,2,13]},
+            {"day": "5/1", "headcounts": [11,26,17,8,1,10]},
+            {"day": "5/8", "headcounts": [11,31,15,8,7,11]},
+            {"day": "5/15", "headcounts": [9,18,17,6,1,16]},
+            {"day": "5/22", "headcounts": [10,16,17,8,5,18]},
+            {"day": "5/29", "headcounts": [3,15,12,2,4,6]},
+            {"day": "6/5", "headcounts": [2,7,10,7,2,8]},
+            {"day": "6/12", "headcounts": [4,16,11,3,1,4]},
+            {"day": "6/19", "headcounts": [6,6,11,6,2,5]},
+            {"day": "6/26", "headcounts": [4,12,14,8,2,6]},
+            {"day": "7/3", "headcounts": [6,6,7,4,1,5]},
+            {"day": "7/10", "headcounts": [4,11,7,5,6,2]},
+            {"day": "7/17", "headcounts": [4,7,10,5,4,7]},
+            {"day": "7/24", "headcounts": [3,9,11,4,3,7]},
+            {"day": "7/31", "headcounts": [2,8,12,5,3,9]},
+            {"day": "8/7", "headcounts": [5,9,10,8,4,11]},
+            {"day": "8/14", "headcounts": [4,9,12,2,1,4]},
+            {"day": "8/21", "headcounts": [3,8,17,9,0,5]},
+            {"day": "8/28", "headcounts": [9,6,11,6,2,2]},
+            {"day": "9/4", "headcounts": [8,9,13,5,2,6]},
+            {"day": "9/11", "headcounts": [6,6,11,4,2,7]},
+            {"day": "9/18", "headcounts": [10,6,13,6,4,9]},
+            {"day": "9/25", "headcounts": [5,14,12,6,2,7]},
+            {"day": "10/2", "headcounts": [13,10,13,5,2,6]},
+            {"day": "10/9", "headcounts": [5,17,15,4,3,5]}
+        ]
     },
+
     {
-        "date": "2/6",
-        "attendance": [251,455,440,254,126,152,0]
+        "congregation": "Kindergarten",
+        "columns": ["8:30", "10:00", "11:30", "5:30", "9:00", "11:00"],
+        "campusRule": ["Glendale Campus", "Glendale Campus", "Glendale Campus", "Glendale Campus", "Peoria Campus", "Peoria Campus"],
+        "attendance": [
+            {"day": "1/2", "headcounts": [0,5,12,2,0,1]},
+            {"day": "1/9", "headcounts": [6,8,8,5,2,4]},
+            {"day": "1/16", "headcounts": [2,7,6,3,0,1]},
+            {"day": "1/23", "headcounts": [0,11,10,4,0,1]},
+            {"day": "1/30", "headcounts": [4,11,14,4,4,2]},
+            {"day": "2/6", "headcounts": [1,11,12,4,1,1]},
+            {"day": "2/13", "headcounts": [4,6,12,7,1,4]},
+            {"day": "2/20", "headcounts": [3,5,17,4,2,3]},
+            {"day": "2/27", "headcounts": [6,9,13,1,0,2]},
+            {"day": "3/6", "headcounts": [6,6,15,3,1,4]},
+            {"day": "3/13", "headcounts": [2,6,13,4,1,4]},
+            {"day": "3/20", "headcounts": [6,6,14,6,1,2]},
+            {"day": "3/27", "headcounts": [2,10,10,3,2,1]},
+            {"day": "4/3", "headcounts": [1,13,14,2,2,3]},
+            {"day": "4/10", "headcounts": [3,10,15,5,2,5]},
+            {"day": "4/17", "headcounts": [19,24,18,33,6,10]},
+            {"day": "4/24", "headcounts": [3,11,13,1,1,6]},
+            {"day": "5/1", "headcounts": [0,19,8,6,2,5]},
+            {"day": "5/8", "headcounts": [2,16,18,4,2,2]},
+            {"day": "5/15", "headcounts": [1,10,12,4,2,2]},
+            {"day": "5/22", "headcounts": [0,10,14,4,0,3]},
+            {"day": "5/29", "headcounts": [7,24,19,9,5,8]},
+            {"day": "6/5", "headcounts": [1,2,5,0,0,1]},
+            {"day": "6/12", "headcounts": [0,4,4,0,1,0]},
+            {"day": "6/19", "headcounts": [1,5,1,2,0,5]},
+            {"day": "6/26", "headcounts": [0,4,5,1,0,1]},
+            {"day": "7/3", "headcounts": [0,2,3,1,0,1]},
+            {"day": "7/10", "headcounts": [0,8,3,0,0,2]},
+            {"day": "7/17", "headcounts": [0,5,5,0,3,1]},
+            {"day": "7/24", "headcounts": [1,2,4,0,1,0]},
+            {"day": "7/31", "headcounts": [1,3,4,0,1,1]},
+            {"day": "8/7", "headcounts": [1,4,3,2,1,1]},
+            {"day": "8/14", "headcounts": [2,4,2,2,1,0]},
+            {"day": "8/21", "headcounts": [3,4,6,3,0,0]},
+            {"day": "8/28", "headcounts": [3,6,4,1,1,2]},
+            {"day": "9/4", "headcounts": [1,3,4,1,0,1]},
+            {"day": "9/11", "headcounts": [4,4,1,1,1,2]},
+            {"day": "9/18", "headcounts": [3,8,5,2,0,0]},
+            {"day": "9/25", "headcounts": [2,7,5,1,0,2]},
+            {"day": "10/2", "headcounts": [2,10,4,1,2,2]},
+            {"day": "10/9", "headcounts": [4,6,4,1,0,1]}
+        ]
     },
+
     {
-        "date": "2/13",
-        "attendance": [242,411,385,241,119,166,0]
+        "congregation": "Elementary",
+        "columns": ["8:30", "10:00", "11:30", "5:30", "9:00", "11:00"],
+        "campusRule": ["Glendale Campus", "Glendale Campus", "Glendale Campus", "Glendale Campus", "Peoria Campus", "Peoria Campus"],
+        "attendance": [
+            {"day": "1/2", "headcounts": [10,30,52,19,3,14]},
+            {"day": "1/9", "headcounts": [16,51,67,35,1,17]},
+            {"day": "1/16", "headcounts": [10,39,64,19,2,13]},
+            {"day": "1/23", "headcounts": [17,33,69,33,5,18]},
+            {"day": "1/30", "headcounts": [16,56,92,26,2,17]},
+            {"day": "2/6", "headcounts": [21,52,86,29,1,22]},
+            {"day": "2/13", "headcounts": [19,39,74,28,2,22]},
+            {"day": "2/20", "headcounts": [18,55,70,30,3,22]},
+            {"day": "2/27", "headcounts": [23,53,77,27,0,12]},
+            {"day": "3/6", "headcounts": [36,64,93,26,0,13]},
+            {"day": "3/13", "headcounts": [18,51,81,16,4,30]},
+            {"day": "3/20", "headcounts": [21,63,90,17,4,23]},
+            {"day": "3/27", "headcounts": [26,70,104,25,9,28]},
+            {"day": "4/3", "headcounts": [23,74,84,27,11,30]},
+            {"day": "4/10", "headcounts": [27,82,88,23,10,30]},
+            {"day": "4/17", "headcounts": [75,120,74,100,17,23]},
+            {"day": "4/24", "headcounts": [28,68,84,30,13,23]},
+            {"day": "5/1", "headcounts": [24,71,81,33,10,17]},
+            {"day": "5/8", "headcounts": [25,63,96,26,11,28]},
+            {"day": "5/15", "headcounts": [26,58,76,18,10,30]},
+            {"day": "5/22", "headcounts": [19,79,78,23,8,18]},
+            {"day": "5/29", "headcounts": [28,40,89,25,6,17]},
+            {"day": "6/5", "headcounts": [29,59,114,20,7,27]},
+            {"day": "6/12", "headcounts": [35,71,95,35,9,18]},
+            {"day": "6/19", "headcounts": [28,58,66,28,5,20]},
+            {"day": "6/26", "headcounts": [27,44,77,25,6,22]},
+            {"day": "7/3", "headcounts": [32,34,66,26,6,25]},
+            {"day": "7/10", "headcounts": [32,44,84,34,6,23]},
+            {"day": "7/17", "headcounts": [34,37,78,34,3,27]},
+            {"day": "7/24", "headcounts": [28,41,83,26,10,16]},
+            {"day": "7/31", "headcounts": [37,63,121,22,13,24]},
+            {"day": "8/7", "headcounts": [36,74,99,25,10,27]},
+            {"day": "8/14", "headcounts": [41,80,78,30,4,22]},
+            {"day": "8/21", "headcounts": [45,81,89,31,6,26]},
+            {"day": "8/28", "headcounts": [42,70,79,37,4,20]},
+            {"day": "9/4", "headcounts": [35,63,90,26,5,21]},
+            {"day": "9/11", "headcounts": [37,48,88,36,2,20]},
+            {"day": "9/18", "headcounts": [43,54,89,29,10,27]},
+            {"day": "9/25", "headcounts": [28,64,72,26,4,28]},
+            {"day": "10/2", "headcounts": [38,81,94,17,10,20]},
+            {"day": "10/9", "headcounts": [29,52,76,25,10,28]}
+        ]
     },
+
     {
-        "date": "2/20",
-        "attendance": [264,439,378,235,118,145,0]
+        "congregation": "JR High",
+        "columns": ["Sunday Night", "8:30", "10:00", "11:30", "5:30", "9:00", "11:00"],
+        "campusRule": ["Glendale Campus", "Glendale Campus", "Glendale Campus", "Glendale Campus", "Glendale Campus", "Peoria Campus", "Peoria Campus"],
+        "attendance": [
+            {"day": "1/2", "headcounts": [0,1,3,22,3,1,4]},
+            {"day": "1/9", "headcounts": [67,0,13,4,1,0,14]},
+            {"day": "1/16", "headcounts": [47,1,3,14,3,0,0]},
+            {"day": "1/23", "headcounts": [51,5,7,6,4,0,0]},
+            {"day": "1/30", "headcounts": [58,4,8,7,0,3,1]},
+            {"day": "2/6", "headcounts": [75,1,13,5,2,1,2]},
+            {"day": "2/13", "headcounts": [75,2,6,4,4,1,0]},
+            {"day": "2/20", "headcounts": [73,2,9,4,1,1,0]},
+            {"day": "2/27", "headcounts": [0,8,0,21,89,0,1]},
+            {"day": "3/6", "headcounts": [79,3,10,11,2,0,1]},
+            {"day": "3/13", "headcounts": [58,0,9,3,2,0,3]},
+            {"day": "3/20", "headcounts": [69,1,2,4,2,0,2]},
+            {"day": "3/27", "headcounts": [70,1,6,9,5,3,0]},
+            {"day": "4/3", "headcounts": [70,2,6,5,6,0,0]},
+            {"day": "4/10", "headcounts": [62,0,15,10,6,0,0]},
+            {"day": "4/17", "headcounts": [20,17,28,1,16,1,1]},
+            {"day": "4/24", "headcounts": [47,3,12,14,5,1,0]},
+            {"day": "5/1", "headcounts": [67,2,15,4,3,2,2]},
+            {"day": "5/8", "headcounts": [54,3,7,9,4,2,1]},
+            {"day": "5/15", "headcounts": [61,2,7,3,3,21,0]},
+            {"day": "5/22", "headcounts": [62,1,10,3,3,0,15]},
+            {"day": "5/29", "headcounts": [52,3,8,8,6,0,0]},
+            {"day": "6/5", "headcounts": [81,1,11,4,10,1,11]},
+            {"day": "6/12", "headcounts": [57,7,7,12,5,5,10]},
+            {"day": "6/19", "headcounts": [44,1,7,8,3,0,0]},
+            {"day": "6/26", "headcounts": [76,3,9,4,2,0,3]},
+            {"day": "7/3", "headcounts": [40,2,12,4,4,0,5]},
+            {"day": "7/10", "headcounts": [79,2,3,12,5,1,11]},
+            {"day": "7/17", "headcounts": [62,1,3,7,2,0,10]},
+            {"day": "7/24", "headcounts": [67,5,8,8,3,1,0]},
+            {"day": "7/31", "headcounts": [90,2,14,3,2,1,0]},
+            {"day": "8/7", "headcounts": [83,3,13,9,3,1,0]},
+            {"day": "8/14", "headcounts": [69,7,13,6,6,1,0]},
+            {"day": "8/21", "headcounts": [0,4,13,64,7,2,0]},
+            {"day": "8/28", "headcounts": [70,5,18,5,6,2,1]},
+            {"day": "9/4", "headcounts": [73,2,16,3,4,7,0]},
+            {"day": "9/11", "headcounts": [57,2,12,2,5,1,1]},
+            {"day": "9/18", "headcounts": [76,7,6,14,1,0,0]},
+            {"day": "9/25", "headcounts": [71,6,18,9,0,0,0]},
+            {"day": "10/2", "headcounts": [73,3,9,8,2,1,0]},
+            {"day": "10/9", "headcounts": [53,4,5,11,1,0,0]}
+        ]
     },
+
     {
-        "date": "2/27",
-        "attendance": [280,434,328,271,132,148,0]
-    },
-    {
-        "date": "3/6",
-        "attendance": [312,496,411,223,126,173,0]
-    },
-    {
-        "date": "3/13",
-        "attendance": [316,469,397,251,136,177,0]
-    },
-    {
-        "date": "3/20",
-        "attendance": [303,425,439,254,102,164,20]
-    },
-    {
-        "date": "3/27",
-        "attendance": [305,441,479,242,137,201,0]
-    },
-    {
-        "date": "4/3",
-        "attendance": [321,449,413,272,157,167,0]
-    },
-    {
-        "date": "4/10",
-        "attendance": [320,515,453,269,127,220,0]
-    },
-    {
-        "date": "4/17",
-        "attendance": [607,912,714,632,175,246,780]
-    },
-    {
-        "date": "4/24",
-        "attendance": [296,518,502,269,152,168,80]
-    },
-    {
-        "date": "5/1",
-        "attendance": [267,532,424,273,150,157,0]
-    },
-    {
-        "date": "5/8",
-        "attendance": [368,589,431,247,150,168,0]
-    },
-    {
-        "date": "5/15",
-        "attendance": [324,481,374,245,148,160,0]
-    },
-    {
-        "date": "5/22",
-        "attendance": [289,472,411,249,130,159,0]
-    },
-    {
-        "date": "5/29",
-        "attendance": [295,410,355,211,142,163,32]
-    },
-    {
-        "date": "6/5",
-        "attendance": [271,512,448,245,128,175,0]
-    },
-    {
-        "date": "6/12",
-        "attendance": [317,463,388,250,156,148,0]
-    },
-    {
-        "date": "6/19",
-        "attendance": [331,467,351,255,136,212,0]
-    },
-    {
-        "date": "6/26",
-        "attendance": [269,464,369,210,130,185,22]
-    },
-    {
-        "date": "7/3",
-        "attendance": [268,373,332,225,128,139,0]
-    },
-    {
-        "date": "7/10",
-        "attendance": [239,443,421,259,107,178,14]
-    },
-    {
-        "date": "7/17",
-        "attendance": [252,409,382,207,128,176,0]
-    },
-    {
-        "date": "7/24",
-        "attendance": [252,414,343,215,137,160,0]
-    },
-    {
-        "date": "7/31",
-        "attendance": [312,469,447,234,127,173,0]
-    },
-    {
-        "date": "8/7",
-        "attendance": [309,538,383,322,143,195,0]
-    },
-    {
-        "date": "8/14",
-        "attendance": [315,502,425,282,131,170,57]
-    },
-    {
-        "date": "8/21",
-        "attendance": [331,590,439,274,128,206,12]
-    },
-    {
-        "date": "8/28",
-        "attendance": [301,536,414,261,127,176,250]
-    },
-    {
-        "date": "9/4",
-        "attendance": [292,493,404,205,138,173,0]
-    },
-    {
-        "date": "9/11",
-        "attendance": [349,539,432,275,129,188,0]
-    },
-    {
-        "date": "9/18",
-        "attendance": [328,464,413,250,127,175,0]
-    },
-    {
-        "date": "9/25",
-        "attendance": [340,514,375,244,142,172,0]
-    },
-    {
-        "date": "10/2",
-        "attendance": [326,544,401,256,126,170,0]
-    },
-    {
-        "date": "10/9",
-        "attendance": [312,477,407,248,123,240,0]
+        "congregation": "High School",
+        "columns": ["Sunday Night", "8:30", "10:00", "11:30", "5:30", "9:00", "11:00"],
+        "campusRule": ["Glendale Campus", "Glendale Campus", "Glendale Campus", "Glendale Campus", "Glendale Campus", "Peoria Campus", "Peoria Campus"],
+        "attendance": [
+            {"day": "1/2", "headcounts": [0,2,6,9,1,0,3]},
+            {"day": "1/9", "headcounts": [380,3,12,8,6,1,4]},
+            {"day": "1/16", "headcounts": [222,5,10,15,3,0,1]},
+            {"day": "1/23", "headcounts": [177,6,7,14,2,0,3]},
+            {"day": "1/30", "headcounts": [198,3,11,19,0,0,2]},
+            {"day": "2/6", "headcounts": [123,5,18,6,4,0,0]},
+            {"day": "2/13", "headcounts": [40,3,9,12,4,0,4]},
+            {"day": "2/20", "headcounts": [164,2,12,5,3,1,1]},
+            {"day": "2/27", "headcounts": [419,3,10,8,74,0,2]},
+            {"day": "3/6", "headcounts": [172,5,6,16,2,0,0]},
+            {"day": "3/13", "headcounts": [203,5,14,9,3,0,2]},
+            {"day": "3/20", "headcounts": [226,5,6,8,5,0,2]},
+            {"day": "3/27", "headcounts": [118,5,11,18,1,1,2]},
+            {"day": "4/3", "headcounts": [57,5,12,7,2,1,0]},
+            {"day": "4/10", "headcounts": [122,5,7,21,5,0,0]},
+            {"day": "4/17", "headcounts": [18,23,35,10,24,0,0]},
+            {"day": "4/24", "headcounts": [130,2,13,22,3,0,1]},
+            {"day": "5/1", "headcounts": [154,6,17,9,4,2,0]},
+            {"day": "5/8", "headcounts": [154,6,10,14,15,3,1]},
+            {"day": "5/15", "headcounts": [182,5,9,6,1,16,1]},
+            {"day": "5/22", "headcounts": [129,5,18,10,1,0,7]},
+            {"day": "5/29", "headcounts": [142,5,3,12,9,1,1]},
+            {"day": "6/5", "headcounts": [157,5,12,13,16,1,0]},
+            {"day": "6/12", "headcounts": [192,9,11,19,11,2,3]},
+            {"day": "6/19", "headcounts": [135,6,18,14,5,1,0]},
+            {"day": "6/26", "headcounts": [69,6,15,12,1,0,3]},
+            {"day": "7/3", "headcounts": [0,3,11,12,2,0,0]},
+            {"day": "7/10", "headcounts": [84,3,5,8,3,2,0]},
+            {"day": "7/17", "headcounts": [79,3,12,15,8,1,6]},
+            {"day": "7/24", "headcounts": [182,4,13,20,2,0,1]},
+            {"day": "7/31", "headcounts": [185,4,17,12,6,0,2]},
+            {"day": "8/7", "headcounts": [174,3,17,18,4,1,1]},
+            {"day": "8/14", "headcounts": [170,4,18,14,2,2,0]},
+            {"day": "8/21", "headcounts": [1134,2,15,17,4,2,1]},
+            {"day": "8/28", "headcounts": [258,3,21,17,2,1,2]},
+            {"day": "9/4", "headcounts": [146,1,20,7,4,3,1]},
+            {"day": "9/11", "headcounts": [151,4,17,7,3,1,3]},
+            {"day": "9/18", "headcounts": [154,6,11,19,1,0,0]},
+            {"day": "9/25", "headcounts": [177,6,22,16,1,0,1]},
+            {"day": "10/2", "headcounts": [142,3,15,15,4,0,0]},
+            {"day": "10/9", "headcounts": [148,3,7,15,0,0,0]},
+            {"day": "10/16", "headcounts": [163,5,16,14,0,0,0]}
+        ]
     }
 ]
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

@@ -2,7 +2,6 @@ const express = require('express');
 const router = express.Router();
 const qs = require('qs')
 const axios = require('axios');
-const { response } = require('express');
 
 router.post('/login', async (req, res) => {
     const {username, password} = req.body;

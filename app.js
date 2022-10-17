@@ -1,6 +1,7 @@
 const express = require('express');
 const app = express();
 const cookieParser = require("cookie-parser");
+const prompt = require('prompt');
 
 //middleware
 app.use(express.json());
@@ -17,6 +18,16 @@ app.use(function(req, res, next) {
 });
 //other imported functions
 const connectDB = require('./db/connect.js');
+const populate = require('./populate')
+
+//prompt informatin
+const properties = [
+    {
+        name: 'populate'
+    }
+];
+  
+prompt.start();
 
 // set the view engine to ejs
 app.set('view engine', 'ejs');
@@ -32,13 +43,20 @@ const port = process.env.PORT || 3000;
 app.use('/', require('./routes/index'))
 app.use('/api/oauth', require('./routes/oauth.js'))
 app.use('/api/widgets', require('./routes/widgets.js'))
-app.use('/api/main-service-attendance', require('./routes/MainServiceAttendanceRoutes.js'))
+app.use('/api/attendance', require('./routes/AttendanceRoutes.js'))
 
 const start = async () => {
     try {
         await connectDB(process.env.MONGO_URI);
-        // await populate();
-        app.listen(port, console.log(`server is listening on port ${port}, http://localhost:3000`));
+        app.listen(port, console.log(`\n server is listening on port ${port}, http://localhost:${port}`));
+        
+        prompt.get(properties, function (err, result) {
+            if (err) {
+              return console.error(err);
+            }
+            if (result.populate == 'y') populate();
+        });
+
     } catch (error) { console.log(error) }
 }
 start();
