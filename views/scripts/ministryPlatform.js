@@ -395,7 +395,7 @@ const getVisibilityLevels = () => {
 const getEquipment = async () => {
     return axios({
         method: 'get',
-        url: 'https://my.pureheart.org/ministryplatformapi/tables/Equipment',
+        url: 'https://my.pureheart.org/ministryplatformapi/tables/Equipment?$filter=Bookable=1',
         headers: {
             'Accept': 'application/json',
             'Authorization': `Bearer ${access_token}`
