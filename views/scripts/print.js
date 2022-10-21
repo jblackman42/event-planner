@@ -60,7 +60,7 @@ const showEvent = async () => {
             <p class="label">Meeting Instructions:</p>
             <p class="value">${Meeting_Instructions}</p>
         </div>
-        <div class="field">
+        <div class="field" id="description">
             <p class="label">Description:</p>
             <p class="value">${Description}</p>
         </div>
@@ -107,7 +107,7 @@ const showEvent = async () => {
         `
     }).join('')
     
-    roomsSectionDOM ? roomsSectionDOM.innerHTML = `
+    roomsSectionHTML ? roomsSectionDOM.innerHTML = `
         <h1>Rooms:</h1>
         ${roomsSectionHTML}
     ` : ''

@@ -78,6 +78,9 @@
 @media screen and (min-width: 768px) {
     #general.print-section .field {
         width: 25%;
+        &#description {
+            width: 50%;
+        }
     }
 }
 
@@ -116,6 +119,9 @@
     }
     #general.print-section .field {
         width: 25%;
+        &#description {
+            width: 50%;
+        }
     }
     #equipment.print-section .field {
         width: 50%;

@@ -2547,6 +2547,9 @@ input:checked + .slider:before {
   #general.print-section .field {
     width: 25%;
   }
+  #general.print-section .field#description {
+    width: 50%;
+  }
 }
 @media print {
   .navBar {
@@ -2580,6 +2583,9 @@ input:checked + .slider:before {
   }
   #general.print-section .field {
     width: 25%;
+  }
+  #general.print-section .field#description {
+    width: 50%;
   }
   #equipment.print-section .field {
     width: 50%;

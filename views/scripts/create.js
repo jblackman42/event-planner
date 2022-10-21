@@ -373,7 +373,7 @@ const publishEvent = async (event) => {
             taskDOM: promotionDOM
         },
         {
-            taskType: "a/v",
+            taskType: "A/V",
             taskOwners: AVUserIds,
             taskDOM: AVDOM
         },
@@ -408,6 +408,11 @@ const publishEvent = async (event) => {
                 for (taskOwner of peoriaUserIds) {
                     if (task.taskDOM.value == 1) await sendTask(user.UserId, taskOwner, eventId, currDate, task.taskType)
                 }
+            }
+        }
+        if (eventLocationDOM.value == peoriaCampusID && AVDOM.value == 1) {
+            for (taskOwner of peoriaAVUserIds) {
+                await sendTask(user.UserId, taskOwner, eventId, currDate, 'Peoria A/V')
             }
         }
     }

@@ -3,7 +3,7 @@
 const user_id = getCookie('user_id');
 let user_token = getCookie('access_token')
 let access_token = getCookie('access_token');
-let registrationUserIds,promotionUserIds,AVUserIds,facilitiesUserIds,childcareUserIds,allTaskUserIds,peoriaUserIds;
+let registrationUserIds,promotionUserIds,AVUserIds,facilitiesUserIds,childcareUserIds,allTaskUserIds,peoriaUserIds,peoriaAVUserIds;
 const peoriaCampusID = 4;
 const MP_URL = 'https://my.pureheart.org/mp';
 const MP_Events_Table_ID = 308;
@@ -26,6 +26,7 @@ const getAllTaskUsers = async () => {
     childcareUserIds = await getUsersWithRole(2198);
     allTaskUserIds = await getUsersWithRole(2199);
     peoriaUserIds = await getUsersWithRole(2200);
+    peoriaAVUserIds = await getUsersWithRole(2204);
     // registrationUserIds = [15679];
     // promotionUserIds = [15679];
     // AVUserIds = [15679];
@@ -33,6 +34,7 @@ const getAllTaskUsers = async () => {
     // childcareUserIds = [15679];
     // allTaskUserIds = [15679];
     // peoriaUserIds = [15679];
+    // peoriaAVUserIds = [15679];
 }
 getAllTaskUsers();
 
