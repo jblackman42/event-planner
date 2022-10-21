@@ -102,7 +102,7 @@ const showEvent = async () => {
         return `
             <div class="field">
                 <p class="label">Building ${Building_Name}:</p>
-                <p class="value">${rooms.filter(room => room.Building_ID == Building_ID).map(room => room.Room_Name).join(', ')}</p>
+                <p class="value">${[... new Set(rooms.filter(room => room.Building_ID == Building_ID).map(room => room.Room_Name))].join(', ')}</p>
             </div>
         `
     }).join('')
@@ -143,5 +143,6 @@ const showEvent = async () => {
     ` : ''
 
     doneLoading();
+    print();
 }
 showEvent();
