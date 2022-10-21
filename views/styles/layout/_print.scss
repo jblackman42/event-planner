@@ -1,0 +1,123 @@
+.print-section-container {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 1rem;
+    margin: 4rem auto;
+    max-width: 85vw;
+    color: var(--primary-font-color);
+    #general {
+        grid-column: 1;
+        grid-row: 1;
+    }
+    #rooms {
+        grid-column: 1;
+        grid-row: 2;
+    }
+    #equipment {
+        grid-column: 1;
+        grid-row: 3;
+
+    }
+    #services {
+        grid-column: 1;
+        grid-row: 4;
+    }
+    @media screen and (min-width: 1024px) {
+        #general {
+            grid-column: 1 / span 3;
+            grid-row: 1 / span 2;
+        }
+        #rooms {
+            grid-column: 4;
+            grid-row: 1 / span 2;
+            max-width: 20vw;
+        }
+        #equipment {
+            grid-column: 1 / span 2;
+            grid-row: 3;
+    
+        }
+        #services {
+            grid-column: 3 / span 2;
+            grid-row: 3;
+        }
+    }
+}
+
+.print-section {
+    display: flex;
+    align-content: flex-start;
+    flex-wrap: wrap;
+    background-color: var(--primary-bg-color);
+    width: 100%;
+    border-radius: 5px;
+    h1 {
+        width: 100%;
+        margin: 1rem;
+        margin-bottom: 0;
+    }
+    .field {
+        width: 100%;
+        padding: 0 1rem;
+        box-sizing: border-box;
+        .label {
+            font-size: 1.15rem;
+            border-bottom: 2px solid var(--secondary-bg-color);
+            font-weight: bold;
+        }
+    }
+}
+@media screen and (min-width: 425px) {
+    #general.print-section .field {
+        width: 50%;
+    }
+    #equipment.print-section .field {
+        width: 50%;
+    }
+}
+@media screen and (min-width: 768px) {
+    #general.print-section .field {
+        width: 25%;
+    }
+}
+
+
+@media print {
+    .navBar {
+        display: none;
+        visibility: hidden;
+    }
+    .print-section-container {
+        width: 100vw;
+        // display: flex;
+        margin: auto;
+        color: black;
+        .print-section:has(.field) {
+            border: 1px solid black;
+        }
+        #general {
+            grid-column: 1 / span 3;
+            grid-row: 1 / span 2;
+        }
+        #rooms {
+            grid-column: 4;
+            grid-row: 1 / span 2;
+            max-width: 20vw;
+        }
+        #equipment {
+            grid-column: 1 / span 2;
+            grid-row: 3;
+    
+        }
+        #services {
+            grid-column: 3 / span 2;
+            grid-row: 3;
+        }
+    }
+    #general.print-section .field {
+        width: 25%;
+    }
+    #equipment.print-section .field {
+        width: 50%;
+    }
+}

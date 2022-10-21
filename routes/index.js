@@ -19,5 +19,8 @@ navigation.get('/login', (req, res) => {
 navigation.get('/create', ensureAdminAuthenticated, (req, res) => {
   res.render('pages/create')
 })
+navigation.get('/print', ensureAdminAuthenticated, (req, res) => {
+  res.render('pages/print')
+})
 
 module.exports = navigation;

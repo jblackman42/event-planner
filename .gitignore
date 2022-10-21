@@ -1,3 +1,6 @@
 /node_modules
 
 .env
+views/scripts/health-assesment.js
+attendance2021.json
+populate.js

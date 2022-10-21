@@ -43,6 +43,11 @@ $input-color: var(--primary-font-color);
             width: 600px;
             max-width: 85vw;
             flex-wrap: wrap;
+            
+            .facilities-input {
+                visibility: hidden;
+                display: none;
+            }
 
             &:first-of-type {
                 display: flex;
@@ -177,8 +182,7 @@ $input-color: var(--primary-font-color);
             textarea {
                 resize: none;
             }
-
-            #recurring-event-input {
+            #recurring-event-input, #facilities-equipment-input {
                 display: flex;
                 justify-content: space-between;
                 background-color: $input-background;

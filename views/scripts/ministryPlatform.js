@@ -9,7 +9,6 @@ const getEvents = (currentMonth, currentYear) => { //redirect is the url after t
     
     const response = axios({
         method: 'get',
-        // url: `https://my.pureheart.org/ministryplatformapi/tables/Events?%24filter=YEAR(Event_Start_Date)%3DYEAR(GETDATE())%2B${yearOffset}%20AND%20MONTH(Event_Start_Date)%3EMONTH(GETDATE())%2B${monthOffset-1}%20AND%20MONTH(Event_Start_Date)%3CMONTH(GETDATE())%2B${monthOffset+1}&%24orderby=Event_Start_Date`,
         url: `https://my.pureheart.org/ministryplatformapi/tables/Events?$filter=Event_Start_Date BETWEEN '${firstVisibleDate.toISOString()}' AND '${lastVisibleDate.toISOString()}'`,
         headers: {
             'Accept': 'application/json',
@@ -17,6 +16,41 @@ const getEvents = (currentMonth, currentYear) => { //redirect is the url after t
         }
     })
     .then(response => response.data)
+    .catch(err => {
+        console.error(err)
+    })
+    return response;
+}
+
+const getEvent = (Event_ID) => {
+    if (!Event_ID) return
+    const response = axios({
+        method: 'get',
+        url: `https://my.pureheart.org/ministryplatformapi/tables/Events/${Event_ID}`,
+        headers: {
+            'Accept': 'application/json',
+            'Authorization': `Bearer ${access_token}`
+        }
+    })
+    .then(response => response.data[0])
+    .catch(err => {
+        console.error(err)
+    })
+    return response;
+}
+
+const getContactFromID = async (Contact_ID) => {
+    //https://my.pureheart.org/ministryplatformapi/tables/Contacts
+    if (!Contact_ID) return
+    const response = axios({
+        method: 'get',
+        url: `https://my.pureheart.org/ministryplatformapi/tables/Contacts/${Contact_ID}`,
+        headers: {
+            'Accept': 'application/json',
+            'Authorization': `Bearer ${access_token}`
+        }
+    })
+    .then(response => response.data[0])
     .catch(err => {
         console.error(err)
     })
@@ -33,6 +67,20 @@ const getDaysEventsBetweenTimes = (startTime, endTime) => {
         }
     })
     .then(response => response.data.filter(event => !event.Cancelled))
+    .catch(err => {console.error(err)})
+    return response;
+}
+
+const getPrograms = async () => {
+    const response = axios({
+        method: 'get',
+        url: `https://my.pureheart.org/ministryplatformapi/tables/Programs`,
+        headers: {
+            'Accept': 'application/json',
+            'Authorization': `Bearer ${access_token}`
+        }
+    })
+    .then(response => response.data)
     .catch(err => {console.error(err)})
     return response;
 }
@@ -65,6 +113,23 @@ const getEventRoomsFromIDs = (Event_IDs, Room_ID) => {
         }
     })
     .then(response => response.data.map(event => event.Event_ID))
+    .catch(err => {
+        console.error(err)
+    })
+    return response;
+}
+
+const getBuilding = async (Building_ID) => {
+    if (!Building_ID) return
+    const response = axios({
+        method: 'get',
+        url: `https://my.pureheart.org/ministryplatformapi/tables/Buildings/${Building_ID}`,
+        headers: {
+            'Accept': 'application/json',
+            'Authorization': `Bearer ${access_token}`
+        }
+    })
+    .then(response => response.data[0])
     .catch(err => {
         console.error(err)
     })
@@ -327,6 +392,21 @@ const getVisibilityLevels = () => {
     return response;
 }
 
+const getEquipment = async () => {
+    return axios({
+        method: 'get',
+        url: 'https://my.pureheart.org/ministryplatformapi/tables/Equipment',
+        headers: {
+            'Accept': 'application/json',
+            'Authorization': `Bearer ${access_token}`
+        }
+    })
+        .then(response => response.data)
+        .catch(err => {
+            console.error(err)
+        })
+}
+
 const createEvent = async (event) => {
     return fetch('https://my.pureheart.org/ministryplatformapi/tables/Events', {
         method: 'POST',
@@ -344,8 +424,8 @@ const createEvent = async (event) => {
 const sendTask = async (authorId, ownerId, eventId, startDate, taskType) => {
     const task = [{
         "Action": "Complete",
-        "TaskName": `Task ${taskType}`,
-        "Description": `The attatched event has requested ${taskType}. Please contact the event creator or event's primary contact to set up ${taskType} for this event. Thank You!`,
+        "TaskName": `${taskType ? `Task ${taskType}` : 'Event Created'}`,
+        "Description": `${taskType ? `The attatched event has requested ${taskType}. Please contact the event creator or event's primary contact to set up ${taskType} for this event. Thank You!` : 'A new event has been created, Please contact the event creator or event\'s primary contact if necessary.'}`,
         "StartDate": startDate,
         "AuthorId": authorId,
         "OwnerID": ownerId,
@@ -361,8 +441,101 @@ const sendTask = async (authorId, ownerId, eventId, startDate, taskType) => {
         },
         body: JSON.stringify(task),
     })
-    .then(response => response.json())
+    .then(response => response.data)
     .catch(err => console.error(err))
+}
+
+const getEquipmentReservations = async (Event_ID) => {
+    if (!Event_ID) return;
+    return axios({
+        method: 'get',
+        url: `https://my.pureheart.org/ministryplatformapi/tables/Event_Equipment?$filter=Event_ID=${Event_ID}`,
+        headers: {
+            'Accept': 'application/json',
+            'Authorization': `Bearer ${access_token}`
+        }
+    })
+    .then(response => response.data)
+    .catch(err => console.error(err)) 
+}
+
+const getService = async (Service_ID) => {
+    if (!Service_ID) return;
+    return axios({
+        method: 'get',
+        url: `https://my.pureheart.org/ministryplatformapi/tables/Servicing/${Service_ID}`,
+        headers: {
+            'Accept': 'application/json',
+            'Authorization': `Bearer ${access_token}`
+        }
+    })
+    .then(response => response.data[0])
+    .catch(err => console.error(err)) 
+}
+
+const getServiceReservations = async (Event_ID) => {
+    if (!Event_ID) return;
+    return axios({
+        method: 'get',
+        url: `https://my.pureheart.org/ministryplatformapi/tables/Event_Services?$filter=Event_ID=${Event_ID}`,
+        headers: {
+            'Accept': 'application/json',
+            'Authorization': `Bearer ${access_token}`
+        }
+    })
+    .then(response => response.data)
+    .catch(err => console.error(err)) 
+}
+
+const createEquipmentReservation = async (Event_ID, Equipment_ID, Quantity) => {
+    const reservation = [{
+        "Event_ID": Event_ID,
+        "Equipment_ID": Equipment_ID,
+        "Room_ID": null,
+        "Quantity": Quantity,
+        "Desired_Placement_or_Location": null,
+        "_Approved": false,
+        "Cancelled": false,
+        "Notes": ""
+    }]
+
+    return axios({
+        method: 'post',
+        url: 'https://my.pureheart.org/ministryplatformapi/tables/Event_Equipment',
+        headers: {
+            'Content-Type': 'application/json',
+            'Accept': 'application/json',
+            'Authorization': `Bearer ${access_token}`
+        },
+        data: JSON.stringify(reservation)
+    })
+    .then(response => response.data)
+    .catch(err => console.error(err)) 
+}
+
+const createServiceReservation = async (Event_ID, Service_ID) => {
+    const reservation = [{
+        "Event_ID": Event_ID,
+        "Service_ID": Service_ID,
+        "Quantity": 1,
+        "Location_For_Service": null,
+        "Notes": null,
+        "Cancelled": false,
+        "_Approved": false
+    }]
+
+    return axios({
+        method: 'post',
+        url: 'https://my.pureheart.org/ministryplatformapi/tables/Event_Services',
+        headers: {
+            'Content-Type': 'application/json',
+            'Accept': 'application/json',
+            'Authorization': `Bearer ${access_token}`
+        },
+        data: JSON.stringify(reservation)
+    })
+    .then(response => response.data)
+    .catch(err => console.error(err)) 
 }
 
 const getPageID = (Table_Name) => {
@@ -380,4 +553,33 @@ const getPageID = (Table_Name) => {
     })
     .then(response => response.data[0][0])
     .catch(err => console.error(err))
+}
+
+const getMonthsDonations = async (year, month) => {
+    if (!year || !month) return;
+    const getDonations = async (skip) => {
+        return axios({
+            method: 'get',
+            url: `https://my.pureheart.org/ministryplatformapi/tables/Donations?$filter=MONTH(Donation_Date) = ${month} AND Year(Donation_Date) = ${year}${skip ? `&$skip=${skip}` : ''}`,
+            headers: {
+                'Accept': 'application/json',
+                'Authorization': `Bearer ${access_token}`
+            }
+        })
+        .then(response => response.data)
+        .catch(err => console.error(err))
+    }
+    let complete = false;
+    let donations = [];
+    let iterationCount = 0;
+    while (!complete) {
+        const currDonations = await getDonations(iterationCount * 1000)
+        // console.log(currDonations)
+        donations = donations.concat(currDonations)
+
+        if (currDonations.length < 1000) complete = true;
+
+        iterationCount ++;
+    }
+    return donations
 }

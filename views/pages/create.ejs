@@ -9,6 +9,7 @@
 
     <%- include('../partials/navbar'); %>
     <%- include('../partials/recurring-event-popup'); %>
+    <%- include('../partials/facilities-equipment-popup'); %>
     <%- include('../partials/review-days'); %>
 
     <div class="form-container">
@@ -56,14 +57,14 @@
                     <label for="cleanup">Cleanup Time: (minutes)</label>
                     <input type="number" name="cleanup" id="cleanup" value="0" onchange="resetRecurring()">
                 </div>
-                <div class="input">
+                <!-- <div class="input">
                     <label for="privacy">On Calendar:</label>
                     <select name="privacy" id="privacy">
                         <option value="1">True</option>
                         <option value="0">False</option>
                     </select>
-                    <!-- <input type="checkbox" name="privacy" id="privacy" checked> -->
-                </div>
+                    <input type="checkbox" name="privacy" id="privacy" checked>
+                </div> -->
                 <div class="input">
                     <label for="visibility">Visibility Level:</label>
                     <select name="visibility" id="visibility">
@@ -106,6 +107,20 @@
                         <option value="0">False</option>
                         <option value="1">True</option>
                     </select>
+                </div>
+                <div class="input facilities-input">
+                    <label for="facilities-person">Onsite Facilities Employee:</label>
+                    <select name="facilities-person" id="facilities-person">
+                        <option value="0">False</option>
+                        <option value="1">True</option>
+                    </select>
+                </div>
+                <div class="input facilities-input">
+                    <label for="facilities-equipment">Facilities Equipment:</label>
+                    <div id="facilities-equipment-input">
+                        <p id="equipment-label">Equipment</p>
+                        <button type="button" onclick="facilitiesPopupShow()"><i class='fas fa-ellipsis-h'></i></button>
+                    </div>
                 </div>
                 <div class="input">
                     <label for="childcare">Needs Childcare:</label>

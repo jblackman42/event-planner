@@ -24,8 +24,9 @@ $button-bg: var(--arrow-button-color);
 
     .calender-day {
         width: 13.5%;
-        // min-width: 125px;
-        aspect-ratio: 1 / 1;
+        height: 13.5vw;
+        max-width: 135px;
+        max-height: 135px;
         text-align: center;
         box-sizing: border-box;
         background-color: $calendar-day-bg;
