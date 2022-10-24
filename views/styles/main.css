@@ -1940,6 +1940,82 @@ input:checked + .slider:before {
   transform: translateX(-50%);
 }
 
+.graph-container {
+  width: 100vw;
+  display: flex;
+  justify-content: center;
+  margin: 4rem;
+}
+.graph-container .col {
+  display: flex;
+  flex-direction: column;
+  position: relative;
+}
+.graph-container .col #x-axis {
+  width: 100%;
+  margin-top: 0.5rem;
+  padding-bottom: 20px;
+}
+.graph-container .col #x-axis p {
+  display: flex;
+  justify-content: center;
+  position: relative;
+  width: 25px;
+  margin: 0;
+}
+.graph-container .col #x-axis p:before {
+  content: "";
+  position: absolute;
+  top: -75%;
+  left: 50%;
+  width: 1px;
+  height: 5px;
+  background-color: currentColor;
+}
+.graph-container .col #x-axis p:nth-child(even) {
+  transform: translateY(100%);
+}
+.graph-container .col #x-axis p:nth-child(even)::before {
+  top: -180%;
+}
+.graph-container .col #y-axis {
+  flex-direction: column-reverse;
+  text-align: right;
+  margin-right: 0.5rem;
+}
+.graph-container .col #y-axis p {
+  margin: 0;
+  position: relative;
+}
+.graph-container .col #y-axis p::before {
+  content: "";
+  position: absolute;
+  top: 50%;
+  right: -40%;
+  height: 1px;
+  width: 5px;
+  background-color: currentColor;
+}
+.graph-container .col #x-axis, .graph-container .col #y-axis {
+  display: flex;
+  gap: 0.5rem;
+}
+.graph-container .graph {
+  box-sizing: content-box;
+  border: 1px solid black;
+  order: -1;
+}
+.graph-container .graph canvas {
+  margin-bottom: 5px;
+  margin-left: 5px;
+  display: block;
+}
+.graph-container .spacer {
+  visibility: hidden;
+  margin-top: 0.5rem;
+  height: 45px;
+}
+
 #loginForm,
 #signUpForm {
   background-color: #181818;

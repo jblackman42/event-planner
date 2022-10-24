@@ -20,6 +20,7 @@ const drawTable = async (year, campus, congregation) => {
     : attendanceData.filter(attendance => attendance.Year == year);
 
     const sundays = [...new Set(currYearAttendance.map(attendance => `${attendance.Month + 1}/${attendance.Day}`))];
+    const totals = [];
 
     const yearTableElem = document.createElement('table');
     const yearTableHeadElem = document.createElement('thead');
@@ -80,7 +81,7 @@ const drawTable = async (year, campus, congregation) => {
         const currWeekTotalElem = document.createElement('td'); //create table data elem
         currWeekTotalElem.id = 'total'
         const total = currWeek.reduce((accum, value) => accum + value.Attendance, 0);
-        prevTotal = total;
+        totals.push(total)
         const currWeekTotal = document.createTextNode(`${total}`); //create text that goes in table data elem
         // const currWeekTotal = document.createTextNode(`${total} ${prevTotal ? prevTotal > total ? '-' : prevTotal < total ? '+' : '' : ''}`); //create text that goes in table data elem
         currWeekTotalElem.appendChild(currWeekTotal); //put text in table data elem
@@ -92,7 +93,20 @@ const drawTable = async (year, campus, congregation) => {
     }
 
     tableContainer.appendChild(tableContainerElem)
+
+    const filteredSundays1 = sundays.filter(month => month.split('/')[0] <= 6);
+    const filteredTotals1 = totals.filter((val, i) => i < filteredSundays1.length);
+
+    const filteredSundays2 = sundays.filter(month => month.split('/')[0] > 6);
+    const filteredTotals2 = totals.filter((val, i) => i >= filteredTotals1.length)
+
+    //****************************************************** */
+
+    drawGraph(filteredSundays1, filteredTotals1, 300);
+    drawGraph(filteredSundays2, filteredTotals2, 300);
+
+    //***************************************************** */
 }
 // drawTable(2022, "", "JR High")
-drawTable(2022, "", "High School")
+drawTable(2021, "Glendale Campus", "Adult Ministry")
 // drawTable(2021)

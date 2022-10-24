@@ -1,0 +1,75 @@
+.graph-container {
+    width: 100vw;
+    display: flex;
+    justify-content: center;
+    margin: 4rem;
+    .col {
+        display: flex;
+        flex-direction: column;
+        position: relative;
+        #x-axis {
+            width: 100%;
+            margin-top: .5rem;
+            padding-bottom: 20px;
+            p {
+                display: flex;
+                justify-content: center;
+                position: relative;
+                width: 25px;
+                margin: 0;
+                &:before {
+                    content: '';
+                    position: absolute;
+                    top: -75%;
+                    left: 50%;
+                    width: 1px;
+                    height: 5px;
+                    background-color: currentColor;
+                }
+                &:nth-child(even) {
+                    transform: translateY(100%);
+                    &::before {
+                        top: -180%;
+                    }
+                }
+            }
+        }
+        #y-axis {
+            flex-direction: column-reverse;
+            text-align: right;
+            margin-right: .5rem;
+            p {
+                margin: 0;
+                position: relative;
+                &::before {
+                    content: '';
+                    position: absolute;
+                    top: 50%;
+                    right: -40%;
+                    height: 1px;
+                    width: 5px;
+                    background-color: currentColor;
+                }
+            }
+        }
+        #x-axis, #y-axis {
+            display: flex;
+            gap: .5rem;
+        }
+    }
+    .graph {
+        box-sizing: content-box;
+        border: 1px solid black;
+        order: -1;
+        canvas {
+            margin-bottom: 5px;
+            margin-left: 5px;
+            display: block;
+        }
+    }
+    .spacer {
+        visibility: hidden;
+        margin-top: .5rem;
+        height: 45px;
+    }
+}
