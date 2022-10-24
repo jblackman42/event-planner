@@ -1250,7 +1250,7 @@ nav .openButton .icon {
   color: white;
   cursor: pointer;
   font-weight: bold;
-  text-shadow: 0 0 0.5rem rgb(79, 79, 79);
+  text-shadow: 0 0 0.75rem rgb(79, 79, 79);
 }
 nav .openButton input {
   position: absolute;
@@ -1881,6 +1881,14 @@ input:checked + .slider:before {
 }
 .recurring-event-container .recurring-event .input input[type=number]:disabled, .recurring-event-container .recurring-event .input input[type=date]:disabled {
   opacity: 0.5;
+}
+.recurring-event-container .recurring-event .input select {
+  padding: 0.25rem 0.5rem;
+  margin: 0.25rem;
+  border: 1px solid currentColor;
+  background-color: var(--primary-bg-color);
+  color: currentColor;
+  border-radius: 2.5px;
 }
 .recurring-event-container .recurring-event .input p {
   margin: 0.5rem 0;
