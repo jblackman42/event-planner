@@ -16,11 +16,16 @@ nav {
 		display: grid;
 		place-items: center;
 		position: fixed;
-
+		margin: 0;
+		padding: 0;
 		z-index: 2;
 
 		top: 1rem;
 		left: 1rem;
+		@media screen and (max-width: 512px) {
+			top: 0;
+			left: 0;
+		}
 		.icon {
 			margin-block: auto;
 			color: white;
