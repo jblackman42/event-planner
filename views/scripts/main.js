@@ -156,3 +156,11 @@ function getCookie(cname) {
     }
     return "";
 }
+
+function logout() {
+    //remove all cookies
+    document.cookie = "user_id= ; expires = Thu, 01 Jan 1970 00:00:00 GMT";
+    document.cookie = "access_token= ; expires = Thu, 01 Jan 1970 00:00:00 GMT";
+
+    window.location = '/'
+}

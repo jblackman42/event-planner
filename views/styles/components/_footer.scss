@@ -4,14 +4,47 @@ $footer-text: var(--primary-font-color);
 #footer {
     background-color: $footer-bg;
     margin-top: auto;
-    display: flex;
-    justify-content: center;
-    flex-wrap: wrap;
+    padding: 1rem 0;
 
-    p,
-    a {
-        margin: .5rem;
-        text-align: center;
-        color: $footer-text;
+    .col {
+        display: flex;
+        justify-content: center;
+        a, p {
+            text-align: left;
+            padding: 0 .5rem;
+            margin: .5rem 0;
+            color: $footer-text;
+            position: relative;
+            &::after {
+                content: '';
+                position: absolute;
+                top: 0;
+                right: 0;
+                height: 100%;
+                width: 1px;
+                background-color: currentColor;
+            }
+        }
+        a:last-of-type::after {
+            content: none;
+        }
+        img {
+            width: 250px;
+            max-width: 40vw;
+            margin: 0 auto;
+            display: block;
+        }
+        @media screen and (max-width: 512px) {
+            flex-direction: column;
+            p, a {
+                text-align: center;
+                &::after {
+                    content: none;
+                }
+            }
+            #copyright {
+                order: 999;
+            }
+        }
     }
 }

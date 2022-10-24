@@ -408,7 +408,6 @@ html {
   border-radius: 5px;
   -moz-appearance: button;
        appearance: button;
-  outline: none;
   -webkit-appearance: button;
   -webkit-border-radius: 2px;
   -webkit-box-shadow: 0px 1px 3px rgba(0, 0, 0, 0.1);
@@ -421,7 +420,6 @@ html {
 }
 .filter-box select option {
   border: none;
-  outline: none;
 }
 
 #calender-container {
@@ -431,7 +429,7 @@ html {
 }
 @media screen and (max-width: 768px) {
   #calender-container {
-    max-width: 98vw;
+    max-width: 95vw;
   }
 }
 
@@ -446,18 +444,22 @@ html {
 #calender .calender-day {
   width: 13.5%;
   height: 13.5vw;
+  aspect-ratio: 1/1;
   max-width: 135px;
   max-height: 135px;
   text-align: center;
   box-sizing: border-box;
   background-color: var(--primary-bg-color);
   color: var(--primary-font-color);
-  border-radius: 2.5px;
+  border-radius: 5px;
   overflow: hidden;
   font-size: clamp(0.5em, 2.5vw, 1.25rem);
   position: relative;
-  perspective: 1000px;
   transform-origin: bottom;
+  margin: 0;
+  padding: 0;
+  border: none;
+  display: grid;
 }
 @media screen and (min-width: 768px) {
   #calender .calender-day {
@@ -745,6 +747,7 @@ html {
   justify-content: center;
   gap: 2px;
   color: var(--primary-font-color);
+  margin-top: 1rem;
 }
 #calender-labels p {
   width: 13.5%;
@@ -784,7 +787,6 @@ html {
   padding: 0;
   background-color: var(--arrow-button-color);
   color: #fff;
-  outline: none;
   border: none;
   border-radius: 50%;
   display: grid;
@@ -809,7 +811,7 @@ html {
 }
 #calender-controls p {
   padding: 0 1rem;
-  min-width: 118px;
+  min-width: 170px;
   text-align: center;
   cursor: pointer;
 }
@@ -1221,6 +1223,10 @@ html {
 
 nav .icon {
   font-size: 2.75rem;
+}
+nav button {
+  border: none;
+  background-color: transparent;
 }
 nav .openButton {
   font-size: 300%;
@@ -1635,15 +1641,50 @@ nav .navContainer .footer ul li a {
 #footer {
   background-color: var(--primary-bg-color);
   margin-top: auto;
+  padding: 1rem 0;
+}
+#footer .col {
   display: flex;
   justify-content: center;
-  flex-wrap: wrap;
 }
-#footer p,
-#footer a {
-  margin: 0.5rem;
-  text-align: center;
+#footer .col a, #footer .col p {
+  text-align: left;
+  padding: 0 0.5rem;
+  margin: 0.5rem 0;
   color: var(--primary-font-color);
+  position: relative;
+}
+#footer .col a::after, #footer .col p::after {
+  content: "";
+  position: absolute;
+  top: 0;
+  right: 0;
+  height: 100%;
+  width: 1px;
+  background-color: currentColor;
+}
+#footer .col a:last-of-type::after {
+  content: none;
+}
+#footer .col img {
+  width: 250px;
+  max-width: 40vw;
+  margin: 0 auto;
+  display: block;
+}
+@media screen and (max-width: 512px) {
+  #footer .col {
+    flex-direction: column;
+  }
+  #footer .col p, #footer .col a {
+    text-align: center;
+  }
+  #footer .col p::after, #footer .col a::after {
+    content: none;
+  }
+  #footer .col #copyright {
+    order: 999;
+  }
 }
 
 .toggle-switch {

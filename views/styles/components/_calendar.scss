@@ -9,7 +9,7 @@ $button-bg: var(--arrow-button-color);
     width: 1000px;
     max-width: 90vw;
     @media screen and (max-width: 768px) {
-        max-width: 98vw;
+        max-width: 95vw;
     }
 }
 
@@ -25,19 +25,23 @@ $button-bg: var(--arrow-button-color);
     .calender-day {
         width: 13.5%;
         height: 13.5vw;
+        aspect-ratio: 1 / 1;
         max-width: 135px;
         max-height: 135px;
         text-align: center;
         box-sizing: border-box;
         background-color: $calendar-day-bg;
         color: $calendar-day-text;
-        border-radius: 2.5px;
+        border-radius: 5px;
         overflow: hidden;
         font-size: clamp(.5em, 2.5vw, 1.25rem);
         position: relative;
-        // margin: 1px;
-        perspective: 1000px;
         transform-origin: bottom;
+        margin: 0;
+        padding: 0;
+        border: none;
+
+        display: grid;
 
         
         @media screen and (min-width: 768px) {
@@ -120,6 +124,7 @@ $button-bg: var(--arrow-button-color);
     justify-content: center;
     gap: 2px;
     color: $calendar-day-text;
+    margin-top: 1rem;
 
     p {
         width: 13.5%;
@@ -161,7 +166,6 @@ $button-bg: var(--arrow-button-color);
         padding: 0;
         background-color: $button-bg;
         color: #fff;
-        outline: none;
         border: none;
         border-radius: 50%;
 
@@ -189,7 +193,7 @@ $button-bg: var(--arrow-button-color);
 
     p {
         padding: 0 1rem;
-        min-width: 118px;
+        min-width: 170px;
         text-align: center;
         cursor: pointer;
 
