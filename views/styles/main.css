@@ -1250,7 +1250,7 @@ nav .openButton .icon {
   color: white;
   cursor: pointer;
   font-weight: bold;
-  text-shadow: 0 0 0.5rem rgba(0, 0, 0, 0.7333333333);
+  text-shadow: 0 0 0.5rem rgba(0, 0, 0, 0.75);
 }
 nav .openButton input {
   position: absolute;
