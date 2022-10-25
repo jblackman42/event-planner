@@ -2,7 +2,7 @@
     width: 100vw;
     display: flex;
     justify-content: center;
-    margin: 4rem;
+    margin: 1rem auto;
     .col {
         display: flex;
         flex-direction: column;
@@ -20,7 +20,8 @@
                 &:before {
                     content: '';
                     position: absolute;
-                    top: -75%;
+                    z-index: 99;
+                    top: -13px;
                     left: 50%;
                     width: 1px;
                     height: 5px;
@@ -29,7 +30,7 @@
                 &:nth-child(even) {
                     transform: translateY(100%);
                     &::before {
-                        top: -180%;
+                        top: calc(-100% - 13px);
                     }
                 }
             }
@@ -44,8 +45,9 @@
                 &::before {
                     content: '';
                     position: absolute;
+                    z-index: 99;
                     top: 50%;
-                    right: -40%;
+                    right: -13px;
                     height: 1px;
                     width: 5px;
                     background-color: currentColor;
@@ -59,11 +61,13 @@
     }
     .graph {
         box-sizing: content-box;
-        border: 1px solid black;
+        border-radius: 5px;
+        overflow: hidden;
+        // border: 1px solid black;
         order: -1;
         canvas {
-            margin-bottom: 5px;
-            margin-left: 5px;
+            padding-bottom: 5px;
+            padding-left: 5px;
             display: block;
         }
     }

@@ -102,11 +102,13 @@ const drawTable = async (year, campus, congregation) => {
 
     //****************************************************** */
 
-    drawGraph(filteredSundays1, filteredTotals1, 300);
-    drawGraph(filteredSundays2, filteredTotals2, 300);
+    // drawGraph(filteredSundays1, filteredTotals1, 200);
+    // drawGraph(filteredSundays2, filteredTotals2, 200);
+
+    drawGraph(sundays, totals, 10);
 
     //***************************************************** */
 }
 // drawTable(2022, "", "JR High")
-drawTable(2021, "Glendale Campus", "Adult Ministry")
+drawTable(2021, "", "Kindergarten")
 // drawTable(2021)
