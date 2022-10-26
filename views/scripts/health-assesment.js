@@ -1,6 +1,6 @@
 const tableContainer = document.getElementById('table-container');
 
-const drawTable = async (year, campus, congregation) => {
+const drawTable = async (year, campus, congregation, graphScale) => {
     const tableContainerElem = document.createElement('div');
     tableContainerElem.id = 'attendance-table'
 
@@ -92,7 +92,7 @@ const drawTable = async (year, campus, congregation) => {
         prevWeek = currWeek;
     }
 
-    tableContainer.appendChild(tableContainerElem)
+    // tableContainer.appendChild(tableContainerElem)
 
     const filteredSundays1 = sundays.filter(month => month.split('/')[0] <= 6);
     const filteredTotals1 = totals.filter((val, i) => i < filteredSundays1.length);
@@ -102,13 +102,22 @@ const drawTable = async (year, campus, congregation) => {
 
     //****************************************************** */
 
-    // drawGraph(filteredSundays1, filteredTotals1, 200);
-    // drawGraph(filteredSundays2, filteredTotals2, 200);
+    // drawGraph(filteredSundays1, filteredTotals1, 50);
+    // drawGraph(filteredSundays2, filteredTotals2, 50);
 
-    drawGraph(sundays, totals, 10);
+    drawGraph(sundays, totals, graphScale);
 
     //***************************************************** */
 }
 // drawTable(2022, "", "JR High")
-drawTable(2021, "", "Kindergarten")
-// drawTable(2021)
+const year = 2021;
+const campus = "Peoria Campus";
+
+drawTable(year, campus, "2 Year Olds")
+drawTable(year, campus, "3 Year Olds")
+drawTable(year, campus, "4 Year Olds")
+drawTable(year, campus, "Kindergarten")
+drawTable(year, campus, "Elementary")
+drawTable(year, campus, "JR High")
+drawTable(year, campus, "High School")
+drawTable(year, campus, "Adult Ministry")

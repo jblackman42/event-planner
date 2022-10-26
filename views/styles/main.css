@@ -1940,49 +1940,60 @@ input:checked + .slider:before {
   transform: translateX(-50%);
 }
 
-.graph-container {
-  width: 100vw;
+#graph-list-container {
   display: flex;
   justify-content: center;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 1rem;
+}
+
+.graph-container {
+  width: -webkit-max-content;
+  width: -moz-max-content;
+  width: max-content;
+  display: flex;
   margin: 1rem auto;
+  padding: 0.5rem 1rem;
+  border-radius: 4px;
+  border: 2px solid rgba(0, 0, 0, 0.3333333333);
+  overflow: hidden;
 }
 .graph-container .col {
   display: flex;
   flex-direction: column;
   position: relative;
+  box-sizing: border-box;
 }
 .graph-container .col #x-axis {
-  width: 100%;
-  margin-top: 0.5rem;
-  padding-bottom: 20px;
+  margin-block: 0.25rem;
+  margin-inline: 1rem;
 }
 .graph-container .col #x-axis p {
   display: flex;
-  justify-content: center;
   position: relative;
-  width: 25px;
   margin: 0;
+  width: 100%;
+  height: 16px;
 }
 .graph-container .col #x-axis p:before {
   content: "";
   position: absolute;
   z-index: 99;
-  top: -13px;
+  bottom: calc(100% + 9px);
   left: 50%;
   width: 1px;
   height: 5px;
   background-color: currentColor;
 }
-.graph-container .col #x-axis p:nth-child(even) {
-  transform: translateY(100%);
-}
-.graph-container .col #x-axis p:nth-child(even)::before {
-  top: calc(-100% - 13px);
+.graph-container .col #x-axis p span {
+  position: absolute;
+  left: 50%;
 }
 .graph-container .col #y-axis {
   flex-direction: column-reverse;
   text-align: right;
-  margin-right: 0.5rem;
+  margin-bottom: auto;
 }
 .graph-container .col #y-axis p {
   margin: 0;
@@ -2004,7 +2015,6 @@ input:checked + .slider:before {
 }
 .graph-container .graph {
   box-sizing: content-box;
-  border-radius: 5px;
   overflow: hidden;
   order: -1;
 }
