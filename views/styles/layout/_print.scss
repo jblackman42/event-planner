@@ -87,15 +87,18 @@
 
 @media print {
     body {
-        width: 1280px;
-        height: 720px;
+        width: 1280px !important;
+        height: 720px !important;
+        // height: 2560px !important;
+        // height: 1440px !important;
     }
     .navBar {
         display: none;
         visibility: hidden;
     }
     .print-section-container {
-        width: 100%;
+        width: 1280px !important;
+        height: 720px !important;
         // display: flex;
         margin: auto;
         color: black;
