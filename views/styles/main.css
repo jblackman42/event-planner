@@ -1160,6 +1160,15 @@ html {
   left: 50%;
   transform: translateX(-50%);
 }
+@media screen and (max-width: 768px) {
+  #popup-container #popup #events-list .event .btn-container {
+    justify-content: space-between;
+  }
+  #popup-container #popup #events-list .event .btn-container #print {
+    display: none;
+    visibility: hidden;
+  }
+}
 #popup-container #popup #events-list .event .btn-container a:first-child {
   margin-left: 1.4rem;
 }

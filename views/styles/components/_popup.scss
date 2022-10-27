@@ -152,6 +152,15 @@ $arrow-button-bg: var(--arrow-button-color);
                             transform: translateX(-50%);
                         }
                     }
+
+                    @media screen and (max-width: 768px) {
+                        justify-content: space-between;
+                        #print {
+                            display: none;
+                            visibility: hidden;
+                        }
+                    }
+
                     a:first-child {
                         margin-left: 1.4rem;
                     }
