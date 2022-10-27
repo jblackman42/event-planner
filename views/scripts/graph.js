@@ -5,7 +5,7 @@ const graphBgColor = '#f1f2f6';
 const defaultPointSize = 6;
 const graphWidth = 450;
 const graphYGap = 8;
-const animationSpeed = 10;
+const animationSpeed = .1;
 
 class Graph {
     constructor (x, values, gap, congregation, year, campus, id) {

@@ -2010,6 +2010,7 @@ input:checked + .slider:before {
 .graph-container .col #y-axis p {
   margin: 0;
   width: 100%;
+  position: relative;
 }
 .graph-container .col #y-axis p span {
   text-align: right;
