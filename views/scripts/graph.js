@@ -100,7 +100,7 @@ class Graph {
         
         yAxisDOM.innerHTML = y.map(val => {
             return `
-                <p class="num-value">${val}</p>
+                <p class="num-value"><span>${val}<span></p>
             `
         }).join('')
         graphListContainerDOM.appendChild(graphContainerDOM)
