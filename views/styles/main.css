@@ -2609,12 +2609,16 @@ input:checked + .slider:before {
   }
 }
 @media print {
+  body {
+    width: 1280px;
+    height: 720px;
+  }
   .navBar {
     display: none;
     visibility: hidden;
   }
   .print-section-container {
-    width: 100vw;
+    width: 100%;
     margin: auto;
     color: black;
   }
