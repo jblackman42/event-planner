@@ -102,22 +102,23 @@ const drawTable = async (year, campus, congregation, graphScale) => {
 
     //****************************************************** */
 
-    // drawGraph(filteredSundays1, filteredTotals1, 50);
-    // drawGraph(filteredSundays2, filteredTotals2, 50);
+    // drawGraph(filteredSundays1, filteredTotals1, graphScale, congregation, year, campus);
+    // drawGraph(filteredSundays2, filteredTotals2, graphScale, congregation, year, campus);
 
-    drawGraph(sundays, totals, graphScale);
+    drawGraph(sundays, totals, graphScale, congregation, year, campus);
 
     //***************************************************** */
 }
 // drawTable(2022, "", "JR High")
 const year = 2021;
-const campus = "Peoria Campus";
+const campus = "Glendale Campus";
 
 drawTable(year, campus, "2 Year Olds")
 drawTable(year, campus, "3 Year Olds")
 drawTable(year, campus, "4 Year Olds")
 drawTable(year, campus, "Kindergarten")
-drawTable(year, campus, "Elementary")
-drawTable(year, campus, "JR High")
-drawTable(year, campus, "High School")
-drawTable(year, campus, "Adult Ministry")
+drawTable(year, campus, "Elementary", 50)
+drawTable(year, campus, "JR High", 20)
+drawTable(year, campus, "High School", 20)
+drawTable(year, campus, "Adult Ministry", 300)
+// drawTable(year + 1, campus, "Adult Ministry", 200)

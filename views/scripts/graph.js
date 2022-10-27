@@ -3,15 +3,18 @@ const graphPointColor = '#2980b9';
 const graphLineColor = '#3498db';
 const graphBgColor = '#f1f2f6';
 const defaultPointSize = 6;
-const graphWidth = 500;
+const graphWidth = 450;
 const graphYGap = 8;
 const animationSpeed = 10;
 
 class Graph {
-    constructor (x, values, gap, id) {
+    constructor (x, values, gap, congregation, year, campus, id) {
         this.x = x,
         this.values = values,
         this.gap = gap,
+        this.congregation = congregation,
+        this.year = year,
+        this.campus = campus,
         this.width = 0,
         this.height = 0,
         this.id = id
@@ -23,11 +26,23 @@ class Graph {
         graphContainerDOM.classList.add('graph-container')
         graphContainerDOM.id = `graph-container-${this.id}`;
         graphContainerDOM.style.backgroundColor = graphBgColor;
+        // graphContainerDOM.style.maxWidth = `${graphWidth}px`;
+
+        //create graph title
+        const titleDOM = document.createElement('h1');
+        const titleText = document.createTextNode(`${this.year} - ${this.congregation}${this.campus ? ` - ${this.campus}` : ''}`);
+        titleDOM.appendChild(titleText);
+        graphContainerDOM.appendChild(titleDOM);
+
+        //create graph row
+        const row1 = document.createElement('div');
+        row1.classList.add('row');
+        graphContainerDOM.appendChild(row1)
     
         //create column
         const col1 = document.createElement('div');
         col1.classList.add('col')
-        graphContainerDOM.appendChild(col1)
+        row1.appendChild(col1)
     
         //create y axis column
         const yAxisDOM = document.createElement('div');
@@ -39,7 +54,7 @@ class Graph {
         //create column
         const col2 = document.createElement('div');
         col2.classList.add('col')
-        graphContainerDOM.appendChild(col2)
+        row1.appendChild(col2)
     
         //create x axis column
         const xAxisDOM = document.createElement('div');
@@ -109,7 +124,6 @@ class Graph {
         var s1 = function(sketch) {
             const lines = [];
             const dots = [];
-            let animateLineHeight = 0;
             class Line {
                 constructor (x1, y1, x2, y2, color) {
                     this.x1 = x1,
@@ -184,8 +198,7 @@ class Graph {
                 return xOffset + ((availableWidth - xOffset) / (points.length - 1)) * x
             }
             const calcY = (y) => {
-                const elemHeight = Math.round(document.querySelector('.num-value').getBoundingClientRect().height)
-                // return sketch.height - (elemHeight / 2)
+                const elemHeight = document.querySelector('.num-value').getBoundingClientRect().height
                 return sketch.height - (elemHeight / 2) - (((y - min) / gap) * (elemHeight + graphYGap))
             }
 
@@ -263,8 +276,8 @@ class Graph {
 
 const graphsList = [];
 
-const drawGraph = (x, values, gap) => {
-    const graphObject = new Graph(x, values, gap, graphsList.length);
+const drawGraph = (x, values, gap, congregation, year, campus) => {
+    const graphObject = new Graph(x, values, gap, congregation, year, campus, graphsList.length);
     graphsList.push(graphObject)
 
     graphObject.draw();
