@@ -3,11 +3,12 @@ const graphPointColor = '#2980b9';
 const graphLineColor = '#3498db';
 const graphBgColor = '#f1f2f6';
 const defaultPointSize = 6;
-const graphWidth = 450;
+// const graphWidth = 450;
+const graphWidth = 1200;
 const graphYGap = 8;
-const animationSpeed = .1;
+const animationSpeed = 6;
 
-class Graph {
+class LineGraph {
     constructor (x, values, gap, congregation, year, campus, id) {
         this.x = x,
         this.values = values,
@@ -21,6 +22,7 @@ class Graph {
     }
 
     draw() {
+        if (!this.x || !this.values.length) return;
         //create graph container
         const graphContainerDOM = document.createElement('div')
         graphContainerDOM.classList.add('graph-container')
@@ -71,7 +73,8 @@ class Graph {
         col2.appendChild(graphDOM)
     
         if (!this.gap) this.gap = Math.pow(10, Math.max(...this.values).toString().length - 2);
-        if (this.gap < 10) this.gap = 10
+        while (Math.max(...this.values) / this.gap > 10) this.gap *= 2;
+        if (this.gap < 10) this.gap = 10;
         //DRAW LAYOUT OF GRAPH
         const maxValue = Math.ceil(Math.max(...this.values) / this.gap) * this.gap;
         const minValue = Math.floor(Math.min(...this.values) / this.gap) * this.gap;
@@ -81,15 +84,10 @@ class Graph {
             y.unshift(currVal)
             currVal -= this.gap;
         }
-
-
-        const months = [...new Set(this.x.map(date => {
-            const monthNum = parseInt(date.split('/')[0]) - 1
-            return ;
-        }))]
         
         let lastMonth;
         xAxisDOM.innerHTML = this.x.map(val => {
+            if (!val.toString().includes('/')) return `<p class="date-value-${this.id}"><span>${val}<span></p>`
             const currMonth = val.split('/')[0] - 1
             let label = currMonth == lastMonth ? '' : new Date(2022,currMonth,1).toLocaleString('default', { month: 'short' });
             lastMonth = currMonth;
@@ -125,20 +123,23 @@ class Graph {
             const lines = [];
             const dots = [];
             class Line {
-                constructor (x1, y1, x2, y2, color) {
+                constructor (x1, y1, x2, y2, color, id) {
                     this.x1 = x1,
                     this.y1 = y1,
                     this.x2 = x2,
                     this.y2 = y2,
                     this.color = color,
-                    this.animHeight = sketch.height
+                    this.id = id,
+                    this.animHeight1 = sketch.height,
+                    this.animHeight2 = sketch.height
                 }
 
                 draw() {
                     sketch.stroke(this.color);
                     sketch.strokeWeight(2)
-                    sketch.line(this.x1, this.y1 < this.animHeight ? this.animHeight : this.y1, this.x2, this.y2 < this.animHeight ? this.animHeight : this.y2);
-                    this.animHeight -= animationSpeed;
+                    sketch.line(this.x1, this.y1, this.x2, this.y2);
+                    // this.animHeight1 -= animationSpeed - (this.x1 / 200);
+                    // this.animHeight2 -= animationSpeed - (this.x2 / 200);
                 }
             }
             class Point {
@@ -157,25 +158,25 @@ class Graph {
                 draw() {
                     if (this.highlighted && this.value != null) {
                         this.radius = defaultPointSize + 4;
-                        sketch.noStroke()
-                        sketch.fill(0)
-                        sketch.text(this.value, sketch.mouseX, sketch.mouseY - 12);
-                        sketch.text(this.date, sketch.mouseX, sketch.mouseY);
-                        
                         sketch.stroke('#9f9696')
                         sketch.fill('#9f9696')
                         sketch.strokeWeight(1)
                         sketch.line(sketch.mouseX, sketch.mouseY + 2.5, this.x, this.y)
                         sketch.noStroke();
                         sketch.ellipse(sketch.mouseX, sketch.mouseY + 2.5, 5, 5)
+
+                        sketch.noStroke()
+                        sketch.fill(0)
+                        sketch.text(this.value, sketch.mouseX, sketch.mouseY - 12);
+                        sketch.text(this.date, sketch.mouseX, sketch.mouseY);
                     } else {
                         this.radius = defaultPointSize;
                     }
 
                     sketch.fill(this.color)
                     sketch.noStroke()
-                    sketch.ellipse(this.x, this.y < this.animHeight ? this.animHeight : this.y, this.radius)
-                    this.animHeight -= animationSpeed;
+                    sketch.ellipse(this.x, this.y, this.radius)
+                    // this.animHeight -= animationSpeed - (this.x / (points.length * 2));
                 }
             }
 
@@ -203,7 +204,7 @@ class Graph {
             }
 
             const drawLine = (x1, y1, x2, y2, color) => {
-                lines.push(new Line(calcX(x1), calcY(y1), calcX(x2), calcY(y2), color));
+                lines.push(new Line(calcX(x1), calcY(y1), calcX(x2), calcY(y2), color, dots.length));
                 // sketch.line(33 * x1 + 7, sketch.height - 9 - (26.4 * ((y1 - min) / gap)), 33 * x2 + 7, sketch.height - 9 - (26.4 * ((y2 - min) / gap)))
             }
             const plotPoint = (x, y, thickness, color, selectable) => {
@@ -218,18 +219,20 @@ class Graph {
                 
                 sketch.rectMode(sketch.CENTER);
 
+                
                 for (let i = 0; i < points.length; i ++) {
                     if (points[i + 1]) slopes.push(points[i + 1] - points[i])
                 }
+                if (!points.length || !slopes.length) return;
 
-                slopes.sort(function(a,b){return a - b});
-                slopes.splice(0, 2)
-                slopes.splice(slopes.length - 2, 2)
-                const averageSlopeHeight = (slopes.reduce((val, accum) => val + accum) / slopes.length) * points.length;
+                // slopes.sort(function(a,b){return a - b});
+                // slopes.splice(0, 1)
+                // slopes.splice(slopes.length - 1, 1)
+                const averageSlope = (slopes.reduce((val, accum) => val + accum) / slopes.length) * points.length;
                 const averagePointValue = points.reduce((val, accum) => val + accum) / points.length;
 
-                averageLine1 = sketch.createVector(0, averagePointValue - (averageSlopeHeight / 2));
-                averageLine2 = sketch.createVector(points.length - 1, averagePointValue - (averageSlopeHeight / 2) + averageSlopeHeight);
+                averageLine1 = sketch.createVector(0, averagePointValue - (averageSlope / 2));
+                averageLine2 = sketch.createVector(points.length - 1, averagePointValue + (averageSlope / 2));
 
                 // plot average growth line and points
                 plotPoint(averageLine1.x, averageLine1.y, defaultPointSize, averageLine2.y > averageLine1.y ? '#2ecc7199' : '#e74c3c99', false);
@@ -276,8 +279,8 @@ class Graph {
 
 const graphsList = [];
 
-const drawGraph = (x, values, gap, congregation, year, campus) => {
-    const graphObject = new Graph(x, values, gap, congregation, year, campus, graphsList.length);
+const drawLineGraph = (x, values, gap, congregation, year, campus) => {
+    const graphObject = new LineGraph(x, values, gap, congregation, year, campus, graphsList.length);
     graphsList.push(graphObject)
 
     graphObject.draw();

@@ -18,7 +18,7 @@ app.use(function(req, res, next) {
 });
 //other imported functions
 const connectDB = require('./db/connect.js');
-const populate = require('./populate')
+const {populate, fix} = require('./populate')
 
 //prompt informatin
 const properties = [

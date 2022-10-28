@@ -99,31 +99,60 @@ const drawTable = async (attendanceData, year, campus, congregation, graphScale)
     // drawGraph(filteredSundays1, filteredTotals1, graphScale, congregation, year, campus);
     // drawGraph(filteredSundays2, filteredTotals2, graphScale, congregation, year, campus);
 
-    drawGraph(sundays, totals, graphScale, congregation, year, campus);
+    drawLineGraph(sundays, totals, graphScale, congregation, year, campus);
 
     //***************************************************** */
 }
 
+const graphDonations = async () => {
+    console.log('this is a test')
+}
+
 const setup = async () => {
     loading();
+
+
+    const year = 2022;
+    const month = 2;
+    const campus = "";
+
     const attendanceData = await axios({
         method: 'get',
         url: `http://localhost:3000/api/attendance`,
     })
         .then(response => response.data)
 
-    const year = 2021;
-    const campus = "Glendale Campus";
+    const monthDays = [];
+    const currDate = new Date(2022, month - 1, 1)
+    const donationData = await getDonations(year, month);
     
+    while (currDate.getMonth() === month - 1) {
+        monthDays.push(currDate.getDate());
+        currDate.setDate(currDate.getDate() + 1);
+    }
+    
+    const donationDayTotals = [];
+    for (let i = 0; i < monthDays.length; i ++) {
+        const daysDonations = donationData.filter(donation => {
+            const {Donation_Date} = donation;
+            const date = new Date(Donation_Date);
+            return date.getDate() == monthDays[i];
+        })
+        donationDayTotals.push(daysDonations.length ? Math.round(daysDonations.map(donation => donation.Donation_Amount).reduce((prev, curr) => prev + curr) * 100) / 100 : 0)
+    }
+    
+    drawLineGraph(monthDays, donationDayTotals, 2000, "Tithes & Offerings", year, new Date(year,month - 1,1).toLocaleString('default', { month: 'long' }));
     drawTable(attendanceData, year, campus, "2 Year Olds")
     drawTable(attendanceData, year, campus, "3 Year Olds")
     drawTable(attendanceData, year, campus, "4 Year Olds")
-    drawTable(attendanceData, year, campus, "Kindergarten", 20)
-    drawTable(attendanceData, year, campus, "Elementary", 50)
-    drawTable(attendanceData, year, campus, "JR High", 20)
-    drawTable(attendanceData, year, campus, "High School", 20)
-    drawTable(attendanceData, year, campus, "Adult Ministry", 300)
-    // drawTable(year + 1, campus, "Adult Ministry", 200)
+    drawTable(attendanceData, year, campus, "Kindergarten")
+    drawTable(attendanceData, year, campus, "Elementary")
+    drawTable(attendanceData, year, campus, "JR High")
+    drawTable(attendanceData, year, campus, "High School")
+    drawTable(attendanceData, year, campus, "Adult Ministry")
+    drawTable(attendanceData, year, "", "Online")
+
+    // drawTable(attendanceData, year, campus, "Adult Ministry")
 
     doneLoading();
 }
