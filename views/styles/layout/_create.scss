@@ -176,7 +176,8 @@ $input-color: var(--primary-font-color);
 
             select {
                 box-sizing: content-box;
-                padding: 0.25rem 0;
+                // padding: 0.25rem 0;
+                -webkit-appearance: none;
             }
 
             textarea {

@@ -2394,7 +2394,7 @@ input:checked + .slider:before {
 }
 .form-container form .input select {
   box-sizing: content-box;
-  padding: 0.25rem 0;
+  -webkit-appearance: none;
 }
 .form-container form .input textarea {
   resize: none;
