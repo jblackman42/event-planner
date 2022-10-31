@@ -18,10 +18,19 @@
     flex-wrap: wrap;
     // margin: 1rem auto;
     // font-size: 40%;
-    padding: .5rem 1rem;
+    padding: 0 1rem;
     border-radius: 4px;
     border: 2px solid #00000055;
     overflow: hidden;
+
+    @media screen and (max-width: 768px) {
+        font-size: .8rem;
+        #x-axis p:empty {
+            display: none;
+        }
+    }
+
+    background-color: var(--primary-bg-color);
     h1 {
         text-align: center;
         margin-inline: auto;
@@ -30,6 +39,10 @@
     .row {
         display: flex;
         margin-top: auto;
+        &.info {
+            justify-content: space-around;
+            margin: 0;
+        }
     }
     .col {
         display: flex;
@@ -39,6 +52,7 @@
         #x-axis {
             margin-block: .25rem;
             margin-inline: 1rem;
+            padding-bottom: 12px;
             p {
                 display: flex;
                 position: relative;
@@ -48,16 +62,29 @@
                 &:before {
                     content: '';
                     position: absolute;
-                    z-index: 99;
+                    z-index: 1;
                     bottom: calc(100% + 9px);
                     left: 50%;
                     width: 1px;
                     height: 5px;
                     background-color: currentColor;
                 }
+                &.stack:nth-child(even) span {
+                    display: none;
+                }
                 span {
                     position: absolute;
                     left: 50%;
+                    &:after {
+                        content: '';
+                        position: absolute;
+                        bottom: calc(100% + 2px);
+                        left: 0;
+                        height: 12px;
+                        width: 1px;
+                        background-color: var(--primary-font-color);
+                    }
+                    // font-size: 70%;
                 }
             }
         }
@@ -76,7 +103,7 @@
                 &::before {
                     content: '';
                     position: absolute;
-                    z-index: 99;
+                    z-index: 1;
                     top: 50%;
                     right: -13px;
                     height: 1px;
@@ -98,6 +125,7 @@
             padding-bottom: 5px;
             padding-left: 5px;
             display: block;
+            cursor: none;
         }
     }
     .spacer {

@@ -113,7 +113,7 @@ const setup = async () => {
 
 
     const year = 2022;
-    const month = 2;
+    const month = 10;
     const campus = "";
 
     const attendanceData = await axios({

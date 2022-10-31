@@ -1,10 +1,10 @@
 const graphListContainerDOM = document.getElementById('graph-list-container')
 const graphPointColor = '#2980b9';
 const graphLineColor = '#3498db';
-const graphBgColor = '#f1f2f6';
+const graphBgColor = '--primary-bg-color';
 const defaultPointSize = 6;
-// const graphWidth = 450;
-const graphWidth = 1200;
+const graphWidth = 450;
+// const graphWidth = 1200;
 const graphYGap = 8;
 const animationSpeed = 6;
 
@@ -27,7 +27,6 @@ class LineGraph {
         const graphContainerDOM = document.createElement('div')
         graphContainerDOM.classList.add('graph-container')
         graphContainerDOM.id = `graph-container-${this.id}`;
-        graphContainerDOM.style.backgroundColor = graphBgColor;
         // graphContainerDOM.style.maxWidth = `${graphWidth}px`;
 
         //create graph title
@@ -63,17 +62,32 @@ class LineGraph {
         xAxisDOM.id = 'x-axis';
         //append y-axis to graph container
         col2.appendChild(xAxisDOM)
-    
+
+        //create row  2
+        const row2 = document.createElement('div');
+        row2.classList.add('row');
+        row2.classList.add('info');
+        graphContainerDOM.appendChild(row2);
+
+        //create average value text element
+        const avgValDOM = document.createElement('p');
+        avgValDOM.id = `avg-value-${this.id}`
+        row2.appendChild(avgValDOM);
+
+        //create aroc value text element
+        const avgChangeDOM = document.createElement('p');
+        avgChangeDOM.id = `avg-change-${this.id}`
+        row2.appendChild(avgChangeDOM);
+        
         //create canvas container
         const graphDOM = document.createElement('main');
         graphDOM.classList.add('graph')
-        graphDOM.style.backgroundColor = graphBgColor;
         graphDOM.id = `graph-${this.id}`;
         //append graph to column
         col2.appendChild(graphDOM)
     
         if (!this.gap) this.gap = Math.pow(10, Math.max(...this.values).toString().length - 2);
-        while (Math.max(...this.values) / this.gap > 10) this.gap *= 2;
+        while (Math.max(...this.values) / this.gap > 9) this.gap = Math.round(this.gap * 1.5);
         if (this.gap < 10) this.gap = 10;
         //DRAW LAYOUT OF GRAPH
         const maxValue = Math.ceil(Math.max(...this.values) / this.gap) * this.gap;
@@ -87,32 +101,36 @@ class LineGraph {
         
         let lastMonth;
         xAxisDOM.innerHTML = this.x.map(val => {
-            if (!val.toString().includes('/')) return `<p class="date-value-${this.id}"><span>${val}<span></p>`
+            if (!val.toString().includes('/')) return `<p class="date-value-${this.id} stack"><span>${val}</span></p>`
             const currMonth = val.split('/')[0] - 1
             let label = currMonth == lastMonth ? '' : new Date(2022,currMonth,1).toLocaleString('default', { month: 'short' });
             lastMonth = currMonth;
             return `
-                <p class="date-value-${this.id}"><span>${label}<span></p>
+                <p class="date-value-${this.id}">${label ? `<span>${label}</span>` : ''}</p>
             `
         }).join('')
         
         yAxisDOM.innerHTML = y.map(val => {
+
             return `
-                <p class="num-value"><span>${val}<span></p>
+                <p class="num-value"><span>${abbrNum(val, 0)}</span></p>
             `
         }).join('')
         graphListContainerDOM.appendChild(graphContainerDOM)
         
-        //set height for canvas
-        this.width = graphWidth;
+        const graphMaxWidth = .60;
+
+        if (graphWidth > window.innerWidth * graphMaxWidth) {
+            this.width = graphWidth * graphMaxWidth
+        } else {
+            this.width = graphWidth;
+        }
         this.height = yAxisDOM.offsetHeight;
-        this.update(this.width, this.height, this.values, this.x, minValue, this.gap, this.id);
+        this.populate(this.width, this.height, this.values, this.x, minValue, this.gap, this.id);
     }
 
-    update(width, height, points, dates, min, gap, id) {
+    populate(width, height, points, dates, min, gap, id) {
 
-        const parent = document.querySelector(`.graph`);
-        const { backgroundColor } = getComputedStyle(parent);
         const slopes = [];
         let averageLine1;
         let averageLine2
@@ -156,27 +174,10 @@ class LineGraph {
                 }
 
                 draw() {
-                    if (this.highlighted && this.value != null) {
-                        this.radius = defaultPointSize + 4;
-                        sketch.stroke('#9f9696')
-                        sketch.fill('#9f9696')
-                        sketch.strokeWeight(1)
-                        sketch.line(sketch.mouseX, sketch.mouseY + 2.5, this.x, this.y)
-                        sketch.noStroke();
-                        sketch.ellipse(sketch.mouseX, sketch.mouseY + 2.5, 5, 5)
-
-                        sketch.noStroke()
-                        sketch.fill(0)
-                        sketch.text(this.value, sketch.mouseX, sketch.mouseY - 12);
-                        sketch.text(this.date, sketch.mouseX, sketch.mouseY);
-                    } else {
-                        this.radius = defaultPointSize;
-                    }
 
                     sketch.fill(this.color)
                     sketch.noStroke()
                     sketch.ellipse(this.x, this.y, this.radius)
-                    // this.animHeight -= animationSpeed - (this.x / (points.length * 2));
                 }
             }
 
@@ -217,7 +218,7 @@ class LineGraph {
                 canvas.mouseMoved(handleMouseOver)
                 canvas.mouseOut(() => dots.forEach(dot => dot.highlighted = false))
                 
-                sketch.rectMode(sketch.CENTER);
+                // sketch.rectMode(sketch.CENTER);
 
                 
                 for (let i = 0; i < points.length; i ++) {
@@ -228,11 +229,19 @@ class LineGraph {
                 // slopes.sort(function(a,b){return a - b});
                 // slopes.splice(0, 1)
                 // slopes.splice(slopes.length - 1, 1)
-                const averageSlope = (slopes.reduce((val, accum) => val + accum) / slopes.length) * points.length;
+                const averageSlope = slopes.reduce((val, accum) => val + accum) / slopes.length;
                 const averagePointValue = points.reduce((val, accum) => val + accum) / points.length;
+                const averageChange = parseFloat(((averageSlope / averagePointValue) * points.length * 100).toFixed(2));
 
-                averageLine1 = sketch.createVector(0, averagePointValue - (averageSlope / 2));
-                averageLine2 = sketch.createVector(points.length - 1, averagePointValue + (averageSlope / 2));
+
+                console.log(`${id}: ${averageChange}`)
+                // console.log(`${id}: ${(slopes.reduce((val, accum) => val + accum) / slopes.length) / averagePointValue}`)
+
+                document.getElementById(`avg-value-${id}`).innerHTML = `Avg Value: <strong>${abbrNum(averagePointValue, 2)}</strong>`
+                document.getElementById(`avg-change-${id}`).innerHTML = `Avg Change: <strong>${averageChange}%</strong>`
+
+                averageLine1 = sketch.createVector(0, averagePointValue - (averagePointValue * (averageChange / 200)));
+                averageLine2 = sketch.createVector(points.length - 1, averagePointValue + (averagePointValue * (averageChange / 200)));
 
                 // plot average growth line and points
                 plotPoint(averageLine1.x, averageLine1.y, defaultPointSize, averageLine2.y > averageLine1.y ? '#2ecc7199' : '#e74c3c99', false);
@@ -262,7 +271,7 @@ class LineGraph {
             }
 
             sketch.draw = function() {
-                sketch.background(toHex(backgroundColor))
+                sketch.background(getComputedStyle(document.documentElement).getPropertyValue(graphBgColor))
 
                 for (let i = 0; i < lines.length; i ++) {
                     lines[i].draw();
@@ -270,6 +279,44 @@ class LineGraph {
                 for (let i = 0; i < dots.length; i ++) {
                     dots[i].draw();
                 };
+                dots.filter(dot => dot.highlighted).forEach(dot => {
+                    const {x, y, value, date} = dot
+                    const boxHeight = 28;
+                    const boxWidth = 48;
+                    let xOriginOffset = sketch.mouseX;
+                    let yOriginOffset = sketch.mouseY;
+
+                    if (sketch.mouseX > sketch.width / 2) xOriginOffset -= boxWidth;
+                    if (sketch.mouseY > sketch.height / 2) yOriginOffset -= boxHeight;
+
+                    //line from point to box
+                    sketch.stroke('#9f9696')
+                    sketch.strokeWeight(1)
+                    sketch.line(sketch.mouseX, sketch.mouseY, x, y)
+                    
+                    //point on line end
+                    sketch.noStroke();
+                    sketch.fill('#9f9696')
+                    sketch.ellipse(sketch.mouseX, sketch.mouseY, 5, 5)
+                    
+                    //larger point on graph
+                    sketch.stroke('#FFFFFF');
+                    sketch.strokeWeight(2)
+                    sketch.fill(graphPointColor);
+                    sketch.ellipse(x, y, 10)
+
+                    // 36 x 24 box
+                    sketch.strokeWeight(1)
+                    sketch.stroke('#565656');
+                    sketch.fill('#FFFFFF');
+                    sketch.rect(xOriginOffset, yOriginOffset, boxWidth, boxHeight)
+
+
+                    sketch.noStroke()
+                    sketch.fill(0)
+                    sketch.text(abbrNum(value, 2), xOriginOffset + 2, yOriginOffset + 12);
+                    sketch.text(date, xOriginOffset + 2, yOriginOffset + 25);
+                })
             }
         }
         new p5(s1)

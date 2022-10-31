@@ -1956,10 +1956,19 @@ input:checked + .slider:before {
   display: flex;
   flex-direction: column;
   flex-wrap: wrap;
-  padding: 0.5rem 1rem;
+  padding: 0 1rem;
   border-radius: 4px;
   border: 2px solid rgba(0, 0, 0, 0.3333333333);
   overflow: hidden;
+  background-color: var(--primary-bg-color);
+}
+@media screen and (max-width: 768px) {
+  .graph-container {
+    font-size: 0.8rem;
+  }
+  .graph-container #x-axis p:empty {
+    display: none;
+  }
 }
 .graph-container h1 {
   text-align: center;
@@ -1970,6 +1979,10 @@ input:checked + .slider:before {
   display: flex;
   margin-top: auto;
 }
+.graph-container .row.info {
+  justify-content: space-around;
+  margin: 0;
+}
 .graph-container .col {
   display: flex;
   flex-direction: column;
@@ -1979,6 +1992,7 @@ input:checked + .slider:before {
 .graph-container .col #x-axis {
   margin-block: 0.25rem;
   margin-inline: 1rem;
+  padding-bottom: 12px;
 }
 .graph-container .col #x-axis p {
   display: flex;
@@ -1990,16 +2004,28 @@ input:checked + .slider:before {
 .graph-container .col #x-axis p:before {
   content: "";
   position: absolute;
-  z-index: 99;
+  z-index: 1;
   bottom: calc(100% + 9px);
   left: 50%;
   width: 1px;
   height: 5px;
   background-color: currentColor;
 }
+.graph-container .col #x-axis p.stack:nth-child(even) span {
+  display: none;
+}
 .graph-container .col #x-axis p span {
   position: absolute;
   left: 50%;
+}
+.graph-container .col #x-axis p span:after {
+  content: "";
+  position: absolute;
+  bottom: calc(100% + 2px);
+  left: 0;
+  height: 12px;
+  width: 1px;
+  background-color: var(--primary-font-color);
 }
 .graph-container .col #y-axis {
   flex-direction: column-reverse;
@@ -2018,7 +2044,7 @@ input:checked + .slider:before {
 .graph-container .col #y-axis p::before {
   content: "";
   position: absolute;
-  z-index: 99;
+  z-index: 1;
   top: 50%;
   right: -13px;
   height: 1px;
@@ -2038,6 +2064,7 @@ input:checked + .slider:before {
   padding-bottom: 5px;
   padding-left: 5px;
   display: block;
+  cursor: none;
 }
 .graph-container .spacer {
   visibility: hidden;
