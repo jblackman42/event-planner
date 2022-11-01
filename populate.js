@@ -28,8 +28,8 @@ const fix = async () => {
 const populate = async () => {
     // await AttendanceSchema.deleteMany({})
     
-    const currYear = 2022;
-    const currAttendance = online2022;
+    const currYear = 2021;
+    const currAttendance = online2021;
 
 
     // const sundays = [];

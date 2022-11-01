@@ -112,7 +112,7 @@ const setup = async () => {
     loading();
 
 
-    const year = 2022;
+    const year = 2021;
     const month = 10;
     const campus = "";
 

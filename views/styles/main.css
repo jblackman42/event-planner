@@ -1965,9 +1965,18 @@ input:checked + .slider:before {
 @media screen and (max-width: 768px) {
   .graph-container {
     font-size: 0.8rem;
+    padding: 0;
+    width: 100%;
+    margin: 0 0.25rem;
+  }
+  .graph-container .row {
+    justify-content: center;
   }
   .graph-container #x-axis p:empty {
     display: none;
+  }
+  .graph-container .row .col #y-axis {
+    min-width: auto;
   }
 }
 .graph-container h1 {
@@ -2000,6 +2009,14 @@ input:checked + .slider:before {
   margin: 0;
   width: 100%;
   height: 16px;
+}
+@media screen and (max-width: 768px) {
+  .graph-container .col #x-axis p:empty {
+    display: none;
+  }
+  .graph-container .col #x-axis p:empty::before {
+    content: none;
+  }
 }
 .graph-container .col #x-axis p:before {
   content: "";

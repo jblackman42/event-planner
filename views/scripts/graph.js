@@ -3,8 +3,9 @@ const graphPointColor = '#2980b9';
 const graphLineColor = '#3498db';
 const graphBgColor = '--primary-bg-color';
 const defaultPointSize = 6;
-const graphWidth = 450;
-// const graphWidth = 1200;
+// const graphWidth = 450;
+const graphWidth = 1200;
+const graphMaxHeight = 12;
 const graphYGap = 8;
 const animationSpeed = 6;
 
@@ -87,7 +88,7 @@ class LineGraph {
         col2.appendChild(graphDOM)
     
         if (!this.gap) this.gap = Math.pow(10, Math.max(...this.values).toString().length - 2);
-        while (Math.max(...this.values) / this.gap > 9) this.gap = Math.round(this.gap * 1.5);
+        while (Math.max(...this.values) / this.gap > graphMaxHeight - 1) this.gap = Math.round(this.gap * 1.5);
         if (this.gap < 10) this.gap = 10;
         //DRAW LAYOUT OF GRAPH
         const maxValue = Math.ceil(Math.max(...this.values) / this.gap) * this.gap;
@@ -113,12 +114,12 @@ class LineGraph {
         yAxisDOM.innerHTML = y.map(val => {
 
             return `
-                <p class="num-value"><span>${abbrNum(val, 0)}</span></p>
+                <p class="num-value"><span>${abbrNum(val, 1)}</span></p>
             `
         }).join('')
         graphListContainerDOM.appendChild(graphContainerDOM)
         
-        const graphMaxWidth = .60;
+        const graphMaxWidth = .70;
 
         if (graphWidth > window.innerWidth * graphMaxWidth) {
             this.width = graphWidth * graphMaxWidth
