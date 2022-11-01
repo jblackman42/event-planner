@@ -235,7 +235,6 @@ class LineGraph {
                 const averageChange = parseFloat(((averageSlope / averagePointValue) * points.length * 100).toFixed(2));
 
 
-                console.log(`${id}: ${averageChange}`)
                 // console.log(`${id}: ${(slopes.reduce((val, accum) => val + accum) / slopes.length) / averagePointValue}`)
 
                 document.getElementById(`avg-value-${id}`).innerHTML = `Avg Value: <strong>${abbrNum(averagePointValue, 2)}</strong>`

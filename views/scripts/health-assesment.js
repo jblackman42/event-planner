@@ -126,22 +126,10 @@ const setup = async () => {
     const currDate = new Date(2022, month - 1, 1)
     const donationData = await getDonations(year, month);
     
-    while (currDate.getMonth() === month - 1) {
-        monthDays.push(currDate.getDate());
-        currDate.setDate(currDate.getDate() + 1);
-    }
+    const donationBatchTotal =  donationData.map(batch => batch.Batch_Total).reduce((accum, val) => accum + val)
+    console.log(donationBatchTotal)
     
-    const donationDayTotals = [];
-    for (let i = 0; i < monthDays.length; i ++) {
-        const daysDonations = donationData.filter(donation => {
-            const {Donation_Date} = donation;
-            const date = new Date(Donation_Date);
-            return date.getDate() == monthDays[i];
-        })
-        donationDayTotals.push(daysDonations.length ? Math.round(daysDonations.map(donation => donation.Donation_Amount).reduce((prev, curr) => prev + curr) * 100) / 100 : 0)
-    }
-    
-    drawLineGraph(monthDays, donationDayTotals, 2000, "Tithes & Offerings", year, new Date(year,month - 1,1).toLocaleString('default', { month: 'long' }));
+    // drawLineGraph(monthDays, donationDayTotals, 2000, "Tithes & Offerings", year, new Date(year,month - 1,1).toLocaleString('default', { month: 'long' }));
     drawTable(attendanceData, year, campus, "2 Year Olds")
     drawTable(attendanceData, year, campus, "3 Year Olds")
     drawTable(attendanceData, year, campus, "4 Year Olds")

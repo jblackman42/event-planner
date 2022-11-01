@@ -7,7 +7,7 @@ const getDonations = async (year, month) => {
     let skip = 0;
     const addDonations = () => axios({
         method: 'get',
-        url: `https://my.pureheart.org/ministryplatformapi/tables/Donations?$filter=YEAR(Donation_Date) = ${year} AND MONTH(Donation_Date) = ${month}&$skip=${skip}`,
+        url: `https://my.pureheart.org/ministryplatformapi/tables/Batches?$filter=YEAR(Setup_Date) = ${year}&$skip=${skip}`,
         headers: {
             'Accept': 'application/json',
             'Authorization': `Bearer ${access_token}`

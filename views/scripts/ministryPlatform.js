@@ -380,3 +380,15 @@ const getPageID = (Table_Name) => {
     .then(response => response.data[0][0])
     .catch(err => console.error(err))
 }
+const getProcs = async () => {
+    return await axios({
+        method: 'get',
+        url: 'https://my.pureheart.org/ministryplatformapi/procs',
+        headers: {
+            'Accept': 'application/json',
+            'Authorization': `Bearer ${access_token}`
+        }
+    })
+    .then(response => response.data)
+    .catch(err => {console.error(err)})
+}
