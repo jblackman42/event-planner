@@ -3,3 +3,6 @@
 .env
 views/styles/main.css
 views/styles/main.css.map
+views/scripts/health-assesment.js
+attendance2021.json
+populate.js

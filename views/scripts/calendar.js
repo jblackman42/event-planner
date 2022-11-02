@@ -198,11 +198,11 @@ function drawCalendar() {
         }
 
         let dateHTML = `
-            <div class='calender-day ${date.numberOfEvents >= 1 ? 'event' : ''} ${!date.active ? 'inactive' : ''}' ${date.numberOfEvents > 0 ? `onClick='popup("${date.day}")'` : ''}>
+            <button class='calender-day ${date.numberOfEvents >= 1 ? 'event' : ''} ${!date.active ? 'inactive' : ''}' ${date.numberOfEvents > 0 ? `onClick='popup("${date.day}")'` : ''}>
                 <p>${date.monthday}<sup>${monthDaySuffix}</sup></p>
                 ${date.numberOfEvents > 0 ? `<p class='eventsNumber'>${date.numberOfEvents} ${date.numberOfEvents > 1 ? 'Events' : 'Event'}</p>` : ''}
                 <div class="progressBar" style="max-width: ${eventFull}%"></div>
-            </div>
+            </button>
         `
         calenderHTML += dateHTML;
     }

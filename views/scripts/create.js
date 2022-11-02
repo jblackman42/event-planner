@@ -9,7 +9,6 @@ const attendanceDOM = document.querySelector('#attendance')
 const congregationDOM = document.querySelector('#congregation');
 const setupTimeDOM = document.querySelector('#setup');
 const cleanupTimeDOM = document.querySelector('#cleanup');
-const privacyDOM = document.querySelector('#privacy');
 const eventLocationDOM = document.querySelector('#event-location');
 const visibilityLevelDOM = document.querySelector('#visibility');
 
@@ -18,10 +17,14 @@ const promotionDOM = document.querySelector('#promotion');
 const AVDOM = document.querySelector('#av');
 const facilitiesDOM = document.querySelector('#facilities');
 const childcareDOM = document.querySelector('#childcare');
+const facilitiesPerson = document.querySelector('#facilities-person')
+const facilitiesInputs = document.querySelectorAll('.facilities-input')
 
 const roomSelectors = document.querySelector('.room-selectors');
 const warningMsgDOM = document.querySelector('#warning-msg');
 const formSections = document.querySelectorAll('.section');
+
+const selecedEquipment = [];
 
 
 let user;
@@ -119,7 +122,7 @@ const nextSection = async () => {
     const primaryContactID = await getUserInfo(primaryContactDOM.value);
     
     //Check if all required inputs have values; if not go back and let user complete the form
-    const allValues = [eventNameDOM.value,eventDescDOM.value,primaryContactID.Contact_ID,startDateDOM.value,endDateDOM.value,eventTypeDOM.value,attendanceDOM.value,congregationDOM.value,setupTimeDOM.value,cleanupTimeDOM.value,privacyDOM.value == 1 ? true : false,eventLocationDOM.value, visibilityLevelDOM.value]
+    const allValues = [eventNameDOM.value,eventDescDOM.value,primaryContactID.Contact_ID,startDateDOM.value,endDateDOM.value,eventTypeDOM.value,attendanceDOM.value,congregationDOM.value,setupTimeDOM.value,cleanupTimeDOM.value,eventLocationDOM.value, visibilityLevelDOM.value]
     if (allValues.filter(value => value.toString() == "").length > 0) {
         sectionId = 0;
         nextSection();
@@ -148,6 +151,21 @@ const prevSection = () => {
         currSection.style.visibility = 'visible';
     }
 }
+
+facilitiesDOM.addEventListener('change', (e) => {
+    const value = parseInt(e.target.value);
+    if (value) {
+        facilitiesInputs.forEach(elem => {
+            elem.style.visibility = 'visible';
+            elem.style.display = 'flex'
+        })
+    } else {
+        facilitiesInputs.forEach(elem => {
+            elem.style.visibility = 'hidden';
+            elem.style.display = 'none'
+        })
+    }
+})
 
 const overlappingRoomsLoading = () => {
     loading();
@@ -355,7 +373,7 @@ const publishEvent = async (event) => {
             taskDOM: promotionDOM
         },
         {
-            taskType: "a/v",
+            taskType: "A/V",
             taskOwners: AVUserIds,
             taskDOM: AVDOM
         },
@@ -371,25 +389,46 @@ const publishEvent = async (event) => {
         }
     ]
 
+
     const sendAllTasks = async () => {
+        const currDate = new Date(new Date().setMinutes(new Date().getMinutes() - new Date().getTimezoneOffset())).toISOString();
+        for (taskOwner of allTaskUserIds) {
+            await sendTask(user.UserId, taskOwner, eventId, currDate, false)
+        }
+
         for (task of taskOptions) {
             //send tasks to specific task owners for each request
             for (taskOwner of task.taskOwners) {
-                if (task.taskDOM.value == 1) await sendTask(user.UserId, taskOwner, eventId, new Date().toISOString(), task.taskType)
+                if (task.taskDOM.value == 1) {
+                    await sendTask(user.UserId, taskOwner, eventId, currDate, task.taskType)
+                }
             }
             //if event locatin is peoria, send to peoria staff
             if (eventLocationDOM.value == peoriaCampusID) {
                 for (taskOwner of peoriaUserIds) {
-                    if (task.taskDOM.value == 1) await sendTask(user.UserId, taskOwner, eventId, new Date().toISOString(), task.taskType)
+                    if (task.taskDOM.value == 1) await sendTask(user.UserId, taskOwner, eventId, currDate, task.taskType)
                 }
             }
-            //always send to all-tasks user role 
-            for (taskOwner of allTaskUserIds) {
-                if (task.taskDOM.value == 1) await sendTask(user.UserId, taskOwner, eventId, new Date().toISOString(), task.taskType)
+        }
+        if (eventLocationDOM.value == peoriaCampusID && AVDOM.value == 1) {
+            for (taskOwner of peoriaAVUserIds) {
+                await sendTask(user.UserId, taskOwner, eventId, currDate, 'Peoria A/V')
             }
         }
     }
-    sendAllTasks();
+    await sendAllTasks();
+
+
+    const sendEquipmentReservations = async () => {
+        for (equipment of selecedEquipment) {
+            await createEquipmentReservation(eventId, equipment.Equipment_ID, equipment.Quantity)
+        }
+    }
+    await sendEquipmentReservations();
+
+    if (facilitiesPerson.value == 1) {
+        await createServiceReservation(eventId, onsiteFacilitiesServiceID)
+    }
 }
 
 const handleSubmit = async (e) => {
@@ -399,7 +438,7 @@ const handleSubmit = async (e) => {
     const primaryContactID = await getUserInfo(primaryContactDOM.value);
 
     //Check if all required inputs have values; if not go back and let user complete the form
-    const allValues = [eventNameDOM.value,eventDescDOM.value,primaryContactID.Contact_ID,startDateDOM.value,endDateDOM.value,eventTypeDOM.value,attendanceDOM.value,congregationDOM.value,setupTimeDOM.value,cleanupTimeDOM.value,privacyDOM.value == 1 ? true : false,eventLocationDOM.value, visibilityLevelDOM.value]
+    const allValues = [eventNameDOM.value,eventDescDOM.value,primaryContactID.Contact_ID,startDateDOM.value,endDateDOM.value,eventTypeDOM.value,attendanceDOM.value,congregationDOM.value,setupTimeDOM.value,cleanupTimeDOM.value,eventLocationDOM.value, visibilityLevelDOM.value]
     if (allValues.filter(value => value.toString() == "").length > 0) {
         sectionId = 0;
         nextSection();
@@ -415,13 +454,13 @@ const handleSubmit = async (e) => {
         const eventLength = new Date(endDateDOM.value).getTime() - new Date(startDateDOM.value).getTime();
         for (day of days) {
             const eventDay = new Date(new Date(day).getTime() - (new Date(day).getTimezoneOffset() * 60000))
-            const event = [formatEvent(eventNameDOM.value,eventDescDOM.value,primaryContactID.Contact_ID,eventDay,new Date(new Date(eventDay).getTime() + eventLength).toISOString(),eventTypeDOM.value,attendanceDOM.value,congregationDOM.value,setupTimeDOM.value,cleanupTimeDOM.value,privacyDOM.value == 1 ? true : false,eventLocationDOM.value, visibilityLevelDOM.value)];
+            const event = [formatEvent(eventNameDOM.value,eventDescDOM.value,primaryContactID.Contact_ID,eventDay,new Date(new Date(eventDay).getTime() + eventLength).toISOString(),eventTypeDOM.value,attendanceDOM.value,congregationDOM.value,setupTimeDOM.value,cleanupTimeDOM.value,eventLocationDOM.value, visibilityLevelDOM.value)];
             await publishEvent(event)
         }
         completed();
     } else {
         //turn input data into form for sending to MP
-        const event = [formatEvent(eventNameDOM.value,eventDescDOM.value,primaryContactID.Contact_ID,startDateDOM.value,endDateDOM.value,eventTypeDOM.value,attendanceDOM.value,congregationDOM.value,setupTimeDOM.value,cleanupTimeDOM.value,privacyDOM.value == 1 ? true : false,eventLocationDOM.value, visibilityLevelDOM.value)];
+        const event = [formatEvent(eventNameDOM.value,eventDescDOM.value,primaryContactID.Contact_ID,startDateDOM.value,endDateDOM.value,eventTypeDOM.value,attendanceDOM.value,congregationDOM.value,setupTimeDOM.value,cleanupTimeDOM.value,eventLocationDOM.value, visibilityLevelDOM.value)];
 
         await publishEvent(event)
         completed();

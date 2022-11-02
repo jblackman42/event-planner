@@ -117,40 +117,22 @@
 
                     const location = await getLocation(Location_ID)
 
-                    const startTime = new Date(Event_Start_Date);
-                    const endTime = new Date(Event_End_Date);
+                    const startDate = new Date(Event_Start_Date);
+                    const endDate = new Date(Event_End_Date);
 
-                    let startHour = startTime.getHours();
-                    let startMinute = startTime.getMinutes();
-                    
-                    let endHour = endTime.getHours();
-                    let endMinute = endTime.getMinutes();
+                    let startTime = startDate.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+                    let endTime = endDate.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+                    startTime = startTime.split('')[0] == 0 ? startTime.substring(1) : startTime
+                    endTime = endTime.split('')[0] == 0 ? endTime.substring(1) : endTime
 
-                    //define whole event time before calculating for setup and cleanup
-                    let eventTimes = `${toTimeFormat(startHour, startMinute)} - ${toTimeFormat(endHour, endMinute)}`;
+                    let reservedStartTime = new Date(startDate.setMinutes(startDate.getMinutes() - Minutes_for_Setup)).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+                    let reservedEndTime = new Date(endDate.setMinutes(endDate.getMinutes() + Minutes_for_Cleanup)).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+                    reservedStartTime = reservedStartTime.split('')[0] == 0 ? reservedStartTime.substring(1) : reservedStartTime
+                    reservedEndTime = reservedEndTime.split('')[0] == 0 ? reservedEndTime.substring(1) : reservedEndTime
 
-                    let setupHours = Math.floor(Minutes_for_Setup / 60);
-                    let setupMinutes = Minutes_for_Setup - (setupHours * 60);
-                    let cleanupHours = Math.floor(Minutes_for_Cleanup / 60);
-                    let cleanupMinutes = Minutes_for_Cleanup - (cleanupHours * 60);
+                    const reservedTimesString = `${reservedStartTime} - ${reservedEndTime}`;
+                    const eventTimesString = `${startTime} - ${endTime}`;
 
-                    //if subtracting setuphours goes before 0 restart from 24
-                    startHour - setupHours > 0 ? startHour -= setupHours : 24 + startHour - setupHours;
-                    if (setupMinutes > 0) {
-                        if (startMinute - setupMinutes < 0) startHour --;
-                        startMinute - setupMinutes < 0 ? startMinute -= -60 + setupMinutes : startMinute -= setupMinutes;
-                    }
-
-                    endHour + cleanupHours < 24 ? endHour += cleanupHours : 0 - endHour + cleanupHours;
-                    if (cleanupMinutes > 0) {
-                        if (endMinute + cleanupMinutes > 60) startHour ++;
-                        endMinute + cleanupMinutes > 60 ? endMinute += 60 - cleanupMinutes : endMinute += cleanupMinutes;
-                    }
-
-                    const eventStartTime = toTimeFormat(startHour, startMinute);
-                    const eventEndTime = toTimeFormat(endHour, endMinute);
-
-                    let reservedTimes = `${toTimeFormat(startHour, startMinute)} - ${toTimeFormat(endHour, endMinute)}`;
 
                     const allRoomsList = Rooms.map(room => room.Room_Name);
                     const roomsList = [...new Set(allRoomsList)].join(', ')
@@ -159,25 +141,29 @@
                         <li class="event" id="event-${Event_ID}">
                             <div style="flex-wrap:wrap;">
                                 <h4 id="event-name">${Event_Title}</h4>
-                                <a id="event-link" href="https://my.pureheart.org/mp/${MP_Events_Table_ID}/${Event_ID}" target="_blank">View on MP</a>
+                            </div>
+                            ${Minutes_for_Setup && Minutes_for_Cleanup ? `
+                                <div>
+                                    <p id="label">Reserved Time:</p>
+                                    <p>${reservedTimesString}</p>
+                                </div>
+                            ` : ''}
+                            <div>
+                                <p id="label">Event Time:</p>
+                                <p>${eventTimesString}</p>
                             </div>
                             <div>
                                 <p>Location:</p>
                                 <p>${location ? location.Location_Name : 'Unknown'}</p>
                             </div>
-                            ${Minutes_for_Setup && Minutes_for_Cleanup ? `
-                                <div>
-                                    <p id="label">Reserved Time:</p>
-                                    <p>${reservedTimes}</p>
-                                </div>
-                            ` : ''}
-                            <div>
-                                <p id="label">Event Time:</p>
-                                <p>${eventTimes}</p>
-                            </div>
                             <div>
                                 <p id="label">${allRoomsList.length == 1 ? 'Room' : 'Rooms'}:</p>
                                 <p id="rooms-list">${roomsList.length ? roomsList : 'No Rooms Booked'}</p>
+                            </div>
+                            <div class="btn-container">
+                                <a class="popup-btn" href="https://my.pureheart.org/mp/${MP_Events_Table_ID}/${Event_ID}" target="_blank"><i class="material-icons">description</i><span class="btn-label">View on MP</span></a>
+                                <a class="popup-btn" target="_blank" href="https://outlook.office.com/calendar/0/deeplink/compose?allday=false&enddt=${new Date(Event_End_Date).toISOString()}&location=${location ? location.Location_Name : 'Unknown'}&path=/calendar/action/compose&rru=addevent&startdt=${new Date(Event_Start_Date).toISOString()}&subject=${Event_Title}"><i class="material-icons">bookmark</i><span class="btn-label">Add to Calendar</span></a>
+                                <a href="/print?id=${Event_ID}" id="print" class="popup-btn"><i class="material-icons">print</i><span class="btn-label">Print</span></a>
                             </div>
                         </li>
                     `

@@ -7,23 +7,32 @@ nav {
 	.icon {
 		font-size: 2.75rem;
 	}
+	button {
+		border: none;
+		background-color: transparent;
+	}
 	.openButton {
 		font-size: 300%;
 		display: grid;
 		place-items: center;
 		position: fixed;
-
+		margin: 0;
+		padding: 0;
 		z-index: 2;
 
 		top: 1rem;
 		left: 1rem;
+		@media screen and (max-width: 512px) {
+			top: .5rem;
+			left: .5rem;
+		}
 		.icon {
 			margin-block: auto;
 			color: white;
 			cursor: pointer;
 			font-weight: bold;
 
-			text-shadow: 0 0 2rem #00000066, 0 0 0.5rem #000000BB;
+			text-shadow: 0 0 0.75rem rgb(79, 79, 79);
 		}
 		input {
 			position: absolute;
