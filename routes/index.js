@@ -1,5 +1,6 @@
 const express = require('express');
 const navigation = express.Router();
+const path = require('path');
 //authentication middleware
 const {ensureAuthenticated, ensureAdminAuthenticated} = require('../middleware/auth.js')
 
@@ -18,6 +19,9 @@ navigation.get('/login', (req, res) => {
 })
 navigation.get('/create', ensureAdminAuthenticated, (req, res) => {
   res.render('pages/create')
+})
+navigation.get('/help', (req, res) => {
+  res.render('pages/help')
 })
 
 navigation.get('/health-assesment', ensureAuthenticated, (req, res) => {
