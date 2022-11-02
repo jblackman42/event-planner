@@ -122,8 +122,6 @@ const setup = async () => {
     })
         .then(response => response.data)
 
-    const monthDays = [];
-    const currDate = new Date(2022, month - 1, 1)
     const donationData = await getDonations(year, month);
     
     const donationBatchTotal =  donationData.map(batch => batch.Batch_Total).reduce((accum, val) => accum + val)
