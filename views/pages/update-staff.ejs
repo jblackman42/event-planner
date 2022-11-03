@@ -166,13 +166,12 @@
 
                     const {Contact_ID} = await getParticipantFromID(participants[j].Participant_ID)
                     const contact = await getContactFromID(Contact_ID);
-                    const {Nickname, First_Name, Last_Name, Email_Address, Email_Unlisted, Mobile_Phone, Mobile_Phone_Unlisted, Web_Page} = contact;
+                    const {Nickname, First_Name, Last_Name, Email_Address, Email_Unlisted} = contact;
                     const {Job_Title, Bio} = await getStaffRecordFromContactID(Contact_ID);
                     const {UniqueFileId} = await getFilesFromContactID(Contact_ID);
                     const imageUrl = `https://my.pureheart.org/ministryplatformapi/files/${UniqueFileId}`
                     const display_name = `${Nickname} ${Last_Name}`;
                     const email = Email_Unlisted ? null : Email_Address;
-                    const phone = Mobile_Phone_Unlisted ? null : Mobile_Phone;
                     // console.log(display_name)
                     updateLabelDOM.innerText = counter < staffLength ? `Updated ${display_name}` : `Added ${display_name}`;
                     
@@ -182,10 +181,10 @@
                         Last_Name: Last_Name,
                         Display_Name: display_name,
                         Email: email,
-                        Phone: phone,
+                        Section_Id: i,
+                        Staff_Id: j,
                         Job_Title: Job_Title,
                         Image_URL: imageUrl,
-                        Web_Page: Web_Page,
                         Bio: Bio
                     })
                 }
