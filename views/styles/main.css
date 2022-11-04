@@ -1096,6 +1096,7 @@ html {
   padding-inline: 1rem;
   position: relative;
   background-color: var(--primary-bg-color);
+  border-bottom: 2px solid var(--secondary-font-color);
 }
 #popup-container #popup .title h1 {
   margin: 0;
@@ -1132,8 +1133,8 @@ html {
 #popup-container #popup #events-list .event.hightlight {
   border: 3px solid transparent !important;
 }
-#popup-container #popup #events-list .event:last-of-type {
-  margin-bottom: 0;
+#popup-container #popup #events-list .event:first-of-type {
+  margin-top: 0;
 }
 #popup-container #popup #events-list .event .btn-container {
   display: flex;

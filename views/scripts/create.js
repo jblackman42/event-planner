@@ -429,6 +429,8 @@ const publishEvent = async (event) => {
     if (facilitiesPerson.value == 1) {
         await createServiceReservation(eventId, onsiteFacilitiesServiceID)
     }
+
+    await addAPIUserToEvent(eventId);
 }
 
 const handleSubmit = async (e) => {
