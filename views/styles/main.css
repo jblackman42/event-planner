@@ -1096,6 +1096,7 @@ html {
   padding-inline: 1rem;
   position: relative;
   background-color: var(--primary-bg-color);
+  border-bottom: 2px solid var(--secondary-font-color);
 }
 #popup-container #popup .title h1 {
   margin: 0;
@@ -1132,8 +1133,8 @@ html {
 #popup-container #popup #events-list .event.hightlight {
   border: 3px solid transparent !important;
 }
-#popup-container #popup #events-list .event:last-of-type {
-  margin-bottom: 0;
+#popup-container #popup #events-list .event:first-of-type {
+  margin-top: 0;
 }
 #popup-container #popup #events-list .event .btn-container {
   display: flex;
@@ -1964,18 +1965,24 @@ input:checked + .slider:before {
 #review-days-container #review-days .days h2 {
   margin: 0;
 }
-#review-days-container #review-days .days ol {
+#review-days-container #review-days .days ul {
   padding: 0;
   margin: 0;
+  list-style: none;
 }
-#review-days-container #review-days .days ol li {
+#review-days-container #review-days .days ul li {
   padding: 0.25rem;
   position: relative;
+  text-align: right;
 }
-#review-days-container #review-days .days ol li::marker {
-  position: absolute;
-  left: 0;
-  top: 0;
+@media screen and (max-width: 768px) {
+  #review-days-container #review-days .days ul li {
+    font-size: 0.8rem;
+    text-align: left;
+  }
+}
+#review-days-container #review-days .days ul li input[type=checkbox] {
+  margin-inline: 0.5rem;
 }
 #review-days-container #review-days .btn-container {
   display: flex;

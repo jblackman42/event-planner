@@ -413,9 +413,28 @@ const createEvent = async (event) => {
         headers: {
             'Content-Type': 'application/json',
             'Accept': 'application/json',
-            'Authorization': `Bearer ${access_token}`
+            'Authorization': `Bearer ${user_token}`
         },
         body: JSON.stringify(event),
+    })
+    .then(response => response.json())
+    .catch(err => console.error(err))
+}
+
+const addAPIUserToEvent = async (Event_ID) => {
+    const eventParticipant = [{
+        "Event_ID": Event_ID,
+        "Participant_ID": 116075,
+        "Participation_Status_ID": 5
+    }]
+    return fetch('https://my.pureheart.org/ministryplatformapi/tables/Event_Participants', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+            'Accept': 'application/json',
+            'Authorization': `Bearer ${access_token}`
+        },
+        body: JSON.stringify(eventParticipant),
     })
     .then(response => response.json())
     .catch(err => console.error(err))

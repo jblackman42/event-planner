@@ -42,16 +42,20 @@ $review-header-bg: var(--secondary-bg-color);
             h2 {
                 margin: 0;
             }
-            ol {
+            ul {
                 padding: 0;
                 margin: 0;
+                list-style: none;
                 li {
                     padding: .25rem;
                     position: relative;
-                    &::marker {
-                        position: absolute;
-                        left: 0;
-                        top: 0;
+                    text-align: right;
+                    @media screen and (max-width: 768px) {
+                        font-size: .8rem;
+                        text-align: left;
+                    }
+                    input[type="checkbox"] {
+                        margin-inline: .5rem;
                     }
                 }
             }

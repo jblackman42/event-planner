@@ -6,8 +6,8 @@
         </div>
         <div class="days">
             <h2 id="review-event-title"></h2>
-            <ol id="days-list">
-            </ol>
+            <ul id="days-list">
+            </ul>
         </div>
         <!-- <p style="text-align: center">Warning: 10 Events will be created</p> -->
         <div class="btn-container">
@@ -24,17 +24,45 @@
     const reviewConfirmBtnDOM = document.getElementById('review-confirm-btn');
 
     const loadDaysList = () => {
-        const daysListHTML = days.map(day => {
+        const daysListHTML = days.map((day, id) => {
             const eventLength = new Date(endDateDOM.value).getTime() - new Date(startDateDOM.value).getTime();
             const eventEndDate = new Date(new Date(day).getTime() + eventLength)
-            return `<li>${new Date(day).toDateString()} @ ${new Date(day).toLocaleTimeString()} - ${eventEndDate.toLocaleTimeString()}</li>`
+            return `<li>${id + 1}: ${new Date(day).toDateString()} @ ${new Date(day).toLocaleTimeString()} - ${eventEndDate.toLocaleTimeString()}<input onclick="updateDays()" class="recurring-verify" id="${id}" type="checkbox" checked></input></li>`
         }).join('')
         daysListDOM.innerHTML = daysListHTML;
         eventTitleDOM.innerText = eventNameDOM.value;
-        reviewConfirmBtnDOM.innerText = `Confirm ${days.length} Events`
+        reviewConfirmBtnDOM.innerText = `Confirm ${days.length} Events`;
+    }
+
+    const updateDays = () => {
+        console.log('update')
+        const verifyDays = document.querySelectorAll('.recurring-verify');
+        const tempDays = [];
+        for (let i = 0; i < verifyDays.length; i ++) {
+            if (verifyDays[i].checked) {
+                tempDays.push('if you\'re reading this, congratulations!')
+            }
+        }
+        console.log(tempDays.length)
+        const recurringLabel = document.getElementById('recurring-label');
+        recurringLabel.innerText = `${tempDays.length} Events`;
+        reviewConfirmBtnDOM.innerText = `Confirm ${tempDays.length} Events`;
     }
 
     const reviewHide = () => {
+        const verifyDays = document.querySelectorAll('.recurring-verify');
+        const tempDays = [];
+        for (let i = 0; i < verifyDays.length; i ++) {
+            if (verifyDays[i].checked) {
+                tempDays.push(days[verifyDays[i].id])
+            }
+        }
+        if (days.length != tempDays.length) {
+            days = tempDays;
+            updateEventTimes();
+        }
+
+        console.log(days)
         reviewContainerDOM.style.display = 'none';
         reviewContainerDOM.style.visibility = 'hidden';
     }

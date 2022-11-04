@@ -76,7 +76,7 @@ $arrow-button-bg: var(--arrow-button-color);
             padding-inline: 1rem;
             position: relative;
             background-color: $popup-bg;
-            // border-bottom: 2px solid var(--secondary-bg-color);
+            border-bottom: 2px solid var(--secondary-font-color);
             // border-bottom: 2px solid transparent;
 
             h1 {
@@ -117,8 +117,8 @@ $arrow-button-bg: var(--arrow-button-color);
                 &.hightlight {
                     border: 3px solid transparent !important;
                 }
-                &:last-of-type {
-                    margin-bottom: 0;
+                &:first-of-type {
+                    margin-top: 0;
                 }
                 .btn-container {
                     display: flex;
