@@ -1,16 +1,15 @@
-const getDonations = async (year, month) => {
-    if (!year || !month) {
-        year = new Date().getFullYear();
-        month = new Date().getMonth() + 2;
+const getDonations = async (start_date, end_date) => {
+    if (!start_date || !end_date) {
+        return
     }
     let donations = [];
     let skip = 0;
-    const addDonations = () => axios({
+    const addDonations = async () => await axios({
+        url: `https://my.pureheart.org/ministryplatformapi/tables/Donations?%24filter=Donation_Date BETWEEN '${start_date}' AND '${end_date}'&$skip=${skip}`,
         method: 'get',
-        url: `https://my.pureheart.org/ministryplatformapi/tables/Batches?$filter=YEAR(Setup_Date) = ${year}&$skip=${skip}`,
         headers: {
-            'Accept': 'application/json',
-            'Authorization': `Bearer ${access_token}`
+            'Content-type': 'application/json',
+            'Authorization': `Bearer ${access_token}`, // notice the Bearer before your token
         }
     })
     .then(response => response.data)
@@ -20,7 +19,7 @@ const getDonations = async (year, month) => {
     while (prevDonationPullLength >= 1000) {
         const currDonations = await addDonations();
         prevDonationPullLength = currDonations.length;
-        skip = prevDonationPullLength;
+        skip += prevDonationPullLength;
         donations = donations.concat(currDonations);
     }
     return donations;
