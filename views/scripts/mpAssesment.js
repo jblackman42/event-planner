@@ -5,7 +5,7 @@ const getDonations = async (start_date, end_date) => {
     let donations = [];
     let skip = 0;
     const addDonations = async () => await axios({
-        url: `https://my.pureheart.org/ministryplatformapi/tables/Donations?%24filter=Donation_Date BETWEEN '${start_date}' AND '${end_date}'&$skip=${skip}`,
+        url: `https://my.pureheart.org/ministryplatformapi/tables/Donations?%24filter=Donation_Date BETWEEN '${start_date}' AND '${end_date}' AND Batch_ID IS NOT NULL&$skip=${skip}`,
         method: 'get',
         headers: {
             'Content-type': 'application/json',
