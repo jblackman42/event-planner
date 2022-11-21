@@ -254,6 +254,7 @@ router.get('/webhook-update-sermons', ensureWebhook, async (req, res) => {
         })
             .then(response => response.data)
         sermons[i].fileId = file[0] ? file[0].UniqueFileId : null;
+        sermons[i].Series_Image = file[0] ? `https://my.pureheart.org/ministryplatformapi/files/${file[0].UniqueFileId}` : null;
 
         //get messages in series
         const messages = await axios({

@@ -31,6 +31,10 @@ const SermonSchema = new mongoose.Schema({
         type: String,
         require: [true, 'must provide Series_UUID']
     },
+    Series_Image: {
+        type: String,
+        require: [true, 'must provide Series_Image']
+    },
     Series_Start_Date: {
         type: Date,
         require: [true, 'must provide Series_Start_Date']
