@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <link rel="shortcut icon" href="/assets/favicon.ico" type="image/x-icon">
+    <link rel="stylesheet" href="/styles/main.css">
+
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+
+    <script src="https://kit.fontawesome.com/e61ab9568e.js" crossorigin="anonymous"></script>
+    <title>PHC - Widgets | Update Staff</title>
+
+
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+</head>
+<body id="staff-widget-update">
+    <div class="staff-loading">
+        <p id="staff-warning">please do not close this page</p>
+        <div id="percent-bar" class="staff-loading-bar"></div>
+        <p id="percent" class="staff-loading-percent-label">0%</p>
+        <p id="update-label"></p>
+    </div>
+</body>
+<script>
+    (async () => {
+        const percentDOM = document.getElementById('percent')
+        const percentBarDOM = document.getElementById('percent-bar')
+        const updateLabelDOM = document.getElementById('update-label')
+        const staffWarningDOM = document.getElementById('staff-warning')
+        
+        //delete all staff records
+        await axios({
+            method: 'delete',
+            url: '/api/widgets/update-sermons',
+            mode: 'same-origin'
+        })
+
+        //get access token for accessing database informatin
+        const accessToken = await axios({
+            method: 'get',
+            mode: 'cors',
+            url: '/api/oauth/authorize'
+        })
+            .then(response => response.data.access_token)
+            .catch(err => console.error(err))
+
+        //get sermon series list
+        const sermons = await axios({
+            url: 'https://my.pureheart.org/ministryplatformapi/tables/Pocket_Platform_Sermon_Series?%24filter=Series_Start_Date%20%3C%20GETDATE()&%24orderby=Series_Start_Date%20DESC',
+            method: 'GET',
+            headers: {
+            'Accept': 'application/json',
+            'Content-Type': 'application/json',
+            'Authorization': 'Bearer ' + accessToken,
+            }
+        })
+            .then(response => response.data)
+
+        for (let i = 0; i < sermons.length; i ++) {
+            //get series image
+            const file = await axios({
+                url: `https://my.pureheart.org/ministryplatformapi/files/Pocket_Platform_Sermon_Series/${sermons[i].Sermon_Series_ID}`,
+                method: 'GET',
+                headers: {
+                    'Accept': 'application/json',
+                    'Content-Type': 'application/json',
+                    'Authorization': 'Bearer ' + accessToken,
+                }
+            })
+                .then(response => response.data)
+            sermons[i].fileId = file[0] ? file[0].UniqueFileId : null;
+
+            //get messages in series
+            const messages = await axios({
+                url: `https://my.pureheart.org/ministryplatformapi/tables/Pocket_Platform_Sermons?%24filter=Series_ID=${sermons[i].Sermon_Series_ID}`,
+                method: 'GET',
+                headers: {
+                    'Accept': 'application/json',
+                    'Content-Type': 'application/json',
+                    'Authorization': 'Bearer ' + accessToken,
+                }
+            })
+                .then(response => response.data)
+
+            sermons[i].messages = messages;
+
+            //get watch/listen links
+            for (let j = 0; j < messages.length; j ++) {
+                const links = await axios({
+                    url: `https://my.pureheart.org/ministryplatformapi/tables/Pocket_Platform_Sermon_Links?%24filter=Sermon_ID=${messages[j].Sermon_ID}`,
+                    method: 'GET',
+                    headers: {
+                        'Accept': 'application/json',
+                        'Content-Type': 'application/json',
+                        'Authorization': 'Bearer ' + accessToken,
+                    }
+                })
+                    .then(response => response.data)
+                
+                sermons[i].messages[j].links = links;
+            }
+
+            const percent = `${Math.floor(((i + 1) / sermons.length)  * 100)}%`;
+            percentDOM.innerText = percent;
+            percentBarDOM.style.width = percent;
+            updateLabelDOM.innerText = `Retrieving '${sermons[i].Title}'`;
+        }
+
+        for (let i = 0; i < sermons.length; i ++) {
+            await axios({
+                    method: 'post',
+                    url: '/api/widgets/update-sermons',
+                    mode: 'same-origin',
+                    data: sermons[i]
+                })
+                    .then(response => response)
+                    .catch(err => console.error(`whoops: ${err}`))
+
+            percentBarDOM.style.transition = 'width 0ms linear';
+            percentBarDOM.style.width = '0px';
+            
+            const percent = `${Math.floor(((i + 1) / sermons.length)  * 100)}%`;
+            percentDOM.innerText = percent;
+            percentBarDOM.style.width = percent;
+            updateLabelDOM.innerText = `Uploading to database`;
+
+
+            percentBarDOM.style.transition = 'width 250ms linear';
+        }
+        
+        updateLabelDOM.innerText = 'Finished!';
+        staffWarningDOM.style.visibility = 'hidden';
+        staffWarningDOM.style.display = 'none';
+    })()
+</script>
+</html>

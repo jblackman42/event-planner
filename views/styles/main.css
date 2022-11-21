@@ -2034,6 +2034,7 @@ input:checked + .slider:before {
   background-color: #27ae60;
   width: 0;
   max-width: 100%;
+  transition: width 250ms linear;
 }
 .staff-loading .staff-loading-percent-label {
   position: absolute;
