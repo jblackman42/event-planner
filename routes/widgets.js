@@ -199,6 +199,12 @@ router.get('/sermons', async (req, res) => {
         res.status(201).json({ sermons });
     } catch(error) { res.status(500).json({ msg: error }) }
 })
+router.get('/sermon', async (req, res) => {
+    try {
+        const sermon = await SermonSchema.find({Sermon_Series_ID: req.query.id});
+        res.status(201).json({ sermon });
+    } catch(error) { res.status(500).json({ msg: error }) }
+})
 
 router.delete('/update-sermons', ensureAdministrator, async (req, res) => {
     try {
