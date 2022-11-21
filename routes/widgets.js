@@ -193,7 +193,7 @@ router.get('/update-sermons', ensureAdministrator, async (req, res) => {
     res.render('pages/update-sermons')
 })
 
-router.get('/sermons', ensureAdministrator, async (req, res) => {
+router.get('/sermons', async (req, res) => {
     try {
         const sermons = await SermonSchema.find({});
         res.status(201).json({ sermons });
