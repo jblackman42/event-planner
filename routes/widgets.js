@@ -303,6 +303,18 @@ router.get('/webhook-update-sermons', ensureWebhook, async (req, res) => {
             })
                 .then(response => response.data[0]);
                 sermons[i].messages[j].Sermon_Image = fileId ? `https://my.pureheart.org/ministryplatformapi/files/${fileId.UniqueFileId}` : null;
+
+            const speakerName = await axios({
+                url: `https://my.pureheart.org/ministryplatformapi/tables/Pocket_Platform_Speakers/${sermons[i].messages[j].Speaker_ID}`,
+                method: 'GET',
+                headers: {
+                    'Accept': 'application/json',
+                    'Content-Type': 'application/json',
+                    'Authorization': 'Bearer ' + accessToken,
+                }
+            })
+                .then(response => response.data[0]);
+                sermons[i].messages[j].Speaker = speakerName ? speakerName.Display_Name : null;
         }
         console.log(`${i + 1} / ${sermons.length}`)
     }
