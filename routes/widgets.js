@@ -237,7 +237,7 @@ router.get('/webhook-update-sermons', ensureWebhook, async (req, res) => {
     
     //get sermon series list
     const sermons = await axios({
-        url: 'https://my.pureheart.org/ministryplatformapi/tables/Pocket_Platform_Sermon_Series?%24filter=Series_Start_Date%20%3C%20GETDATE()&%24orderby=Series_Start_Date%20DESC',
+        url: 'https://my.pureheart.org/ministryplatformapi/tables/Pocket_Platform_Sermon_Series?$filter=Series_Start_Date < GETDATE() AND Sermon_Series_Type_ID = 1&$orderby=Series_Start_Date DESC',
         method: 'GET',
         headers: {
           'Accept': 'application/json',
