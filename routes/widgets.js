@@ -338,7 +338,7 @@ router.get('/opportunity-auto-place', ensureWebhook, async (req, res) => {
     try {
         const {id} = req.body;
         if (!id) return res.sendStatus(400)
-        const data = [{"Response_ID": id,"Response_Result_ID": 1}]
+        const data = [{"Response_ID": parseInt(id),"Response_Result_ID": 1}]
         await axios({
             url: 'https://my.pureheart.org/ministryplatformapi/tables/Responses',
             method: 'PUT',
@@ -351,7 +351,7 @@ router.get('/opportunity-auto-place', ensureWebhook, async (req, res) => {
             }
         })
             .then(response => response.data)
-            .then(() => {
+            .then((data) => {
                 res.sendStatus(200)
             })
     } catch (err) {
