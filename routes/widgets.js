@@ -328,7 +328,7 @@ router.get('/webhook-update-sermons', ensureWebhook, async (req, res) => {
     res.sendStatus(200)
 })
 
-router.get('/opportunity-auto-place', ensureWebhook, async (req, res) => {
+router.post('/opportunity-auto-place', ensureWebhook, async (req, res) => {
     //get access token for accessing database informatin
     const accessToken = await axios({
         method: 'get',
@@ -347,7 +347,6 @@ router.get('/opportunity-auto-place', ensureWebhook, async (req, res) => {
             mode: 'cors',
             data: JSON.stringify(data),
             headers: {
-                'Access-Control-Allow-Origin': '*',
                 'Accept': 'application/json',
                 'Content-Type': 'application/json',
                 'Authorization': 'Bearer ' + accessToken,
