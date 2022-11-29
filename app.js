@@ -2,10 +2,12 @@ const express = require('express');
 const app = express();
 const cookieParser = require("cookie-parser");
 const prompt = require('prompt');
+const cors = require('cors');
 
 //middleware
 app.use(express.json());
 app.use(cookieParser());
+app.use(cors());
 require('dotenv').config();
 
 app.use(express.json({ limit: '16MB' }));

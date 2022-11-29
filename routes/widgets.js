@@ -344,9 +344,8 @@ router.get('/opportunity-auto-place', ensureWebhook, async (req, res) => {
             method: 'PUT',
             data: JSON.stringify(data),
             headers: {
-              'Accept': 'application/json',
-              'Content-Type': 'application/json',
-              'Authorization': 'Bearer ' + accessToken,
+                'Access-Control-Allow-Origin': 'true',
+                'Authorization': 'Bearer ' + accessToken,
             }
         })
             .then(response => response.data)
