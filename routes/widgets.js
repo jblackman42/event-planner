@@ -336,7 +336,7 @@ router.get('/opportunity-auto-place', ensureWebhook, async (req, res) => {
         .then(response => response.data.access_token)
         .catch(err => console.error(err))
     try {
-        const {id} = req.query;
+        const {id} = req.body;
         if (!id) return res.sendStatus(400)
         const data = [{"Response_ID": id,"Response_Result_ID": 1}]
         await axios({
