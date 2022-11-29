@@ -1,10 +1,12 @@
 const express = require('express');
 const router = express.Router();
 const axios = require('axios');
+const cors = require('cors');
 
 const {ensureAdministrator, ensureWebhook} = require('../middleware/auth.js')
 const StaffSchema = require('../models/Staff');
 const SermonSchema = require('../models/Sermons');
+
 
 router.get('/update-staff', ensureAdministrator, async (req, res) => {
     res.render('pages/update-staff')
@@ -342,6 +344,7 @@ router.get('/opportunity-auto-place', ensureWebhook, async (req, res) => {
         await axios({
             url: 'https://my.pureheart.org/ministryplatformapi/tables/Responses',
             method: 'PUT',
+            mode: 'cors',
             data: JSON.stringify(data),
             headers: {
                 'Access-Control-Allow-Origin': '*',
