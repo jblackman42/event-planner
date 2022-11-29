@@ -326,4 +326,37 @@ router.get('/webhook-update-sermons', ensureWebhook, async (req, res) => {
     res.sendStatus(200)
 })
 
+router.get('/opportunity-auto-place', ensureWebhook, async (req, res) => {
+    //get access token for accessing database informatin
+    const accessToken = await axios({
+        method: 'get',
+        mode: 'cors',
+        url: 'https://phc.events/api/oauth/authorize'
+    })
+        .then(response => response.data.access_token)
+        .catch(err => console.error(err))
+    try {
+        const {id} = req.query;
+        if (!id) return res.sendStatus(400)
+        const data = [{"Response_ID": id,"Response_Result_ID": 1}]
+        await axios({
+            url: 'https://my.pureheart.org/ministryplatformapi/tables/Responses',
+            method: 'PUT',
+            data: JSON.stringify(data),
+            headers: {
+              'Accept': 'application/json',
+              'Content-Type': 'application/json',
+              'Authorization': 'Bearer ' + accessToken,
+            }
+        })
+            .then(response => response.data)
+            .then(() => {
+                res.sendStatus(200)
+            })
+    } catch (err) {
+        console.log(err)
+        res.sendStatus(500)
+    }
+})
+
 module.exports = router;
