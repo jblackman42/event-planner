@@ -67,7 +67,7 @@ router.get('/webhook-update-staff', ensureWebhook, async (req, res) => {
     //2390 - support staff
     const webStaffGroupIDs = [
         {id: 2443, title: "Senior Pastor"},
-        {id: 2464, title: "Executive and Campus Pastors"},
+        {id: 2464, title: "Executive Pastor"},
         {id: 2387, title: "Lead Pastors"},
         {id: 2388, title: "Pastors"},
         {id: 2389, title: "Directors"},
@@ -170,6 +170,8 @@ router.get('/webhook-update-staff', ensureWebhook, async (req, res) => {
                     Last_Name: Last_Name,
                     Display_Name: display_name,
                     Email: email,
+                    Section_Id: i,
+                    Staff_Id: j,
                     Phone: phone,
                     Job_Title: Job_Title,
                     Image_URL: imageUrl,
