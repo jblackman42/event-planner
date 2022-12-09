@@ -51,14 +51,14 @@ app.use('/api/attendance', require('./routes/AttendanceRoutes.js'))
 const start = async () => {
     try {
         await connectDB(process.env.MONGO_URI);
-        app.listen(port, console.log(`\n server is listening on port ${port}, http://localhost:${port}`));
+        app.listen(port, console.log(`\n server is listening on port ${port}\n http://localhost:${port}`));
         
-        prompt.get(properties, function (err, result) {
-            if (err) {
-              return console.error(err);
-            }
-            if (result.populate == 'y') populate();
-        });
+        // prompt.get(properties, function (err, result) {
+        //     if (err) {
+        //       return console.error(err);
+        //     }
+        //     if (result.populate == 'y') populate();
+        // });
 
     } catch (error) { console.log(error) }
 }

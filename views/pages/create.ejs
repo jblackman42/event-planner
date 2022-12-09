@@ -26,12 +26,16 @@
                     <select name="event-location" id="event-location"></select>
                 </div>
                 <div class="input">
-                    <label for="start-date">Start Date/Time:</label>
-                    <input type="datetime-local" name="start-date" id="start-date" onchange="resetRecurring()">
+                    <label for="start-date">Event Date:</label>
+                    <input type="date" name="start-date" id="start-date" onchange="resetRecurring()">
                 </div>
                 <div class="input">
-                    <label for="end-date">End Date/Time:</label>
-                    <input type="datetime-local" name="end-date" id="end-date" onchange="resetRecurring()">
+                    <label for="start-time">Start Time:</label>
+                    <input type="time" name="start-time" id="start-time" onchange="resetRecurring()">
+                </div>
+                <div class="input">
+                    <label for="end-time">End Time:</label>
+                    <input type="time" name="end-time" id="end-time" onchange="resetRecurring()">
                 </div>
                 <div class="input">
                     <label for="primary-contact">Primary Contact</label>
@@ -57,19 +61,11 @@
                     <label for="cleanup">Cleanup Time: (minutes)</label>
                     <input type="number" name="cleanup" id="cleanup" value="0" onchange="resetRecurring()">
                 </div>
-                <!-- <div class="input">
-                    <label for="privacy">On Calendar:</label>
-                    <select name="privacy" id="privacy">
-                        <option value="1">True</option>
-                        <option value="0">False</option>
-                    </select>
-                    <input type="checkbox" name="privacy" id="privacy" checked>
-                </div> -->
                 <div class="input">
-                    <label for="visibility">Visibility Level:</label>
+                    <label for="visibility">Display on Public Calendar:</label>
                     <select name="visibility" id="visibility">
-                        <option value="1">Private</option>
-                        <option value="4">Public</option>
+                        <option value="1">No</option>
+                        <option value="4">Yes</option>
                     </select>
                 </div>
                 <div class="input description">
@@ -83,36 +79,36 @@
                 <div class="input">
                     <label for="registration">Needs Registration:</label>
                     <select name="registration" id="registration">
-                        <option value="0">False</option>
-                        <option value="1">True</option>
+                        <option value="0">No</option>
+                        <option value="1">Yes</option>
                     </select>
                 </div>
                 <div class="input">
                     <label for="promotion">Needs Promotion:</label>
                     <select name="promotion" id="promotion">
-                        <option value="0">False</option>
-                        <option value="1">True</option>
+                        <option value="0">No</option>
+                        <option value="1">Yes</option>
                     </select>
                 </div>
                 <div class="input">
                     <label for="av">Needs A/V:</label>
                     <select name="av" id="av">
-                        <option value="0">False</option>
-                        <option value="1">True</option>
+                        <option value="0">No</option>
+                        <option value="1">Yes</option>
                     </select>
                 </div>
                 <div class="input">
                     <label for="facilities">Needs Facilities:</label>
                     <select name="facilities" id="facilities">
-                        <option value="0">False</option>
-                        <option value="1">True</option>
+                        <option value="0">No</option>
+                        <option value="1">Yes</option>
                     </select>
                 </div>
                 <div class="input facilities-input">
                     <label for="facilities-person">Onsite Facilities Employee:</label>
                     <select name="facilities-person" id="facilities-person">
-                        <option value="0">False</option>
-                        <option value="1">True</option>
+                        <option value="0">No</option>
+                        <option value="1">Yes</option>
                     </select>
                 </div>
                 <div class="input facilities-input">
@@ -125,8 +121,8 @@
                 <div class="input">
                     <label for="childcare">Needs Childcare:</label>
                     <select name="childcare" id="childcare">
-                        <option value="0">False</option>
-                        <option value="1">True</option>
+                        <option value="0">No</option>
+                        <option value="1">Yes</option>
                     </select>
                 </div>
                 <div class="input">

@@ -18,7 +18,8 @@ const patternShow = () => {
     recurringEventContainer.classList.add('open');
 
     if (startDateDOM.value) {
-        startByDate.innerText = new Date(startDateDOM.value).toDateString() + ' @ ' + new Date(startDateDOM.value).toLocaleTimeString();
+        const startDateTime = new Date(`${startDateDOM.value}T${startTimeDOM.value}`);
+        startByDate.innerText = startDateTime.toDateString() + ' @ ' + startDateTime.toLocaleTimeString();
     }
 }
 
@@ -307,7 +308,7 @@ const handleSave = () => {
 
     switch (patternType) {
         case 0:
-             if (getDailyPattern(occurrenceInput.checked ? occurrenceNumber.value : 0, byDateInput.checked ? byDateInputDate.value : '', startDateDOM.value)) {
+             if (getDailyPattern(occurrenceInput.checked ? occurrenceNumber.value : 0, byDateInput.checked ? byDateInputDate.value : '', `${startDateDOM.value}T${startTimeDOM.value}`)) {
                 hideWarning();
                 patternHide();
                 updateEventTimes();
@@ -317,7 +318,7 @@ const handleSave = () => {
              }
             break;
         case 1:
-            if (getWeeklyPattern(occurrenceInput.checked ? occurrenceNumber.value : 0, byDateInput.checked ? byDateInputDate.value : '', startDateDOM.value)) {
+            if (getWeeklyPattern(occurrenceInput.checked ? occurrenceNumber.value : 0, byDateInput.checked ? byDateInputDate.value : '', `${startDateDOM.value}T${startTimeDOM.value}`)) {
                 hideWarning();
                 patternHide();
                 updateEventTimes();
@@ -327,7 +328,7 @@ const handleSave = () => {
             }
             break;
         case 2:
-            if (getMonthlyPattern(occurrenceInput.checked ? occurrenceNumber.value : 0, byDateInput.checked ? byDateInputDate.value : '', startDateDOM.value)) {
+            if (getMonthlyPattern(occurrenceInput.checked ? occurrenceNumber.value : 0, byDateInput.checked ? byDateInputDate.value : '', `${startDateDOM.value}T${startTimeDOM.value}`)) {
                 hideWarning();
                 patternHide();
                 updateEventTimes();

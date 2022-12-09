@@ -3,7 +3,8 @@ const eventNameDOM = document.querySelector('#event-name')
 const eventDescDOM = document.querySelector('#event-desc');
 const primaryContactDOM = document.querySelector('#primary-contact');
 const startDateDOM = document.querySelector('#start-date');
-const endDateDOM = document.querySelector('#end-date')
+const startTimeDOM = document.querySelector('#start-time');
+const endTimeDOM = document.querySelector('#end-time')
 const eventTypeDOM = document.querySelector('#event-type');
 const attendanceDOM = document.querySelector('#attendance')
 const congregationDOM = document.querySelector('#congregation');
@@ -122,7 +123,7 @@ const nextSection = async () => {
     const primaryContactID = await getUserInfo(primaryContactDOM.value);
     
     //Check if all required inputs have values; if not go back and let user complete the form
-    const allValues = [eventNameDOM.value,eventDescDOM.value,primaryContactID.Contact_ID,startDateDOM.value,endDateDOM.value,eventTypeDOM.value,attendanceDOM.value,congregationDOM.value,setupTimeDOM.value,cleanupTimeDOM.value,eventLocationDOM.value, visibilityLevelDOM.value]
+    const allValues = [eventNameDOM.value,eventDescDOM.value,primaryContactID.Contact_ID,startDateDOM.value,startTimeDOM.value,endTimeDOM.value,eventTypeDOM.value,attendanceDOM.value,congregationDOM.value,setupTimeDOM.value,cleanupTimeDOM.value,eventLocationDOM.value, visibilityLevelDOM.value]
     if (allValues.filter(value => value.toString() == "").length > 0) {
         sectionId = 0;
         nextSection();
@@ -192,18 +193,24 @@ let overlappingEventRooms = [];
 
 const updateEventTimes = async () => {
     let startDateValue = startDateDOM.value;
-    let endDateValue = endDateDOM.value;
+    let startTimeValue = startTimeDOM.value;
+    let endTimeValue = endTimeDOM.value;
     const setupTime = setupTimeDOM.value;
     const cleanupTime = cleanupTimeDOM.value;
+
+    if (!startDateValue || !startTimeValue || !endTimeValue) return;
+
+    let startDateTime = new Date(`${startDateValue}T${startTimeValue}`);
+    let endDateTime = new Date(`${startDateValue}T${endTimeValue}`);
+
+    startDateTime = subtractMinutesToDate(startDateTime, setupTime);
+    endDateTime = addMinutesToDate(endDateTime, setupTime);
     
-    if (startDateValue) startDateValue = subtractMinutesToDate(new Date(startDateValue), setupTime);
-    if (endDateValue) endDateValue = addMinutesToDate(new Date(endDateValue), cleanupTime);
     overlappingEventRooms = [];
-    
     if (days.length) {
         overlappingRoomsLoading();
 
-        const eventLength = new Date(endDateDOM.value).getTime() - new Date(startDateDOM.value).getTime();
+        const eventLength = new Date(endDateTime).getTime() - new Date(startDateTime).getTime();
         for (day of days) {
             const currEventStart = subtractMinutesToDate(new Date(day), setupTime);
             const currEventEnd = addMinutesToDate(new Date(new Date(day).getTime() + eventLength), cleanupTime);
@@ -221,9 +228,8 @@ const updateEventTimes = async () => {
         overlappingEventRooms =  [...new Set(overlappingEventRooms)]
 
         overlappingRoomsDone();
-    } else if (startDateValue && endDateValue) {
-        // console.log(startDateValue, endDateValue)
-        const overlapEvents = await getDaysEventsBetweenTimes(startDateValue, endDateValue);
+    } else {
+        const overlapEvents = await getDaysEventsBetweenTimes(startDateTime, endDateTime);
         // const overlapEvents = [];
         
         for (let i = 0; i < overlapEvents.length; i ++) {
@@ -235,7 +241,6 @@ const updateEventTimes = async () => {
         }
     }
 
-    // console.log(overlappingEventRooms)
 }
 
 const resetRecurring = () => {
@@ -332,7 +337,6 @@ const publishEvent = async (event) => {
             selectedRooms.push(parseInt(allRoomInputs[i].value))
         }
     }
-    // console.log(selectedRooms)
 
     const eventId = await createEvent(event)
         .then(response => response[0].Event_ID)
@@ -440,7 +444,7 @@ const handleSubmit = async (e) => {
     const primaryContactID = await getUserInfo(primaryContactDOM.value);
 
     //Check if all required inputs have values; if not go back and let user complete the form
-    const allValues = [eventNameDOM.value,eventDescDOM.value,primaryContactID.Contact_ID,startDateDOM.value,endDateDOM.value,eventTypeDOM.value,attendanceDOM.value,congregationDOM.value,setupTimeDOM.value,cleanupTimeDOM.value,eventLocationDOM.value, visibilityLevelDOM.value]
+    const allValues = [eventNameDOM.value,eventDescDOM.value,primaryContactID.Contact_ID,startDateDOM.value,startTimeDOM.value, endTimeDOM.value,eventTypeDOM.value,attendanceDOM.value,congregationDOM.value,setupTimeDOM.value,cleanupTimeDOM.value,eventLocationDOM.value, visibilityLevelDOM.value]
     if (allValues.filter(value => value.toString() == "").length > 0) {
         sectionId = 0;
         nextSection();
@@ -450,10 +454,12 @@ const handleSubmit = async (e) => {
     }
     loading();
 
-
+    let startDateTime = subtractMinutesToDate(new Date(`${startDateDOM.value}T${startTimeDOM.value}`), 0)
+    let endDateTime = addMinutesToDate(new Date(`${startDateDOM.value}T${endTimeDOM.value}`), 0)
+    // let endDateTime = new Date(`${startDateDOM.value}T${endTimeDOM.value}`).toISOString();
     
     if (days.length) {
-        const eventLength = new Date(endDateDOM.value).getTime() - new Date(startDateDOM.value).getTime();
+        const eventLength = new Date(endDateTime).getTime() - new Date(startDateTime).getTime();
         for (day of days) {
             const eventDay = new Date(new Date(day).getTime() - (new Date(day).getTimezoneOffset() * 60000))
             const event = [formatEvent(eventNameDOM.value,eventDescDOM.value,primaryContactID.Contact_ID,eventDay,new Date(new Date(eventDay).getTime() + eventLength).toISOString(),eventTypeDOM.value,attendanceDOM.value,congregationDOM.value,setupTimeDOM.value,cleanupTimeDOM.value,eventLocationDOM.value, visibilityLevelDOM.value)];
@@ -462,7 +468,7 @@ const handleSubmit = async (e) => {
         completed();
     } else {
         //turn input data into form for sending to MP
-        const event = [formatEvent(eventNameDOM.value,eventDescDOM.value,primaryContactID.Contact_ID,startDateDOM.value,endDateDOM.value,eventTypeDOM.value,attendanceDOM.value,congregationDOM.value,setupTimeDOM.value,cleanupTimeDOM.value,eventLocationDOM.value, visibilityLevelDOM.value)];
+        const event = [formatEvent(eventNameDOM.value,eventDescDOM.value,primaryContactID.Contact_ID,startDateTime,endDateTime,eventTypeDOM.value,attendanceDOM.value,congregationDOM.value,setupTimeDOM.value,cleanupTimeDOM.value,eventLocationDOM.value, visibilityLevelDOM.value)];
 
         await publishEvent(event)
         completed();

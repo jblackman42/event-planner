@@ -25,9 +25,12 @@
 
     const loadDaysList = () => {
         const daysListHTML = days.map((day, id) => {
-            const eventLength = new Date(endDateDOM.value).getTime() - new Date(startDateDOM.value).getTime();
-            const eventEndDate = new Date(new Date(day).getTime() + eventLength)
-            return `<li>${id + 1}: ${new Date(day).toDateString()} @ ${new Date(day).toLocaleTimeString()} - ${eventEndDate.toLocaleTimeString()}<input onclick="updateDays()" class="recurring-verify" id="${id}" type="checkbox" checked></input></li>`
+            console.log(startDateDOM.value)
+            console.log(startTimeDOM.value)
+            console.log(endTimeDOM.value)
+            let startDateTime = new Date(`${startDateDOM.value}T${startTimeDOM.value}`);
+            let endDateTime = new Date(`${startDateDOM.value}T${endTimeDOM.value}`);
+            return `<li>${id + 1}: ${new Date(day).toDateString()} @ ${startDateTime.toLocaleTimeString()} - ${endDateTime.toLocaleTimeString()}<input onclick="updateDays()" class="recurring-verify" id="${id}" type="checkbox" checked></input></li>`
         }).join('')
         daysListDOM.innerHTML = daysListHTML;
         eventTitleDOM.innerText = eventNameDOM.value;
