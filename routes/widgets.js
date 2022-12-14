@@ -364,4 +364,47 @@ router.post('/opportunity-auto-place', ensureWebhook, async (req, res) => {
     }
 })
 
+router.post('/email', ensureWebhook, async (req, res) => {
+    const apiUserId = 6580;
+    const apiUserContactId = 94810;
+
+    const {Subject, Name, Email, Message, RecipientContactID} = req.body;
+
+    //get access token for accessing database informatin
+    const accessToken = await axios({
+        method: 'get',
+        mode: 'cors',
+        url: 'https://phc.events/api/oauth/authorize'
+    })
+        .then(response => response.data.access_token)
+        .catch(err => console.error(err))
+
+    try {
+        await axios({
+            method: 'post',
+            url: 'https://my.pureheart.org/ministryplatformapi/communications',
+            headers: {
+                'Accept': 'application/json',
+                'Content-Type': 'application/json',
+                'Authorization': 'Bearer ' + accessToken,
+            },
+            data: {
+                "AuthorUserId": apiUserId,
+                "Subject": Subject,
+                "Body": Message,
+                "FromContactId": apiUserContactId,
+                "ReplyToContactId": apiUserContactId,
+                "ReplyToName": Name,
+                "ReplyToAddress": Email,
+                "ExcludeOptedOutOfBulkMessages": false,
+                "Contacts": [RecipientContactID]
+            }
+        })
+        res.sendStatus(200)
+    } catch (err) {
+        console.log(err)
+        res.sendStatus(500)
+    }
+})
+
 module.exports = router;
