@@ -88,12 +88,14 @@ const ensureAdministrator = async (req, res, next) => {
 
 const ensureWebhook = (req, res, next) => {
     const authKey = req.header('Auth-Key')
-    
+    console.log(authKey)
     if (authKey == process.env.WIDGET_AUTH_SECRET) {
+        console.log('yay')
         //webhook is authorized
         next();
     } else {
         //webhook is not authorized
+        console.log('nay')
         res.sendStatus(401)
     }
 }

@@ -366,7 +366,7 @@ router.post('/opportunity-auto-place', ensureWebhook, async (req, res) => {
 
 router.post('/email', ensureWebhook, async (req, res) => {
     const apiUserId = 6580;
-    const apiUserContactId = 94810;
+    const apiUserContactId = 95995;
 
     const {Subject, Name, Email, Message, RecipientContactID} = req.body;
 
