@@ -5,6 +5,7 @@ const cors = require('cors');
 
 const {ensureAdministrator, ensureWebhook} = require('../middleware/auth.js')
 const StaffSchema = require('../models/Staff');
+const StaffSchemaOld = require('../models/Staff-old');
 const SermonSchema = require('../models/Sermons');
 
 
@@ -156,10 +157,11 @@ router.get('/webhook-update-staff', ensureWebhook, async (req, res) => {
             const Image_URL = !staffFile ? null : `https://my.pureheart.org/ministryplatformapi/files/${staffFile.UniqueFileId}`
             
             const {Contact_ID, Display_Name, First_Name, Last_Name, Nickname, Email_Address} = contact;
-            console.log(`${i + 1}/${allStaff.length}`)
             const {Job_Title, Start_Date, End_Date, Bio} = staffRecord ? staffRecord : {Job_Title: null, Start_Date: null, End_Date: null, Bio: null};
+            if (Job_Title && Job_Title.toLowerCase().includes('pastor')) console.log(Contact_ID)
             
-            const participantObject = {                Contact_ID: Contact_ID,
+            const participantObject = {
+                Contact_ID: Contact_ID,
                 Display_Name: Display_Name,
                 First_Name: First_Name,
                 Last_Name: Last_Name,
