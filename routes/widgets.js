@@ -34,6 +34,12 @@ router.post('/staff', async (req, res) => {
         res.status(201).json({ staff });
     } catch(error) { res.status(500).json({ msg: error }) }
 })
+router.get('/staff', async (req, res) => {
+    try {
+        const staff = await StaffSchema.find({});
+        res.status(201).json({ staff });
+    } catch(error) { res.status(500).json({ msg: error }) }
+})
 
 router.get('/staff-email', async (req, res) => {
     try {
