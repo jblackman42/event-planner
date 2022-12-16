@@ -27,9 +27,10 @@ router.post('/update-staff', ensureAdministrator, async (req, res) => {
     } catch (error) { console.log(error);res.status(500).json({ msg: error }) }
 })
 
-router.get('/staff', async (req, res) => {
+router.post('/staff', async (req, res) => {
     try {
-        const staff = await StaffSchema.find({});
+        const {ids} = req.body;
+        const staff = await StaffSchema.find({Contact_ID: ids});
         res.status(201).json({ staff });
     } catch(error) { res.status(500).json({ msg: error }) }
 })
@@ -58,32 +59,18 @@ router.get('/webhook-update-staff', ensureWebhook, async (req, res) => {
     })
         .then(response => response.data.access_token)
         .catch(err => console.error(err))
-        
-    //2443 - lead pastor
-    //2464 - executive and campus pastors
-    //2387 - lead pastors
-    //2388 - pastors
-    //2389 - directors
-    //2390 - support staff
-    const webStaffGroupIDs = [
-        {id: 2443, title: "Senior Pastor"},
-        {id: 2464, title: "Executive Pastor"},
-        {id: 2387, title: "Lead Pastors"},
-        {id: 2388, title: "Pastors"},
-        {id: 2389, title: "Directors"},
-        {id: 2390, title: "Support Staff"},
-    ]
-    const getWebStaffGroupParticipants = async (Group_ID) => {
+    
+    const getStaffGroupParticipants = async () => {
         return await axios({
             method: 'get',
-            url: `https://my.pureheart.org/ministryplatformapi/tables/Group_Participants?%24select=Participant_ID&%24filter=Group_ID%3D${Group_ID}%20AND%20End_Date%20IS%20NULL`,
+            url: `https://my.pureheart.org/ministryplatformapi/tables/Group_Participants?$filter=GETDATE() BETWEEN CONVERT(DATE,Start_Date) AND ISNULL(End_Date,GETDATE()) AND Group_ID=${2473}`,
             mode: 'cors',
             headers: {
                 Accept: 'application/json',
                 Authorization: `Bearer ${accessToken}`
             }
         })
-            .then(response => response.data)
+            .then(response => response.data.map(participant => participant.Participant_ID))
             .catch(err => console.error(err))
 
     }
@@ -91,14 +78,14 @@ router.get('/webhook-update-staff', ensureWebhook, async (req, res) => {
     const getParticipantFromID = async (Participant_ID) => {
         return await axios({
             method: 'get',
-            url: `https://my.pureheart.org/ministryplatformapi/tables/Participants/${Participant_ID}`,
+            url: `https://my.pureheart.org/ministryplatformapi/tables/Participants?$select=Contact_ID&$filter=Participant_ID=${Participant_ID}`,
             mode: 'cors',
             headers: {
                 Accept: 'application/json',
                 Authorization: `Bearer ${accessToken}`
             }
         })
-            .then(response => response.data[0])
+            .then(response => response.data[0].Contact_ID)
             .catch(err => console.error(err))
     }
 
@@ -112,7 +99,10 @@ router.get('/webhook-update-staff', ensureWebhook, async (req, res) => {
                 Authorization: `Bearer ${accessToken}`
             }
         })
-            .then(response => response.data[0])
+            .then(response => {
+                // console.log(Contact_ID, response.data)
+                return response.data[0]
+            })
             .catch(err => console.error(err))
     }
 
@@ -147,45 +137,38 @@ router.get('/webhook-update-staff', ensureWebhook, async (req, res) => {
     }
 
     const formatStaff = async () => {
+        await StaffSchema.deleteMany();
 
-        for (let i = 0; i < webStaffGroupIDs.length; i ++) {
-            const {id, title} = webStaffGroupIDs[i];
-            let staffParticipants = [];
-            const participants = await getWebStaffGroupParticipants(id)
-            for (let j = 0; j < participants.length; j ++) {
+        const allStaff = await getStaffGroupParticipants();
 
-                const {Contact_ID} = await getParticipantFromID(participants[j].Participant_ID)
-                const contact = await getContactFromID(Contact_ID);
-                const {Nickname, First_Name, Last_Name, Email_Address, Email_Unlisted, Mobile_Phone, Mobile_Phone_Unlisted, Web_Page} = contact;
-                const {Job_Title, Bio} = await getStaffRecordFromContactID(Contact_ID);
-                const {UniqueFileId} = await getFilesFromContactID(Contact_ID);
-                const imageUrl = `https://my.pureheart.org/ministryplatformapi/files/${UniqueFileId}`
-                const display_name = `${Nickname} ${Last_Name}`;
-                const email = Email_Unlisted ? null : Email_Address;
-                const phone = Mobile_Phone_Unlisted ? null : Mobile_Phone;
-                
-                staffParticipants.push({
-                    Contact_ID: Contact_ID,
-                    First_Name: First_Name,
-                    Last_Name: Last_Name,
-                    Display_Name: display_name,
-                    Email: email,
-                    Section_Id: i,
-                    Staff_Id: j,
-                    Phone: phone,
-                    Job_Title: Job_Title,
-                    Image_URL: imageUrl,
-                    Web_Page: Web_Page,
-                    Bio: Bio
-                })
+        const allParticipants = [];
+        for (let i = 0; i < allStaff.length; i ++) {
+            const participantContactID = await getParticipantFromID(allStaff[i]);
+            const contact = await getContactFromID(participantContactID);
+            const staffRecord = await getStaffRecordFromContactID(participantContactID);
+            const staffFile = await getFilesFromContactID(participantContactID);
+            const Image_URL = !staffFile ? null : `https://my.pureheart.org/ministryplatformapi/files/${staffFile.UniqueFileId}`
+            
+            const {Contact_ID, Display_Name, First_Name, Last_Name, Nickname, Email_Address} = contact;
+            console.log(`${i + 1}/${allStaff.length}`)
+            const {Job_Title, Start_Date, End_Date, Bio} = staffRecord ? staffRecord : {Job_Title: null, Start_Date: null, End_Date: null, Bio: null};
+            
+            const participantObject = {                Contact_ID: Contact_ID,
+                Display_Name: Display_Name,
+                First_Name: First_Name,
+                Last_Name: Last_Name,
+                Nickname: Nickname,
+                Email_Address: Email_Address,
+                Job_Title: Job_Title,
+                Start_Date: Start_Date,
+                End_Date: End_Date,
+                Bio: Bio,
+                Image_URL: Image_URL
             }
-            await StaffSchema.create( {
-                Group_ID: id,
-                Group_Title: title,
-                Participants: staffParticipants
-            } )
+            allParticipants.push(participantObject);
+            await StaffSchema.create(participantObject);
         }
-        res.sendStatus(200)
+        res.status(200).json({allParticipants})
     }
 
     formatStaff()
