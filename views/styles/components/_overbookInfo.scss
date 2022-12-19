@@ -1,0 +1,68 @@
+$recurring-container-bg: var(--primary-bg-color);
+$recurring-event-text: var(--primary-font-color);
+$input-background: var(--primary-bg-color);
+$recurring-header-bg: var(--secondary-bg-color);
+
+.overbook-popup-container {
+    display: grid;
+    place-items: center;
+    position: fixed;
+    inset: 0;
+    background-color: #000000AA;
+    color: $recurring-event-text;
+    z-index: 999;
+
+    display: none;
+    visibility: hidden;
+
+    &.open {
+        display: grid;
+        visibility: visible;
+    }
+    @media screen and (min-width: 768px) {
+        &.open {
+            .overbook-popup {animation: fade-in 200ms;}
+        }
+    }
+
+    @keyframes fade-in {
+        from {
+          opacity: 0;
+          transform: translate(0, 10%);
+        }
+        to {
+          opacity: 1;
+          transform: translate(0, 0);
+        }
+    }
+
+    .overbook-popup {
+        background-color: $recurring-container-bg;
+        border-radius: 2.5px;
+        overflow: hidden;
+        position: relative;
+
+        width: 600px;
+        max-width: 90vw;
+        .overbook-header {
+            // background-color: $recurring-header-bg;
+            border-bottom: 2px solid $recurring-header-bg;
+
+            p {
+                padding: 1rem;
+                margin: 0;
+                font-size: 1.5rem;
+            }
+            .close-button {
+                color: currentColor;
+            };
+        }
+        .overbook-content {
+            p {
+                display: flex;
+                justify-content: space-between;
+                margin: 1rem;
+            }
+        }
+    }
+}

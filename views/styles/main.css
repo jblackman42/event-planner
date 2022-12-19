@@ -2287,6 +2287,62 @@ input:checked + .slider:before {
   border-color: var(--secondary-bg-color) !important;
 }
 
+.overbook-popup-container {
+  display: grid;
+  place-items: center;
+  position: fixed;
+  inset: 0;
+  background-color: rgba(0, 0, 0, 0.6666666667);
+  color: var(--primary-font-color);
+  z-index: 999;
+  display: none;
+  visibility: hidden;
+}
+.overbook-popup-container.open {
+  display: grid;
+  visibility: visible;
+}
+@media screen and (min-width: 768px) {
+  .overbook-popup-container.open .overbook-popup {
+    -webkit-animation: fade-in 200ms;
+            animation: fade-in 200ms;
+  }
+}
+@keyframes fade-in {
+  from {
+    opacity: 0;
+    transform: translate(0, 10%);
+  }
+  to {
+    opacity: 1;
+    transform: translate(0, 0);
+  }
+}
+.overbook-popup-container .overbook-popup {
+  background-color: var(--primary-bg-color);
+  border-radius: 2.5px;
+  overflow: hidden;
+  position: relative;
+  width: 600px;
+  max-width: 90vw;
+}
+.overbook-popup-container .overbook-popup .overbook-header {
+  border-bottom: 2px solid var(--secondary-bg-color);
+}
+.overbook-popup-container .overbook-popup .overbook-header p {
+  padding: 1rem;
+  margin: 0;
+  font-size: 1.5rem;
+}
+.overbook-popup-container .overbook-popup .overbook-header .close-button {
+  color: currentColor;
+}
+.overbook-popup-container .overbook-popup .overbook-content p {
+  display: flex;
+  justify-content: space-between;
+  margin: 1rem;
+}
+
 #loginForm,
 #signUpForm {
   background-color: #181818;

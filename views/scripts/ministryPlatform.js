@@ -68,6 +68,7 @@ const getDaysEventsBetweenTimes = (startTime, endTime) => {
     })
     .then(response => response.data.filter(event => !event.Cancelled))
     .catch(err => {console.error(err)})
+    console.log(response)
     return response;
 }
 

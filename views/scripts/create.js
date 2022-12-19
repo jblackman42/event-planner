@@ -218,14 +218,18 @@ const updateEventTimes = async () => {
             const overlapEvents = await getDaysEventsBetweenTimes(currEventStart, currEventEnd);
             
             for (let i = 0; i < overlapEvents.length; i ++) {
-                const {Event_ID} = overlapEvents[i];
+                const {Event_ID, Event_Title} = overlapEvents[i];
                 const eventRooms = await getEventRooms(Event_ID);
                 eventRooms.forEach(room => {
-                    overlappingEventRooms.push(room.Room_ID)
+                    overlappingEventRooms.push({
+                        room: room.Room_ID,
+                        day: day,
+                        title: Event_Title
+                    })
                 })
             }
         }
-        overlappingEventRooms =  [...new Set(overlappingEventRooms)]
+        // overlappingEventRooms =  [...new Set(overlappingEventRooms)]
 
         overlappingRoomsDone();
     } else {
@@ -233,10 +237,14 @@ const updateEventTimes = async () => {
         // const overlapEvents = [];
         
         for (let i = 0; i < overlapEvents.length; i ++) {
-            const {Event_ID} = overlapEvents[i];
+            const {Event_ID, Event_Title} = overlapEvents[i];
             const eventRooms = await getEventRooms(Event_ID);
             eventRooms.forEach(room => {
-                overlappingEventRooms.push(room.Room_ID)
+                overlappingEventRooms.push({
+                    room: room.Room_ID,
+                    day: startDateTime,
+                    title: Event_Title
+                })
             })
         }
     }
@@ -273,6 +281,7 @@ const loadRoomOptions = async () => {
             const {Building_Name, Building_ID} = building;
             const rooms = await getBuildingRooms(Building_ID);
             if (rooms.length == 0) return;
+            console.log(overlappingEventRooms)
             return `
                 <div class="building">
                     <div class="building-header" onclick="toggleAccordion(${Building_ID})">
@@ -282,11 +291,13 @@ const loadRoomOptions = async () => {
                     <ul class="room-accordion closed" id="rooms-${Building_ID}" style="max-height: ${rooms.length * 25}px; transition: max-height ${rooms.length * 25}ms linear;">
                         ${rooms.map(room => {
                             const {Room_Name, Room_ID} = room;
-                            const roomUnavailable = overlappingEventRooms.includes(Room_ID);
+                            // const roomUnavailable = overlappingEventRooms.includes(Room_ID);
+                            const blockedRooms = overlappingEventRooms.filter(data => data.room == Room_ID);
+                            const blockedRoomDates = blockedRooms.map(room => new Date(room.day).toLocaleDateString());
                             return `
                                 <li id="${Room_ID}">
-                                    <input type="checkbox" class="room-input" name="room-${Room_ID}" id="room-${Room_ID}" value="${Room_ID}" ${roomUnavailable ? 'disabled' : ''}>
-                                    <label for="room-${Room_ID}" ${roomUnavailable ? 'style="text-decoration:line-through;"' : ''}>${Room_Name}</label>
+                                    <input type="checkbox" class="room-input" name="room-${Room_ID}" id="room-${Room_ID}" value="${Room_ID}" ${blockedRooms.length ? 'disabled' : ''}>
+                                    <label for="room-${Room_ID}"><span ${blockedRooms.length ? `style="text-decoration:line-through;" ` : ''}>${Room_Name}</span> ${blockedRooms.length ? `<i onclick='showOverbookPopup(${Room_ID}, "${Room_Name}")' class='fas fa-info-circle' style='cursor: pointer;'></i>` : ''}</label>
                                 </li>
                             `
                         }).join('')}
