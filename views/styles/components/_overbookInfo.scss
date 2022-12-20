@@ -58,6 +58,8 @@ $recurring-header-bg: var(--secondary-bg-color);
             };
         }
         .overbook-content {
+            max-height: 500px;
+            overflow: auto;
             p {
                 display: flex;
                 justify-content: space-between;
