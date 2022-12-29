@@ -4,36 +4,29 @@ const axios = require('axios');
 const schedule = require('node-schedule');
 
 
-const scheduledToNotify = [];
-
-//sends emails out at 2:00PM each day
-schedule.scheduleJob('14 * * *', function(){
-    sendNotifications();
-});
-
-const sendNotifications = async () => {
+const sendNotifications = async (req, res) => {
     const access_token = await axios({
         method: 'get',
         url: `${process.env.DOMAIN_NAME}/api/oauth/authorize`
     })
     .then(response => response.data.access_token)
 
-    const uniquePrayerIDs = [...new Set(scheduledToNotify)]
-    scheduledToNotify.length = 0;
-    console.log(uniquePrayerIDs)
+    const prayersToNotify = await axios({
+        method: 'get',
+        //gets all prayer requests that are to be scheduled for notification within the last 2 weeks
+        url: 'https://my.pureheart.org/ministryplatformapi/tables/Prayer_Requests?$filter=Date_Created > dateadd(week,-2,getdate()) AND Notification_Scheduled=1',
+        headers: {
+            'Authorization': `Bearer ${access_token}`
+        }
+    })
+        .then(response => response.data)
+        .catch(err => console.error(err))
 
-    for (let i = 0; i < uniquePrayerIDs.length; i ++) {
-        const prayerRequest = await axios({
-            method: 'get',
-            url: `https://my.pureheart.org/ministryplatformapi/tables/Prayer_Requests/${uniquePrayerIDs[i]}`,
-            headers: {
-                'Authorization': `Bearer ${access_token}`
-            }
-        })
-            .then(response => response.data[0])
+    console.log(prayersToNotify.length)
+    for (let i = 0; i < prayersToNotify.length; i ++) {
 
-        const {Author_Name, Author_Email, Prayer_Count} = prayerRequest;
-        console.log('sending email notif to ' + Author_Email)
+        const {Author_Name, Author_Email, Prayer_Count} = prayersToNotify[i];
+        //send email to prayer authors letting them know how many times their request has been prayed for
         await axios({
             method: 'post',
             url: 'https://my.pureheart.org/ministryplatformapi/messages',
@@ -52,14 +45,28 @@ const sendNotifications = async () => {
                 "Body": `Your recent contribution to the Pure Heart Church Prayer Wall has just been prayed for! It has now been prayed for ${Prayer_Count} times.`
             }
         })
+        //removes notification scheduled bit field
+        prayersToNotify[i].Notification_Scheduled = 0;
+        await axios({
+            method: 'put',
+            url: 'https://my.pureheart.org/ministryplatformapi/tables/Prayer_Requests',
+            headers: {
+                'Authorization': `Bearer ${access_token}`
+            },
+            data: [prayersToNotify[i]]
+        })
     }
-
-    return uniquePrayerIDs;
+    
+    if (!req) return console.log(`sent ${prayersToNotify.length} ${prayersToNotify.length == 1 ? 'notification' : 'notifications'}`)
+    res.status(200).send({msg: `sent ${prayersToNotify.length} ${prayersToNotify.length == 1 ? 'notification' : 'notifications'}`}).end()
 }
 
+//sends emails out at 5:00PM each day
+schedule.scheduleJob('17 * * *', () => sendNotifications());
+
+
 router.get('/send-notifications', async (req, res) => {
-    const notificationIDs = await sendNotifications();
-    res.status(200).send({notificationIDs}).end();
+    return await sendNotifications(req, res)
 })
 
 router.get('/', async (req, res) => {
@@ -142,9 +149,6 @@ router.put('/', async (req, res) => {
     .then(response => response.data.access_token)
 
     try {
-        const {Prayer_Request_ID, Prayer_Notify} = req.body;
-        if (Prayer_Notify) scheduledToNotify.push(Prayer_Request_ID)
-        console.log(scheduledToNotify)
         const data = await axios({
             method: 'put',
             url: 'https://my.pureheart.org/ministryplatformapi/tables/Prayer_Requests',
@@ -158,6 +162,7 @@ router.put('/', async (req, res) => {
 
         res.sendStatus(200)
     } catch (err) {
+        console.log(err)
         res.sendStatus(500)
     }
 })
