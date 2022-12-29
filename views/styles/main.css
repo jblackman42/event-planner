@@ -2337,6 +2337,10 @@ input:checked + .slider:before {
 .overbook-popup-container .overbook-popup .overbook-header .close-button {
   color: currentColor;
 }
+.overbook-popup-container .overbook-popup .overbook-content {
+  max-height: 500px;
+  overflow: auto;
+}
 .overbook-popup-container .overbook-popup .overbook-content p {
   display: flex;
   justify-content: space-between;

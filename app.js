@@ -47,6 +47,7 @@ app.use('/', require('./routes/index'))
 app.use('/api/oauth', require('./routes/oauth.js'))
 app.use('/api/widgets', require('./routes/widgets.js'))
 app.use('/api/attendance', require('./routes/AttendanceRoutes.js'))
+app.use('/api/prayer-wall', require('./routes/prayer-wall.js'))
 
 const start = async () => {
     try {
