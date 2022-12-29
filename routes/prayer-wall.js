@@ -113,7 +113,14 @@ router.get('/:id', async (req, res) => {
             'Authorization': `Bearer ${access_token}`
         }
     })
-    .then(response => response.data[0])
+    .then(response => response.data.map(prayer => {
+        if (prayer.Private) {
+            prayer.Author_Email = 'Anonymous';
+            prayer.Author_Name = 'Anonymous';
+            prayer.Author_Phone = 'Anonymous';
+        }
+        return prayer;
+    })[0])
     .catch(err => console.log(err))
     
     res.status(200).json({prayer_request}).end();
