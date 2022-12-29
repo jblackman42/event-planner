@@ -54,13 +54,12 @@ const sendNotifications = async () => {
         })
     }
 
-    console.log('done')
-
+    return uniquePrayerIDs;
 }
 
 router.get('/send-notifications', async (req, res) => {
-    await sendNotifications();
-    res.sendStatus(200)
+    const notificationIDs = await sendNotifications();
+    res.status(200).send({notificationIDs}).end();
 })
 
 router.get('/', async (req, res) => {
