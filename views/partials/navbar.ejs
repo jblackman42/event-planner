@@ -19,7 +19,7 @@
                 <li><a href="/">Calendar</a></li>
                 <li id="new-event-btn"><a href="/create">New Event</a></li>
                 <li><a href="/my-tasks" id="tasks-link">My Tasks</a></li>
-                <li id="loggedOut"><a href="/login">Login</a></li>
+                <li id="prayer-wall-btn"><a href="/prayer-wall">Prayer Wall</a></li>
                 <li id="loggedIn"><a onclick="logout()" href="/">Logout</a></li>
             </ul>
         </div>
@@ -51,6 +51,7 @@
     const navContainerDOM = document.querySelector('.navContainer');
 
     const newEventBtn = document.querySelector('#new-event-btn');
+    const prayerWallBtn = document.querySelector('#prayer-wall-btn')
 
     openButtonDOM.addEventListener('click', () => {
         navContainerDOM.classList.toggle('open');
@@ -66,9 +67,6 @@
 
     const welcomeMsg = async () => {
         const user = await getUser()
-        
-        loggedOut.style.visibility = 'hidden';
-        loggedOut.style.display = 'none';
 
         userWelcomeMsg.innerHTML = `Welcome, ${user.DisplayName.split(', ').reverse().join(' ')}`;
         loggedIn.style.visibility = 'visible';
@@ -104,6 +102,7 @@
         .then(response => response.data)
         .then(data => {
             const eventCreatorRoleId = [2202, 2];
+            const prayerManagerRoleId = [2206, 2]
             const {userRoles} = data;
             const userRoleIds = userRoles.map(role => role.Role_ID);
             
@@ -112,6 +111,12 @@
                 //add new event from navbar
                 newEventBtn.style.display = 'block';
                 newEventBtn.style.visibility = 'visible';
+            }
+            
+            //if logged in user has prayer manager role show prayer wall button
+            if (checkDuplicates(userRoleIds, prayerManagerRoleId)) {
+                prayerWallBtn.style.display = 'block';
+                prayerWallBtn.style.visibility = 'visible';
             }
         })
 

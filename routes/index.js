@@ -23,6 +23,9 @@ navigation.get('/login', (req, res) => {
 navigation.get('/create', ensureAdminAuthenticated, (req, res) => {
   res.render('pages/create')
 })
+navigation.get('/prayer-wall', ensureAuthenticated, (req, res) => {
+  res.render('pages/prayer-manager')
+})
 navigation.get('/health-assesment', ensureAuthenticated, (req, res) => {
   res.render('pages/health-assesment')
 })

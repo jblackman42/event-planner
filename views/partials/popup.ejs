@@ -84,7 +84,7 @@
                 if (index == 0) {
                     prevDayBtn.style.visibility = 'hidden';
                     prevDayBtn.style.none = 'none';
-                } else if (!dates[index + 1].active) {
+                } else if (!dates[index + 1] || !dates[index + 1].active) {
                     nextDayBtn.style.visibility = 'hidden';
                     nextDayBtn.style.none = 'none';
                 } else {

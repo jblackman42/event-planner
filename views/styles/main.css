@@ -1515,6 +1515,10 @@ nav .navContainer .links ul li#new-event-btn {
   display: none;
   visibility: hidden;
 }
+nav .navContainer .links ul li#prayer-wall-btn {
+  display: none;
+  visibility: hidden;
+}
 nav .navContainer .links ul li a {
   color: var(--primary-font-color);
   font-weight: bold;
@@ -2938,4 +2942,109 @@ table tr:last-of-type {
   #equipment.print-section .field {
     width: 50%;
   }
+}
+#prayer-wall-title {
+  color: var(--primary-font-color);
+  text-align: center;
+}
+@media screen and (max-width: 512px) {
+  #prayer-wall-title {
+    margin-top: 4rem;
+  }
+}
+
+.prayer-manager-container {
+  margin: 0 auto;
+  background-color: var(--primary-bg-color);
+  width: 800px;
+  max-width: 95vw;
+  display: grid;
+  place-items: center;
+  border-radius: 8px;
+  color: var(--primary-font-color);
+}
+.prayer-manager-container #prayer {
+  display: flex;
+  flex-wrap: wrap;
+  padding: 1rem 2rem;
+}
+.prayer-manager-container #prayer .input-container {
+  width: 100%;
+  position: relative;
+  margin: 0.5rem 0;
+}
+.prayer-manager-container #prayer .input-container::before {
+  content: "";
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 100%;
+  height: 1px;
+  background-color: #898989;
+}
+.prayer-manager-container #prayer .input-container:focus-within::before {
+  height: 4px;
+  background-color: #ecf0f1;
+  transition: height 100ms linear, background-color 100ms;
+}
+.prayer-manager-container #prayer .input-container input, .prayer-manager-container #prayer .input-container textarea {
+  font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen, Ubuntu, Cantarell, "Open Sans", "Helvetica Neue", sans-serif;
+  font-size: 18px;
+  width: 100%;
+  box-sizing: border-box;
+  outline: none;
+  background-color: transparent;
+  color: var(--primary-font-color);
+  border: none;
+}
+.prayer-manager-container #prayer .input-container input[type=checkbox] {
+  margin: 0.25rem 0.5rem;
+}
+.prayer-manager-container #prayer .input-container textarea {
+  resize: none;
+  height: 100px;
+}
+.prayer-manager-container #prayer .checkbox-container {
+  width: 50%;
+}
+@media screen and (max-width: 768px) {
+  .prayer-manager-container #prayer .checkbox-container {
+    width: 100%;
+  }
+}
+.prayer-manager-container #manager-controls-container {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  width: 100%;
+  padding: 1rem 0;
+  border-top: 4px solid var(--backgroundColor);
+}
+.prayer-manager-container #manager-controls-container p#prayer-index {
+  width: 100%;
+  text-align: center;
+  margin: 0;
+}
+.prayer-manager-container #manager-controls-container #prayer-btn-container {
+  display: flex;
+  width: 100%;
+  justify-content: space-between;
+}
+.prayer-manager-container #manager-controls-container #prayer-btn-container #back {
+  margin-inline: 2rem auto;
+  background-color: #898989 !important;
+  border-color: #898989 !important;
+}
+.prayer-manager-container #manager-controls-container #prayer-btn-container #reject {
+  margin-inline: auto 1rem;
+  background-color: var(--red-accent-color) !important;
+  border-color: var(--red-accent-color) !important;
+}
+.prayer-manager-container #manager-controls-container #prayer-btn-container #accept {
+  margin-inline: 1rem auto;
+}
+.prayer-manager-container #manager-controls-container #prayer-btn-container #next {
+  margin-inline: auto 2rem;
+  background-color: #898989 !important;
+  border-color: #898989 !important;
 }/*# sourceMappingURL=main.css.map */
