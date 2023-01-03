@@ -47,8 +47,8 @@
         loading();
         prayers = await getPrayerRequests();
         prayersToManage = prayers.filter(prayer => prayer.Prayer_Status_ID == 1)
-        console.log(prayers)
-        if (!prayers.length) {
+        console.log(prayersToManage)
+        if (!prayersToManage.length) {
             doneLoading();
             return document.querySelector('.prayer-manager-container').innerHTML = '<p>No Prayers Found</p>'
         };
