@@ -2942,6 +2942,7 @@ table tr:last-of-type {
   min-height: 100vh;
   display: grid;
   place-items: center;
+  background-color: hsl(200deg, 4%, 14%);
 }
 #refresh-container #btn-container {
   transform-style: preserve-3d;

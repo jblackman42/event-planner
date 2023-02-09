@@ -12,6 +12,8 @@ $rotate-angle: 25deg;
     display: grid;
     place-items: center;
 
+    background-color: hsl(200, 4%, 14%);
+
     #btn-container {
         transform-style: preserve-3d;
         position: absolute;
