@@ -369,7 +369,6 @@ html {
   transition: transform 150ms, box-shadow 150ms;
   -webkit-user-select: none;
      -moz-user-select: none;
-      -ms-user-select: none;
           user-select: none;
   aspect-ratio: auto !important;
   margin-left: auto;
@@ -423,7 +422,6 @@ html {
   -webkit-box-shadow: 0px 1px 3px rgba(0, 0, 0, 0.1);
   -webkit-user-select: none;
   -moz-user-select: none;
-   -ms-user-select: none;
        user-select: none;
   font-size: inherit;
   margin: 0;
@@ -474,219 +472,158 @@ html {
 @media screen and (min-width: 768px) {
   #calender .calender-day {
     opacity: 0;
-    -webkit-animation: calendar-fade 500ms ease-in-out 200ms 1 normal forwards;
-            animation: calendar-fade 500ms ease-in-out 200ms 1 normal forwards;
+    animation: calendar-fade 500ms ease-in-out 200ms 1 normal forwards;
   }
 }
 #calender .calender-day:nth-of-type(1) {
-  -webkit-animation-delay: 20ms;
-          animation-delay: 20ms;
+  animation-delay: 20ms;
 }
 #calender .calender-day:nth-of-type(2) {
-  -webkit-animation-delay: 40ms;
-          animation-delay: 40ms;
+  animation-delay: 40ms;
 }
 #calender .calender-day:nth-of-type(3) {
-  -webkit-animation-delay: 60ms;
-          animation-delay: 60ms;
+  animation-delay: 60ms;
 }
 #calender .calender-day:nth-of-type(4) {
-  -webkit-animation-delay: 80ms;
-          animation-delay: 80ms;
+  animation-delay: 80ms;
 }
 #calender .calender-day:nth-of-type(5) {
-  -webkit-animation-delay: 100ms;
-          animation-delay: 100ms;
+  animation-delay: 100ms;
 }
 #calender .calender-day:nth-of-type(6) {
-  -webkit-animation-delay: 120ms;
-          animation-delay: 120ms;
+  animation-delay: 120ms;
 }
 #calender .calender-day:nth-of-type(7) {
-  -webkit-animation-delay: 140ms;
-          animation-delay: 140ms;
+  animation-delay: 140ms;
 }
 #calender .calender-day:nth-of-type(8) {
-  -webkit-animation-delay: 160ms;
-          animation-delay: 160ms;
+  animation-delay: 160ms;
 }
 #calender .calender-day:nth-of-type(9) {
-  -webkit-animation-delay: 180ms;
-          animation-delay: 180ms;
+  animation-delay: 180ms;
 }
 #calender .calender-day:nth-of-type(10) {
-  -webkit-animation-delay: 200ms;
-          animation-delay: 200ms;
+  animation-delay: 200ms;
 }
 #calender .calender-day:nth-of-type(11) {
-  -webkit-animation-delay: 220ms;
-          animation-delay: 220ms;
+  animation-delay: 220ms;
 }
 #calender .calender-day:nth-of-type(12) {
-  -webkit-animation-delay: 240ms;
-          animation-delay: 240ms;
+  animation-delay: 240ms;
 }
 #calender .calender-day:nth-of-type(13) {
-  -webkit-animation-delay: 260ms;
-          animation-delay: 260ms;
+  animation-delay: 260ms;
 }
 #calender .calender-day:nth-of-type(14) {
-  -webkit-animation-delay: 280ms;
-          animation-delay: 280ms;
+  animation-delay: 280ms;
 }
 #calender .calender-day:nth-of-type(15) {
-  -webkit-animation-delay: 300ms;
-          animation-delay: 300ms;
+  animation-delay: 300ms;
 }
 #calender .calender-day:nth-of-type(16) {
-  -webkit-animation-delay: 320ms;
-          animation-delay: 320ms;
+  animation-delay: 320ms;
 }
 #calender .calender-day:nth-of-type(17) {
-  -webkit-animation-delay: 340ms;
-          animation-delay: 340ms;
+  animation-delay: 340ms;
 }
 #calender .calender-day:nth-of-type(18) {
-  -webkit-animation-delay: 360ms;
-          animation-delay: 360ms;
+  animation-delay: 360ms;
 }
 #calender .calender-day:nth-of-type(19) {
-  -webkit-animation-delay: 380ms;
-          animation-delay: 380ms;
+  animation-delay: 380ms;
 }
 #calender .calender-day:nth-of-type(20) {
-  -webkit-animation-delay: 400ms;
-          animation-delay: 400ms;
+  animation-delay: 400ms;
 }
 #calender .calender-day:nth-of-type(21) {
-  -webkit-animation-delay: 420ms;
-          animation-delay: 420ms;
+  animation-delay: 420ms;
 }
 #calender .calender-day:nth-of-type(22) {
-  -webkit-animation-delay: 440ms;
-          animation-delay: 440ms;
+  animation-delay: 440ms;
 }
 #calender .calender-day:nth-of-type(23) {
-  -webkit-animation-delay: 460ms;
-          animation-delay: 460ms;
+  animation-delay: 460ms;
 }
 #calender .calender-day:nth-of-type(24) {
-  -webkit-animation-delay: 480ms;
-          animation-delay: 480ms;
+  animation-delay: 480ms;
 }
 #calender .calender-day:nth-of-type(25) {
-  -webkit-animation-delay: 500ms;
-          animation-delay: 500ms;
+  animation-delay: 500ms;
 }
 #calender .calender-day:nth-of-type(26) {
-  -webkit-animation-delay: 520ms;
-          animation-delay: 520ms;
+  animation-delay: 520ms;
 }
 #calender .calender-day:nth-of-type(27) {
-  -webkit-animation-delay: 540ms;
-          animation-delay: 540ms;
+  animation-delay: 540ms;
 }
 #calender .calender-day:nth-of-type(28) {
-  -webkit-animation-delay: 560ms;
-          animation-delay: 560ms;
+  animation-delay: 560ms;
 }
 #calender .calender-day:nth-of-type(29) {
-  -webkit-animation-delay: 580ms;
-          animation-delay: 580ms;
+  animation-delay: 580ms;
 }
 #calender .calender-day:nth-of-type(30) {
-  -webkit-animation-delay: 600ms;
-          animation-delay: 600ms;
+  animation-delay: 600ms;
 }
 #calender .calender-day:nth-of-type(31) {
-  -webkit-animation-delay: 620ms;
-          animation-delay: 620ms;
+  animation-delay: 620ms;
 }
 #calender .calender-day:nth-of-type(32) {
-  -webkit-animation-delay: 640ms;
-          animation-delay: 640ms;
+  animation-delay: 640ms;
 }
 #calender .calender-day:nth-of-type(33) {
-  -webkit-animation-delay: 660ms;
-          animation-delay: 660ms;
+  animation-delay: 660ms;
 }
 #calender .calender-day:nth-of-type(34) {
-  -webkit-animation-delay: 680ms;
-          animation-delay: 680ms;
+  animation-delay: 680ms;
 }
 #calender .calender-day:nth-of-type(35) {
-  -webkit-animation-delay: 700ms;
-          animation-delay: 700ms;
+  animation-delay: 700ms;
 }
 #calender .calender-day:nth-of-type(36) {
-  -webkit-animation-delay: 720ms;
-          animation-delay: 720ms;
+  animation-delay: 720ms;
 }
 #calender .calender-day:nth-of-type(37) {
-  -webkit-animation-delay: 740ms;
-          animation-delay: 740ms;
+  animation-delay: 740ms;
 }
 #calender .calender-day:nth-of-type(38) {
-  -webkit-animation-delay: 760ms;
-          animation-delay: 760ms;
+  animation-delay: 760ms;
 }
 #calender .calender-day:nth-of-type(39) {
-  -webkit-animation-delay: 780ms;
-          animation-delay: 780ms;
+  animation-delay: 780ms;
 }
 #calender .calender-day:nth-of-type(40) {
-  -webkit-animation-delay: 800ms;
-          animation-delay: 800ms;
+  animation-delay: 800ms;
 }
 #calender .calender-day:nth-of-type(41) {
-  -webkit-animation-delay: 820ms;
-          animation-delay: 820ms;
+  animation-delay: 820ms;
 }
 #calender .calender-day:nth-of-type(42) {
-  -webkit-animation-delay: 840ms;
-          animation-delay: 840ms;
+  animation-delay: 840ms;
 }
 #calender .calender-day:nth-of-type(43) {
-  -webkit-animation-delay: 860ms;
-          animation-delay: 860ms;
+  animation-delay: 860ms;
 }
 #calender .calender-day:nth-of-type(44) {
-  -webkit-animation-delay: 880ms;
-          animation-delay: 880ms;
+  animation-delay: 880ms;
 }
 #calender .calender-day:nth-of-type(45) {
-  -webkit-animation-delay: 900ms;
-          animation-delay: 900ms;
+  animation-delay: 900ms;
 }
 #calender .calender-day:nth-of-type(46) {
-  -webkit-animation-delay: 920ms;
-          animation-delay: 920ms;
+  animation-delay: 920ms;
 }
 #calender .calender-day:nth-of-type(47) {
-  -webkit-animation-delay: 940ms;
-          animation-delay: 940ms;
+  animation-delay: 940ms;
 }
 #calender .calender-day:nth-of-type(48) {
-  -webkit-animation-delay: 960ms;
-          animation-delay: 960ms;
+  animation-delay: 960ms;
 }
 #calender .calender-day:nth-of-type(49) {
-  -webkit-animation-delay: 980ms;
-          animation-delay: 980ms;
+  animation-delay: 980ms;
 }
 #calender .calender-day:nth-of-type(50) {
-  -webkit-animation-delay: 1000ms;
-          animation-delay: 1000ms;
-}
-@-webkit-keyframes calendar-fade {
-  from {
-    transform: translate(5%, 20%);
-    opacity: 0;
-  }
-  to {
-    transform: translate(0, 0);
-    opacity: 1;
-  }
+  animation-delay: 1000ms;
 }
 @keyframes calendar-fade {
   from {
@@ -715,25 +652,13 @@ html {
   bottom: 0;
   left: 0;
   height: 5px;
-  -webkit-animation-name: event-progress;
-          animation-name: event-progress;
-  -webkit-animation-duration: 1s;
-          animation-duration: 1s;
-  -webkit-animation-delay: 0.2s;
-          animation-delay: 0.2s;
-  -webkit-animation-fill-mode: forwards;
-          animation-fill-mode: forwards;
+  animation-name: event-progress;
+  animation-duration: 1s;
+  animation-delay: 0.2s;
+  animation-fill-mode: forwards;
   border-top-right-radius: 2.5px;
   border-bottom-right-radius: 2.5px;
   background-color: var(--red-accent-color);
-}
-@-webkit-keyframes event-progress {
-  from {
-    width: 0px;
-  }
-  to {
-    width: 140px;
-  }
 }
 @keyframes event-progress {
   from {
@@ -790,7 +715,6 @@ html {
   margin: 0 14px;
 }
 #calender-controls .nav-buttons {
-  height: -webkit-max-content;
   height: -moz-max-content;
   height: max-content;
   aspect-ratio: 1/1;
@@ -841,7 +765,6 @@ html {
   display: flex;
   margin: auto 0;
   width: 100%;
-  height: -webkit-max-content;
   height: -moz-max-content;
   height: max-content;
   max-width: 400px;
@@ -990,17 +913,7 @@ html {
   border-radius: 50%;
   width: 100px;
   height: 100px;
-  -webkit-animation: spin 1s linear infinite;
-          animation: spin 1s linear infinite;
-}
-
-@-webkit-keyframes spin {
-  0% {
-    transform: rotate(0deg);
-  }
-  100% {
-    transform: rotate(360deg);
-  }
+  animation: spin 1s linear infinite;
 }
 
 @keyframes spin {
@@ -1029,18 +942,7 @@ html {
 }
 @media screen and (min-width: 768px) {
   #popup-container.open #popup, #popup-container.open #next-day-btn, #popup-container.open #prev-day-btn {
-    -webkit-animation: fade-in 200ms;
-            animation: fade-in 200ms;
-  }
-}
-@-webkit-keyframes fade-in {
-  from {
-    opacity: 0;
-    transform: translate(0, 10%);
-  }
-  to {
-    opacity: 1;
-    transform: translate(0, 0);
+    animation: fade-in 200ms;
   }
 }
 @keyframes fade-in {
@@ -1060,7 +962,6 @@ html {
 }
 #popup-container #next-day-btn,
 #popup-container #prev-day-btn {
-  height: -webkit-max-content;
   height: -moz-max-content;
   height: max-content;
   max-height: 48px;
@@ -1076,7 +977,6 @@ html {
   cursor: pointer;
   -webkit-user-select: none;
      -moz-user-select: none;
-      -ms-user-select: none;
           user-select: none;
 }
 #popup-container #next-day-btn i,
@@ -1086,7 +986,6 @@ html {
 #popup-container #popup {
   width: 90vw;
   max-width: 700px;
-  height: -webkit-max-content;
   height: -moz-max-content;
   height: max-content;
   border-radius: 5px;
@@ -1164,7 +1063,6 @@ html {
 #popup-container #popup #events-list .event .btn-container .popup-btn .btn-label {
   position: absolute;
   font-size: 0.75rem;
-  width: -webkit-max-content;
   width: -moz-max-content;
   width: max-content;
   top: 110%;
@@ -1222,7 +1120,7 @@ html {
     flex-direction: column;
   }
   #popup-container #next-day-btn,
-#popup-container #prev-day-btn {
+  #popup-container #prev-day-btn {
     position: absolute;
     bottom: 0;
     right: 50%;
@@ -1641,7 +1539,6 @@ nav .navContainer .footer ul li a {
   background: var(--blue-accent-color2);
 }
 .pickers .choice {
-  height: -webkit-max-content;
   height: -moz-max-content;
   height: max-content;
   display: flex;
@@ -1655,7 +1552,6 @@ nav .navContainer .footer ul li a {
 .pickers .choice label {
   -webkit-user-select: none;
      -moz-user-select: none;
-      -ms-user-select: none;
           user-select: none;
   font-size: 1.75rem;
   height: 35px;
@@ -1722,7 +1618,6 @@ nav .navContainer .footer ul li a {
 .toggle-switch {
   display: grid;
   place-items: center;
-  height: -webkit-max-content;
   height: -moz-max-content;
   height: max-content;
   margin-block: auto;
@@ -1799,8 +1694,7 @@ input:checked + .slider:before {
 }
 @media screen and (min-width: 768px) {
   .recurring-event-container.open .recurring-event {
-    -webkit-animation: fade-in 200ms;
-            animation: fade-in 200ms;
+    animation: fade-in 200ms;
   }
 }
 @keyframes fade-in {
@@ -1872,7 +1766,6 @@ input:checked + .slider:before {
 }
 .recurring-event-container .recurring-event .date-options label {
   min-width: 80px;
-  height: -webkit-max-content;
   height: -moz-max-content;
   height: max-content;
 }
@@ -2067,7 +1960,6 @@ input:checked + .slider:before {
 }
 
 .graph-container {
-  width: -webkit-max-content;
   width: -moz-max-content;
   width: max-content;
   display: flex;
@@ -2223,8 +2115,7 @@ input:checked + .slider:before {
 }
 @media screen and (min-width: 768px) {
   #facilities-equipment-container.open #facilities-equipment {
-    -webkit-animation: fade-in 200ms;
-            animation: fade-in 200ms;
+    animation: fade-in 200ms;
   }
 }
 @keyframes fade-in {
@@ -2308,8 +2199,7 @@ input:checked + .slider:before {
 }
 @media screen and (min-width: 768px) {
   .overbook-popup-container.open .overbook-popup {
-    -webkit-animation: fade-in 200ms;
-            animation: fade-in 200ms;
+    animation: fade-in 200ms;
   }
 }
 @keyframes fade-in {
@@ -2437,7 +2327,7 @@ input:checked + .slider:before {
 }
 @media screen and (max-width: 380px) {
   #loginForm,
-#signUpForm {
+  #signUpForm {
     padding-inline: 1rem;
   }
 }
@@ -2520,7 +2410,6 @@ input:checked + .slider:before {
 }
 .form-container form div.section #room-selectors .building {
   width: calc(50% - 1rem);
-  height: -webkit-max-content;
   height: -moz-max-content;
   height: max-content;
   border-radius: 2.5px;
@@ -2562,7 +2451,6 @@ input:checked + .slider:before {
 }
 .form-container form div.section #room-selectors .building .room-accordion li {
   display: flex;
-  height: -webkit-max-content;
   height: -moz-max-content;
   height: max-content;
   align-items: flex-start;
@@ -2584,7 +2472,6 @@ input:checked + .slider:before {
 }
 .form-container form button {
   margin: 0.5rem;
-  height: -webkit-max-content;
   height: -moz-max-content;
   height: max-content;
   margin: auto 0.5rem 1rem auto;
@@ -2605,7 +2492,6 @@ input:checked + .slider:before {
   /* Firefox */
 }
 .form-container form .input.description textarea {
-  height: -webkit-max-content;
   height: -moz-max-content;
   height: max-content;
 }
@@ -2698,7 +2584,6 @@ input:checked + .slider:before {
 }
 #tasks-container .task .task-title, #tasks-container .task .task-start-date, #tasks-container .task .task-record {
   margin: 0;
-  width: -webkit-max-content;
   width: -moz-max-content;
   width: max-content;
   width: 30%;
@@ -3030,6 +2915,9 @@ table tr:last-of-type {
   width: 100%;
   justify-content: space-between;
 }
+.prayer-manager-container #manager-controls-container #prayer-btn-container button:disabled {
+  cursor: default;
+}
 .prayer-manager-container #manager-controls-container #prayer-btn-container #back {
   margin-inline: 2rem auto;
   background-color: #898989 !important;
@@ -3047,4 +2935,46 @@ table tr:last-of-type {
   margin-inline: auto 2rem;
   background-color: #898989 !important;
   border-color: #898989 !important;
+}
+
+#refresh-container {
+  min-width: 100%;
+  min-height: 100vh;
+  display: grid;
+  place-items: center;
+}
+#refresh-container #btn-container {
+  transform-style: preserve-3d;
+  position: absolute;
+  width: calc(clamp(200px, 40vw, 400px) + 25px);
+  height: calc(clamp(200px, 40vw, 400px) + 25px);
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%) rotate3d(1, 0, 0, 25deg);
+  border-radius: 50%;
+  background-color: #bdc3c7;
+  box-shadow: 0px 20px #7f8c8d;
+}
+#refresh-container #btn-container #refresh-btn {
+  position: absolute; /* optional */
+  width: clamp(200px, 40vw, 400px);
+  height: clamp(200px, 40vw, 400px);
+  background-color: #e74c3c;
+  border: none;
+  border-radius: 50%;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, calc(-50% - 20px));
+  color: white;
+  font-weight: bold;
+  font-size: clamp(1rem, 4vw, 3rem);
+  box-shadow: 0px 20px #c0392b;
+}
+#refresh-container #btn-container #refresh-btn:active {
+  box-shadow: 0px 10px #c0392b;
+  transform: translate(-50%, calc(-50% - 20px + 20px - 10px));
+}
+#refresh-container #btn-container #refresh-btn:hover:not(:active) {
+  box-shadow: 0px 22px #c0392b;
+  transform: translate(-50%, calc(-50% - 20px - 2px));
 }/*# sourceMappingURL=main.css.map */

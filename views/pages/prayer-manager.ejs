@@ -8,136 +8,158 @@
 
     <%- include('../partials/navbar'); %>
 
-    <h1 id="prayer-wall-title">Prayer Wall Manager</h1>
-    <div class="prayer-manager-container">
-        <div id="prayer">
-        </div>
-        <div id="manager-controls-container">
-            <p id="prayer-index"></p>
-            <div id="prayer-btn-container">
-                <button id="back" class="btn" onclick="prevPrayer()">Back</button>
-                <button id="reject" class="btn" onclick="submit(3)">Reject</button>
-                <button id="accept" class="btn" onclick="submit(2)">Accept</button>
-                <button id="next" class="btn" onclick="nextPrayer()">Next</button>
-            </div>
-        </div>
-    </div>
+    <prayer-manager></prayer-manager>
 
     <%- include('../partials/footer'); %>
 </body>
 <script>
-    let prayers = [];
-    let prayersToManage = [];
-    let currentIndex = 0;
-    const getPrayerRequests = async () => {
-        prayers = [];
-        currentIndex = 0;
-        return await axios({
-            method: 'get',
-            url: 'https://my.pureheart.org/ministryplatformapi/tables/Prayer_Requests',
-            headers: {
-                'Authorization': `Bearer ${access_token}`
-            }
-        })
-            .then(response => response.data)
-            .catch(err => console.error(err))
-    }
+    class PrayerManager extends HTMLElement {
+        constructor() {
+            super();
+            this.prayers = [];
+            this.currentIndex = 0;
 
-    const loadPrayerManager = async () => {
-        loading();
-        prayers = await getPrayerRequests();
-        prayersToManage = prayers.filter(prayer => prayer.Prayer_Status_ID == 1)
-        console.log(prayersToManage)
-        if (!prayersToManage.length) {
+            this.draw();
+        }
+
+        draw = async() => {
+
+            this.prayers = await axios({
+                method: 'get',
+                url: 'https://my.pureheart.org/ministryplatformapi/tables/Prayer_Requests?$filter=Prayer_Status_ID=1',
+                headers: {
+                    'Authorization': `Bearer ${access_token}`
+                }
+            })
+                .then(response => response.data)
+                .catch(err => console.error(err))
+
+            this.innerHTML = `
+                <h1 id="prayer-wall-title">Prayer Wall Manager</h1>
+                <div class="prayer-manager-container">
+                    <div id="prayer">
+                        <div class="input-container required">
+                            <input type="text" name="Author_Name" id="Author_Name" placeholder="Name" required>
+                        </div>
+                            
+                        <div class="input-container required">
+                            <input type="email" name="Author_Email" id="Author_Email" placeholder="Email" required>
+                        </div>
+
+                        <div class="input-container">
+                            <input type="tel" name="Author_Phone" id="Author_Phone" placeholder="Phone Number">
+                        </div>
+                            
+                        <div class="input-container">
+                            <input type="text" name="Prayer_Title" id="Prayer_Title" placeholder="Prayer Title">
+                        </div>
+
+                        <div class="input-container required">
+                            <textarea name="Prayer_Body" id="Prayer_Body" placeholder="Prayer Request" maxlength="250" required></textarea>
+                        </div>
+
+                        <div class="checkbox-container">
+                            <input type="checkbox" name="Private" id="Private">
+                            <label for="Private">Share Anonymously</label>
+                        </div>
+
+                        <div class="checkbox-container">
+                            <input type="checkbox" name="Notify" id="Notify">
+                            <label for="Notify"> Email Me When Someone Prays</label>
+                        </div>
+                    </div>
+                    <div id="manager-controls-container">
+                        <p id="prayer-index"></p>
+                        <div id="prayer-btn-container">
+                            <button id="back" class="btn">Back</button>
+                            <button id="reject" class="btn">Reject</button>
+                            <button id="accept" class="btn">Accept</button>
+                            <button id="next" class="btn">Next</button>
+                        </div>
+                    </div>
+                </div>
+            `
+
+            const backtBtnDOM = document.querySelector('#back');
+            const nextBtnDOM = document.querySelector('#next');
+            const acceptBtnDOM = document.querySelector('#accept');
+            const rejectBtnDOM = document.querySelector('#reject');
+
+            backtBtnDOM.onclick = this.back;
+            nextBtnDOM.onclick = this.next;
+            acceptBtnDOM.onclick = ()=>{this.submit(2)};
+            rejectBtnDOM.onclick = ()=>{this.submit(3)};
+
+            this.loadPrayer();
+        }
+
+        next = () => {
+            if (this.currentIndex + 1 > this.prayers.length - 1) return;
+            this.currentIndex ++;
+            this.loadPrayer();
+        }
+        
+        back = () => {
+            if (this.currentIndex - 1 < 0) return;
+            this.currentIndex --;
+            this.loadPrayer();
+        }
+
+        submit = async (statusID) => {
+            loading();
+            const prayer = this.prayers[ this.currentIndex];
+            await axios({
+                method: 'put',
+                url: '/api/prayer-wall',
+                data: {
+                    Prayer_Request_ID: prayer.Prayer_Request_ID,
+                    Prayer_Status_ID: statusID,
+                    Author_Name: document.querySelector('#Author_Name').value,
+                    Author_Email: document.querySelector('#Author_Email').value,
+                    Author_Phone: document.querySelector('#Author_Phone').value || null,
+                    Prayer_Title: document.querySelector('#Prayer_Title').value || null,
+                    Prayer_Body: document.querySelector('#Prayer_Body').value,
+                    Private: document.querySelector('#Private').checked,
+                    Prayer_Notify: document.querySelector('#Notify').checked
+                }
+            })
+            this.prayers.splice(this.currentIndex, 1)
+            
+            
+            if (this.currentIndex >= this.prayers.length) this.currentIndex --;
             doneLoading();
-            return document.querySelector('.prayer-manager-container').innerHTML = '<p>No Prayers Found</p>'
-        };
-        loadPrayer(currentIndex)
-        doneLoading();
-    }
-    loadPrayerManager();
+            this.draw();
+        }
 
-    const nextPrayer = () => {
-        const nextIndex = currentIndex + 1;
-        if (nextIndex > prayers.length - 1) return;
-        loadPrayer(currentIndex + 1);
-    }
-    const prevPrayer = () => {
-        const prevIndex = currentIndex - 1;
-        if (prevIndex < 0) return;
-        loadPrayer(currentIndex - 1)
-    }
+        loadPrayer = () => {
+            if (!this.prayers.length) {
+                document.querySelector('#prayer').innerHTML = '<p>No Prayers Found</p>';
+                document.querySelector('#prayer-index').innerHTML = '';
+                document.querySelector('#back').disabled = true;
+                document.querySelector('#next').disabled = true;
+                document.querySelector('#accept').disabled = true;
+                document.querySelector('#reject').disabled = true;
+                return;
+            };
 
-    const submit = async (statusID) => {
-        const prayer = prayers[currentIndex];
-        prayer.Prayer_Status_ID = statusID;
 
-        prayer.Author_Name = document.querySelector('#Author_Name').value
-        prayer.Author_Email = document.querySelector('#Author_Email').value
-        prayer.Author_Phone = document.querySelector('#Author_Phone').value || null
-        prayer.Prayer_Title = document.querySelector('#Prayer_Title').value || null
-        prayer.Prayer_Body = document.querySelector('#Prayer_Body').value
-        prayer.Private = document.querySelector('#Private').checked
-        prayer.Prayer_Notify = document.querySelector('#Notify').checked
+            const prayerContainerDOM = document.querySelector('#prayer');
+            const prayer = this.prayers[this.currentIndex];
 
-        if (!prayer.Author_Name || !prayer.Author_Email || !prayer.Prayer_Body) return
-        await axios({
-            method: 'put',
-            url: `/api/prayer-wall`,
-            data: prayer
-        })
-        .then(response => response.data)
-        .catch(err => console.error(err))
-
-        return await loadPrayerManager();
-    }
-
-    const loadPrayer = async (index) => {
-        currentIndex = index;
-        const {Author_Email, Author_Name, Author_Phone, Date_Created, Prayer_Body, Prayer_Count, Prayer_Notify, Prayer_Title, Private} = prayersToManage[index];
-        const currPrayerDOM = document.querySelector('#prayer');
-
-        currPrayerDOM.innerHTML = `
-            <div class="input-container required">
-                <input type="text" name="Author_Name" id="Author_Name" placeholder="Name" required>
-            </div>
+            const nameInputDOM = document.querySelector('#Author_Name'); nameInputDOM.value = prayer.Author_Name;
+            const emailInputDOM = document.querySelector('#Author_Email'); emailInputDOM.value = prayer.Author_Email;
+            const phoneInputDOM = document.querySelector('#Author_Phone'); phoneInputDOM.value = prayer.Author_Phone;
+            const prayerTitleDOM = document.querySelector('#Prayer_Title'); prayerTitleDOM.value = prayer.Prayer_Title;
+            const bodyPrayerDOM = document.querySelector('#Prayer_Body'); bodyPrayerDOM.value = prayer.Prayer_Body;
+            const privateCheckboxDOM = document.querySelector('#Private'); privateCheckboxDOM.value = prayer.Private;
+            const notifyCheckboxDOM = document.querySelector('#Notify'); notifyCheckboxDOM.value = prayer.Prayer_Notify;
             
-            <div class="input-container required">
-                <input type="email" name="Author_Email" id="Author_Email" placeholder="Email" required>
-            </div>
-
-            <div class="input-container">
-                <input type="tel" name="Author_Phone" id="Author_Phone" placeholder="Phone Number">
-            </div>
-            
-            <div class="input-container">
-                <input type="text" name="Prayer_Title" id="Prayer_Title" placeholder="Prayer Title">
-            </div>
-
-            <div class="input-container required">
-                <textarea name="Prayer_Body" id="Prayer_Body" placeholder="Prayer Request" maxlength="250" required></textarea>
-            </div>
-
-            <div class="checkbox-container">
-                <input type="checkbox" name="Private" id="Private">
-                <label for="Private">Share Anonymously</label>
-            </div>
-
-            <div class="checkbox-container">
-                <input type="checkbox" name="Notify" id="Notify">
-                <label for="Notify"> Email Me When Someone Prays</label>
-            </div>
-        `
-        const prayerIndexDOM = document.querySelector('#prayer-index');
-        prayerIndexDOM.innerText = `${index + 1}/${prayersToManage.length}`;
-
-        document.querySelector('#Author_Name').value = prayersToManage[index].Author_Name
-        document.querySelector('#Author_Email').value = prayersToManage[index].Author_Email
-        document.querySelector('#Author_Phone').value = prayersToManage[index].Author_Phone
-        document.querySelector('#Prayer_Title').value = prayersToManage[index].Prayer_Title
-        document.querySelector('#Prayer_Body').value = prayersToManage[index].Prayer_Body
-        document.querySelector('#Private').checked = prayersToManage[index].Private
-        document.querySelector('#Notify').checked = prayersToManage[index].Prayer_Notify
+            const prayerIndexDOM = document.querySelector('#prayer-index');
+                prayerIndexDOM.innerText = `${this.currentIndex + 1} / ${this.prayers.length}`;
+        }
     }
+    customElements.define("prayer-manager", PrayerManager);
+    // currPrayerDOM.innerHTML = `
+    // `
 </script>
 </html>

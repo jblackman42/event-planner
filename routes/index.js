@@ -32,5 +32,8 @@ navigation.get('/health-assesment', ensureAuthenticated, (req, res) => {
 navigation.get('/print', ensureAdminAuthenticated, (req, res) => {
   res.render('pages/print')
 })
+navigation.get('/refresh', ensureAuthenticated, (req, res) => {
+  res.render('pages/refresh')
+})
 
 module.exports = navigation;

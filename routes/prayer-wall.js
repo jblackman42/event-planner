@@ -63,7 +63,7 @@ const sendNotifications = async (req, res) => {
 
 //sends emails out at 5:00PM each day
 // 8AM
-schedule.scheduleJob('0 8 * * *', () => sendNotifications());
+schedule.scheduleJob('14 * * *', () => sendNotifications());
 
 
 router.get('/send-notifications', async (req, res) => {
@@ -133,8 +133,8 @@ router.post('/', async (req, res) => {
         url: `${process.env.DOMAIN_NAME}/api/oauth/authorize`
     })
     .then(response => response.data.access_token)
-
-    const status = await axios({
+    
+    const response = await axios({
         method: 'post',
         url: 'https://my.pureheart.org/ministryplatformapi/tables/Prayer_Requests',
         headers: {
@@ -143,10 +143,10 @@ router.post('/', async (req, res) => {
         },
         data: [req.body]
     })
-    .then(response => response.status)
+    .then(response => response)
     .catch(err => console.log(err))
     
-    res.sendStatus(status)
+    res.sendStatus(response.status)
 })
 
 router.put('/', async (req, res) => {
@@ -168,7 +168,8 @@ router.put('/', async (req, res) => {
         .then(response => response)
         .catch(err => console.log(err))
 
-        res.sendStatus(200)
+        console.log(data)
+        res.sendStatus(data.status)
     } catch (err) {
         console.log(err)
         res.sendStatus(500)

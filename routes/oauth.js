@@ -148,4 +148,38 @@ router.get('/app/authorize', async (req, res) => {
         expires_in: expires_in
     })
 })
+
+router.get('/refresh', async (req, res) => {
+    try {
+        const data = await axios({
+            method: 'post',
+            url: 'https://my.pureheart.org/ministryplatformapi/oauth/connect/token',
+            data: qs.stringify({
+                grant_type: "client_credentials",
+                scope: "http://www.thinkministry.com/dataplatform/scopes/all",
+                client_id: process.env.APP_CLIENT_ID,
+                client_secret: process.env.APP_CLIENT_SECRET
+            })
+        })
+            .then(response => response.data)
+            .catch(err => console.error(err))
+        const {access_token} = data;
+    
+        await axios({
+            method: 'get',
+            url: 'https://my.pureheart.org/ministryplatformapi/refreshMetadata',
+            headers: {
+                'Authorization': `Bearer ${access_token}`,
+                'Content-Type': 'Application/Json'
+            }
+        })
+
+        console.log('refresh')
+        res.sendStatus(200);
+    } catch (error) {
+        res.sendStatus(500);
+    }
+
+})
+
 module.exports = router;

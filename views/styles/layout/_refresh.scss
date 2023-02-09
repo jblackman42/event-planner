@@ -1,0 +1,59 @@
+// $press-dist: 20px;
+$press-dist: 20px;
+$btn-width: clamp(200px, 40vw, 400px);
+
+$rotate-angle: 25deg;
+
+
+#refresh-container {
+    min-width: 100%;
+    min-height: 100vh;
+    
+    display: grid;
+    place-items: center;
+
+    #btn-container {
+        transform-style: preserve-3d;
+        position: absolute;
+        
+        width: calc($btn-width + 25px);
+        height: calc($btn-width + 25px);
+        left: 50%;
+        top: 50%;
+        transform: translate(-50%, -50%) rotate3d(1,0,0,$rotate-angle);
+        border-radius: 50%;
+        background-color: #bdc3c7;
+    
+        box-shadow: 0px $press-dist #7f8c8d;
+
+        #refresh-btn {
+            position: absolute;  /* optional */
+            width: $btn-width;
+            height: $btn-width;
+            background-color: #e74c3c;
+            
+            border: none;
+            border-radius: 50%;
+
+            left: 50%;
+            top: 50%;
+            // transform: translate(-50%, calc(-50% - ($press-dist / 2)));
+            transform: translate(-50%, calc(-50% - $press-dist));
+    
+            // text styling
+            color: white;
+            font-weight: bold;
+            font-size: clamp(1rem, 4vw, 3rem);
+            
+            box-shadow: 0px $press-dist #c0392b;
+            &:active {
+                box-shadow: 0px 10px #c0392b;
+                transform: translate(-50%, calc((-50% - $press-dist) + $press-dist - 10px));
+            }
+            &:hover:not(:active) {
+                box-shadow: 0px calc($press-dist + 2px) #c0392b;
+                transform: translate(-50%, calc((-50% - $press-dist) - 2px));
+            }
+        }
+    }
+}

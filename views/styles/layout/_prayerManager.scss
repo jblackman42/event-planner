@@ -81,6 +81,9 @@
             width: 100%;
             justify-content: space-between;
             $gap: 2rem;
+            button:disabled {
+                cursor: default;
+            }
             #back {
                 margin-inline: $gap auto;
                 background-color: #898989 !important;
