@@ -1,4 +1,5 @@
 const express = require('express');
+const bodyParser = require('body-parser');
 const app = express();
 const cookieParser = require("cookie-parser");
 const prompt = require('prompt');
@@ -12,8 +13,8 @@ app.use(cookieParser());
 app.use(cors());
 require('dotenv').config();
 
-app.use(express.json({ limit: '16MB' }));
-app.use(express.urlencoded({ extended: true }));
+app.use(bodyParser.json({ limit: '16mb' }));
+app.use(bodyParser.urlencoded({ extended: true, limit: '16mb' }));
 
 app.use(function(req, res, next) {
     res.header("Access-Control-Allow-Origin", "*");
