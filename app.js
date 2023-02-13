@@ -1,7 +1,6 @@
 const express = require('express');
 const app = express();
 const cookieParser = require("cookie-parser");
-const prompt = require('prompt');
 const cors = require('cors');
 const upload = require('express-fileupload');
 
@@ -20,15 +19,6 @@ app.use(function(req, res, next) {
     res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
     next();
 });
-
-//prompt informatin
-const properties = [
-    {
-        name: 'populate'
-    }
-];
-  
-prompt.start();
 
 // set the view engine to ejs
 app.set('view engine', 'ejs');
@@ -51,13 +41,6 @@ app.use('/api/prayer-wall', require('./routes/prayer-wall.js'))
 const start = async () => {
     try {
         app.listen(port, console.log(`\n server is listening on port ${port}\n http://localhost:${port}`));
-        
-        // prompt.get(properties, function (err, result) {
-        //     if (err) {
-        //       return console.error(err);
-        //     }
-        //     if (result.populate == 'y') populate();
-        // });
 
     } catch (error) { console.log(error) }
 }

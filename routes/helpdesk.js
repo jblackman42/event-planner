@@ -24,6 +24,10 @@ app.get('/files', async (req, res) => {
 app.post('/files', async (req, res) => {
   try {
     const {body} = req.body;
+    console.log('request body:')
+    console.log(req.body)
+    console.log('body:')
+    console.log(body)
       
     let filename = body.name;
     let count = 0;
