@@ -23,7 +23,7 @@ app.get('/files', async (req, res) => {
 //create image
 app.post('/files', async (req, res) => {
   try {
-    console.log(req.files)
+    console.log(req.body)
       
     let filename = req.body.name;
     let count = 0;
