@@ -23,10 +23,24 @@ app.get('/files', async (req, res) => {
 //create image
 app.post('/files', async (req, res) => {
   try {
-    const user = { _id: req.body.name, files: [] };
+      
+    let filename = req.body.name;
+    let count = 0;
+    const createFileName = async (name) => {
+        console.log(name)
+        const match = await db.collection('gridFsEx').findOne({ _id: name });
+        if (match) {
+            console.log('matching name found')
+            count ++;
+            await createFileName(`${req.body.name} (${count})`);
+        } else {
+            filename = name;
+        }
+    }
+    
+    await createFileName(req.body.name);
+    const user = { _id: filename, files: [] };
 
-    const match = await db.collection('gridFsEx').findOne({ _id: req.body.name });
-    if (match) return res.status(401).send({success: false, msg: "duplicate file name"});
 
     const createFile = file => {
       const fileId = (new mongodb.ObjectId()).toString();
@@ -60,7 +74,6 @@ app.post('/files', async (req, res) => {
     res.status(200).send(user);
     // res.sendStatus(200);
   } catch (e) {
-    console.log(e)
     res.status(e.statusCode || 500).json({success: false, msg: e})
   }
 })
