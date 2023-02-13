@@ -4,7 +4,7 @@ const fs = require('fs');
 const mongodb = require('mongodb');
 const client = new mongodb.MongoClient(process.env.MONGO_URI);
 const db = client.db('gridFsEx');
-const bucket = new mongodb.GridFSBucket(db, { bucketName: 'userImgs' })
+const bucket = new mongodb.GridFSBucket(db, { bucketName: 'files' })
 
 const connectDB = async () => {
   await client.connect();
@@ -27,19 +27,6 @@ app.post('/files', async (req, res) => {
 
     const match = await db.collection('gridFsEx').findOne({ _id: req.body.name });
     if (match) return res.status(401).send({success: false, msg: "duplicate file name"});
-
-    const createImg = image => {
-      const imgId = (mongodb.ObjectId()).toString();
-      user.imgs.push(imgId);
-
-      fs.writeFileSync(`./${imgId}.png`, image.data, { encoding: 'base64' });
-      fs.createReadStream(`./${imgId}.png`).
-        pipe(bucket.openUploadStream(imgId, {
-          chunkSizeBytes: 10485760
-        })).on('finish', () => {
-          fs.unlinkSync(`./${imgId}.png`)
-        })
-    }
 
     const createFile = file => {
       const fileId = (new mongodb.ObjectId()).toString();
