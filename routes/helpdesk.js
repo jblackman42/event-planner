@@ -23,33 +23,32 @@ app.get('/files', async (req, res) => {
 //create image
 app.post('/files', async (req, res) => {
   try {
-    console.log(req.body)
+    const {body} = req.body;
       
-    let filename = req.body.name;
+    let filename = body.name;
     let count = 0;
     const createFileName = async (name) => {
-        console.log(name)
         const match = await db.collection('gridFsEx').findOne({ _id: name });
         if (match) {
-            console.log('matching name found')
+            // matching name found
             count ++;
-            await createFileName(`${req.body.name} (${count})`);
+            await createFileName(`${body.name} (${count})`);
         } else {
             filename = name;
         }
     }
     
-    await createFileName(req.body.name);
+    await createFileName(body.name);
     const user = { _id: filename, files: [] };
 
 
     const createFile = file => {
       const fileId = (new mongodb.ObjectId()).toString();
-      const fileType = file.name.slice((Math.max(0, file.name.lastIndexOf(".")) || Infinity) + 1);
+      const fileType = filename.slice((Math.max(0, filename.lastIndexOf(".")) || Infinity) + 1);
       user.files.push(fileId)
       
       const filePath = `./${fileId}.${fileType}`;
-      fs.writeFileSync(filePath, file.data, { encoding: 'base64' });
+      fs.writeFileSync(filePath, file, { encoding: 'base64' });
       fs.createReadStream(filePath).
         pipe(bucket.openUploadStream(fileId, {
           chunkSizeBytes: 10485760
@@ -59,16 +58,8 @@ app.post('/files', async (req, res) => {
     }
 
     // console.log(req.files)
-    const {attachments} = req.files;
-    if (!req.files || !attachments) return res.status(401).send({success: false, msg: "no files"});
-    
-    if (attachments.length) {
-      attachments.forEach(file => {
-        createFile(file);
-      })
-    } else {
-      createFile(attachments)
-    }
+    const {attachments} = body;
+    createFile(attachments)
 
     await db.collection('gridFsEx').insertOne(user);
 
@@ -86,7 +77,6 @@ app.get('/files/:id', async (req, res) =>{
     bucket.openDownloadStreamByName(req.params.id).pipe(res);
     res.status(201);
   } catch (e) {
-    console.log(e)
     res.status(500).json({success: false, msg: e})
   }
 })
