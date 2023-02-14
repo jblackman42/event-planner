@@ -23,26 +23,21 @@ app.get('/files', async (req, res) => {
 //create image
 app.post('/files', async (req, res) => {
   try {
-    const {body} = req.body;
-    console.log('request body:')
-    console.log(req.body)
-    console.log('body:')
-    console.log(body)
       
-    let filename = body.name;
+    let filename = req.body.name;
     let count = 0;
     const createFileName = async (name) => {
         const match = await db.collection('gridFsEx').findOne({ _id: name });
         if (match) {
             // matching name found
             count ++;
-            await createFileName(`${body.name} (${count})`);
+            await createFileName(`${req.body.name} (${count})`);
         } else {
             filename = name;
         }
     }
     
-    await createFileName(body.name);
+    await createFileName(req.body.name);
     const user = { _id: filename, files: [] };
 
 
@@ -62,7 +57,7 @@ app.post('/files', async (req, res) => {
     }
 
     // console.log(req.files)
-    const {attachments} = body;
+    const {attachments} = req.body;
     createFile(attachments)
 
     await db.collection('gridFsEx').insertOne(user);
@@ -70,6 +65,8 @@ app.post('/files', async (req, res) => {
     res.status(200).send(user);
     // res.sendStatus(200);
   } catch (e) {
+    console.log('something terrible has happened:\n')
+    console.log(e)
     res.status(e.statusCode || 500).json({success: false, msg: e})
   }
 })
