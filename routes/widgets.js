@@ -4,6 +4,182 @@ const axios = require('axios');
 const cors = require('cors');
 
 const {ensureAdministrator, ensureWebhook} = require('../middleware/auth.js')
+const StaffSchema = require('../models/Staff');
+// const SermonSchema = require('../models/Sermons');
+
+
+router.get('/update-staff', ensureAdministrator, async (req, res) => {
+    res.render('pages/update-staff')
+})
+
+router.delete('/update-staff', ensureAdministrator, async (req, res) => {
+    try {
+        await StaffSchema.deleteMany({});
+        res.status(201).json({msg: 'all entries deleted'})
+    } catch (error) { res.status(500).json({ msg: error})}
+})
+
+router.post('/update-staff', ensureAdministrator, async (req, res) => {
+    try {
+        // console.log(staff)
+        const staffSection = await StaffSchema.create( req.body )
+        res.status(201).json({ staffSection })
+    } catch (error) { console.log(error);res.status(500).json({ msg: error }) }
+})
+
+router.post('/staff', async (req, res) => {
+    try {
+        const {ids} = req.body;
+        const staff = await StaffSchema.find({Contact_ID: ids});
+        res.status(201).json({ staff });
+    } catch(error) { res.status(500).json({ msg: error }) }
+})
+router.get('/staff', async (req, res) => {
+    try {
+        const staff = await StaffSchema.find({});
+        res.status(201).json({ staff });
+    } catch(error) { res.status(500).json({ msg: error }) }
+})
+
+router.get('/staff-email', async (req, res) => {
+    try {
+        const {sectionId, staffId} = req.query;
+
+        const allStaff = await StaffSchema.find({});
+        console.log(sectionId, staffId)
+        const Email = allStaff[sectionId].Participants[staffId].Email
+        res.status(201).json({ Email });
+    } catch(error) { console.error(error); res.status(500).json({ msg: error }) }
+})
+
+router.get('/webhook-update-staff', ensureWebhook, async (req, res) => {
+    
+    //delete all staff records
+    await StaffSchema.deleteMany({});
+
+    //get access token for accessing database informatin
+    const accessToken = await axios({
+        method: 'get',
+        mode: 'cors',
+        url: 'https://phc.events/api/oauth/authorize'
+    })
+        .then(response => response.data.access_token)
+        .catch(err => console.error(err))
+    
+    const getStaffGroupParticipants = async () => {
+        return await axios({
+            method: 'get',
+            url: `https://my.pureheart.org/ministryplatformapi/tables/Group_Participants?$filter=GETDATE() BETWEEN CONVERT(DATE,Start_Date) AND ISNULL(End_Date,GETDATE()) AND Group_ID=${2473}`,
+            mode: 'cors',
+            headers: {
+                Accept: 'application/json',
+                Authorization: `Bearer ${accessToken}`
+            }
+        })
+            .then(response => response.data.map(participant => participant.Participant_ID))
+            .catch(err => console.error(err))
+
+    }
+
+    const getParticipantFromID = async (Participant_ID) => {
+        return await axios({
+            method: 'get',
+            url: `https://my.pureheart.org/ministryplatformapi/tables/Participants?$select=Contact_ID&$filter=Participant_ID=${Participant_ID}`,
+            mode: 'cors',
+            headers: {
+                Accept: 'application/json',
+                Authorization: `Bearer ${accessToken}`
+            }
+        })
+            .then(response => response.data[0].Contact_ID)
+            .catch(err => console.error(err))
+    }
+
+    const getContactFromID = async (Contact_ID) => {
+        return await axios({
+            method: 'get',
+            url: `https://my.pureheart.org/ministryplatformapi/tables/Contacts/${Contact_ID}`,
+            mode: 'cors',
+            headers: {
+                Accept: 'application/json',
+                Authorization: `Bearer ${accessToken}`
+            }
+        })
+            .then(response => {
+                // console.log(Contact_ID, response.data)
+                return response.data[0]
+            })
+            .catch(err => console.error(err))
+    }
+
+    const getFilesFromContactID = async (Contact_ID) => {
+        return await axios({
+            method: 'get',
+            url: `https://my.pureheart.org/ministryplatformapi/files/Contacts/${Contact_ID}`,
+            mode: 'cors',
+            headers: {
+                Accept: 'application/json',
+                Authorization: `Bearer ${accessToken}`
+            }
+        })
+            .then(response => response.data.filter(file => file.IsDefaultImage)[0])
+            .catch(err => console.error(err))
+    }
+    //link for images
+    //https://my.pureheart.org/ministryplatformapi/files/${FileId}
+
+    const getStaffRecordFromContactID = async (Contact_ID) => {
+        return await axios({
+            method: 'get',
+            url: `https://my.pureheart.org/ministryplatformapi/tables/Staff?%24filter=Contact_ID=${Contact_ID}`,
+            mode: 'cors',
+            headers: {
+                Accept: 'application/json',
+                Authorization: `Bearer ${accessToken}`
+            }
+        })
+            .then(response => response.data[0])
+            .catch(err => console.error(err))
+    }
+
+    const formatStaff = async () => {
+        await StaffSchema.deleteMany();
+
+        const allStaff = await getStaffGroupParticipants();
+
+        const allParticipants = [];
+        for (let i = 0; i < allStaff.length; i ++) {
+            const participantContactID = await getParticipantFromID(allStaff[i]);
+            const contact = await getContactFromID(participantContactID);
+            const staffRecord = await getStaffRecordFromContactID(participantContactID);
+            const staffFile = await getFilesFromContactID(participantContactID);
+            const Image_URL = !staffFile ? null : `https://my.pureheart.org/ministryplatformapi/files/${staffFile.UniqueFileId}`
+            
+            const {Contact_ID, Display_Name, First_Name, Last_Name, Nickname, Email_Address} = contact;
+            const {Job_Title, Start_Date, End_Date, Bio} = staffRecord ? staffRecord : {Job_Title: null, Start_Date: null, End_Date: null, Bio: null};
+            if (Job_Title && Job_Title.toLowerCase().includes('pastor')) console.log(Contact_ID)
+            
+            const participantObject = {
+                Contact_ID: Contact_ID,
+                Display_Name: Display_Name,
+                First_Name: First_Name,
+                Last_Name: Last_Name,
+                Nickname: Nickname,
+                Email_Address: Email_Address,
+                Job_Title: Job_Title,
+                Start_Date: Start_Date,
+                End_Date: End_Date,
+                Bio: Bio,
+                Image_URL: Image_URL
+            }
+            allParticipants.push(participantObject);
+            await StaffSchema.create(participantObject);
+        }
+        res.status(200).json({allParticipants})
+    }
+
+    formatStaff()
+})
 
 // sermons widget here -------------------------------------------------------------------------------
 
