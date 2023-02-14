@@ -28,8 +28,6 @@ app.use("/scripts",express.static(__dirname + "/views/scripts"));
 app.use("/assets",express.static(__dirname + "/views/assets"));
 app.use("/README.md",express.static(__dirname + "/README.md"));
 
-//other imported functions
-const connectDB = require('./db/connect.js');
 
 const port = process.env.PORT || 3000;
 
@@ -42,7 +40,6 @@ app.use('/api/prayer-wall', require('./routes/prayer-wall.js'))
 
 const start = async () => {
     try {
-        await connectDB(process.env.MONGO_URI);
         app.listen(port, console.log(`\n server is listening on port ${port}\n http://localhost:${port}`));
 
     } catch (error) { console.log(error) }
