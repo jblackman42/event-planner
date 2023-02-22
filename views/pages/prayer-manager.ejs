@@ -49,10 +49,6 @@
                         <div class="input-container">
                             <input type="tel" name="Author_Phone" id="Author_Phone" placeholder="Phone Number">
                         </div>
-                            
-                        <div class="input-container">
-                            <input type="text" name="Prayer_Title" id="Prayer_Title" placeholder="Prayer Title">
-                        </div>
 
                         <div class="input-container required">
                             <textarea name="Prayer_Body" id="Prayer_Body" placeholder="Prayer Request" maxlength="250" required></textarea>
@@ -117,7 +113,6 @@
                     Author_Name: document.querySelector('#Author_Name').value,
                     Author_Email: document.querySelector('#Author_Email').value,
                     Author_Phone: document.querySelector('#Author_Phone').value || null,
-                    Prayer_Title: document.querySelector('#Prayer_Title').value || null,
                     Prayer_Body: document.querySelector('#Prayer_Body').value,
                     Private: document.querySelector('#Private').checked,
                     Prayer_Notify: document.querySelector('#Notify').checked
@@ -149,10 +144,9 @@
             const nameInputDOM = document.querySelector('#Author_Name'); nameInputDOM.value = prayer.Author_Name;
             const emailInputDOM = document.querySelector('#Author_Email'); emailInputDOM.value = prayer.Author_Email;
             const phoneInputDOM = document.querySelector('#Author_Phone'); phoneInputDOM.value = prayer.Author_Phone;
-            const prayerTitleDOM = document.querySelector('#Prayer_Title'); prayerTitleDOM.value = prayer.Prayer_Title;
             const bodyPrayerDOM = document.querySelector('#Prayer_Body'); bodyPrayerDOM.value = prayer.Prayer_Body;
-            const privateCheckboxDOM = document.querySelector('#Private'); privateCheckboxDOM.value = prayer.Private;
-            const notifyCheckboxDOM = document.querySelector('#Notify'); notifyCheckboxDOM.value = prayer.Prayer_Notify;
+            const privateCheckboxDOM = document.querySelector('#Private'); privateCheckboxDOM.checked = prayer.Private;
+            const notifyCheckboxDOM = document.querySelector('#Notify'); notifyCheckboxDOM.checked = prayer.Prayer_Notify;
             
             const prayerIndexDOM = document.querySelector('#prayer-index');
                 prayerIndexDOM.innerText = `${this.currentIndex + 1} / ${this.prayers.length}`;
