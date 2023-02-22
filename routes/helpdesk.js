@@ -73,11 +73,29 @@ app.post('/files', async (req, res) => {
 
 app.get('/files/:id', async (req, res) =>{
   try {
-    const data = await bucket.find({ filename: req.params.id }).toArray();
-    if (!data.length) return res.status(404).json({ success: false, msg: 'URL path does not exist'});
-    bucket.openDownloadStreamByName(req.params.id).pipe(res);
-    res.status(201);
+    // const data = await bucket.find({ filename: req.params.id }).toArray();
+    // if (!data.length) return res.status(404).json({ success: false, msg: 'URL path does not exist'});
+    // bucket.openDownloadStreamByName(req.params.id).pipe(res);
+    // res.status(201);
+
+    // const data = await bucket.find({ filename: req.params.id }).toArray();
+    // const data = bucket.openDownloadStreamByName(req.params.id);
+    const fileData = await db.collection('gridFsEx').findOne({ files: [req.params.id] });
+    const {_id: filename} = fileData
+
+    const file = bucket.openDownloadStreamByName(req.params.id);
+
+    res.set({
+        'Content-Disposition': 'attachment; filename=' + filename
+    });
+
+    file.pipe(res);
+
+    // const readStream = db.collection('gridFsEx').createReadStream({ _id: req.params.id });
+
+    // res.status(200).json({success: true, msg: filename})
   } catch (e) {
+    console.log(e);
     res.status(500).json({success: false, msg: e})
   }
 })
