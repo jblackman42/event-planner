@@ -199,4 +199,37 @@ router.post('/email', ensureWebhook, async (req, res) => {
     }
 })
 
+router.get('/unsubscribe', async (req, res) => {
+    const id = req.query.id;
+
+    try {
+        //get access token for accessing database informatin
+        const accessToken = await axios({
+            method: 'get',
+            mode: 'cors',
+            url: 'https://phc.events/api/oauth/authorize'
+        })
+            .then(response => response.data.access_token)
+            .catch(err => console.error(err))
+
+        await axios({
+            method: 'put',
+            url: 'https://my.pureheart.org/ministryplatformapi/tables/Prayer_Requests',
+            headers: {
+                "Authorization": `Bearer ${accessToken}`,
+                "Content-Type": "application/json"
+            },
+            data: [{
+                "Prayer_Request_ID": id,
+                "Prayer_Notify": false,
+            }]
+        })
+
+        res.sendStatus(200);
+    } catch (e) {
+        console.log(e)
+        res.sendStatus(500);
+    }
+})
+
 module.exports = router;

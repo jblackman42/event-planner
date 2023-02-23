@@ -41,8 +41,16 @@ const sendNotifications = async (req, res) => {
                     { "DisplayName": Author_Name, "Address": Author_Email }
                 ],
                 "ReplyToAddress": { "DisplayName": "noreply@pureheart.org", "Address": "noreply@pureheart.org" },
-                "Subject": "You're covered in prayer",
-                "Body": `Your recent contribution to the Pure Heart Church Prayer Wall has just been prayed for! It has now been prayed for ${Prayer_Count} times.`
+                "Subject": "Prayer Request Update",
+                "Body": `
+                    <p>Dear ${Author_Name},</p>
+                    <p>We wanted to thank you for sharing your prayer request with us on our online prayer wall. We have received your request and added it to our prayer list.</p>
+                    <p>We believe in the power of prayer and want to assure you that we are praying for you. So far, your request has been prayed for <strong>${Prayer_Count} times.</strong></p>
+                    <p>Thank you for trusting us with your prayer request. Our thoughts and prayers are with you.</p>
+                    <p>Sincerely,</p>
+                    <p>Pure Heart Church<br>Prayer Team</p>
+                `
+                // "Body": `Your recent contribution to the Pure Heart Church Prayer Wall has just been prayed for! It has now been prayed for ${Prayer_Count} times.`
             }
         })
         //removes notification scheduled bit field
@@ -63,7 +71,8 @@ const sendNotifications = async (req, res) => {
 
 //sends emails out at 5:00PM each day
 // 8AM
-schedule.scheduleJob('14 0 * *', () => sendNotifications());
+// schedule.scheduleJob('14 0 * *', () => sendNotifications());
+schedule.scheduleJob('8 * * *', () => sendNotifications());
 
 
 router.get('/send-notifications', async (req, res) => {
