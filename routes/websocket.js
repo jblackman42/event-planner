@@ -21,7 +21,7 @@ router.get('/', (req, res) => {
     })
     console.log(`sent ${clients.length} updates`)
 
-    res.sendStatus(200);
+    res.status(200).send(`sent ${clients.length} updates`).end();
   } catch (err) {
     res.status(500).send('something went wrong').end();
   }
