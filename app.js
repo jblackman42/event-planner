@@ -3,12 +3,14 @@ const app = express();
 const cookieParser = require("cookie-parser");
 const cors = require('cors');
 const upload = require('express-fileupload');
+const enableWs = require('express-ws')
 
 //middleware
 app.use(upload());
 app.use(cookieParser());
 app.use(cors());
 require('dotenv').config();
+enableWs(app)
 
 app.use(express.json({limit: '50mb'}));
 app.use(express.urlencoded({limit: '50mb', extended: true}));
@@ -36,6 +38,7 @@ app.use('/api/helpdesk', require('./routes/helpdesk.js'))
 app.use('/api/oauth', require('./routes/oauth.js'))
 app.use('/api/widgets', require('./routes/widgets.js'))
 app.use('/api/prayer-wall', require('./routes/prayer-wall.js'))
+app.use('/websocket', require('./routes/websocket.js'))
 
 const start = async () => {
     try {
