@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <link rel="shortcut icon" href="/assets/favicon.ico" type="image/x-icon">
+  <link rel="stylesheet" href="/styles/main.css">
+
+  <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+
+  <script src="https://kit.fontawesome.com/e61ab9568e.js" crossorigin="anonymous"></script>
+  <title>PHC - Events</title>
+
+  <script src="/scripts/axios.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+</head>
+<body class="flex-container" style="flex-wrap: wrap;">
+    <%- include('../partials/loading'); %>
+
+    <helpdesk-dashboard>
+      <div class="row">
+        <div class="requestor-leaderboard-container">
+          <canvas id="requestor-leaderboard"></canvas>
+          <div id="profile-pics-container">
+          </div>
+        </div>
+        
+        <div class="total-stats-container">
+          <div class="stats-container" id="todays-stats-container">
+            <div class="stats-title"><h1>Today's Stats</h1></div>
+            <div class="data" id="opened-today" style="background-color: #3498db44; border-color: #3498db;">
+              <div class="data-content">
+                <p class="value"><span id="tickets-opened-today">0</span> Tickets</p>
+                <p class="label">Opened Today</p>
+              </div>
+            </div>
+            <div class="data" id="resolved-today" style="background-color: #2ecc7144; border-color: #2ecc71;">
+              <div class="data-content">
+                <p class="value"><span id="tickets-resolved-today">0</span> Tickets</p>
+                <p class="label">Resolved Today</p>
+              </div>
+            </div>
+            <div class="data" id="top-resolver-today" style="background-color: #e67e2244; border-color: #e67e22;">
+              <div class="data-content">
+                <p class="value" id="top-resolver">Jesus</p>
+                <p class="label">Resolved The Most Tickets Today</p>
+              </div>
+            </div>
+          </div>
+  
+          <div class="stats-container" id="months-stats-container">
+            <div class="stats-title"><h1>Last 30 Days Stats</h1></div>
+            <div class="data" id="opened-month" style="background-color: #3498db44; border-color: #3498db;">
+              <div class="data-content">
+                <p class="value"><span id="tickets-opened-month">0</span> Tickets</p>
+                <p class="label">Opened Last 30 Days</p>
+              </div>
+            </div>
+            <div class="data" id="resolved-month" style="background-color: #2ecc7144; border-color: #2ecc71;">
+              <div class="data-content">
+                <p class="value"><span id="tickets-resolved-month">0</span> Tickets</p>
+                <p class="label">Resolved Last 30 Days</p>
+              </div>
+            </div>
+            <div class="data" id="top-requestor-month" style="background-color: #e67e2244; border-color: #e67e22;">
+              <div class="data-content">
+                <p class="value" id="top-resolver-month">Jesus</p>
+                <p class="label">Resolved The Most Tickets in the Last 30 Days</p>
+              </div>
+            </div>
+          </div>
+        </div>
+  
+        <div class="agent-leaderboard-container">
+          <canvas id="agent-leaderboard"></canvas>
+        </div>
+      </div>
+
+      <div class="row">
+        <div class="tags-pie-chart-container">
+          <canvas id="tags-pie-chart"></canvas>
+        </div>
+  
+        <div class="months-tickets-graph">
+          <canvas id="months-tickets"></canvas>
+        </div>
+  
+        <div class="resolved-leaderboard-container">
+          <canvas id="resolved-leaderboard"></canvas>
+        </div>
+      </div>
+    </helpdesk-dashboard>
+    
+    <script src="/scripts/helpdeskDashboard.js"></script>
+</body>
+</html>

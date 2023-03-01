@@ -36,4 +36,12 @@ navigation.get('/refresh', (req, res) => {
   res.render('pages/refresh')
 })
 
+// TODO: switch this to ensureadminauthenticated
+// navigation.get('/dashboard', ensureAdminAuthenticated, (req, res) => {
+//   res.render('pages/helpdesk-dashboard')
+// })
+navigation.get('/dashboard', (req, res) => {
+  res.render('pages/helpdesk-dashboard')
+})
+
 module.exports = navigation;

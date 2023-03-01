@@ -79,9 +79,9 @@ const sendNotifications = async (req, res) => {
 }
 
 //sends emails out at 5:00PM each day
-// 2PM daily
+// 2:00 PM
 schedule.scheduleJob('14 0 * *', () => sendNotifications());
-// schedule.scheduleJob('11 * * *', () => sendNotifications());
+// schedule.scheduleJob('8 * * *', () => sendNotifications());
 
 
 router.get('/send-notifications', async (req, res) => {
