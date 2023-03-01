@@ -19,6 +19,7 @@ router.get('/', (req, res) => {
     clients.forEach(clientWs => {
       clientWs.send('update')
     })
+    console.log(`sent ${clients.length} updates`)
 
     res.sendStatus(200);
   } catch (err) {
