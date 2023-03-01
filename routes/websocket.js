@@ -1,11 +1,16 @@
 const express = require('express');
 const router = express.Router();
 
-const clients = [];
+let clients = [];
 
 router.ws('/', function(ws, req) {
+  ws.id = Math.floor(Math.random() * Date.now()).toString(16)
   clients.push(ws)
   console.log('new client connected');
+
+  ws.on('close', () => {
+    clients = clients.filter(client => client.id !== ws.id)
+  })
 })
 
 router.get('/', (req, res) => {
