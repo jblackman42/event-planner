@@ -4,6 +4,8 @@ class Dashboard extends HTMLElement {
     this.colors = ["#1abc9c", "#f1c40f","#3498db","#e67e22","#e74c3c", "#9b59b6", "#34495e"];
     this.titleSize = 24;
     this.charts = [];
+    this.timeId = 0;
+    this.webSocket;
 
     this.daysBack = 30;
     this.minDate = new Date().setDate(new Date().getDate() - this.daysBack);
@@ -32,13 +34,14 @@ class Dashboard extends HTMLElement {
 
   createWebsocket = () => {
     const webSocket = new WebSocket(`wss://phc.events/websocket`);
-    // const webSocket = new WebSocket(`ws://localhost:3000/websocket`);
+    // this.webSocket = new WebSocket(`ws://localhost:3000/websocket`);
+    this.webSocketKeepAlive(50000)
     
-    webSocket.addEventListener("open", () => {
+    this.webSocket.addEventListener("open", () => {
       console.log("We are connected");
     });
     
-    webSocket.onmessage = (event) => {
+    this.webSocket.onmessage = (event) => {
       // location.reload();
       this.charts.forEach(chart => {
         chart.destroy();
@@ -47,6 +50,15 @@ class Dashboard extends HTMLElement {
         profilePicsContainer.innerHTML = '';
       this.getTickets();
     };
+  }
+
+  webSocketKeepAlive = (timeout) => {
+    console.log(this.webSocket)
+    if (this.webSocket.readyState == this.webSocket.OPEN) {
+      console.log('ping');
+      this.webSocket.send('');
+    }
+    this.timeId = setTimeout(() => this.webSocketKeepAlive(timeout), timeout);
   }
 
   getTodaysStatsData = () => {

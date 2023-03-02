@@ -8,7 +8,12 @@ router.ws('/', function(ws, req) {
   clients.push(ws)
   console.log('new client connected');
 
+  ws.on('message', () => {
+    console.log('message received');
+  })
+
   ws.on('close', () => {
+    console.log('websocket closed')
     clients = clients.filter(client => client.id !== ws.id)
   })
 })
