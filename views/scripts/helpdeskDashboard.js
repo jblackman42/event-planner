@@ -53,6 +53,8 @@ class Dashboard extends HTMLElement {
         const profilePicsContainer = document.getElementById('profile-pics-container');
           profilePicsContainer.innerHTML = '';
         this.getTickets();
+      } else if (data == 'notify') {
+        this.handleNewTicket();
       }
     };
   }
@@ -98,7 +100,6 @@ class Dashboard extends HTMLElement {
   }
 
   handleNewTicket = () => {
-    console.log('new ticket received');
     const audio = new Audio('/assets/notification-sound.mp3');
     audio.play();
   }
