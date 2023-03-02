@@ -104,13 +104,19 @@ class Dashboard extends HTMLElement {
   }
 
   handleNewTicket = () => {
-    const newRandomNotificationSound = this.getRandomInt(1, this.numOfNotificationSounds + 1);
+    if (this.getRandomInt(1,100) == 100) {
+      const audio = new Audio(`/assets/notifications/notification-24.mp3`);
+      audio.play();
+      return;
+    }
+
+
+    const newRandomNotificationSound = this.getRandomInt(1, this.numOfNotificationSounds);
     if (newRandomNotificationSound == this.lastNotification) {
       return this.handleNewTicket();
     }
     this.lastNotification = newRandomNotificationSound
     const audio = new Audio(`/assets/notifications/notification-${newRandomNotificationSound}.mp3`);
-    console.log(audio)
     audio.play();
   }
 
