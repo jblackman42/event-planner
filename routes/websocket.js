@@ -21,8 +21,11 @@ router.ws('/', function(ws, req) {
 router.get('/', (req, res) => {
   
   try {
+    const { msg } = req.query;
+    if (!msg) return res.status(400).send('missing parameters').end();
+
     clients.forEach(clientWs => {
-      clientWs.send('update')
+      clientWs.send(msg)
     })
     console.log(`sent ${clients.length} updates`)
 

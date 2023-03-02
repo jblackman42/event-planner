@@ -6,6 +6,7 @@ class Dashboard extends HTMLElement {
     this.charts = [];
     this.timeId = 0;
     this.webSocket;
+    this.currTickets = 0;
 
     this.daysBack = 30;
     this.minDate = new Date().setDate(new Date().getDate() - this.daysBack);
@@ -42,13 +43,17 @@ class Dashboard extends HTMLElement {
     });
     
     this.webSocket.onmessage = (event) => {
-      // location.reload();
-      this.charts.forEach(chart => {
-        chart.destroy();
-      })
-      const profilePicsContainer = document.getElementById('profile-pics-container');
-        profilePicsContainer.innerHTML = '';
-      this.getTickets();
+      const { data } = event;
+      console.log(data)
+
+      if (data == 'update') {
+        this.charts.forEach(chart => {
+          chart.destroy();
+        })
+        const profilePicsContainer = document.getElementById('profile-pics-container');
+          profilePicsContainer.innerHTML = '';
+        this.getTickets();
+      }
     };
   }
 
@@ -70,6 +75,12 @@ class Dashboard extends HTMLElement {
     // get today's total tickets and resolved tickets
     const today = new Date();
     const todaysTickets = this.tickets.filter(ticket => new Date(ticket.Request_Date).toLocaleDateString() == today.toLocaleDateString())
+
+    if (todaysTickets.length > this.todaysTickets) {
+      this.handleNewTicket();
+    }
+    this.todaysTickets = todaysTickets.length;
+
     const todaysResolvedTickets = this.tickets.filter(ticket => new Date(ticket.Resolve_Date).toLocaleDateString() == today.toLocaleDateString() && ticket.Status == 3)
     console.log(todaysResolvedTickets)
     // get agents and number of resolved tickets by those agents
@@ -84,6 +95,12 @@ class Dashboard extends HTMLElement {
     todaysTicketsDOM.innerHTML = todaysTickets.length;
     todaysResolvedTicketsDOM.innerHTML = todaysResolvedTickets.length;
     topResolverDOM.innerHTML = hightestResolvedTickets == 0 ? 'Nobody' : bestAgent;
+  }
+
+  handleNewTicket = () => {
+    console.log('new ticket received');
+    const audio = new Audio('/assets/notification-sound.mp3');
+    audio.play();
   }
 
   getMonthsStatsData = () => {
