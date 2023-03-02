@@ -12,6 +12,10 @@ class Dashboard extends HTMLElement {
     this.minDate = new Date().setDate(new Date().getDate() - this.daysBack);
     this.timeLabel = `(Last ${this.daysBack} Days)`
 
+    // notification settings
+    this.numOfNotificationSounds = 24;
+    this.lastNotification;
+
     this.getTickets();
     this.createWebsocket();
   }
@@ -100,7 +104,13 @@ class Dashboard extends HTMLElement {
   }
 
   handleNewTicket = () => {
-    const audio = new Audio('/assets/notification-sound.mp3');
+    const newRandomNotificationSound = this.getRandomInt(1, this.numOfNotificationSounds + 1);
+    if (newRandomNotificationSound == this.lastNotification) {
+      return this.handleNewTicket();
+    }
+    this.lastNotification = newRandomNotificationSound
+    const audio = new Audio(`/assets/notifications/notification-${newRandomNotificationSound}.mp3`);
+    console.log(audio)
     audio.play();
   }
 
@@ -340,13 +350,15 @@ class Dashboard extends HTMLElement {
     const tags = [...new Set(this.tickets.map(ticket => ticket.Tag))]
     tags[tags.indexOf(null)] = 'Unknown'
     const ticketTags = tags.map(tag => this.tickets.filter(ticket => ticket.Tag == tag && new Date(ticket.Request_Date) > this.minDate).length);
+    // find tickets with no tag
+    ticketTags[ticketTags.length-1] = this.tickets.filter(ticket => ticket.Tag == null && new Date(ticket.Request_Date) > this.minDate).length
 
     const tagsPieChart = new Chart(document.getElementById("tags-pie-chart"), {
       type: 'pie',
       data: {
         labels: tags,
         datasets: [{
-          label: "Ticket Type",
+          label: "# of Tickets",
           backgroundColor: this.colors,
           data: ticketTags
         }]
@@ -424,6 +436,12 @@ class Dashboard extends HTMLElement {
     r[c[key]] = (r[c[key]] || 0) + 1
     return r
   }, {})
+
+  getRandomInt = (min, max) => {
+    min = Math.ceil(min);
+    max = Math.floor(max);
+    return Math.floor(Math.random() * (max - min) + min);
+  }
 }
 
 customElements.define('helpdesk-dashboard', Dashboard);
