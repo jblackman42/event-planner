@@ -397,6 +397,8 @@ class Dashboard extends HTMLElement {
     }
     
     const daysOpenTickets = daysList.map(day => this.tickets.filter(ticket => new Date(ticket.Request_Date).toLocaleDateString() == day).length)
+
+    const daysResolvedTickets = daysList.map(day => this.tickets.filter(ticket => new Date(ticket.Resolve_Date).toLocaleDateString() == day && ticket.Status == 3).length)
     
     const monthsTicketsChart = new Chart(document.getElementById("months-tickets"), {
       type: 'line',
@@ -408,6 +410,12 @@ class Dashboard extends HTMLElement {
             label: "Tickets Opened",
             borderColor: "#3e95cd",
             fill: false
+          },
+          {
+            data: daysResolvedTickets,
+            label: "Tickets Resolved",
+            borderColor: "#2ecc71",
+            fill: false 
           }
         ]
       },
@@ -422,7 +430,7 @@ class Dashboard extends HTMLElement {
         },
         plugins: {
             legend: {
-                display: false
+                display: true
             },
             title: {
               display: true,
