@@ -12,8 +12,9 @@ router.ws('/', function(ws, req) {
     console.log('message received');
   })
 
-  ws.on('close', () => {
+  ws.on('close', (code, reason) => {
     console.log('websocket closed')
+    console.log(reason)
     clients = clients.filter(client => client.id !== ws.id)
   })
 })
