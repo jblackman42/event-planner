@@ -61,6 +61,10 @@ class Dashboard extends HTMLElement {
         this.handleNewTicket();
       }
     };
+
+    this.webSocket.onclose = (event) => {
+      this.createWebsocket();
+    }
   }
 
   webSocketKeepAlive = (timeout) => {
