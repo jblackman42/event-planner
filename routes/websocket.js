@@ -1,12 +1,23 @@
 const express = require('express');
 const router = express.Router();
+const schedule = require('node-schedule');
 
 let clients = [];
+
+const refreshAll = () => {
+  clients.forEach(client => {
+    client.send('update');
+  })
+}
+
+schedule.scheduleJob('0 0 * *', () => refreshAll());
 
 router.ws('/', function(ws, req) {
   ws.id = Math.floor(Math.random() * Date.now()).toString(16)
   clients.push(ws)
   console.log('new client connected');
+
+  
 
   ws.on('message', () => {
     console.log('message received');
