@@ -156,7 +156,7 @@ class Dashboard extends HTMLElement {
     tags[tags.indexOf(null)] = 'Unknown'
 
     // get all open tickets
-    const openTickets = this.tickets.filter(ticket => new Date(ticket.Request_Date) > this.minDate && ticket.Status == 3);
+    const openTickets = this.tickets.filter(ticket => new Date(ticket.Request_Date) > this.minDate && ticket.Status == 3 && ticket.Ticket_Request_Method == 'Helpdesk');
     
     // get list of everyone who has opened tickets and how many they have opened
     const requestorsList = this.countValuesByKey(openTickets, 'Requestor')
