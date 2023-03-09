@@ -2,11 +2,13 @@ const express = require('express');
 const app = express();
 const cookieParser = require("cookie-parser");
 const cors = require('cors');
-const upload = require('express-fileupload');
+const fileUpload = require('express-fileupload');
 const enableWs = require('express-ws')
 
 //middleware
-app.use(upload());
+app.use(fileUpload({
+    limits: { fileSize: 50 * 1024 * 1024 },
+}));
 app.use(cookieParser());
 app.use(cors());
 require('dotenv').config();
