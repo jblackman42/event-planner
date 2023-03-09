@@ -27,13 +27,15 @@ app.post('/files', async (req, res) => {
   try {
       
     let filename = req.body.name;
+    const fileType = filename.slice((Math.max(0, filename.lastIndexOf(".")) || Infinity) + 1);
+    const fileTitle = filename.substring(0, filename.lastIndexOf('.')) || filename;
     let count = 0;
     const createFileName = async (name) => {
         const match = await db.collection('gridFsEx').findOne({ _id: name });
         if (match) {
             // matching name found
             count ++;
-            await createFileName(`${req.body.name} (${count})`);
+            await createFileName(`${fileTitle} ${count}.${fileType}`);
         } else {
             filename = name;
         }
