@@ -1,16 +1,23 @@
 const express = require('express');
 const router = express.Router();
 const schedule = require('node-schedule');
+const cron = require('node-cron');
 
 let clients = [];
 
 const refreshAll = () => {
+  console.log('schedule run')
   clients.forEach(client => {
     client.send('update');
   })
 }
 
-schedule.scheduleJob('0 0 * *', () => refreshAll());
+// 11:59 PM daily
+cron.schedule('59 23 * * *', () => refreshAll());
+
+// // 8:10 AM daily
+// cron.schedule('10 8 * * *', () => refreshAll())
+
 
 router.ws('/', function(ws, req) {
   ws.id = Math.floor(Math.random() * Date.now()).toString(16)
