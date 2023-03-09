@@ -54,7 +54,7 @@ app.post('/files', async (req, res) => {
       fs.writeFileSync(filePath, file, { encoding: 'base64' });
       fs.createReadStream(filePath).
         pipe(bucket.openUploadStream(fileId, {
-          chunkSizeBytes: 51200
+          chunkSizeBytes: 10485760
         })).on('finish', () => {
           fs.unlinkSync(filePath)
       })
