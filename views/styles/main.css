@@ -2257,6 +2257,17 @@ input:checked + .slider:before {
   text-align: center;
   font-size: 80%;
 }
+#loginForm .row,
+#signUpForm .row {
+  display: flex;
+  justify-content: space-between;
+}
+#loginForm .row a,
+#signUpForm .row a {
+  font-size: 16px;
+  margin-top: 0.5rem;
+  color: currentColor;
+}
 #loginForm .inputs,
 #signUpForm .inputs {
   display: flex;
@@ -2278,12 +2289,18 @@ input:checked + .slider:before {
 }
 #loginForm .inputs #togglePassword,
 #signUpForm .inputs #togglePassword {
-  color: #f1f2f6;
+  color: black;
   position: absolute;
   bottom: 0;
   right: 0;
   margin: 0.9rem 0.5rem;
   font-size: 1.25rem;
+}
+#loginForm .remember-input,
+#signUpForm .remember-input {
+  font-size: 16px;
+  margin: 0.5rem 0;
+  margin-bottom: 0;
 }
 #loginForm .login,
 #loginForm .signIn,
@@ -2295,6 +2312,7 @@ input:checked + .slider:before {
   width: 100%;
   padding: 0.75rem;
   margin: 1rem 0;
+  margin-top: 0.5rem;
   border-radius: 0.25rem;
   cursor: pointer;
 }

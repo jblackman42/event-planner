@@ -68,7 +68,7 @@
     const welcomeMsg = async () => {
         const user = await getUser()
 
-        userWelcomeMsg.innerHTML = `Welcome, ${user.DisplayName.split(', ').reverse().join(' ')}`;
+        userWelcomeMsg.innerHTML = `Welcome, ${user.display_name.split(', ').reverse().join(' ')}`;
         loggedIn.style.visibility = 'visible';
         loggedIn.style.display = 'flex';
     }
@@ -77,48 +77,48 @@
     const tasksLink = document.getElementById('tasks-link')
     const getTasks = async () => {
         const user = await getUser();
-        const {UserId} = user;
+        const {userid} = user;
 
-        const tasks = await getUserTasks(UserId)
+        const tasks = await getUserTasks(userid)
         
         if (!tasks.length) { return }
         
-        const tasksNotif = document.createElement('p');
-        tasksNotif.id = 'tasks-notification';
-        tasksNotif.innerText = tasks.length;
+        const tasksNotification = document.createElement('p');
+        tasksNotification.id = 'tasks-notification';
+        tasksNotification.innerText = tasks.length;
 
-        tasksLink.appendChild(tasksNotif)
+        tasksLink.appendChild(tasksNotification)
     }
     getTasks();
 
-    axios({
-        method: 'get',
-        url: '/api/oauth/me/roles',
-        params: {
-            user_id: user_id,
-            token: access_token
-        }
-    })
-        .then(response => response.data)
-        .then(data => {
-            const eventCreatorRoleId = [2202, 2];
-            const prayerManagerRoleId = [2206, 2]
-            const {userRoles} = data;
-            const userRoleIds = userRoles.map(role => role.Role_ID);
+    // axios({
+    //     method: 'get',
+    //     url: '/api/oauth/me/roles',
+    //     params: {
+    //         user_id: user_id,
+    //         token: access_token
+    //     }
+    // })
+    //     .then(response => response.data)
+    //     .then(data => {
+    //         const eventCreatorRoleId = [2202, 2];
+    //         const prayerManagerRoleId = [2206, 2]
+    //         const {userRoles} = data;
+    //         const userRoleIds = userRoles.map(role => role.Role_ID);
             
-            //if logged in user is  authorized to create events
-            if (checkDuplicates(userRoleIds, eventCreatorRoleId)) {
-                //add new event from navbar
-                newEventBtn.style.display = 'block';
-                newEventBtn.style.visibility = 'visible';
-            }
+    //         //if logged in user is  authorized to create events
+    //         if (checkDuplicates(userRoleIds, eventCreatorRoleId)) {
+    //             //add new event from navbar
+    //             newEventBtn.style.display = 'block';
+    //             newEventBtn.style.visibility = 'visible';
+    //         }
             
-            //if logged in user has prayer manager role show prayer wall button
-            if (checkDuplicates(userRoleIds, prayerManagerRoleId)) {
-                prayerWallBtn.style.display = 'block';
-                prayerWallBtn.style.visibility = 'visible';
-            }
-        })
+    //         //if logged in user has prayer manager role show prayer wall button
+    //         if (checkDuplicates(userRoleIds, prayerManagerRoleId)) {
+    //             prayerWallBtn.style.display = 'block';
+    //             prayerWallBtn.style.visibility = 'visible';
+    //         }
+    //     })
 
     if (localStorage.getItem('colorScheme') == 'dark') {
         toggleColorSchemeBtn.checked = true;

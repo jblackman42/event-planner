@@ -1,35 +1,35 @@
 const express = require('express');
 const navigation = express.Router();
-const path = require('path');
+
 //authentication middleware
-const {ensureAuthenticated, ensureAdminAuthenticated} = require('../middleware/auth.js')
+const { ensureAuthenticated, checkUserGroups } = require('../middleware/auth.js')
 
 navigation.get('/help', (req, res) => {
   res.render('pages/help')
 })
 //home page
-navigation.get('/', ensureAuthenticated, (req, res) => {
+navigation.get('/', ensureAuthenticated, checkUserGroups, (req, res) => {
   res.render('pages/calendar')
 })
-navigation.get('/calendar', ensureAuthenticated, (req, res) => {
+navigation.get('/calendar', ensureAuthenticated, checkUserGroups, (req, res) => {
   res.render('pages/calendar')
 })
-navigation.get('/my-tasks', ensureAuthenticated, (req, res) => {
+navigation.get('/my-tasks', ensureAuthenticated, checkUserGroups, (req, res) => {
   res.render('pages/my-tasks')
 })
 navigation.get('/login', (req, res) => {
   res.render('pages/login', {error: null})
 })
-navigation.get('/create', ensureAdminAuthenticated, (req, res) => {
+navigation.get('/create', ensureAuthenticated, checkUserGroups, (req, res) => {
   res.render('pages/create')
 })
-navigation.get('/prayer-wall', ensureAuthenticated, (req, res) => {
+navigation.get('/prayer-wall', ensureAuthenticated, checkUserGroups, (req, res) => {
   res.render('pages/prayer-manager')
 })
-navigation.get('/health-assesment', ensureAuthenticated, (req, res) => {
+navigation.get('/health-assesment', ensureAuthenticated, checkUserGroups, (req, res) => {
   res.render('pages/health-assesment')
 })
-navigation.get('/print', ensureAdminAuthenticated, (req, res) => {
+navigation.get('/print', ensureAuthenticated, checkUserGroups, (req, res) => {
   res.render('pages/print')
 })
 navigation.get('/refresh', (req, res) => {

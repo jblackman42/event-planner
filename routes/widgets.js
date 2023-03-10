@@ -3,7 +3,7 @@ const router = express.Router();
 const axios = require('axios');
 const qs = require('qs')
 
-const {ensureAdministrator, ensureWebhook} = require('../middleware/auth.js')
+const { ensureAuthenticated } = require('../middleware/auth.js')
 // const StaffSchema = require('../models/Staff');
 // const SermonSchema = require('../models/Sermons');
 
@@ -122,7 +122,39 @@ router.get('/sermons', async (req, res) => {
     res.status(200).send(data).end();
 })
 
+<<<<<<< Updated upstream
 router.post('/opportunity-auto-place', ensureWebhook, async (req, res) => {
+=======
+router.get('/featured-events', async (req, res) => {
+    const accessToken = await axios({
+        method: 'post',
+        url: 'https://my.pureheart.org/ministryplatformapi/oauth/connect/token',
+        data: qs.stringify({
+            grant_type: "client_credentials",
+            scope: "http://www.thinkministry.com/dataplatform/scopes/all",
+            client_id: process.env.CLIENT_ID,
+            client_secret: process.env.CLIENT_SECRET
+        })
+    })
+        .then(response => response.data.access_token)
+        .catch(err => console.error(err))
+
+    const data = await axios({
+        method: 'post',
+        url: `https://my.pureheart.org/ministryplatformapi/procs/api_Widget_GetFeaturedEvents`,
+        headers: {
+            'Authorization': `Bearer ${accessToken}`,
+            'Content-Type': 'application/json'
+        },
+    })
+        .then(response => response.data[0])
+        .catch(err => console.error(err))
+
+    res.status(200).send(data).end();
+})
+
+router.post('/opportunity-auto-place', async (req, res) => {
+>>>>>>> Stashed changes
     //get access token for accessing database informatin
     const accessToken = await axios({
         method: 'get',
@@ -156,7 +188,7 @@ router.post('/opportunity-auto-place', ensureWebhook, async (req, res) => {
     }
 })
 
-router.post('/email', ensureWebhook, async (req, res) => {
+router.post('/email', async (req, res) => {
     const apiUserId = 6580;
     const apiUserContactId = 95995;
 

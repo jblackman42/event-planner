@@ -1,7 +1,4 @@
-const getEvents = (currentMonth, currentYear) => { //redirect is the url after the first / defining what page will load if request fails
-    let monthOffset = currentMonth - new Date().getMonth();
-    let yearOffset = currentYear - new Date().getFullYear();
-
+const getEvents = async (currentMonth, currentYear) => { //redirect is the url after the first / defining what page will load if request fails
     const firstOfMonth = new Date(currentYear, currentMonth, 1);
     const firstVisibleDate = new Date(currentYear, currentMonth, 1 - firstOfMonth.getDay())
     const lastVisibleDate = new Date(currentYear, currentMonth + 1, 0)
@@ -12,7 +9,7 @@ const getEvents = (currentMonth, currentYear) => { //redirect is the url after t
         url: `https://my.pureheart.org/ministryplatformapi/tables/Events?$filter=Event_Start_Date BETWEEN '${firstVisibleDate.toISOString()}' AND '${lastVisibleDate.toISOString()}'`,
         headers: {
             'Accept': 'application/json',
-            'Authorization': `Bearer ${access_token}`
+            'Authorization': `Bearer ${await getAccessToken()}`
         }
     })
     .then(response => response.data)
@@ -22,14 +19,14 @@ const getEvents = (currentMonth, currentYear) => { //redirect is the url after t
     return response;
 }
 
-const getEvent = (Event_ID) => {
+const getEvent = async (Event_ID) => {
     if (!Event_ID) return
     const response = axios({
         method: 'get',
         url: `https://my.pureheart.org/ministryplatformapi/tables/Events/${Event_ID}`,
         headers: {
             'Accept': 'application/json',
-            'Authorization': `Bearer ${access_token}`
+            'Authorization': `Bearer ${await getAccessToken()}`
         }
     })
     .then(response => response.data[0])
@@ -47,7 +44,7 @@ const getContactFromID = async (Contact_ID) => {
         url: `https://my.pureheart.org/ministryplatformapi/tables/Contacts/${Contact_ID}`,
         headers: {
             'Accept': 'application/json',
-            'Authorization': `Bearer ${access_token}`
+            'Authorization': `Bearer ${await getAccessToken()}`
         }
     })
     .then(response => response.data[0])
@@ -57,13 +54,13 @@ const getContactFromID = async (Contact_ID) => {
     return response;
 }
 
-const getDaysEventsBetweenTimes = (startTime, endTime) => {
+const getDaysEventsBetweenTimes = async (startTime, endTime) => {
     const response = axios({
         method: 'get',
         url: `https://my.pureheart.org/ministryplatformapi/tables/Events?$filter='${startTime}' BETWEEN Event_Start_Date AND Event_End_Date OR '${endTime}' BETWEEN Event_Start_Date AND Event_End_Date OR Event_Start_Date BETWEEN '${startTime}' AND '${endTime}' OR Event_End_Date BETWEEN '${startTime}' AND '${endTime}'`,
         headers: {
             'Accept': 'application/json',
-            'Authorization': `Bearer ${access_token}`
+            'Authorization': `Bearer ${await getAccessToken()}`
         }
     })
     .then(response => response.data.filter(event => !event.Cancelled))
@@ -78,7 +75,7 @@ const getPrograms = async () => {
         url: `https://my.pureheart.org/ministryplatformapi/tables/Programs`,
         headers: {
             'Accept': 'application/json',
-            'Authorization': `Bearer ${access_token}`
+            'Authorization': `Bearer ${await getAccessToken()}`
         }
     })
     .then(response => response.data)
@@ -86,14 +83,14 @@ const getPrograms = async () => {
     return response;
 }
 
-const getEventRooms = (Event_ID) => {
+const getEventRooms = async (Event_ID) => {
     if (!Event_ID) return
     const response = axios({
         method: 'get',
         url: `https://my.pureheart.org/ministryplatformapi/tables/Event_Rooms?%24filter=Event_ID%3D${Event_ID}`,
         headers: {
             'Accept': 'application/json',
-            'Authorization': `Bearer ${access_token}`
+            'Authorization': `Bearer ${await getAccessToken()}`
         }
     })
     .then(response => response.data)
@@ -103,14 +100,14 @@ const getEventRooms = (Event_ID) => {
     return response;
 }
 
-const getEventRoomsFromIDs = (Event_IDs, Room_ID) => {
+const getEventRoomsFromIDs = async (Event_IDs, Room_ID) => {
     if (!Event_IDs || !Room_ID) return
     const response = axios({
         method: 'get',
         url: `https://my.pureheart.org/ministryplatformapi/tables/Event_Rooms?%24filter=Room_ID = ${Room_ID} AND Event_ID BETWEEN ${Event_IDs[0]} AND ${Event_IDs[Event_IDs.length - 1]}`,
         headers: {
             'Accept': 'application/json',
-            'Authorization': `Bearer ${access_token}`
+            'Authorization': `Bearer ${await getAccessToken()}`
         }
     })
     .then(response => response.data.map(event => event.Event_ID))
@@ -127,7 +124,7 @@ const getBuilding = async (Building_ID) => {
         url: `https://my.pureheart.org/ministryplatformapi/tables/Buildings/${Building_ID}`,
         headers: {
             'Accept': 'application/json',
-            'Authorization': `Bearer ${access_token}`
+            'Authorization': `Bearer ${await getAccessToken()}`
         }
     })
     .then(response => response.data[0])
@@ -137,14 +134,14 @@ const getBuilding = async (Building_ID) => {
     return response;
 }
 
-const getEventRoomsForBuilding = (Event_IDs, Room_IDs, skip) => {
+const getEventRoomsForBuilding = async (Event_IDs, Room_IDs, skip) => {
     if (!Event_IDs || !Room_IDs) return
     const response = axios({
         method: 'get',
         url: `https://my.pureheart.org/ministryplatformapi/tables/Event_Rooms?${skip ? `$skip=${skip}&` : ''}%24filter=${Room_IDs.map(id => `Room_ID=${id} AND Event_ID BETWEEN ${Event_IDs[0]} AND ${Event_IDs[Event_IDs.length - 1]}`).join(' OR ')}`,
         headers: {
             'Accept': 'application/json',
-            'Authorization': `Bearer ${access_token}`
+            'Authorization': `Bearer ${await getAccessToken()}`
         }
     })
     .then(response => response.data.map(event => event.Event_ID))
@@ -154,14 +151,14 @@ const getEventRoomsForBuilding = (Event_IDs, Room_IDs, skip) => {
     return response;
 }
 
-const getEventRoomIDs = (Event_ID) => {
+const getEventRoomIDs = async (Event_ID) => {
     if (!Event_ID) return
     const response = axios({
         method: 'get',
         url: `https://my.pureheart.org/ministryplatformapi/tables/Event_Rooms?%24filter=Event_ID%3D${Event_ID}&%24select=Room_ID`,
         headers: {
             'Accept': 'application/json',
-            'Authorization': `Bearer ${access_token}`
+            'Authorization': `Bearer ${await getAccessToken()}`
         }
     })
     .then(response => response.data.map(room => room.Room_ID))
@@ -171,14 +168,14 @@ const getEventRoomIDs = (Event_ID) => {
     return response;
 }
 
-const getRoom = (Room_ID) => {
+const getRoom = async (Room_ID) => {
     if (!Room_ID) return
     const response = axios({
         method: 'get',
         url: `https://my.pureheart.org/ministryplatformapi/tables/Rooms/${Room_ID}`,
         headers: {
             'Accept': 'application/json',
-            'Authorization': `Bearer ${access_token}`
+            'Authorization': `Bearer ${await getAccessToken()}`
         }
     })
     .then(response => response.data[0])
@@ -188,14 +185,14 @@ const getRoom = (Room_ID) => {
     return response;
 }
 
-const getLocations = () => {
+const getLocations = async () => {
     const blockekdLocations = [3,6]
     const response = axios({
         method: 'get',
         url: `https://my.pureheart.org/ministryplatformapi/tables/Locations`,
         headers: {
             'Accept': 'application/json',
-            'Authorization': `Bearer ${access_token}`
+            'Authorization': `Bearer ${await getAccessToken()}`
         }
     })
     .then(response => response.data.filter(location => !blockekdLocations.includes(location.Location_ID)))
@@ -205,14 +202,14 @@ const getLocations = () => {
     return response;
 }
 
-const getLocation = (Location_ID) => {
+const getLocation = async (Location_ID) => {
     if (!Location_ID) return
     const response = axios({
         method: 'get',
         url: `https://my.pureheart.org/ministryplatformapi/tables/Locations/${Location_ID}`,
         headers: {
             'Accept': 'application/json',
-            'Authorization': `Bearer ${access_token}`
+            'Authorization': `Bearer ${await getAccessToken()}`
         }
     })
     .then(response => {
@@ -224,14 +221,14 @@ const getLocation = (Location_ID) => {
     return response;
 }
 
-const getLocationBuildings = (Location_ID) => {
+const getLocationBuildings = async (Location_ID) => {
     if (!Location_ID) return
     const response = axios({
         method: 'get',
         url: `https://my.pureheart.org/ministryplatformapi/tables/Buildings?%24filter=Location_ID=${Location_ID}`,
         headers: {
             'Accept': 'application/json',
-            'Authorization': `Bearer ${access_token}`
+            'Authorization': `Bearer ${await getAccessToken()}`
         }
     })
     .then(response => {
@@ -243,14 +240,14 @@ const getLocationBuildings = (Location_ID) => {
     return response;
 }
 
-const getBuildingRooms = (Building_ID) => {
+const getBuildingRooms = async (Building_ID) => {
     if (!Building_ID) return
     const response = axios({
         method: 'get',
         url: `https://my.pureheart.org/ministryplatformapi/tables/Rooms?%24filter=Building_ID=${Building_ID} AND Bookable='true'`,
         headers: {
             'Accept': 'application/json',
-            'Authorization': `Bearer ${access_token}`
+            'Authorization': `Bearer ${await getAccessToken()}`
         }
     })
     .then(response => {
@@ -262,13 +259,13 @@ const getBuildingRooms = (Building_ID) => {
     return response;
 }
 
-const getAllUsers = () => {
+const getAllUsers = async () => {
     const response = axios({
         method: 'get',
         url: 'https://my.pureheart.org/ministryplatformapi/users',
         headers: {
             'Accept': 'application/json',
-            'Authorization': `Bearer ${access_token}`
+            'Authorization': `Bearer ${await getAccessToken()}`
         }
     })
         .then(response => response.data)
@@ -278,13 +275,13 @@ const getAllUsers = () => {
     return response;
 }
 
-const getEventTypes = () => {
+const getEventTypes = async () => {
     const response = axios({
         method: 'get',
         url: 'https://my.pureheart.org/ministryplatformapi/tables/Event_Types',
         headers: {
             'Accept': 'application/json',
-            'Authorization': `Bearer ${access_token}`
+            'Authorization': `Bearer ${await getAccessToken()}`
         }
     })
         .then(response => response.data)
@@ -294,13 +291,13 @@ const getEventTypes = () => {
     return response;
 }
 
-const getCongregations = () => {
+const getCongregations = async () => {
     const response = axios({
         method: 'get',
         url: 'https://my.pureheart.org/ministryplatformapi/tables/Congregations',
         headers: {
             'Accept': 'application/json',
-            'Authorization': `Bearer ${access_token}`
+            'Authorization': `Bearer ${await getAccessToken()}`
         }
     })
         .then(response => response.data.filter(congregation => !congregation.End_Date || new Date() < new Date(congregation.End_Date)))
@@ -310,14 +307,14 @@ const getCongregations = () => {
     return response;
 }
 
-const getUserInfo = (User_ID) => {
+const getUserInfo = async (User_ID) => {
     if (!User_ID) return
     const response = axios({
         method: 'get',
         url: `https://my.pureheart.org/ministryplatformapi/tables/Contacts?%24filter=User_Account%3D${User_ID}`,
         headers: {
             'Accept': 'application/json',
-            'Authorization': `Bearer ${access_token}`
+            'Authorization': `Bearer ${await getAccessToken()}`
         }
     })
     .then(response => {
@@ -329,42 +326,42 @@ const getUserInfo = (User_ID) => {
     return response;
 }
 
-const getUserTasks = (User_ID) => {
+const getUserTasks = async (User_ID) => {
     if (!User_ID) return;
     return axios({
         method: 'get',
         url: `https://my.pureheart.org/ministryplatformapi/tables/dp_Tasks?$filter=Assigned_User_ID=${User_ID} AND Completed=0`,
         headers: {
             'Accept': 'application/json',
-            'Authorization': `Bearer ${access_token}`
+            'Authorization': `Bearer ${await getAccessToken()}`
         }
     })
     .then(response => response.data)
     .catch(err => console.error(err))
 }
 
-const deleteTask = (TaskId) => {
+const deleteTask = async (TaskId) => {
     if (!TaskId) return;
     return axios({
         method: 'delete',
         url: `https://my.pureheart.org/ministryplatformapi/tasks/${TaskId}`,
         headers: {
             'Accept': 'application/json',
-            'Authorization': `Bearer ${user_token}`
+            'Authorization': `Bearer ${await getAccessToken()}`
         }
     })
     .then(response => response)
     .catch(err => err)
 }
 
-const getUsersWithRole = (Role_ID) => {
+const getUsersWithRole = async (Role_ID) => {
     if (!Role_ID) return
     const response = axios({
         method: 'get',
         url: `https://my.pureheart.org/ministryplatformapi/tables/dp_User_Roles?$select=User_ID&$filter=Role_ID=${Role_ID}`,
         headers: {
             'Accept': 'application/json',
-            'Authorization': `Bearer ${access_token}`
+            'Authorization': `Bearer ${await getAccessToken()}`
         }
     })
     .then(response => {
@@ -376,14 +373,14 @@ const getUsersWithRole = (Role_ID) => {
     return response;
 }
 
-const getVisibilityLevels = () => {
+const getVisibilityLevels = async () => {
     const blockedLevels = [2,3,5]
     const response = axios({
         method: 'get',
         url: 'https://my.pureheart.org/ministryplatformapi/tables/Visibility_Levels',
         headers: {
             'Accept': 'application/json',
-            'Authorization': `Bearer ${access_token}`
+            'Authorization': `Bearer ${await getAccessToken()}`
         }
     })
         .then(response => response.data.filter(level => !blockedLevels.includes(level.Visibility_Level_ID)))
@@ -399,7 +396,7 @@ const getEquipment = async () => {
         url: 'https://my.pureheart.org/ministryplatformapi/tables/Equipment?$filter=Bookable=1',
         headers: {
             'Accept': 'application/json',
-            'Authorization': `Bearer ${access_token}`
+            'Authorization': `Bearer ${await getAccessToken()}`
         }
     })
         .then(response => response.data)
@@ -414,7 +411,7 @@ const createEvent = async (event) => {
         headers: {
             'Content-Type': 'application/json',
             'Accept': 'application/json',
-            'Authorization': `Bearer ${user_token}`
+            'Authorization': `Bearer ${await getAccessToken()}`
         },
         body: JSON.stringify(event),
     })
@@ -433,7 +430,7 @@ const addAPIUserToEvent = async (Event_ID) => {
         headers: {
             'Content-Type': 'application/json',
             'Accept': 'application/json',
-            'Authorization': `Bearer ${access_token}`
+            'Authorization': `Bearer ${await getAccessToken()}`
         },
         body: JSON.stringify(eventParticipant),
     })
@@ -457,7 +454,7 @@ const sendTask = async (authorId, ownerId, eventId, startDate, taskType) => {
         headers: {
             'Content-Type': 'application/json',
             'Accept': 'application/json',
-            'Authorization': `Bearer ${access_token}`
+            'Authorization': `Bearer ${await getAccessToken()}`
         },
         body: JSON.stringify(task),
     })
@@ -472,7 +469,7 @@ const getEquipmentReservations = async (Event_ID) => {
         url: `https://my.pureheart.org/ministryplatformapi/tables/Event_Equipment?$filter=Event_ID=${Event_ID}`,
         headers: {
             'Accept': 'application/json',
-            'Authorization': `Bearer ${access_token}`
+            'Authorization': `Bearer ${await getAccessToken()}`
         }
     })
     .then(response => response.data)
@@ -486,7 +483,7 @@ const getService = async (Service_ID) => {
         url: `https://my.pureheart.org/ministryplatformapi/tables/Servicing/${Service_ID}`,
         headers: {
             'Accept': 'application/json',
-            'Authorization': `Bearer ${access_token}`
+            'Authorization': `Bearer ${await getAccessToken()}`
         }
     })
     .then(response => response.data[0])
@@ -500,7 +497,7 @@ const getServiceReservations = async (Event_ID) => {
         url: `https://my.pureheart.org/ministryplatformapi/tables/Event_Services?$filter=Event_ID=${Event_ID}`,
         headers: {
             'Accept': 'application/json',
-            'Authorization': `Bearer ${access_token}`
+            'Authorization': `Bearer ${await getAccessToken()}`
         }
     })
     .then(response => response.data)
@@ -525,7 +522,7 @@ const createEquipmentReservation = async (Event_ID, Equipment_ID, Quantity) => {
         headers: {
             'Content-Type': 'application/json',
             'Accept': 'application/json',
-            'Authorization': `Bearer ${access_token}`
+            'Authorization': `Bearer ${await getAccessToken()}`
         },
         data: JSON.stringify(reservation)
     })
@@ -550,7 +547,7 @@ const createServiceReservation = async (Event_ID, Service_ID) => {
         headers: {
             'Content-Type': 'application/json',
             'Accept': 'application/json',
-            'Authorization': `Bearer ${access_token}`
+            'Authorization': `Bearer ${await getAccessToken()}`
         },
         data: JSON.stringify(reservation)
     })
@@ -558,7 +555,7 @@ const createServiceReservation = async (Event_ID, Service_ID) => {
     .catch(err => console.error(err)) 
 }
 
-const getPageID = (Table_Name) => {
+const getPageID = async (Table_Name) => {
     if (!Table_Name) return;
     return axios({
         method: 'post',
@@ -568,7 +565,7 @@ const getPageID = (Table_Name) => {
         },
         headers: {
             'Accept': 'application/json',
-            'Authorization': `Bearer ${access_token}`
+            'Authorization': `Bearer ${await getAccessToken()}`
         }
     })
     .then(response => response.data[0][0])
@@ -580,7 +577,7 @@ const getProcs = async () => {
         url: 'https://my.pureheart.org/ministryplatformapi/procs',
         headers: {
             'Accept': 'application/json',
-            'Authorization': `Bearer ${access_token}`
+            'Authorization': `Bearer ${await getAccessToken()}`
         }
     })
     .then(response => response.data)
@@ -595,7 +592,7 @@ const getMonthsDonations = async (year, month) => {
             url: `https://my.pureheart.org/ministryplatformapi/tables/Donations?$filter=MONTH(Donation_Date) = ${month} AND Year(Donation_Date) = ${year}${skip ? `&$skip=${skip}` : ''}`,
             headers: {
                 'Accept': 'application/json',
-                'Authorization': `Bearer ${access_token}`
+                'Authorization': `Bearer ${await getAccessToken()}`
             }
         })
         .then(response => response.data)

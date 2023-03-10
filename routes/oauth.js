@@ -4,115 +4,75 @@ const qs = require('qs')
 const axios = require('axios');
 
 router.post('/login', async (req, res) => {
-    const {username, password} = req.body;
-    
     //this video explains this axios request
     //https://youtu.be/r5N8MrQedcg?t=155
     //heres the docs for ministry platform oauth info
     //https://mpweb.azureedge.net/libraries/docs/default-source/kb/get_ready_ministryplatform_new_oauth3b8b080b-04b5-459c-ae7f-0a610de0a5fa.pdf?sfvrsn=db969991_3
-    axios({
-        method: 'post',
-        url: 'https://my.pureheart.org/ministryplatformapi/oauth/connect/token',
-        data: qs.stringify({
-            grant_type: "password",
-            scope: "http://www.thinkministry.com/dataplatform/scopes/all",
-            client_id: "event-planner",
-            username: username,
-            password: password
-        }),
-        headers: {
-            'Content-Type': 'application/x-www-form-urlencoded',
-            'Authorization': `Basic ${process.env.BASIC_AUTH_SECRET}`
+    
+    console.log(req.body)
+    const {username, password, remember} = req.body;
+    
+    try {
+        const login = await axios({
+            method: 'post',
+            url: `${process.env.BASE_URL}/oauth/connect/token`,
+            data: qs.stringify({
+                grant_type: "password",
+                scope: "http://www.thinkministry.com/dataplatform/scopes/all openid offline_access",
+                client_id: process.env.CLIENT_ID,
+                username: username,
+                password: password
+            }),
+            headers: {
+                'Content-Type': 'application/x-www-form-urlencoded',
+                'Authorization': `Basic ${Buffer.from(`${process.env.CLIENT_ID}:${process.env.CLIENT_SECRET}`).toString('base64')}`
+            }
+        })
+            .then(response => response.data)
+        
+        const {access_token, token_type, refresh_token, expires_in} = login;
+
+        const user = await axios({
+            method: 'get',
+            url: `${process.env.BASE_URL}/oauth/connect/userinfo`,
+            headers: {
+                'Authorization': `${token_type} ${access_token}`
+            }
+        })
+            .then(response => response.data)
+            .catch(err => console.log(err))
+
+        req.session.user = user;
+        req.session.access_token = access_token;
+        // if user selected keep me logged in, set refresh token, otherwise set in to null
+        req.session.refresh_token = remember ? refresh_token : null;
+        
+        res.status(200).send(user).end();
+    } catch (err) {
+        if (err.response && err.response.data.error_description) {
+            res.status(403).send({error: err.response.data.error_description}).end();
+        } else if (err.response && err.response.data) {
+            res.status(403).send({error: err.response.data.error}).end();
+        } else {
+            console.log(err)
+            res.status(500).send({error: 'internal server error'})
         }
-    })
-        .then(response => {
-            const {access_token} = response.data;
-            const {data} = response.config;
-            if (access_token) {
-                //gets all params passed from data, then gets the username={username}, then gets the username itself, then removes the email part at the end
-                const username = data.split('&').filter(param => param.includes('username'))[0].split('=')[1].split('%40')[0]
-                // console.log(username)
-
-                axios({
-                    method: 'get',
-                    url: `https://my.pureheart.org/ministryplatformapi/users?%24logOnName=${username}`,
-                    headers: {
-                        'Accept': 'application/json',
-                        'Authorization': `Bearer ${access_token}`
-                    }
-                })
-                    .then(response => {
-                        const {Id} = response.data[0];
-                        res.cookie('user_id', Id, {expire : new Date() + 3600})
-                        res.cookie('access_token', access_token, {expire : new Date() + 3600})
-                        res.send({success: true})
-                    })
-                    .catch(err => {
-                        console.error(err.response.status)
-                        if (err.response.status >= 400 && err.response.status < 500) {
-                            res.send({success: false, error: 'Unauthorized: Insufficient Security Roles'})
-                        } else {
-                            res.send({success: false, error: 'internal server error: please try again later.'})
-                        }
-                    })
-            } else {
-                res.render('pages/login', {error: 'Incorrect Username or Password'})
-            }
-        })
-        .catch(err => {
-            res.send({success: false, error: 'Incorrect Username or Password'})
-        })
-})
-
-router.get('/me', async (req, res) => {
-    const {user_id, token} = req.query;
-    if (!user_id || !token) return res.json({user: null})
-
-
-    try {
-        axios({
-            method: 'get',
-            url: `https://my.pureheart.org/ministryplatformapi/users/${user_id}`,
-            headers: {
-                'Accept': 'application/json',
-                'Authorization': `Bearer ${token}`
-            }
-        })
-            .then(response => response.data)
-            .then(data => res.json({user: data}))
-            .catch(err => {
-                res.redirect('/login')
-            })
-    }
-    catch {
-        res.json({user: null})
     }
 })
 
-router.get('/me/roles', async (req, res) => {
-    const {user_id, token} = req.query;
-    if (!user_id || !token) return res.json({user: null})
-
-    try {
-        axios({
-            method: 'get',
-            url: `https://my.pureheart.org/ministryplatformapi/tables/dp_User_Roles?%24filter=User_ID=${user_id}`,
-            headers: {
-                'Accept': 'application/json',
-                'Authorization': `Bearer ${token}`
-            }
-        })
-            .then(response => response.data)
-            .then(data => res.json({userRoles: data}))
-            .catch(err => {
-                res.json({user: null})
-            })
-    } catch {
-        res.json({userRoles: null})
+router.get('/user', (req, res) => {
+    if (req.session.user) {
+        res.send(req.session.user).end()
+    } else {
+        res.send(null).end()
     }
 })
 
 router.get('/authorize', async (req, res) => {
+    res.send({ access_token: req.session.access_token });
+})
+
+router.get('/client-authorize', async (req, res) => {
     const data = await axios({
         method: 'post',
         url: 'https://my.pureheart.org/ministryplatformapi/oauth/connect/token',
@@ -127,26 +87,6 @@ router.get('/authorize', async (req, res) => {
     const {access_token, expires_in} = data;
     const expiresDate = new Date(new Date().getTime() + (expires_in * 1000)).toISOString()
     res.send({access_token: access_token, expires_in: expiresDate})
-})
-
-router.get('/app/authorize', async (req, res) => {
-    const data = await axios({
-        method: 'post',
-        url: 'https://my.pureheart.org/ministryplatformapi/oauth/connect/token',
-        data: qs.stringify({
-            grant_type: "client_credentials",
-            scope: "http://www.thinkministry.com/dataplatform/scopes/all",
-            client_id: process.env.APP_CLIENT_ID,
-            client_secret: process.env.APP_CLIENT_SECRET
-        })
-    })
-        .then(response => response.data)
-        .catch(err => console.error(err))
-    const {access_token, expires_in} = data;
-    res.send({
-        access_token: access_token,
-        expires_in: expires_in
-    })
 })
 
 router.get('/refresh', async (req, res) => {
