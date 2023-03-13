@@ -37,7 +37,6 @@ const ensureAuthenticated = async (req, res, next) => {
     if (logging) console.log('invalid token')
     // if token is not valid, use refresh token to get a new one
     
-    console.log(req.session)
     const newAccessToken = await axios({
         method: 'post',
         url: `${process.env.BASE_URL}/oauth/connect/token`,

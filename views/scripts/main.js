@@ -15,6 +15,17 @@ const getAccessToken = async () => {
     return access_token;
 }
 
+const getClientAccessToken = async () => {
+    const tokenData = await axios({
+        method: 'get',
+        url: '/api/oauth/client-authorize'
+    })
+        .then(response => response.data)
+
+    const { access_token } = tokenData;
+    return access_token;
+}
+
 const getAllTaskUsers = async () => {
     registrationUserIds = await getUsersWithRole(2194);
     promotionUserIds = await getUsersWithRole(2195);

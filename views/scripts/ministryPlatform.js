@@ -346,7 +346,7 @@ const deleteTask = async (TaskId) => {
         url: `https://my.pureheart.org/ministryplatformapi/tasks/${TaskId}`,
         headers: {
             'Accept': 'application/json',
-            'Authorization': `Bearer ${await getAccessToken()}`
+            'Authorization': `Bearer ${await getClientAccessToken()}`
         }
     })
     .then(response => response)
@@ -363,12 +363,12 @@ const getUsersWithRole = async (Role_ID) => {
             'Authorization': `Bearer ${await getAccessToken()}`
         }
     })
-    .then(response => {
-        return response.data.map(user => user.User_ID)
-    })
-    .catch(err => {
-        console.error(err)
-    })
+        .then(response => {
+            return response.data.map(user => user.User_ID)
+        })
+        .catch(err => {
+            console.error(err)
+        })
     return response;
 }
 
