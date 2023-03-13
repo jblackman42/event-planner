@@ -151,9 +151,10 @@ router.get('/isAdmin', async (req, res) => {
             })
     
         const {user} = req.session;
+
         // checks authorized user group for logged in user's id
         // allows admins in regardless of group
-        const userAuthorized = (user.roles && user.roles.includes("Administrators")) ?? groupUserIds.filter(id => id == user.userid).length > 0;
+        const userAuthorized = (user.roles && user.roles.includes("Administrators")) || groupUserIds.filter(id => id == user.userid).length > 0;
     
         res.send(userAuthorized);
     } catch (error) {
