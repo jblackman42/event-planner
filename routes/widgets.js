@@ -122,9 +122,6 @@ router.get('/sermons', async (req, res) => {
     res.status(200).send(data).end();
 })
 
-<<<<<<< Updated upstream
-router.post('/opportunity-auto-place', ensureWebhook, async (req, res) => {
-=======
 router.get('/featured-events', async (req, res) => {
     const accessToken = await axios({
         method: 'post',
@@ -154,7 +151,6 @@ router.get('/featured-events', async (req, res) => {
 })
 
 router.post('/opportunity-auto-place', async (req, res) => {
->>>>>>> Stashed changes
     //get access token for accessing database informatin
     const accessToken = await axios({
         method: 'get',

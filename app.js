@@ -2,14 +2,11 @@ const express = require('express');
 const app = express();
 const cookieParser = require("cookie-parser");
 const cors = require('cors');
-const upload = require('express-fileupload');
+const fileUpload = require('express-fileupload');
 const enableWs = require('express-ws')
 var session = require('express-session');
 
 //middleware
-<<<<<<< Updated upstream
-app.use(upload());
-=======
 require('dotenv').config();
 
 app.use(express.json({limit: '50mb'}));
@@ -27,16 +24,10 @@ app.use(session({
 app.use(fileUpload({
     limits: { fileSize: 50 * 1024 * 1024 },
 }));
->>>>>>> Stashed changes
 app.use(cookieParser());
 app.use(cors());
 enableWs(app)
 
-<<<<<<< Updated upstream
-app.use(express.json({limit: '50mb'}));
-app.use(express.urlencoded({limit: '50mb', extended: true}));
-=======
->>>>>>> Stashed changes
 
 app.use(function(req, res, next) {
     res.header("Access-Control-Allow-Origin", "*");

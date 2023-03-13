@@ -4,7 +4,7 @@ const getEvents = async (currentMonth, currentYear) => { //redirect is the url a
     const lastVisibleDate = new Date(currentYear, currentMonth + 1, 0)
     lastVisibleDate.setTime(lastVisibleDate.getTime() + 86399999)
     
-    const response = axios({
+    const response = await axios({
         method: 'get',
         url: `https://my.pureheart.org/ministryplatformapi/tables/Events?$filter=Event_Start_Date BETWEEN '${firstVisibleDate.toISOString()}' AND '${lastVisibleDate.toISOString()}'`,
         headers: {
@@ -21,7 +21,7 @@ const getEvents = async (currentMonth, currentYear) => { //redirect is the url a
 
 const getEvent = async (Event_ID) => {
     if (!Event_ID) return
-    const response = axios({
+    const response = await axios({
         method: 'get',
         url: `https://my.pureheart.org/ministryplatformapi/tables/Events/${Event_ID}`,
         headers: {
@@ -39,7 +39,7 @@ const getEvent = async (Event_ID) => {
 const getContactFromID = async (Contact_ID) => {
     //https://my.pureheart.org/ministryplatformapi/tables/Contacts
     if (!Contact_ID) return
-    const response = axios({
+    const response = await axios({
         method: 'get',
         url: `https://my.pureheart.org/ministryplatformapi/tables/Contacts/${Contact_ID}`,
         headers: {
@@ -55,7 +55,7 @@ const getContactFromID = async (Contact_ID) => {
 }
 
 const getDaysEventsBetweenTimes = async (startTime, endTime) => {
-    const response = axios({
+    const response = await axios({
         method: 'get',
         url: `https://my.pureheart.org/ministryplatformapi/tables/Events?$filter='${startTime}' BETWEEN Event_Start_Date AND Event_End_Date OR '${endTime}' BETWEEN Event_Start_Date AND Event_End_Date OR Event_Start_Date BETWEEN '${startTime}' AND '${endTime}' OR Event_End_Date BETWEEN '${startTime}' AND '${endTime}'`,
         headers: {
@@ -65,12 +65,11 @@ const getDaysEventsBetweenTimes = async (startTime, endTime) => {
     })
     .then(response => response.data.filter(event => !event.Cancelled))
     .catch(err => {console.error(err)})
-    console.log(response)
     return response;
 }
 
 const getPrograms = async () => {
-    const response = axios({
+    const response = await axios({
         method: 'get',
         url: `https://my.pureheart.org/ministryplatformapi/tables/Programs`,
         headers: {
@@ -85,7 +84,7 @@ const getPrograms = async () => {
 
 const getEventRooms = async (Event_ID) => {
     if (!Event_ID) return
-    const response = axios({
+    const response = await axios({
         method: 'get',
         url: `https://my.pureheart.org/ministryplatformapi/tables/Event_Rooms?%24filter=Event_ID%3D${Event_ID}`,
         headers: {
@@ -102,7 +101,7 @@ const getEventRooms = async (Event_ID) => {
 
 const getEventRoomsFromIDs = async (Event_IDs, Room_ID) => {
     if (!Event_IDs || !Room_ID) return
-    const response = axios({
+    const response = await axios({
         method: 'get',
         url: `https://my.pureheart.org/ministryplatformapi/tables/Event_Rooms?%24filter=Room_ID = ${Room_ID} AND Event_ID BETWEEN ${Event_IDs[0]} AND ${Event_IDs[Event_IDs.length - 1]}`,
         headers: {
@@ -119,7 +118,7 @@ const getEventRoomsFromIDs = async (Event_IDs, Room_ID) => {
 
 const getBuilding = async (Building_ID) => {
     if (!Building_ID) return
-    const response = axios({
+    const response = await axios({
         method: 'get',
         url: `https://my.pureheart.org/ministryplatformapi/tables/Buildings/${Building_ID}`,
         headers: {
@@ -136,7 +135,7 @@ const getBuilding = async (Building_ID) => {
 
 const getEventRoomsForBuilding = async (Event_IDs, Room_IDs, skip) => {
     if (!Event_IDs || !Room_IDs) return
-    const response = axios({
+    const response = await axios({
         method: 'get',
         url: `https://my.pureheart.org/ministryplatformapi/tables/Event_Rooms?${skip ? `$skip=${skip}&` : ''}%24filter=${Room_IDs.map(id => `Room_ID=${id} AND Event_ID BETWEEN ${Event_IDs[0]} AND ${Event_IDs[Event_IDs.length - 1]}`).join(' OR ')}`,
         headers: {
@@ -153,7 +152,7 @@ const getEventRoomsForBuilding = async (Event_IDs, Room_IDs, skip) => {
 
 const getEventRoomIDs = async (Event_ID) => {
     if (!Event_ID) return
-    const response = axios({
+    const response = await axios({
         method: 'get',
         url: `https://my.pureheart.org/ministryplatformapi/tables/Event_Rooms?%24filter=Event_ID%3D${Event_ID}&%24select=Room_ID`,
         headers: {
@@ -170,7 +169,7 @@ const getEventRoomIDs = async (Event_ID) => {
 
 const getRoom = async (Room_ID) => {
     if (!Room_ID) return
-    const response = axios({
+    const response = await axios({
         method: 'get',
         url: `https://my.pureheart.org/ministryplatformapi/tables/Rooms/${Room_ID}`,
         headers: {
@@ -187,7 +186,7 @@ const getRoom = async (Room_ID) => {
 
 const getLocations = async () => {
     const blockekdLocations = [3,6]
-    const response = axios({
+    const response = await axios({
         method: 'get',
         url: `https://my.pureheart.org/ministryplatformapi/tables/Locations`,
         headers: {
@@ -204,7 +203,7 @@ const getLocations = async () => {
 
 const getLocation = async (Location_ID) => {
     if (!Location_ID) return
-    const response = axios({
+    const response = await axios({
         method: 'get',
         url: `https://my.pureheart.org/ministryplatformapi/tables/Locations/${Location_ID}`,
         headers: {
@@ -223,7 +222,7 @@ const getLocation = async (Location_ID) => {
 
 const getLocationBuildings = async (Location_ID) => {
     if (!Location_ID) return
-    const response = axios({
+    const response = await axios({
         method: 'get',
         url: `https://my.pureheart.org/ministryplatformapi/tables/Buildings?%24filter=Location_ID=${Location_ID}`,
         headers: {
@@ -242,7 +241,7 @@ const getLocationBuildings = async (Location_ID) => {
 
 const getBuildingRooms = async (Building_ID) => {
     if (!Building_ID) return
-    const response = axios({
+    const response = await axios({
         method: 'get',
         url: `https://my.pureheart.org/ministryplatformapi/tables/Rooms?%24filter=Building_ID=${Building_ID} AND Bookable='true'`,
         headers: {
@@ -260,7 +259,7 @@ const getBuildingRooms = async (Building_ID) => {
 }
 
 const getAllUsers = async () => {
-    const response = axios({
+    const response = await axios({
         method: 'get',
         url: 'https://my.pureheart.org/ministryplatformapi/users',
         headers: {
@@ -276,7 +275,7 @@ const getAllUsers = async () => {
 }
 
 const getEventTypes = async () => {
-    const response = axios({
+    const response = await axios({
         method: 'get',
         url: 'https://my.pureheart.org/ministryplatformapi/tables/Event_Types',
         headers: {
@@ -292,7 +291,7 @@ const getEventTypes = async () => {
 }
 
 const getCongregations = async () => {
-    const response = axios({
+    const response = await axios({
         method: 'get',
         url: 'https://my.pureheart.org/ministryplatformapi/tables/Congregations',
         headers: {
@@ -309,7 +308,7 @@ const getCongregations = async () => {
 
 const getUserInfo = async (User_ID) => {
     if (!User_ID) return
-    const response = axios({
+    const response = await axios({
         method: 'get',
         url: `https://my.pureheart.org/ministryplatformapi/tables/Contacts?%24filter=User_Account%3D${User_ID}`,
         headers: {
@@ -328,7 +327,7 @@ const getUserInfo = async (User_ID) => {
 
 const getUserTasks = async (User_ID) => {
     if (!User_ID) return;
-    return axios({
+    return await axios({
         method: 'get',
         url: `https://my.pureheart.org/ministryplatformapi/tables/dp_Tasks?$filter=Assigned_User_ID=${User_ID} AND Completed=0`,
         headers: {
@@ -342,7 +341,7 @@ const getUserTasks = async (User_ID) => {
 
 const deleteTask = async (TaskId) => {
     if (!TaskId) return;
-    return axios({
+    return await axios({
         method: 'delete',
         url: `https://my.pureheart.org/ministryplatformapi/tasks/${TaskId}`,
         headers: {
@@ -356,7 +355,7 @@ const deleteTask = async (TaskId) => {
 
 const getUsersWithRole = async (Role_ID) => {
     if (!Role_ID) return
-    const response = axios({
+    const response = await axios({
         method: 'get',
         url: `https://my.pureheart.org/ministryplatformapi/tables/dp_User_Roles?$select=User_ID&$filter=Role_ID=${Role_ID}`,
         headers: {
@@ -375,7 +374,7 @@ const getUsersWithRole = async (Role_ID) => {
 
 const getVisibilityLevels = async () => {
     const blockedLevels = [2,3,5]
-    const response = axios({
+    const response = await axios({
         method: 'get',
         url: 'https://my.pureheart.org/ministryplatformapi/tables/Visibility_Levels',
         headers: {
@@ -391,7 +390,7 @@ const getVisibilityLevels = async () => {
 }
 
 const getEquipment = async () => {
-    return axios({
+    return await axios({
         method: 'get',
         url: 'https://my.pureheart.org/ministryplatformapi/tables/Equipment?$filter=Bookable=1',
         headers: {
@@ -464,7 +463,7 @@ const sendTask = async (authorId, ownerId, eventId, startDate, taskType) => {
 
 const getEquipmentReservations = async (Event_ID) => {
     if (!Event_ID) return;
-    return axios({
+    return await axios({
         method: 'get',
         url: `https://my.pureheart.org/ministryplatformapi/tables/Event_Equipment?$filter=Event_ID=${Event_ID}`,
         headers: {
@@ -478,7 +477,7 @@ const getEquipmentReservations = async (Event_ID) => {
 
 const getService = async (Service_ID) => {
     if (!Service_ID) return;
-    return axios({
+    return await axios({
         method: 'get',
         url: `https://my.pureheart.org/ministryplatformapi/tables/Servicing/${Service_ID}`,
         headers: {
@@ -492,7 +491,7 @@ const getService = async (Service_ID) => {
 
 const getServiceReservations = async (Event_ID) => {
     if (!Event_ID) return;
-    return axios({
+    return await axios({
         method: 'get',
         url: `https://my.pureheart.org/ministryplatformapi/tables/Event_Services?$filter=Event_ID=${Event_ID}`,
         headers: {
@@ -516,7 +515,7 @@ const createEquipmentReservation = async (Event_ID, Equipment_ID, Quantity) => {
         "Notes": ""
     }]
 
-    return axios({
+    return await axios({
         method: 'post',
         url: 'https://my.pureheart.org/ministryplatformapi/tables/Event_Equipment',
         headers: {
@@ -541,7 +540,7 @@ const createServiceReservation = async (Event_ID, Service_ID) => {
         "_Approved": false
     }]
 
-    return axios({
+    return await axios({
         method: 'post',
         url: 'https://my.pureheart.org/ministryplatformapi/tables/Event_Services',
         headers: {
@@ -557,7 +556,7 @@ const createServiceReservation = async (Event_ID, Service_ID) => {
 
 const getPageID = async (Table_Name) => {
     if (!Table_Name) return;
-    return axios({
+    return await axios({
         method: 'post',
         url: `https://my.pureheart.org/ministryplatformapi/procs/api_Common_GetPageID`,
         data: {
@@ -587,7 +586,7 @@ const getProcs = async () => {
 const getMonthsDonations = async (year, month) => {
     if (!year || !month) return;
     const getDonations = async (skip) => {
-        return axios({
+        return await axios({
             method: 'get',
             url: `https://my.pureheart.org/ministryplatformapi/tables/Donations?$filter=MONTH(Donation_Date) = ${month} AND Year(Donation_Date) = ${year}${skip ? `&$skip=${skip}` : ''}`,
             headers: {

@@ -27,13 +27,12 @@ const formSections = document.querySelectorAll('.section');
 
 const selecedEquipment = [];
 
-
 let user;
 const loadForm = async () => {
     //logged in user
     user = await getUser();
     //displays the logged in user as the event creator
-    eventCreatorDOM.innerText = user.DisplayName.split(', ').reverse().join(' ');
+    eventCreatorDOM.innerText = user.display_name.split(', ').reverse().join(' ');
 
     //Primary Contact
     let allUsers = await getAllUsers();
@@ -59,7 +58,7 @@ const loadForm = async () => {
             </option>
         `
     }).join('')
-    primaryContactDOM.value = user.UserId;
+    primaryContactDOM.value = user.userid;
 
     //Event Types
     let eventTypes = await getEventTypes();
@@ -281,7 +280,7 @@ const loadRoomOptions = async () => {
             const {Building_Name, Building_ID} = building;
             const rooms = await getBuildingRooms(Building_ID);
             if (rooms.length == 0) return;
-            console.log(overlappingEventRooms)
+            // console.log(overlappingEventRooms)
             return `
                 <div class="building">
                     <div class="building-header" onclick="toggleAccordion(${Building_ID})">
@@ -366,7 +365,7 @@ const publishEvent = async (event) => {
                 headers: {
                     'Content-Type': 'application/json',
                     'Accept': 'application/json',
-                    'Authorization': `Bearer ${access_token}`
+                    'Authorization': `Bearer ${await getAccessToken()}`
                 },
                 body: JSON.stringify(room),
             })
@@ -473,13 +472,13 @@ const handleSubmit = async (e) => {
         const eventLength = new Date(endDateTime).getTime() - new Date(startDateTime).getTime();
         for (day of days) {
             const eventDay = new Date(new Date(day).getTime() - (new Date(day).getTimezoneOffset() * 60000))
-            const event = [formatEvent(eventNameDOM.value,eventDescDOM.value,primaryContactID.Contact_ID,eventDay,new Date(new Date(eventDay).getTime() + eventLength).toISOString(),eventTypeDOM.value,attendanceDOM.value,congregationDOM.value,setupTimeDOM.value,cleanupTimeDOM.value,eventLocationDOM.value, visibilityLevelDOM.value)];
+            const event = [formatEvent(eventNameDOM.value,eventDescDOM.value,primaryContactID.Contact_ID,eventDay,new Date(new Date(eventDay).getTime() + eventLength).toISOString(),eventTypeDOM.value,attendanceDOM.value,congregationDOM.value,setupTimeDOM.value,cleanupTimeDOM.value,eventLocationDOM.value, visibilityLevelDOM.value, user.userid)];
             await publishEvent(event)
         }
         completed();
     } else {
         //turn input data into form for sending to MP
-        const event = [formatEvent(eventNameDOM.value,eventDescDOM.value,primaryContactID.Contact_ID,startDateTime,endDateTime,eventTypeDOM.value,attendanceDOM.value,congregationDOM.value,setupTimeDOM.value,cleanupTimeDOM.value,eventLocationDOM.value, visibilityLevelDOM.value)];
+        const event = [formatEvent(eventNameDOM.value,eventDescDOM.value,primaryContactID.Contact_ID,startDateTime,endDateTime,eventTypeDOM.value,attendanceDOM.value,congregationDOM.value,setupTimeDOM.value,cleanupTimeDOM.value,eventLocationDOM.value, visibilityLevelDOM.value, user.userid)];
 
         await publishEvent(event)
         completed();

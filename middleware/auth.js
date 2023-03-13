@@ -1,6 +1,7 @@
 const axios = require('axios');
 const qs = require('qs');
 
+// checks for valid access token
 const ensureAuthenticated = async (req, res, next) => {
     const logging = 0;
 
@@ -36,6 +37,7 @@ const ensureAuthenticated = async (req, res, next) => {
     if (logging) console.log('invalid token')
     // if token is not valid, use refresh token to get a new one
     
+    console.log(req.session)
     const newAccessToken = await axios({
         method: 'post',
         url: `${process.env.BASE_URL}/oauth/connect/token`,
@@ -49,6 +51,7 @@ const ensureAuthenticated = async (req, res, next) => {
     })
         .then(response => response.data.access_token)
         .catch(err => {
+            console.log('ensureAuthenticated')
             console.log('something went wrong: ' + err);
             return false;
         })
@@ -63,6 +66,7 @@ const ensureAuthenticated = async (req, res, next) => {
     }
 }
 
+// checks part of correct group
 const checkUserGroups = async (req, res, next) => {
     const data = await axios({
         method: 'post',
@@ -86,12 +90,59 @@ const checkUserGroups = async (req, res, next) => {
     })
         .then(response => response.data.map(user => parseInt(user.User_ID)))
         .catch(err => {
+            console.log('checkUserGroups')
+            console.log('something went wrong: ' + err);
+            res.render('pages/login', {error: 'internal server error'});
+        })
+
+    const {user} = req.session;
+    
+    // checks authorized user group for logged in user's id
+    const userAuthorized = groupUserIds.filter(id => id == user.userid).length > 0 || (user.roles && user.roles.includes("Administrators"));
+    
+    // if user IS a part of authorized group
+    // let em in
+    if (userAuthorized) return next();
+    // if user is not a part of authorized group
+    // kick em out
+    req.session.user = null;
+    req.session.access_token = null;
+    req.session.refresh_token = null;
+    return res.render('pages/login', {error: 'unauthorized'})
+}
+
+// checks part of correct group
+const checkAdminUserGroups = async (req, res, next) => {
+    const data = await axios({
+        method: 'post',
+        url: `${process.env.BASE_URL}/oauth/connect/token`,
+        data: qs.stringify({
+            grant_type: "client_credentials",
+            scope: "http://www.thinkministry.com/dataplatform/scopes/all",
+            client_id: process.env.CLIENT_ID,
+            client_secret: process.env.CLIENT_SECRET
+        })
+    })
+        .then(response => response.data)
+    const {access_token} = data;
+
+    const groupUserIds = await axios({
+        method: 'get',
+        url: `${process.env.BASE_URL}/tables/dp_User_User_Groups?$filter=User_Group_ID=${process.env.AUTHORIZED_ADMIN_GROUP_ID}`,
+        headers: {
+            'authorization': `Bearer ${access_token}`
+        }
+    })
+        .then(response => response.data.map(user => parseInt(user.User_ID)))
+        .catch(err => {
+            console.log('checkAdminUserGroups')
             console.log('something went wrong: ' + err);
             res.render('pages/login', {error: 'internal server error'});
         })
 
     const {user} = req.session;
     // checks authorized user group for logged in user's id
+    // allows admins in regardless of group
     const userAuthorized = groupUserIds.filter(id => id == user.userid).length > 0 || (user.roles && user.roles.includes("Administrators"));
     
     // if user IS a part of authorized group
@@ -108,4 +159,5 @@ const checkUserGroups = async (req, res, next) => {
 module.exports = {
     ensureAuthenticated,
     checkUserGroups,
+    checkAdminUserGroups,
 }

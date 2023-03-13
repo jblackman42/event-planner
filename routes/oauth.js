@@ -9,7 +9,6 @@ router.post('/login', async (req, res) => {
     //heres the docs for ministry platform oauth info
     //https://mpweb.azureedge.net/libraries/docs/default-source/kb/get_ready_ministryplatform_new_oauth3b8b080b-04b5-459c-ae7f-0a610de0a5fa.pdf?sfvrsn=db969991_3
     
-    console.log(req.body)
     const {username, password, remember} = req.body;
     
     try {
@@ -68,11 +67,11 @@ router.get('/user', (req, res) => {
     }
 })
 
-router.get('/authorize', async (req, res) => {
+router.get('/client-authorize', async (req, res) => {
     res.send({ access_token: req.session.access_token });
 })
 
-router.get('/client-authorize', async (req, res) => {
+router.get('/authorize', async (req, res) => {
     const data = await axios({
         method: 'post',
         url: 'https://my.pureheart.org/ministryplatformapi/oauth/connect/token',
@@ -120,6 +119,46 @@ router.get('/refresh', async (req, res) => {
         res.sendStatus(500);
     }
 
+})
+
+router.get('/isAdmin', async (req, res) => {
+    try {
+        const data = await axios({
+            method: 'post',
+            url: 'https://my.pureheart.org/ministryplatformapi/oauth/connect/token',
+            data: qs.stringify({
+                grant_type: "client_credentials",
+                scope: "http://www.thinkministry.com/dataplatform/scopes/all",
+                client_id: process.env.APP_CLIENT_ID,
+                client_secret: process.env.APP_CLIENT_SECRET
+            })
+        })
+            .then(response => response.data)
+            .catch(err => console.error(err))
+        const {access_token} = data;
+
+        const groupUserIds = await axios({
+            method: 'get',
+            url: `${process.env.BASE_URL}/tables/dp_User_User_Groups?$filter=User_Group_ID=${process.env.AUTHORIZED_ADMIN_GROUP_ID}`,
+            headers: {
+                'authorization': `Bearer ${access_token}`
+            }
+        })
+            .then(response => response.data.map(user => parseInt(user.User_ID)))
+            .catch(err => {
+                console.log('something went wrong: ' + err);
+                res.render('pages/login', {error: 'internal server error'});
+            })
+    
+        const {user} = req.session;
+        // checks authorized user group for logged in user's id
+        // allows admins in regardless of group
+        const userAuthorized = (user.roles && user.roles.includes("Administrators")) ?? groupUserIds.filter(id => id == user.userid).length > 0;
+    
+        res.send(userAuthorized);
+    } catch (error) {
+        res.sendStatus(500);
+    }
 })
 
 module.exports = router;

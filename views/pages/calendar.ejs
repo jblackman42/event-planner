@@ -213,7 +213,7 @@
                 const eventRooms = await getEventRooms(Event_ID);
 
                 const rooms = async () => {
-                    return Promise.all(eventRooms.map((eventRoom) => getRoom(eventRoom.Room_ID)))
+                    return Promise.all(eventRooms.map((eventRoom) => eventRoom.Room_ID))
                 }
 
                 return {
