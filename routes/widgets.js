@@ -3,7 +3,7 @@ const router = express.Router();
 const axios = require('axios');
 const qs = require('qs')
 
-const {ensureAdministrator, ensureWebhook} = require('../middleware/auth.js')
+const { ensureAuthenticated } = require('../middleware/auth.js')
 // const StaffSchema = require('../models/Staff');
 // const SermonSchema = require('../models/Sermons');
 
@@ -150,7 +150,7 @@ router.get('/featured-events', async (req, res) => {
     res.status(200).send(data).end();
 })
 
-router.post('/opportunity-auto-place', ensureWebhook, async (req, res) => {
+router.post('/opportunity-auto-place', async (req, res) => {
     //get access token for accessing database informatin
     const accessToken = await axios({
         method: 'get',
@@ -184,7 +184,7 @@ router.post('/opportunity-auto-place', ensureWebhook, async (req, res) => {
     }
 })
 
-router.post('/email', ensureWebhook, async (req, res) => {
+router.post('/email', async (req, res) => {
     const apiUserId = 6580;
     const apiUserContactId = 95995;
 

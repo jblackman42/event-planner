@@ -19,9 +19,9 @@
     const getAllTasks = async () => {
         loading();
         const user = await getUser();
-        const {UserId} = user;
+        const {userid} = user;
 
-        tasks = await getUserTasks(UserId)
+        tasks = await getUserTasks(userid)
         
         if (!tasks.length) {
             doneLoading();

@@ -17,6 +17,15 @@ $text-color: white;
 		text-align: center;
 		font-size: 80%;
 	}
+	.row {
+		display: flex;
+		justify-content: space-between;
+		a {
+			font-size: 16px;
+			margin-top: 0.5rem;
+			color: currentColor;
+		}
+	}
 	.inputs {
 		display: flex;
 		flex-direction: column;
@@ -34,13 +43,18 @@ $text-color: white;
 		}
 
 		#togglePassword {
-			color: $secondary-font-color;
+			color: black;
 			position: absolute;
 			bottom: 0;
 			right: 0;
 			margin: .9rem .5rem;
 			font-size: 1.25rem;
 		}
+	}
+	.remember-input {
+		font-size: 16px;
+		margin: .5rem 0;
+		margin-bottom: 0;
 	}
 	.login,
 	.signIn {
@@ -50,6 +64,7 @@ $text-color: white;
 		width: 100%;
 		padding: 0.75rem;
 		margin: 1rem 0;
+		margin-top: .5rem;
 		border-radius: 0.25rem;
 		cursor: pointer;
 		&:hover,

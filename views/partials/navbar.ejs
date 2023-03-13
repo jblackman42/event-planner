@@ -20,7 +20,7 @@
                 <li id="new-event-btn"><a href="/create">New Event</a></li>
                 <li><a href="/my-tasks" id="tasks-link">My Tasks</a></li>
                 <li id="prayer-wall-btn"><a href="/prayer-wall">Prayer Wall</a></li>
-                <li id="loggedIn"><a onclick="logout()" href="/">Logout</a></li>
+                <li><a href="/logout">Logout</a></li>
             </ul>
         </div>
         <div class="footer">
@@ -39,8 +39,6 @@
     </div>
 </nav>
 <script>
-    const loggedIn = document.getElementById('loggedIn');
-    const loggedOut = document.getElementById('loggedOut');
 
     const userWelcomeMsg = document.getElementById('userWelcomeMsg');
 
@@ -68,56 +66,51 @@
     const welcomeMsg = async () => {
         const user = await getUser()
 
-        userWelcomeMsg.innerHTML = `Welcome, ${user.DisplayName.split(', ').reverse().join(' ')}`;
-        loggedIn.style.visibility = 'visible';
-        loggedIn.style.display = 'flex';
+        userWelcomeMsg.innerHTML = `Welcome, ${user.display_name.split(', ').reverse().join(' ')}`;
     }
     welcomeMsg();
 
     const tasksLink = document.getElementById('tasks-link')
     const getTasks = async () => {
         const user = await getUser();
-        const {UserId} = user;
+        const {userid} = user;
 
-        const tasks = await getUserTasks(UserId)
+        const tasks = await getUserTasks(userid)
         
         if (!tasks.length) { return }
         
-        const tasksNotif = document.createElement('p');
-        tasksNotif.id = 'tasks-notification';
-        tasksNotif.innerText = tasks.length;
+        const tasksNotification = document.createElement('p');
+        tasksNotification.id = 'tasks-notification';
+        tasksNotification.innerText = tasks.length;
 
-        tasksLink.appendChild(tasksNotif)
+        tasksLink.appendChild(tasksNotification)
     }
     getTasks();
 
     axios({
         method: 'get',
-        url: '/api/oauth/me/roles',
-        params: {
-            user_id: user_id,
-            token: access_token
-        }
+        url: '/api/oauth/isAdmin'
     })
         .then(response => response.data)
         .then(data => {
-            const eventCreatorRoleId = [2202, 2];
-            const prayerManagerRoleId = [2206, 2]
-            const {userRoles} = data;
-            const userRoleIds = userRoles.map(role => role.Role_ID);
+            const isAdmin = data;
+            // const eventCreatorRoleId = [2202, 2];
+            // const prayerManagerRoleId = [2206, 2]
+            // const {userRoles} = data;
+            // const userRoleIds = userRoles.map(role => role.Role_ID);
             
-            //if logged in user is  authorized to create events
-            if (checkDuplicates(userRoleIds, eventCreatorRoleId)) {
+            // //if logged in user is  authorized to create events
+            if (isAdmin) {
                 //add new event from navbar
                 newEventBtn.style.display = 'block';
                 newEventBtn.style.visibility = 'visible';
             }
             
-            //if logged in user has prayer manager role show prayer wall button
-            if (checkDuplicates(userRoleIds, prayerManagerRoleId)) {
-                prayerWallBtn.style.display = 'block';
-                prayerWallBtn.style.visibility = 'visible';
-            }
+            // //if logged in user has prayer manager role show prayer wall button
+            // if (checkDuplicates(userRoleIds, prayerManagerRoleId)) {
+            //     prayerWallBtn.style.display = 'block';
+            //     prayerWallBtn.style.visibility = 'visible';
+            // }
         })
 
     if (localStorage.getItem('colorScheme') == 'dark') {

@@ -60,16 +60,22 @@
     </script>
 </head>
 <body class="container">
-
+    <%- include('../partials/loading'); %>
     <div class="forms-container">
-        <form id="loginForm">
+        <form id="loginForm" method="post" action="/api/auth/login">
             <h1>Sign In</h1>
             <div class="inputs">
                 <input type="text" name="username" id="username" autocomplete="on" placeholder="Username" required>
                 <input type="password" name="password" id="password" autocomplete="on" placeholder="Password" required>
                 <i class='far fa-eye-slash' id="togglePassword"></i>
             </div>
-    
+            <div class="row">
+                <div class="remember-input" title="Keeps you logged in on this device for 30 days">
+                    <input type="checkbox" name="remember" id="remember">
+                    <label for="remember">Keep Me Logged In</label>
+                </div>
+                <a href="https://my.pureheart.org/ministryplatformapi/oauth/reset">Forgot Password</a>
+            </div>
             <button type="submit" class="login">Sign In</button>
             <p class="help-msg">Sign In With Ministry Platform Credentials</p>
             
@@ -81,32 +87,30 @@
 <script>
     const loginForm = document.getElementById('loginForm');
 
-    loginForm.addEventListener('submit', (e) => {
+    loginForm.addEventListener('submit', async (e) => {
         e.preventDefault();
 
-        const usernameValue = document.getElementById('username').value;
-        const passwordValue = document.getElementById('password').value;
+        const data = {
+            username: document.getElementById('username').value,
+            password: document.getElementById('password').value,
+            remember: document.getElementById('remember').checked
+        }
 
-        axios({
+        console.log(data)
+        loading();
+        await axios({
             method: 'post',
             url: '/api/oauth/login',
-            data: {
-                username: usernameValue,
-                password: passwordValue
-            },
-            headers: {
-                'Content-Type': 'application/json',
-            }
+            data: data
         })
-            .then(response => response.data)
-            .then(data => {
-                if (data.success) {
-                    window.location = window.location.pathname != '/login' ? window.location.pathname + window.location.search : '/';
-                } else {
-                    document.querySelector('.form-error').innerHTML = data.error;
-                }
+            .then(response => {if (response.status >= 200 && response.status < 300) window.location = window.location.pathname == '/login' ? '/' : window.location.pathname})
+            .catch(err => {
+                console.error(err)
+                document.querySelector('.form-error').innerText = err.response.data ? err.response.data.error : 'internal server error';
+                doneLoading();
             })
     })
+
     const togglePassword = document.querySelector("#togglePassword");
     const password = document.querySelector("#password");
 

@@ -1,8 +1,3 @@
-// const registrationUserId = 9;
-
-const user_id = getCookie('user_id');
-let user_token = getCookie('access_token')
-let access_token = getCookie('access_token');
 let registrationUserIds,promotionUserIds,AVUserIds,facilitiesUserIds,childcareUserIds,allTaskUserIds,peoriaUserIds,peoriaAVUserIds;
 const peoriaCampusID = 4;
 const MP_URL = 'https://my.pureheart.org/mp';
@@ -10,13 +5,15 @@ const MP_Events_Table_ID = 308;
 const onsiteFacilitiesServiceID = 17;
 
 const getAccessToken = async () => {
-    access_token = await axios({
+    const tokenData = await axios({
         method: 'get',
-        url: '/api/oauth/app/authorize'
+        url: '/api/oauth/authorize'
     })
-        .then(response => response.data.access_token)
+        .then(response => response.data)
+
+    const { access_token } = tokenData;
+    return access_token;
 }
-getAccessToken()
 
 const getAllTaskUsers = async () => {
     registrationUserIds = await getUsersWithRole(2194);
@@ -38,30 +35,18 @@ const getAllTaskUsers = async () => {
 }
 getAllTaskUsers();
 
-
 const getUser = async () => {
     return axios({
         method: 'get',
-        url: '/api/oauth/me',
-        params: {
-            user_id: user_id,
-            token: access_token
-        }
+        url: '/api/oauth/user'
     })
         .then(response => response.data)
-        .then(data => data.user)
 }
-
-//5 minutes
-const sessionLength = 60 * 1000 * 60;
-setInterval(async () => {
-    window.location = '/login'
-}, sessionLength)
 
 const sendExampleTask = async () => {
     //authorId, ownerId, eventId, startDate, taskType
     const user = await getUser();
-    const {UserId} = user;
+    const {userid} = user;
 
     const task = [{
         "Action": "Complete",
@@ -69,7 +54,7 @@ const sendExampleTask = async () => {
         "Description": `This is an example task for testing purposes`,
         "StartDate": new Date().toISOString(),
         "AuthorId": new Date().toISOString(),
-        "OwnerID": UserId,
+        "OwnerID": userid,
         "TableName": "Events",
         "RecordId": 47864
     }]
@@ -78,23 +63,12 @@ const sendExampleTask = async () => {
         headers: {
             'Content-Type': 'application/json',
             'Accept': 'application/json',
-            'Authorization': `Bearer ${access_token}`
+            'Authorization': `Bearer ${await getAccessToken()}`
         },
         body: JSON.stringify(task),
     })
     .then(response => response.json())
     .catch(err => console.error(err))
-}
-
-const loading = () => {
-    const loadingScreen = document.getElementById('loadingScreen')
-    loadingScreen.style.visibility = 'visible';
-    loadingScreen.style.display = 'grid';
-}
-const doneLoading = () => {
-    const loadingScreen = document.getElementById('loadingScreen')
-    loadingScreen.style.visibility = 'hidden';
-    loadingScreen.style.display = 'none';
 }
 
 // toggleColorScheme();
@@ -186,12 +160,4 @@ function abbrNum(number, decPlaces) {
         }
     }
     return number;
-}
-
-function logout() {
-    //remove all cookies
-    document.cookie = "user_id= ; expires = Thu, 01 Jan 1970 00:00:00 GMT";
-    document.cookie = "access_token= ; expires = Thu, 01 Jan 1970 00:00:00 GMT";
-
-    window.location = '/'
 }

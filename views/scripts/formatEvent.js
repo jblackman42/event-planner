@@ -1,4 +1,4 @@
-const formatEvent = (event_name, event_desc, primary_contact_id, start_date, end_date, event_type, estimated_attendance, congregation, setup_time, cleanup_time, location_id, visibility_id) => {
+const formatEvent = (event_name, event_desc, primary_contact_id, start_date, end_date, event_type, estimated_attendance, congregation, setup_time, cleanup_time, location_id, visibility_id, userid) => {
     return  {
         "Accounting_Information": null,
         "Allow_Check-in": false,
@@ -54,6 +54,7 @@ const formatEvent = (event_name, event_desc, primary_contact_id, start_date, end
         "Tags": null,
         "Visibility_Level_ID": visibility_id,
         "_Approved": false,
-        "_Web_Approved": false
+        "_Web_Approved": false,
+        "Created_By_User": userid
     }
 }
