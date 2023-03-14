@@ -39,8 +39,8 @@ class Dashboard extends HTMLElement {
   }
 
   createWebsocket = () => {
-    // this.webSocket = new WebSocket(`wss://phc.events/websocket`);
-    this.webSocket = new WebSocket(`ws://localhost:3000/websocket`);
+    this.webSocket = new WebSocket(`wss://phc.events/websocket`);
+    // this.webSocket = new WebSocket(`ws://localhost:3000/websocket`);
     
     this.webSocket.addEventListener("open", () => {
       console.log("We are connected");
