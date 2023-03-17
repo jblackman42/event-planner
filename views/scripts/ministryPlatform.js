@@ -277,7 +277,7 @@ const getAllUsers = async () => {
 const getEventTypes = async () => {
     const response = await axios({
         method: 'get',
-        url: 'https://my.pureheart.org/ministryplatformapi/tables/Event_Types',
+        url: 'https://my.pureheart.org/ministryplatformapi/tables/Event_Types?$filter=End_Date IS NULL OR End_Date > GETDATE()',
         headers: {
             'Accept': 'application/json',
             'Authorization': `Bearer ${await getAccessToken()}`
