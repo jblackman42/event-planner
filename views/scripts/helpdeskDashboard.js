@@ -18,7 +18,7 @@ class Dashboard extends HTMLElement {
 
     this.getTickets();
     this.createWebsocket();
-    this.webSocketKeepAlive(30000)
+    this.webSocketKeepAlive(60000) //every 60 seconds
   }
 
   getTickets = async () => {
@@ -38,6 +38,15 @@ class Dashboard extends HTMLElement {
     this.createMonthsTicketsGraph();
   }
 
+  update = () => {
+    this.charts.forEach(chart => {
+      chart.destroy();
+    })
+    const profilePicsContainer = document.getElementById('profile-pics-container');
+      profilePicsContainer.innerHTML = '';
+    this.getTickets();
+  }
+
   createWebsocket = () => {
     this.webSocket = new WebSocket(`wss://phc.events/websocket`);
     // this.webSocket = new WebSocket(`ws://localhost:3000/websocket`);
@@ -51,12 +60,7 @@ class Dashboard extends HTMLElement {
       console.log(data)
 
       if (data == 'update') {
-        this.charts.forEach(chart => {
-          chart.destroy();
-        })
-        const profilePicsContainer = document.getElementById('profile-pics-container');
-          profilePicsContainer.innerHTML = '';
-        this.getTickets();
+        this.update();
       } else if (data == 'notify') {
         this.handleNewTicket();
       }
@@ -68,12 +72,15 @@ class Dashboard extends HTMLElement {
   }
 
   webSocketKeepAlive = (timeout) => {
-    console.log(this.webSocket)
     if (this.webSocket.readyState == this.webSocket.OPEN) {
       console.log('ping');
       this.webSocket.send('');
     }
     this.timeId = setTimeout(() => this.webSocketKeepAlive(timeout), timeout);
+    
+    const today = new Date();
+    const resetHours = 8, resetMinutes = 39;
+    if (today.getHours() == resetHours && today.getMinutes() == resetMinutes) this.update();
   }
 
   getTodaysStatsData = () => {
@@ -92,7 +99,6 @@ class Dashboard extends HTMLElement {
     this.todaysTickets = todaysTickets.length;
 
     const todaysResolvedTickets = this.tickets.filter(ticket => new Date(ticket.Resolve_Date).toLocaleDateString() == today.toLocaleDateString() && ticket.Status == 3)
-    console.log(todaysResolvedTickets)
     // get agents and number of resolved tickets by those agents
     
     const agents = [...new Set(this.tickets.map(ticket => ticket.Agent))]
@@ -358,7 +364,8 @@ class Dashboard extends HTMLElement {
 
   createTagsPieChart = () => {
     const tags = [...new Set(this.tickets.map(ticket => ticket.Tag))]
-    tags[tags.indexOf(null)] = 'Unknown'
+    if (tags.indexOf(null) >= 0) tags[tags.indexOf(null)] = 'Unknown'
+    else tags.push('Unknown')
     const ticketTags = tags.map(tag => this.tickets.filter(ticket => ticket.Tag == tag && new Date(ticket.Request_Date) > this.minDate).length);
     // find tickets with no tag
     ticketTags[ticketTags.length-1] = this.tickets.filter(ticket => ticket.Tag == null && new Date(ticket.Request_Date) > this.minDate).length

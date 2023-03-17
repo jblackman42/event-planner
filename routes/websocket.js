@@ -13,7 +13,7 @@ const refreshAll = () => {
 }
 
 // 11:59 PM daily
-cron.schedule('59 23 * * *', () => refreshAll());
+// cron.schedule('59 23 * * *', () => refreshAll());
 
 // // 8:10 AM daily
 // cron.schedule('10 8 * * *', () => refreshAll())
