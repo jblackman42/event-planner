@@ -9,13 +9,13 @@ const { ensureAuthenticated } = require('../middleware/auth.js')
 // const StaffSchema = require('../models/Staff');
 // const SermonSchema = require('../models/Sermons');
 
-router.get('/', (req, res) => {
+router.get('/files', (req, res) => {
     fs.readdir(path.join(__dirname, '../dist'), (err, files) => {
         res.send(files).status(200).end();
     });
 })
 
-router.get('/:filename', (req, res) => {
+router.get('/files/:filename', (req, res) => {
     const { filename } = req.params;
 
     fs.readdir(path.join(__dirname, '../dist'), (err, files) => {
@@ -170,7 +170,12 @@ router.get('/sermons', async (req, res) => {
     res.status(200).send(data).end();
 })
 
+router.get('/test', (req, res) => {
+    res.sendStatus(200);
+})
+
 router.get('/featured-events', async (req, res) => {
+    console.log('hello world')
     const accessToken = await axios({
         method: 'post',
         url: 'https://my.pureheart.org/ministryplatformapi/oauth/connect/token',
