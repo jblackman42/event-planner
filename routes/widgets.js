@@ -26,6 +26,23 @@ router.get('/files/:filename', (req, res) => {
     });
 })
 
+router.get('/styles', (req, res) => {
+    fs.readdir(path.join(__dirname, '../dist/styles'), (err, files) => {
+        res.send(files).status(200).end();
+    });
+})
+
+router.get('/styles/:filename', (req, res) => {
+    const { filename } = req.params;
+
+    fs.readdir(path.join(__dirname, '../dist/styles'), (err, files) => {
+        const currFile = files.filter(file => file == filename);
+
+        if (!currFile.length) res.sendStatus(404);
+        else res.sendFile(path.join(__dirname, '../dist/styles', currFile[0]))
+    });
+})
+
 router.post('/staff', async (req, res) => {
     const {Contact_ID_List} = req.body;
 
