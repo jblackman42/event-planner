@@ -11,7 +11,7 @@ const { ensureAuthenticated } = require('../middleware/auth.js')
 
 router.get('/files', (req, res) => {
     fs.readdir(path.join(__dirname, '../dist'), (err, files) => {
-        res.send(files).status(200).end();
+        res.send(files.filter(file => file !== 'styles')).status(200).end();
     });
 })
 
