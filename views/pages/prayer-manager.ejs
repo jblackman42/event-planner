@@ -28,7 +28,7 @@
                 method: 'get',
                 url: 'https://my.pureheart.org/ministryplatformapi/tables/Prayer_Requests?$filter=Prayer_Status_ID=1',
                 headers: {
-                    'Authorization': `Bearer ${access_token}`
+                    'Authorization': `Bearer ${await getAccessToken()}`
                 }
             })
                 .then(response => response.data)

@@ -2,10 +2,29 @@ const express = require('express');
 const router = express.Router();
 const axios = require('axios');
 const qs = require('qs')
+const path = require('path');
+const fs = require('fs');
 
 const { ensureAuthenticated } = require('../middleware/auth.js')
 // const StaffSchema = require('../models/Staff');
 // const SermonSchema = require('../models/Sermons');
+
+router.get('/', (req, res) => {
+    fs.readdir(path.join(__dirname, '../dist'), (err, files) => {
+        res.send(files).status(200).end();
+    });
+})
+
+router.get('/:filename', (req, res) => {
+    const { filename } = req.params;
+
+    fs.readdir(path.join(__dirname, '../dist'), (err, files) => {
+        const currFile = files.filter(file => file == filename);
+
+        if (!currFile.length) res.sendStatus(404);
+        else res.sendFile(path.join(__dirname, '../dist', currFile[0]))
+    });
+})
 
 router.post('/staff', async (req, res) => {
     const {Contact_ID_List} = req.body;
@@ -36,6 +55,35 @@ router.post('/staff', async (req, res) => {
         },
         data: {
             "@Contact_ID_List": Contact_ID_List
+        }
+    })
+        .then(response => response.data[0])
+        .catch(err => console.error('oops something went terribly wrong'))
+
+    res.status(200).send(data).end();
+})
+
+router.get('/staff-ministries', async (req, res) => {
+    
+    const accessToken = await axios({
+        method: 'post',
+        url: 'https://my.pureheart.org/ministryplatformapi/oauth/connect/token',
+        data: qs.stringify({
+            grant_type: "client_credentials",
+            scope: "http://www.thinkministry.com/dataplatform/scopes/all",
+            client_id: process.env.CLIENT_ID,
+            client_secret: process.env.CLIENT_SECRET
+        })
+    })
+        .then(response => response.data.access_token)
+        .catch(err => console.error(err))
+
+    const data = await axios({
+        method: 'post',
+        url: `https://my.pureheart.org/ministryplatformapi/procs/api_MPP_Widget_GetStaffByMinistry`,
+        headers: {
+            'Authorization': `Bearer ${accessToken}`,
+            'Content-Type': 'application/json'
         }
     })
         .then(response => response.data[0])
