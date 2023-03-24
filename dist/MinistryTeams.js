@@ -31,7 +31,7 @@ class MinistryTeams extends HTMLElement {
   constructor() {
     super();
 
-    this.classList.add('row');
+    this.classList.add('ministry-team-row');
 
     this.staff = [];
     this.requestURL = 'http://localhost:3000/api/widgets/staff-ministries';

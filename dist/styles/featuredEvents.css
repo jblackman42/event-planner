@@ -1,0 +1,84 @@
+/* delete this */
+body, html {
+  margin: 0;
+  padding: 0;
+}
+
+#events-container {
+  display: flex;
+  flex-wrap: wrap;
+  gap: .5rem;
+  font-family:system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+  width: max-content;
+  max-width: 100%;
+  justify-content: center;
+  margin: 0 auto;
+}
+
+#events-container .event-card {
+  width: 400px;
+  min-width: 200px;
+  position: relative;
+  overflow: hidden;
+  cursor: pointer;
+  box-shadow: rgba(0, 0, 0, 0.1) 0px 4px 12px;
+}
+
+#events-container .event-card img {
+  width: 100%;
+  height: 100%;
+  display: block;
+}
+.event-card .event-card-date-label {
+  position: absolute;
+  top: 0;
+  left: 0;
+  background-color: #FFFFFFCC;
+  color: #000000;
+  font-size: clamp(14px, 1.5vw, 16px);
+  padding: .5rem;
+  width: 4em;
+  height: 4em;
+
+  border-bottom-right-radius: 4px;
+}
+.event-card .event-card-date-label p {
+  margin: 0;
+  padding: 0;
+  text-align: center;
+  font-weight: bold;
+  text-transform: uppercase;
+}
+.event-card .event-card-date-label p.date-label-day {
+  font-size: 1.333em;
+}
+.event-card .event-card-title-label {
+  position: absolute;
+  left: 0;
+  bottom: 0;
+  width: 100%;
+  background-color: #7b2d26;
+  font-weight: bold;
+  padding: .5rem;
+  box-shadow: rgba(0, 0, 0, 0.25) 0px 54px 55px, rgba(0, 0, 0, 0.12) 0px -12px 30px, rgba(0, 0, 0, 0.12) 0px 4px 6px, rgba(0, 0, 0, 0.17) 0px 12px 13px, rgba(0, 0, 0, 0.09) 0px -3px 5px;
+  
+  transition: transform 150ms ease-in-out 100ms, color 50ms linear 100ms;
+  color: #FFFFFF44;
+  transform: translateY(100%);
+}
+.event-card:hover .event-card-title-label {
+  transition: transform 150ms ease-in-out 0s, color 50ms linear 150ms;
+  color: white;
+  transform: translateY(0);
+}
+.event-card .event-card-title-label p {
+  margin: 0;
+  text-align: center;
+}
+
+@media screen and (max-width: 768px) {
+  .event-card .event-card-title-label {
+    transform: translateY(0);
+    color: white;
+  }
+}
