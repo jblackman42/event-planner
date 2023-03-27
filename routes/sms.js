@@ -53,7 +53,7 @@ router.post('/reply', (req, res) => {
   
   console.log(Body)
   // res.sendStatus(200);
-  res.type('text/xml').send("");
+  res.type('text/xml').status(200).send("");
 
 })
 
