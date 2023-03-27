@@ -45,13 +45,15 @@ router.post('/', async (req, res) => {
 
 router.post('/reply', (req, res) => {
 
-  console.log(req.body)
-  
-  const twiml = new MessagingResponse();
+  const { ToCountry, ToState, SmsMessageSid, NumMedia, ToCity, FromZip, SmsSid, FromState, SmsStatus, FromCity, Body, FromCountry, To, MessagingServiceSid, ToZip, NumSegments, MessageSid, AccountSid, From, ApiVersion } = req.body;
 
-  twiml.message('The Robots are coming! Head for the hills!');
+  // const twiml = new MessagingResponse();
+  // twiml.message('The Robots are coming! Head for the hills!');
 
-  res.type('text/xml').send(twiml.toString());
+  // res.type('text/xml').send(twiml.toString());
+
+  console.log(Body)
+  res.sendStatus(200);
 
 })
 
