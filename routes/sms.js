@@ -44,6 +44,9 @@ router.post('/', async (req, res) => {
 })
 
 router.post('/reply', (req, res) => {
+
+  console.log(req.body)
+  
   const twiml = new MessagingResponse();
 
   twiml.message('The Robots are coming! Head for the hills!');
