@@ -53,6 +53,7 @@ app.use('/api/oauth', require('./routes/oauth.js'))
 app.use('/api/widgets', require('./routes/widgets.js'))
 app.use('/api/prayer-wall', require('./routes/prayer-wall.js'))
 app.use('/websocket', require('./routes/websocket.js'))
+app.use('/api/sms', require('./routes/sms'));
 
 const start = async () => {
     try {
