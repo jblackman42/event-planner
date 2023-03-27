@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Twilio Chat</title>
+
+  <script src="/scripts/axios.js"></script>
+  <link rel="stylesheet" href="/styles/main.css">
+</head>
+<body style="justify-content: center; align-items: center;">
+  
+  <div class="chat-container">
+    <div id="message-container">
+    </div>
+
+
+    <form id="input-form">
+      <input type="text" name="message" id="message" placeholder="Type a new message">
+      <button type="submit">Send</button>
+    </form>
+  </div>
+
+  <script>const requestURL = `ws://${location.host}`
+
+    const webSocket = new WebSocket(`${requestURL}/api/sms/echo`);
+    const formDOM = document.getElementById('input-form');
+    const msgInput = document.getElementById('message');
+    const msgContainer = document.getElementById('message-container');
+    
+    webSocket.addEventListener('open', (ws) => {
+      // username = prompt('What is your name?')
+    })
+    
+    webSocket.addEventListener('message', (response) => {
+      const {data} = response;
+      const messageData = JSON.parse(data);
+      const {message, name, timestamp} = messageData;
+    
+      msgContainer.innerHTML += `
+        <div class="message${name=="Server" ? ' sent' : ''}">
+          <p class="label">
+            <span class="name">${name}</span>
+            <span class="timestamp">${timestamp}</span>
+          </p>
+          <p class="msg">${message}</p>
+        </div>
+      `
+    })
+    
+    
+    formDOM.onsubmit = (e) => {
+      e.preventDefault();
+    
+      const msg = {
+        "message": msgInput.value,
+        "name": 'Server',
+        "timestamp": new Date().toLocaleTimeString()
+      }
+    
+      webSocket.send(JSON.stringify(msg));
+    
+      msgInput.value = '';
+    
+      return false;
+    }
+  </script>
+</body>
+</html>

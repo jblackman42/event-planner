@@ -35,6 +35,9 @@ navigation.get('/refresh', (req, res) => {
 navigation.get('/dashboard', (req, res) => {
   res.render('pages/helpdesk-dashboard')
 })
+navigation.get('/chat', (req, res) => {
+  res.render('pages/chat')
+})
 
 
 navigation.get('/logout', (req, res) => {

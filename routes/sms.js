@@ -6,6 +6,39 @@ const { MessagingResponse } = require('twilio').twiml;
 const express = require('express');
 const router = express.Router();
 
+const clients = [];
+const messages = [];
+const numbers = [];
+
+router.ws('/echo', (ws, req) => {
+  clients.push(ws)
+  console.log('new client connected')
+
+  messages.forEach(msg => {
+    ws.send(msg)
+  })
+
+  ws.on('message', function(msg) {
+    messages.push(msg)
+    // console.log(`message received: ${msg}`)
+    clients.forEach(clientWs => {
+      clientWs.send(msg)
+    })
+
+    const msgData = JSON.parse(msg)
+    for (const number of numbers) {
+
+      client.messages 
+        .create({
+          messagingServiceSid: process.env.TWILIO_SERVICE_SID,      
+          to: number,
+          body: msgData.message
+        })
+        // .then(message => console.log(message.sid))
+    }
+  })
+})
+
 router.post('/', async (req, res) => {
   try {
     const minTime = 900 * 1000;//ms
@@ -27,9 +60,11 @@ router.post('/', async (req, res) => {
     }
     : {
       messagingServiceSid: process.env.TWILIO_SERVICE_SID,      
-      to: sendToNumber ,
+      to: sendToNumber,
       body: message
     }
+
+    console.log(body)
 
     const messageData = await client.messages 
       .create(body)
@@ -50,8 +85,27 @@ router.post('/reply', (req, res) => {
   // const twiml = new MessagingResponse();
   // twiml.message('The Robots are coming! Head for the hills!');
 
-  
-  console.log(Body)
+  if (!numbers.includes(From)) numbers.push(From);
+
+  if (Body.toLowerCase() == 'stop') {
+    console.log('stop')
+    numbers.splice(numbers.indexOf(From), 1);
+    console.log(numbers)
+    
+    // return res.type('text/xml').status(200).send("");
+  }
+
+  const msg = {
+    "message": Body,
+    "name": From,
+    "timestamp": new Date().toLocaleTimeString()
+  }
+
+  messages.push(JSON.stringify(msg))
+  console.log(messages)
+  clients.forEach(clientWs => {
+    clientWs.send(JSON.stringify(msg))
+  })
   // res.sendStatus(200);
   res.type('text/xml').status(200).send("");
 

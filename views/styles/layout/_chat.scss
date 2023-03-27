@@ -1,0 +1,107 @@
+$radius: 4px;
+
+.chat-container {
+  display: flex;
+  flex-direction: column;
+
+  width: 800px;
+  height: 600px;
+  max-width: 90vw;
+  max-height: 50vh;
+
+  #message-container {
+    height: 100%;
+    width: 100%;
+    margin-bottom: 8px;
+    overflow: hidden auto;
+
+    // border-radius: $radius;
+    // box-shadow: $shadow;
+
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+    gap: 4px;
+    // background-color: white;
+
+    .message {
+      position: relative;
+      display: flex;
+      width: max-content;
+      flex-direction: column;
+      background-color: white;
+      padding: 10px 16px;
+
+      &.sent {
+        margin-left: auto;
+        background-color: #3498db;
+        color: white;
+      }
+      p {
+        margin: 0;
+      }
+      p.label {
+        // position: absolute;
+        font-size: 12px;
+        top: 0;
+        left: 0;
+        padding: 4px 0;
+        span.name {
+          font-weight: bold;
+          margin-right: 16px;
+        }
+      }
+    }
+  }
+
+  #input-form {
+    display: flex;
+    width: 100%;
+    height: max-content;
+    input {
+      border-radius: $radius;
+      line-height: 1.6;
+      padding-inline: 8px;
+      width: 100%;
+      border: none;
+      background-color: white;
+      margin-right: 8px;
+      outline: none;
+    }
+
+    button {
+      background-color: #3498db;
+      border-radius: $radius;
+      border-style: none;
+      box-sizing: border-box;
+      color: #FFFFFF;
+      cursor: pointer;
+      display: inline-block;
+      // font-family: "Haas Grot Text R Web", "Helvetica Neue", Helvetica, Arial, sans-serif;
+      font-size: 14px;
+      font-weight: 600;
+      letter-spacing: .8px;
+      text-transform: uppercase;
+      list-style: none;
+      margin: 0;
+      outline: none;
+      padding: 10px 16px;
+      position: relative;
+      text-align: center;
+      text-decoration: none;
+      transition: background-color 200ms;
+      vertical-align: baseline;
+      user-select: none;
+      -webkit-user-select: none;
+      touch-action: manipulation;
+    }
+
+    button:hover, button:focus {
+      background-color: #2980b9;
+    }
+
+    button:active {
+      transform: scale(.96);
+    }
+  }
+}
