@@ -22,7 +22,10 @@
     </form>
   </div>
 
-  <script>const requestURL = `ws://${location.host}`
+  <script>
+    const websocketProtocol = location.protocol == 'https:' ? 'wss://' : 'ws://'
+    // const requestURL = `ws://${location.host}`
+    const requestURL = websocketProtocol + location.host
 
     const webSocket = new WebSocket(`${requestURL}/api/sms/echo`);
     const formDOM = document.getElementById('input-form');
