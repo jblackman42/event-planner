@@ -9,6 +9,7 @@ class TeamWidget extends HTMLElement {
         if (!contact_ids) return;
 
         this.staff = await this.getStaff(contact_ids);
+        console.log(this.staff)
 
         if (this.staff.length <= 3) {
             this.style.gridTemplateColumns = new Array(this.staff.length).fill('1fr').join(' ');
@@ -21,6 +22,7 @@ class TeamWidget extends HTMLElement {
                 continue
             };
             const {Last_Name, Nickname, Job_Title, Unique_Name, Contact_ID, Bio} = currStaff;
+            console.log(currStaff)
 
             const staffMemberDOM = document.createElement('div');
                 staffMemberDOM.classList.add('staff-member');
@@ -33,7 +35,7 @@ class TeamWidget extends HTMLElement {
                     </div>
                     <div class="staff-content">
                         <h1>${Nickname} ${Last_Name}</h1>
-                        <p>${Job_Title}</p>
+                        <p>${Job_Title || 'no job title'}</p>
                         <button id="btn-${Contact_ID}">Email ${Nickname}</button>
                     </div>
                 </div>
@@ -56,6 +58,8 @@ class TeamWidget extends HTMLElement {
         return await axios({
             method: 'post',
             url: 'https://phc.events/api/widgets/staff',
+            // url: 'http://localhost:3000/api/widgets/staff',
+            // url: location.protocol,
             data: {
                 Contact_ID_List: ids.join()
             }

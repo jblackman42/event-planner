@@ -3,6 +3,7 @@ class FeaturedEvents extends HTMLElement {
     super();
 
     this.requestURL = 'https://phc.events';
+    // this.requestURL = 'http://localhost:3000';
     this.targetURL = this.getAttribute('target-url');
 
     this.events = []

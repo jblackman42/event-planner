@@ -34,9 +34,11 @@ class MinistryTeams extends HTMLElement {
     this.classList.add('ministry-team-row');
 
     this.staff = [];
-    this.requestURL = 'http://localhost:3000/api/widgets/staff-ministries';
+    // this.requestURL = 'http://localhost:3000/api/widgets/staff-ministries';
+    this.requestURL = 'https://phc.events/api/widgets/staff-ministries';
     this.updateStaff();
   }
+
 
   updateStaff = async () => {
     this.staff = await axios({

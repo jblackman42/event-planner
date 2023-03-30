@@ -206,9 +206,14 @@ router.get('/featured-events', async (req, res) => {
         .then(response => response.data.access_token)
         .catch(err => console.error(err))
 
+    console.log(8)
     const data = await axios({
         method: 'post',
         url: `https://my.pureheart.org/ministryplatformapi/procs/api_Widget_GetFeaturedEvents`,
+        data: {
+            "@MONTHS_FORWARD": 3,
+            "@MONTHS_BACKWARD": 0
+        },
         headers: {
             'Authorization': `Bearer ${accessToken}`,
             'Content-Type': 'application/json'
