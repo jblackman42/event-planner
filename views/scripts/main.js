@@ -3,6 +3,8 @@ const peoriaCampusID = 4;
 const MP_URL = 'https://my.pureheart.org/mp';
 const MP_Events_Table_ID = 308;
 const onsiteFacilitiesServiceID = 17;
+const prayerWallGroupID = 49;
+const eventCreatorGroupID = 48;
 
 const getAccessToken = async () => {
     const tokenData = await axios({

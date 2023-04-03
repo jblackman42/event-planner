@@ -96,8 +96,8 @@ router.get('/refresh', async (req, res) => {
             data: qs.stringify({
                 grant_type: "client_credentials",
                 scope: "http://www.thinkministry.com/dataplatform/scopes/all",
-                client_id: process.env.APP_CLIENT_ID,
-                client_secret: process.env.APP_CLIENT_SECRET
+                client_id: process.env.CLIENT_ID,
+                client_secret: process.env.CLIENT_SECRET
             })
         })
             .then(response => response.data)
@@ -129,8 +129,8 @@ router.get('/isAdmin', async (req, res) => {
             data: qs.stringify({
                 grant_type: "client_credentials",
                 scope: "http://www.thinkministry.com/dataplatform/scopes/all",
-                client_id: process.env.APP_CLIENT_ID,
-                client_secret: process.env.APP_CLIENT_SECRET
+                client_id: process.env.CLIENT_ID,
+                client_secret: process.env.CLIENT_SECRET
             })
         })
             .then(response => response.data)
@@ -157,6 +157,44 @@ router.get('/isAdmin', async (req, res) => {
         const userAuthorized = (user.roles && user.roles.includes("Administrators")) || groupUserIds.filter(id => id == user.userid).length > 0;
     
         res.send(userAuthorized);
+    } catch (error) {
+        res.sendStatus(500);
+    }
+})
+
+router.get('/myGroups', async (req, res) => {
+    try {
+        const data = await axios({
+            method: 'post',
+            url: 'https://my.pureheart.org/ministryplatformapi/oauth/connect/token',
+            data: qs.stringify({
+                grant_type: "client_credentials",
+                scope: "http://www.thinkministry.com/dataplatform/scopes/all",
+                client_id: process.env.CLIENT_ID,
+                client_secret: process.env.CLIENT_SECRET
+            })
+        })
+            .then(response => response.data)
+            .catch(err => console.error(err))
+        const {access_token} = data;
+        
+        const {user} = req.session;
+
+        const userGroups = await axios({
+            method: 'get',
+            url: `${process.env.BASE_URL}/tables/dp_User_User_Groups?$filter=User_ID=${user.userid}`,
+            headers: {
+                'authorization': `Bearer ${access_token}`
+            }
+        })
+            .then(response => response.data.map(group => group.User_Group_ID))
+            .catch(err => {
+                console.log('something went wrong: ' + err);
+                res.render('pages/login', {error: 'internal server error'});
+            })
+    
+    
+        res.send(userGroups);
     } catch (error) {
         res.sendStatus(500);
     }

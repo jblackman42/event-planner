@@ -36,6 +36,12 @@ const ensureAuthenticated = async (req, res, next) => {
     };
     if (logging) console.log('invalid token')
     // if token is not valid, use refresh token to get a new one
+
+    console.log(refresh_token)
+    if (!refresh_token) {
+        console.log('no refresh token')
+        return res.render('pages/login', {error: 'session expired'})
+    }
     
     const newAccessToken = await axios({
         method: 'post',

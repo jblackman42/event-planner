@@ -73,7 +73,7 @@
     const tasksLink = document.getElementById('tasks-link')
     const getTasks = async () => {
         const user = await getUser();
-        const {userid} = user;
+        const { userid } = user;
 
         const tasks = await getUserTasks(userid)
         
@@ -89,29 +89,40 @@
 
     axios({
         method: 'get',
-        url: '/api/oauth/isAdmin'
+        url: '/api/oauth/myGroups'
     })
         .then(response => response.data)
-        .then(data => {
-            const isAdmin = data;
-            console.log(isAdmin)
-            // const eventCreatorRoleId = [2202, 2];
-            // const prayerManagerRoleId = [2206, 2]
-            // const {userRoles} = data;
-            // const userRoleIds = userRoles.map(role => role.Role_ID);
+        .then(groups => {
+            // const { roles } = data;
+
+            if (groups.includes(prayerWallGroupID)) {
+                const prayerWallBtn = document.getElementById('prayer-wall-btn');
+                prayerWallBtn.style.display = 'block';
+                prayerWallBtn.style.visibility = 'visible';
+            }
             
-            // //if logged in user is  authorized to create events
-            if (isAdmin) {
-                //add new event from navbar
+            if (groups.includes(eventCreatorGroupID)) {
+                const newEventBtn = document.getElementById('new-event-btn');
                 newEventBtn.style.display = 'block';
                 newEventBtn.style.visibility = 'visible';
             }
-            
-            // //if logged in user has prayer manager role show prayer wall button
-            // if (checkDuplicates(userRoleIds, prayerManagerRoleId)) {
-            //     prayerWallBtn.style.display = 'block';
-            //     prayerWallBtn.style.visibility = 'visible';
-            // }
+        })
+
+    axios({
+        method: 'get',
+        url: '/api/oauth/user'
+    })
+        .then(response => response.data)
+        .then(user => {
+            const { roles } = user;
+            if (roles && roles.includes('Administrators')) {
+                const linksDOM = document.querySelector('.links');
+                const linksListDOM = linksDOM.children[0];
+                for (const linkElem of linksListDOM.children) {
+                    linkElem.style.display = 'block';
+                    linkElem.style.visibility = 'visible';
+                }
+            }
         })
 
     if (localStorage.getItem('colorScheme') == 'dark') {

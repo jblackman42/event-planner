@@ -5,6 +5,7 @@ const cors = require('cors');
 const fileUpload = require('express-fileupload');
 const enableWs = require('express-ws')
 var session = require('express-session');
+const { PricingV1VoiceVoiceCountryInstanceOutboundPrefixPrices } = require('twilio/lib/rest/pricing/v1/voice/country');
 
 //middleware
 require('dotenv').config();
@@ -45,6 +46,8 @@ app.use("/README.md",express.static(__dirname + "/README.md"));
 
 
 const port = process.env.PORT || 3000;
+
+// const { populate } = require('./populate');
 
 //navigation routing
 app.use('/', require('./routes/index'))
