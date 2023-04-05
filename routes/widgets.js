@@ -363,4 +363,53 @@ router.get('/unsubscribe', async (req, res) => {
     }
 })
 
+
+router.get('/group-register', async (req, res) => {
+    const formGUID = req.query.Form_GUID;
+
+    if (!formGUID) return res.status(400).send({err: 'no form guid found'}).end();
+
+    try {
+        //get access token for accessing database informatin
+        const accessToken = await axios({
+            method: 'get',
+            mode: 'cors',
+            url: 'https://phc.events/api/oauth/authorize'
+        })
+            .then(response => response.data.access_token)
+            .catch(err => console.error(err))
+
+        const formData = await axios({
+            method: 'get',
+            url: `https://my.pureheart.org/ministryplatformapi/tables/Forms?$filter=Form_GUID='${formGUID}'`,
+            headers: {
+                "Authorization": `Bearer ${accessToken}`,
+                "Content-Type": "application/json"
+            }
+        })
+            .then(response => response.data[0])
+
+            console.log(formData.Form_ID)
+        const formFieldsData = await axios({
+            method: 'get',
+            url: `https://my.pureheart.org/ministryplatformapi/tables/Form_Fields?$filter=Form_ID=${formData.Form_ID}`,
+            headers: {
+                "Authorization": `Bearer ${accessToken}`,
+                "Content-Type": "application/json"
+            }
+        })
+            .then(response => response.data)
+
+        res.send({
+            Form: formData,
+            Form_Fields: formFieldsData
+        });
+    } catch (e) {
+        const { response } = e;
+        const { data } = response;
+        const { Message } = data;
+        res.status(response.status).send(Message).end();
+    }
+})
+
 module.exports = router;

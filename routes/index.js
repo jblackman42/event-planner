@@ -29,6 +29,9 @@ navigation.get('/prayer-wall', ensureAuthenticated, checkUserGroups, (req, res) 
 navigation.get('/print', ensureAuthenticated, checkUserGroups, (req, res) => {
   res.render('pages/print')
 })
+navigation.get('/featured-events', ensureAuthenticated, checkUserGroups, (req, res) => {
+  res.render('pages/featured-events') 
+})
 navigation.get('/refresh', (req, res) => {
   res.render('pages/refresh')
 })

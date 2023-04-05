@@ -72,10 +72,9 @@ class PrayerWall extends HTMLElement {
                         <label for="Notify"> Email Me When Someone Prays</label>
                     </div>
 
-                    <div class="g-recaptcha" id="captcha-container" data-sitekey="6LebiLQjAAAAAOR3XFrxo5wfjw1Ob73WbZKy9d2D" render="explicit"></div>
                     <button type="submit">submit</button>
 
-                    <p id="error-msg">Please Complete reCAPTCHA</p>
+                    <p id="error-msg"></p>
                 </form>
             `
 
@@ -246,17 +245,6 @@ class PrayerWall extends HTMLElement {
     }
     handleSubmit = async (e) => {
         e.preventDefault();
-
-        const recaptchaResponse = document.getElementById('g-recaptcha-response');
-        const errorMsgDOM = document.getElementById('error-msg');
-        if (!recaptchaResponse.value) {
-            errorMsgDOM.style.display = 'block';
-            errorMsgDOM.style.visibility = 'visible';
-            return
-        } else {
-            errorMsgDOM.style.display = 'none';
-            errorMsgDOM.style.visibility = 'hidden';
-        }
 
         const authorNameDOM = document.getElementById('Author_Name');
         const authorEmailDOM = document.getElementById('Author_Email');
