@@ -18,8 +18,6 @@ class Series extends HTMLElement {
                     return new Date(b.Series_Start_Date) - new Date(a.Series_Start_Date);
                   });
                 this.currentSeriesID = this.seriesList[0].Sermon_Series_ID;
-
-                console.log(this.seriesList)
                 this.update();
             })
 
