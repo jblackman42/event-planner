@@ -47,8 +47,6 @@ app.use("/README.md",express.static(__dirname + "/README.md"));
 
 const port = process.env.PORT || 3000;
 
-// const { populate } = require('./populate');
-
 //navigation routing
 app.use('/', require('./routes/index'))
 app.use('/api/helpdesk', require('./routes/helpdesk.js'))

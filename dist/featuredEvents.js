@@ -18,7 +18,7 @@ class FeaturedEvents extends HTMLElement {
       .then(response => response.data)
       .catch(err => console.error(err))
   }
-
+// Featured_Event_Custom_URL
   update = async () => {
     await this.getEvents();
     const eventsContainer = document.createElement('div');
@@ -28,7 +28,7 @@ class FeaturedEvents extends HTMLElement {
         const eventMonth = new Date(event.Event_Start_Date).toLocaleDateString('en-us', {month: 'short'});
         const eventDate = new Date(event.Event_Start_Date).getDate();
         return `
-          <a class="event-card" href="${this.targetURL}/?id=${event.Record_ID}">
+          <a class="event-card" href="${event.Featured_Event_Custom_URL ?? `${this.targetURL}/?id=${event.Record_ID}`}">
             <div class="event-card-img-container">
               <img src="https://my.pureheart.org/ministryplatformapi/files/${event.Unique_Name}" alt="${event.Event_Title}"/>
             </div>
