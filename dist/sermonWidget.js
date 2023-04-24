@@ -12,12 +12,16 @@ class Series extends HTMLElement {
         Promise.resolve(fetch(`${fetchURL}/series`))
             .then(response => response.json())
             .then(data => {
-                this.seriesList = data;
+                this.seriesList = data.sort(function(a,b){
+                    // Turn your strings into dates, and then subtract them
+                    // to get a value that is either negative, positive, or zero.
+                    return new Date(b.Series_Start_Date) - new Date(a.Series_Start_Date);
+                  });
                 this.currentSeriesID = this.seriesList[0].Sermon_Series_ID;
 
+                console.log(this.seriesList)
                 this.update();
             })
-
 
     }
     update = () => {
